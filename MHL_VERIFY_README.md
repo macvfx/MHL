@@ -81,6 +81,16 @@ Command-line build:
 ```bash
 xcodebuild -project MHLDefaultApps.xcodeproj -scheme MHLDefaultApps -configuration Debug -derivedDataPath /tmp/MHLDefaultAppsDerivedData CODE_SIGNING_ALLOWED=NO build
 ```
+## License
+
+Copyright 2026 Mat X Network Consultants / MacVFX
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for
+the full terms.
+
+If you use or redistribute this code, please attribute
+[Mat X Network Consultants / MacVFX](https://github.com/macvfx/MHLVerify)
+as required by the license.
 
 ## Acknowledgements
 
