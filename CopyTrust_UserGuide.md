@@ -2,16 +2,7 @@
 
 Tested version: **v2.1.2 (build 1)**.
 
-This guide covers the **CopyTrust** app and its **Card Mode** workflow.
-
-For the other app-specific guides, see:
-
-- [DROP_VERIFY_README.md](/Users/xavier/Downloads/All%20Code%20Projects/P5%20Archive%20Swift%20Apps/Folder%20Copy%20Compare/DROP_VERIFY_README.md)
-- [DROP_VERIFY_USER_GUIDE.md](/Users/xavier/Downloads/All%20Code%20Projects/P5%20Archive%20Swift%20Apps/Folder%20Copy%20Compare/DROP_VERIFY_USER_GUIDE.md)
-- [FOLDER_COPY_COMPARE_README.md](/Users/xavier/Downloads/All%20Code%20Projects/P5%20Archive%20Swift%20Apps/Folder%20Copy%20Compare/FOLDER_COPY_COMPARE_README.md)
-- [FOLDER_COPY_COMPARE_USER_GUIDE.md](/Users/xavier/Downloads/All%20Code%20Projects/P5%20Archive%20Swift%20Apps/Folder%20Copy%20Compare/FOLDER_COPY_COMPARE_USER_GUIDE.md)
-
----
+This guide covers the **CopyTrust** app.
 
 ## Card Mode Workflow
 
@@ -350,14 +341,5 @@ Use that recovery order to avoid the common mistake of treating every MHL warnin
 - **About CopyTrust** shows version/build info and the `code.matx.ca` link.
 
 Use the runtime log to troubleshoot stalls, copy errors, and state transitions.
-
----
-
-## Separate Folder Copy Compare App
-
-The compare-and-sync workflow now has its own dedicated app docs:
-
-- [FOLDER_COPY_COMPARE_README.md](/Users/xavier/Downloads/All%20Code%20Projects/P5%20Archive%20Swift%20Apps/Folder%20Copy%20Compare/FOLDER_COPY_COMPARE_README.md)
-- [FOLDER_COPY_COMPARE_USER_GUIDE.md](/Users/xavier/Downloads/All%20Code%20Projects/P5%20Archive%20Swift%20Apps/Folder%20Copy%20Compare/FOLDER_COPY_COMPARE_USER_GUIDE.md)
 
 Use those when you want to compare two folders, copy missing or different files, generate an MHL from a compared folder, or verify an existing MHL against a folder pair.
