@@ -92,6 +92,6 @@ derived files and the changes made.
 
 ## Documentation
 
-- [User Guide](USER_GUIDE.md)
-- [Pique Attribution](PIQUE_ATTRIBUTION.md)
+- [User Guide](MHL_VERIFY_USER_GUIDE.md)
+- [Pique Attribution](MHL_VERIFY_PIQUE_ATTRIBUTION.md)
 
