@@ -43,4 +43,3 @@ Drop Verify includes settings for:
 ## Documentation
 
 - [Drop Verify User Guide](DROP_VERIFY_USER_GUIDE.md)
-- [Project Changelog](CHANGELOG.md)
