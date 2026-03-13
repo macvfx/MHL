@@ -74,7 +74,7 @@ swift build
 
 ### Xcode
 
-Open [MHLDefaultApps.xcodeproj](/Users/xavier/Downloads/All%20Code%20Projects/MHL%20default%20apps/MHLDefaultApps.xcodeproj) and build the `MHLDefaultApps` scheme.
+Open MHLDefaultApps.xcodeproj and build the `MHLDefaultApps` scheme.
 
 Command-line build:
 
@@ -87,7 +87,7 @@ xcodebuild -project MHLDefaultApps.xcodeproj -scheme MHLDefaultApps -configurati
 The Quick Look extension and parts of the preview rendering infrastructure
 are derived from [Pique](https://github.com/macadmins/pique) by
 Declarative IT GmbH, licensed under the Apache License 2.0.
-See [PIQUE_ATTRIBUTION.md](PIQUE_ATTRIBUTION.md) for the full list of
+See MHL_VERIFY_PIQUE_ATTRIBUTION.md for the full list of
 derived files and the changes made.
 
 ## Documentation
