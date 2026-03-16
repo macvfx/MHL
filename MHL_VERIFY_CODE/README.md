@@ -106,3 +106,7 @@ derived files and the changes made.
 - [User Guide](USER_GUIDE.md)
 - [Pique Attribution](PIQUE_ATTRIBUTION.md)
 
+## Disclaimer
+
+This software is provided as-is, without warranty of any kind, express or implied. Use at your own risk. No guarantee is made regarding correctness, completeness, fitness for a particular purpose, or suitability for critical data-handling workflows. Always independently verify copies, checksums, manifests, and archival results before relying on them. The author is not responsible for data loss, corruption, downtime, or other damages arising from use of this software.
+
