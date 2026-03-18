@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current version: **v2.1.2 (build 1)**.
+Current version: **v2.1.5 (build 1)**.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting.
 
@@ -32,8 +32,9 @@ It can also mirror generated artifacts to a separate export folder if enabled in
 Drop Verify includes settings for:
 
 - `MHL (Media Hash List)`
-- `Contact sheet PDF (thumbnails and camera data)`
+- `Contact sheet PDF (thumbnails and camera data)` — row or grid layout
 - `EXIF camera metadata CSV (Spreadsheet)`
+- contact sheet layout style (Row or Grid 3×4)
 - export generated artifacts to an extra export folder
 - exclude hidden files
 - manage exclusion patterns
