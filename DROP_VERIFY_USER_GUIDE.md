@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Tested version: **v2.1.2 (build 1)**.
+Tested version: **v2.1.5 (build 1)**.
 
 ## What Drop Verify Does
 
@@ -23,6 +23,7 @@ You drag a folder into the app, and it generates three artifact types for media 
   - `MHL (Media Hash List)`
   - `Contact sheet PDF (thumbnails and camera data)`
   - `EXIF camera metadata CSV (Spreadsheet)`
+- Choose **Contact sheet layout**: Row (detailed metadata) or Grid (3×4 poster, 12 items per page).
 - Optionally enable export to an extra export folder.
 - Leave `Exclude hidden files` enabled unless you explicitly need hidden content scanned.
 
@@ -58,6 +59,7 @@ You can open individual artifacts from the app after generation.
 ### Contact sheet PDF
 - Quick visual summary of media found in the dropped folder
 - Includes thumbnails and camera/media metadata
+- Two layout styles: **Row** (one clip per row with detailed metadata) or **Grid** (3×4 poster, 12 items per page with single thumbnail + caption per item)
 
 ### EXIF camera metadata CSV
 - Spreadsheet-friendly export of file path and metadata fields
