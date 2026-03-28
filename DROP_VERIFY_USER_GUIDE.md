@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Tested version: **v2.1.5 (build 1)**.
+Tested version: **v2.1.8 (Build 3)**. Stable release: **v2.1.7 (Build 5)**.
 
 ## What Drop Verify Does
 
