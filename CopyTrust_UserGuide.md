@@ -1,6 +1,6 @@
 # User Guide
 
-Tested version: **v2.1.8 (Build 3)**. Stable release: **v2.1.7 (Build 5)**.
+Tested version: **v2.1.8 (Build 8)**. Stable release: **v2.1.7 (Build 5)**.
 
 This guide covers the **CopyTrust** app — a multi-source, multi-destination copy tool designed for camera card ingest but capable of copying any folders and files. Tuned for media workflows.
 
@@ -135,6 +135,7 @@ The Session Summary sheet has three sections:
 3. **Action buttons:**
    - **Copy Summary** — copies the plain-text receipt to clipboard.
    - **Reveal Receipt** — opens the JSON receipt file in Finder.
+   - **Reveal Manifest** — opens the session manifest JSON in Finder. The manifest records every verified, skipped, and failed file with structured reasons — a complete audit trail of what was copied and what was missed.
    - **End Session** — ends the session, writes receipt files to disk, clears sources/results, and keeps destinations loaded for the next ingest. This is the only way to end a session.
    - **Done** — dismisses the sheet and returns to the live session (press Enter/Return as shortcut).
 
@@ -150,7 +151,10 @@ The Session Summary sheet has three sections:
 - **Reset Session**: clears the entire session, including destinations; disabled until a copy session has started.
 - **Auto**: toggles automatic start of the next queued source after a successful copy.
 - **Open Progress**: reopens the live copy progress window if you closed it during an active copy.
-- **Cancel Copy**: stops the current copy task. Partially copied files remain on disk.
+- **Cancel Copy**: stops the current copy task. Partially copied files remain on disk. A session manifest is written recording which files were successfully copied and which were not yet processed.
+- **Reveal Receipts**: appears after a cancelled or failed copy. Opens the local receipts folder (`~/Library/Application Support/CopyTrust/receipts/`) containing session manifests, receipt JSON/TXT, and logs.
+- **Reveal Manifest**: appears after a cancelled or failed copy. Opens the session manifest JSON directly in Finder.
+- **Prefix field**: inline text field next to the subfolder naming preview. Type a short tag (e.g. "2.1.8_b6") to prepend to the template-built subfolder name. Clear with the ✕ button. Also editable in Settings → Card Copy → Subfolder Naming.
 
 **Post-Copy Verification**
 - **Run Recommended Check**: starts the strongest follow-up check when CopyTrust has flagged something worth investigating.
@@ -344,6 +348,14 @@ Use that recovery order to avoid the common mistake of treating every MHL warnin
 - Same 23-column format as Drop Verify CSV: camera, lens, exposure, resolution, duration, codec, bitrate, and more
 - Toggle in **Settings → Post-Copy → EXIF / Media Metadata CSV** → `Generate EXIF CSV after each ingest`
 - Included in receipt export when enabled
+
+### Session manifest
+- `<destination>/CopyTrust_Receipts/SESSION_MANIFEST_{sourceAlias}_{timestamp}.json`
+- `~/Library/Application Support/CopyTrust/receipts/SESSION_MANIFEST_{sourceAlias}_{timestamp}.json`
+- Written after every ingest (including cancelled ones). Records all verified, skipped, and failed files with structured reasons.
+- Status field: `completed`, `completed_with_errors`, `cancelled`, or `failed`.
+- On cancellation, the manifest captures which files were successfully copied before the cancel, so the operator knows exactly what made it and what didn't.
+- Use the **Manifest** button on completed source rows or **Reveal Manifest** in the Session Summary to open in Finder.
 
 ### MHL hash lists (Full verification only)
 - Written to the destination root: `CopyTrust - {date} at {time} - {sourceName}.mhl`
