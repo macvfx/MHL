@@ -2,11 +2,19 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-Current stable: **v2.1.7** (Build 5). Testing: **v2.1.8 Build 3**.
+Current stable: **v2.1.7** (Build 5). Testing: **v2.1.8 Build 8**.
 
 ### Version History (since v2.1.6)
 
-**v2.1.8 Build 3** (testing) — Volume Pool stays visible during copy sessions (collapsible disclosure triangle instead of hidden). Sources panel also collapsible. "End Session…" button renamed to "Review Summary…" for clarity.
+**v2.1.8 Build 8** (testing) — Post-cancel UX: "Reveal Receipts" and "Reveal Manifest" buttons appear in the action bar after a cancelled copy. Inline subfolder prefix field on the main view for quick tagging (e.g. "2.1.8_b6") without opening Settings.
+
+**v2.1.8 Build 6** — Fixed CopyTrust cancellation discarding partial file counts from session manifest. Manifest now also written to local logs folder. Drop Verify export-only UI: artifact rows show exported files with "Exported" badge, auto-reveal on completion, "Reveal Manifest" button after cancel. JSON keys differentiated: CopyTrust uses `filesCopied`, Drop Verify uses `filesVerified`.
+
+**v2.1.8 Build 5** — Session manifest persistence: structured JSON manifest written after every CopyTrust ingest and Drop Verify run, recording all verified, skipped, and failed files with reasons. Partial manifests saved on cancellation. New `SkippedFileEntry` / `FailedFileEntry` types in CopyCore with structured error capture in the copy loop.
+
+**v2.1.8 Build 4** — Drop Verify: read-only media detection with automatic export fallback. Cancel button and determinate progress bar during scanning/hashing.
+
+**v2.1.8 Build 3** — Volume Pool stays visible during copy sessions (collapsible disclosure triangle instead of hidden). Sources panel also collapsible. "End Session…" button renamed to "Review Summary…" for clarity.
 
 **v2.1.8 Build 1** — UI and receipt improvements.
 - Smart video thumbnail frame selection — samples at ~17%/50%/83% instead of 0%/33%/66% to avoid black lead-in frames. Grid contact sheets sample at 50% (mid-point). Applies to both CopyTrust and Drop Verify.
@@ -14,11 +22,6 @@ Current stable: **v2.1.7** (Build 5). Testing: **v2.1.8 Build 3**.
 - Collapsible panels — verification, completed sources, and log panels collapse with disclosure triangles. State persists across sessions.
 
 **v2.1.7** (stable) — Critical memory reduction across 5 builds. A 168 GB camera card that previously crashed the Mac at 118 GB RAM now copies at under 400 MB. Validated with a 4-hour, 390+ GB stress test.
-- Build 5: Root cause fix — `autoreleasepool` in `FileHandle.read` copy loop and `XXHasher` hash loop. O(N^2) to O(1) file size lookup in verification.
-- Build 4: `F_NOCACHE` on all copy I/O (bypasses page cache), 4 MB copy buffer, per-file fsync removed, concurrent 2-file verification hashing, 1 MB hash buffer.
-- Build 3: Streaming batch enumeration in `FolderScanner` (eliminated O(N) URL array), hash cache release after verification, amortized log trimming, App Nap prevention during ingest.
-- Build 2: Page-at-a-time contact sheet rendering (constant memory vs O(N) thumbnails), file-backed PDF context (eliminated in-memory buffer), progress callback throttling (100K to ~1K MainActor tasks).
-- Build 1: `autoreleasepool` in all file enumeration loops, MHL XML streaming (eliminated O(N^2) string concat), log line cap, tracked/cancellable preflight tasks.
 
 **v2.1.6** — Xsan (Fibre Channel SAN) volume detection in volume browser. Fixed network volume free space underreporting on SMB/NFS by cross-checking `statfs`, `statvfs`, and FileManager resource keys.
 
