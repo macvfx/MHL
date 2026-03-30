@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current version: **v2.1.8 (Build 3)**. Stable release: **v2.1.7 (Build 5)**.
+Current version: **v2.1.8 (Build 4)**. Stable release: **v2.1.7 (Build 5)**.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting.
 
@@ -21,11 +21,13 @@ It is designed as a simpler sibling to `CopyTrust`, for situations where you wan
 
 ## Outputs
 
-By default, Drop Verify can write artifacts into the dropped folder inside:
+By default, Drop Verify writes artifacts into the dropped folder inside:
 
 - `Drop Verify_Receipts/`
 
 It can also mirror generated artifacts to a separate export folder if enabled in Settings.
+
+**Read-only media:** If the dropped folder is on read-only media (e.g. a locked SD card, encrypted external drive, or write-protected volume), Drop Verify detects this automatically and prompts you to choose an export folder. If an export folder is already configured, artifacts are written there without prompting.
 
 ## Settings
 
@@ -44,4 +46,3 @@ Drop Verify includes settings for:
 ## Documentation
 
 - [Drop Verify User Guide](DROP_VERIFY_USER_GUIDE.md)
-- [Project Changelog](CHANGELOG.md)
