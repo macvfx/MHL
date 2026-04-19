@@ -1,4 +1,4 @@
-# CopyTrust User Guide
+# CopyTrust Quick Start
 
 Date: 2026-04-18  
 Current branch baseline: `v2.2 (Build 2)` 
