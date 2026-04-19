@@ -23,8 +23,6 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Safe-to-eject flow after successful transfer
 - Built-in Help flow with `Quick Start`, `Advanced Start`, and a Help menu entry to reopen CopyTrust guidance
 
-See [COPYTRUST_USER_GUIDE.md](COPYTRUST_USER_GUIDE.md) for the full workflow and settings reference.
-
 ## Drop Verify
 
 Single-folder drag-and-drop verification. Drop a folder and generate trust artifacts — no copy, no session, no setup.
@@ -32,8 +30,6 @@ Single-folder drag-and-drop verification. Drop a folder and generate trust artif
 - Media-only recursive scan with configurable exclusion patterns
 - Generates **MHL**, **contact sheet PDF** (row or grid), and **EXIF metadata CSV**
 - Writes artifacts into the folder and/or mirrors them to an export folder
-
-See [DROP_VERIFY_README.md](DROP_VERIFY_README.md) and [DROP_VERIFY_USER_GUIDE.md](DROP_VERIFY_USER_GUIDE.md).
 
 ## MHL Verify
 
@@ -53,8 +49,6 @@ Use after copying with CopyTrust, Archiware P5 Sync, a Finder copy, `rsync`, Hed
 - **Copy All Missing** to sync differences, then **Refresh** to re-verify
 - MHL v1.1 generation and verification from either compared folder
 - Standalone app — no ingest session, no receipts, no artifacts
-
-See [FOLDER_COPY_COMPARE_README.md](FOLDER_COPY_COMPARE_README.md) and [FOLDER_COPY_COMPARE_USER_GUIDE.md](FOLDER_COPY_COMPARE_USER_GUIDE.md).
 
 ## mhl-tool (CLI)
 
