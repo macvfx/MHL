@@ -23,7 +23,7 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Safe-to-eject flow after successful transfer
 - Built-in Help flow with `Quick Start`, `Advanced Start`, and a Help menu entry to reopen CopyTrust guidance
 
-See [COPYTRUST_USER_GUIDE.md](docs/COPYTRUST_USER_GUIDE.md) for the full workflow and settings reference.
+See [COPYTRUST_USER_GUIDE.md](COPYTRUST_USER_GUIDE.md) for the full workflow and settings reference.
 
 ## Drop Verify
 
