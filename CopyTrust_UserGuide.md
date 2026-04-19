@@ -1,399 +1,228 @@
-# User Guide
-
-Tested version: **v2.1.8 (Build 8)**. Stable release: **v2.1.7 (Build 5)**.
-
-This guide covers the **CopyTrust** app — a multi-source, multi-destination copy tool designed for camera card ingest but capable of copying any folders and files. Tuned for media workflows.
-
-For the other app-specific guides, see:
-
-- [DROP_VERIFY_README.md](DROP_VERIFY_README.md) / [DROP_VERIFY_USER_GUIDE.md](DROP_VERIFY_USER_GUIDE.md) — single-folder artifact generation
-- [FOLDER_COPY_COMPARE_README.md](FOLDER_COPY_COMPARE_README.md) / [FOLDER_COPY_COMPARE_USER_GUIDE.md](FOLDER_COPY_COMPARE_USER_GUIDE.md) — post-copy folder comparison
-
----
-
-## Workflow
-
-### 1. Add destinations
-- In CopyTrust, use the **Volume Pool** for faster setup — it stays visible throughout the session:
-  - click **Add Dest** on a visible drive/network volume tile, or drag a tile into the Destinations box
-  - drag-drop now uses the same permission-grant flow as the add buttons
-  - collapse the Volume Pool with the disclosure triangle if you need the space; expand it any time to add more volumes mid-session
-- Use **Add Destination**, drag/drop folders, or use the **Volume Browser**.
-- The **Add Destination** folder picker lets you create a new folder directly from the Finder dialog if needed.
-- The Volume Browser discovers all mounted external drives, camera cards, SMB/NFS/AFP network shares, and FUSE volumes (e.g. LucidLink). Any volume already added as a source is automatically hidden from the destination picker.
-- Empty state shows two ghost slots hinting that multiple destinations are supported.
-- After adding one, a persistent **"+ Add another destination…"** row stays visible.
-- Optionally set a role label per destination (e.g. "Primary SSD", "Backup NAS").
-- Use the **Presets** menu to:
-  - save current destinations as a named preset
-  - load a preset in one click
-  - rename/delete presets
-  - note: replace confirmation appears only when destinations are already loaded
-
-### 2. Add source card/folder
-- In CopyTrust, the **Volume Pool** also shows camera card and source-capable volume tiles:
-  - click **Add Source** or drag a tile into the Sources box
-  - tiles show status badges when already added to Sources or Destinations
-- Use **Add Source**, drag/drop, or pick from the **Volume Browser**.
-- The **Add Source** folder picker also allows creating a new folder directly from the Finder dialog.
-- The Volume Browser lists all external and network-mounted volumes, including those connected via Thunderbolt docks.
-- Empty state shows two ghost slots hinting that multiple source cards can be queued.
-- Camera cards are auto-detected via `DCIM` folders, volume-name hints, and folder signatures.
-- Edit source alias inline (used for subfolder naming, receipts, and MHL filenames).
-- If the scan returns **0 files** (e.g. security software interference), an orange warning and **Rescan** button appear inline.
-
-### 3. Review preflight
-Before copy starts, each destination is checked for:
-- available space
-- write permission
-- reachability
-
-Fix any red (fail) states before copying.
-
-### 4. Configure verification (optional)
-Open **Settings → Card Copy** in the CopyTrust settings sheet, then use **Post-Copy Verification** to choose a level:
-
-| Level | What it does | Speed |
-|-------|-------------|-------|
-| **None** | No post-copy check | Fastest |
-| **Quick** | File count + size comparison | Fast |
-| **Full** (default) | xxHash64 hash of every source and destination file, compared byte-for-byte | ~9.6 GB/s on Apple Silicon |
-
-Full verification also generates an **MHL v1.1** hash list at each destination — compatible with Hedge OffShoot, Pomfort Silverstack, ShotPut Pro, and YoYotta.
-
-You can also set an **Operator Name** in **Settings → Card Copy → Session**. This name is embedded in MHL files and session receipts.
-
-### 5. Configure auto-advance (optional)
-For multi-card workflows where you want to walk away:
-- Open **Settings → Card Copy → Copy Behaviour** and enable **Auto-advance to next source**.
-- Or toggle the inline **Auto** checkbox in the action bar.
-- When enabled, the next queued source starts automatically after the current one finishes successfully.
-- CopyTrust now always uses the generated per-card subfolder name automatically. There is no naming popup in the copy flow.
-- Queue all your cards/sources first, then click **Start Copy** once. Each source copies in turn.
-- Come back later and click **Review & Verify** to inspect all results.
-
-### 6. Start copy
-- Click **Start Copy**.
-- A **Copy Progress** window opens automatically when the copy starts.
-- The progress window shows source percent, live copy speed, and per-destination progress/verify state.
-- Click **Close** if you want to hide that window. Copy continues in the background.
-- While the copy is still running, use **Open Progress** in the main action bar to bring the live progress window back.
-- The main action bar also shows a fixed-width `speedometer` badge after **Auto** so live copy speed stays visible even when the progress window is closed.
-- Use **Cancel Copy** in the action bar at any time during active copy. Partially copied files remain on disk.
-- Activity Log auto-expands when copy starts and can be manually collapsed with the disclosure triangle.
-- On first use, a **First Steps & Recovery** help sheet opens automatically.
-- After that, use **Help → CopyTrust Help** any time to reopen the same operator guide.
-
-### 7. Review verification results
-- **Full**: status shows "Hash Verified" with the xxHash64 algorithm name. An MHL file is saved to the destination root.
-- **Quick**: status shows "Verified" (count + size matched).
-- **None**: status shows completion without verification.
-- If any hash mismatches are detected, they are logged and MHL generation is skipped.
-- If the source card is ejected during verification, the app falls back to a destination-file-existence check and notes the incomplete verification.
-
-### 7.1 Contact sheet PDF
-After each ingest completes (copy + verification), CopyTrust automatically generates a **contact sheet PDF** if enabled in **Settings → Post-Copy**.
-
-- **Layout**: two styles available in **Settings → Post-Copy → Contact Sheet → Layout style**:
-  - **Row (detailed metadata)** (default): one clip per row — metadata on the left, thumbnail frames on the right.
-  - **Grid (photo poster, 3×4)**: 12 items per page in a 3-column × 4-row grid. Each cell shows a single thumbnail with a 2-line caption (filename + EXIF summary). Videos show a play/duration badge. Best for photo-heavy ingests.
-- **Header**: source alias (large title), operator name, date, session ID, verification status, source and destination paths, optional camera summary, and a summary line showing total clips, frames, duration, and file size.
-- **Video rows**: 3 thumbnail frames extracted at even intervals, plus metadata: file type, frame count, duration, resolution, aspect ratio, codec, bitrate, FPS, and audio channel count.
-- **Photo rows**: single thumbnail with camera make/model, lens, focal length, aperture, shutter speed, ISO, and resolution.
-- Output: `CopyTrust_Receipts/contactsheet_{sourceAlias}_{date}.pdf` at each destination.
-- It can be used as a quick visual check of the transferred media after copy and verification, but the actual integrity proof still comes from verification, receipts, and MHLs.
-- Supported formats: JPEG, HEIF/HEIC, RAW (CR3, ARW, NEF), MP4, MOV, and all macOS-native image/video types.
-- Data-only ingests (no media files) skip contact sheet generation silently.
-- Contact sheet failure is non-fatal — it never blocks receipts, MHL, or session close.
-- Optional: in **Settings → Post-Copy**, enable **Open contact sheet automatically after creation** if you want each generated PDF to open as soon as it is written.
-
-To disable contact sheet generation, open **Settings → Post-Copy** and uncheck **Generate contact sheet PDF**.
-
-### 7.2 EXIF / media metadata CSV
-CopyTrust can also generate a **CSV file** with EXIF and media metadata for all images and videos in each ingest, using the same 23-column format as Drop Verify.
-
-- **Columns**: SourceFile, RelativePath, FileName, FileType, MediaKind, FileSizeBytes, FileSizeReadable, Camera, Make, Model, Lens, DateTaken, Resolution, DurationSeconds, FPS, FrameCount, Codec, AudioChannels, BitrateMBps, FocalLength, ShutterSpeed, Aperture, ISO.
-- Output: `CopyTrust_Receipts/exif_{sourceAlias}_{timestamp}.csv` at each destination.
-- Toggle in **Settings → Post-Copy → EXIF / Media Metadata CSV** → `Generate EXIF CSV after each ingest` (default off).
-- Data-only ingests (no media files) skip CSV generation silently.
-- CSV generation failure is non-fatal — it never blocks receipts, MHL, or session close.
-- When receipt export is enabled, the CSV is included in the export folder alongside receipts, logs, MHL files, and contact sheets.
-
-### 8. Review & Verify
-After at least one source has been copied, a **Review & Verify** button appears in the action bar.
-
-Click **Review & Verify** to open the **Session Summary** sheet. This is **non-destructive** — your session stays intact so you can continue adding and copying more sources.
-
-Once all queued sources are finished, that action changes to **Review Summary…** and becomes the primary (prominent) button. It opens the Session Summary, where you can review results and then end the session.
-
-The Session Summary sheet has three sections:
-
-1. **Receipt text** — scrollable monospaced summary of all copies, verification results, source totals, and destination totals.
-2. **MHL Files** — for each source/destination pair:
-   - If an MHL was generated: filename with **Reveal** (opens in Finder) and **Verify** (re-checks hashes) buttons.
-   - If no MHL: shows "verification off" or "no MHL" depending on the verification level.
-3. **Action buttons:**
-   - **Copy Summary** — copies the plain-text receipt to clipboard.
-   - **Reveal Receipt** — opens the JSON receipt file in Finder.
-   - **Reveal Manifest** — opens the session manifest JSON in Finder. The manifest records every verified, skipped, and failed file with structured reasons — a complete audit trail of what was copied and what was missed.
-   - **End Session** — ends the session, writes receipt files to disk, clears sources/results, and keeps destinations loaded for the next ingest. This is the only way to end a session.
-   - **Done** — dismisses the sheet and returns to the live session (press Enter/Return as shortcut).
-
-**Button prominence shift:**
-- While sources are still queued: **Start Copy** is primary (green), **Review & Verify** is secondary.
-- When all sources are done: **Review Summary…** becomes the primary action, **Start Copy** dims to secondary.
-
-### 8.1 Button quick reference
-**Main action bar**
-- **Start Copy**: starts the next ready source copy.
-- **Review & Verify**: opens the Session Summary without ending the session while more sources may still be copied.
-- **Review Summary…**: appears when all queued sources are complete and opens the Session Summary where you can review results and end the session. Destinations stay loaded afterward.
-- **Reset Session**: clears the entire session, including destinations; disabled until a copy session has started.
-- **Auto**: toggles automatic start of the next queued source after a successful copy.
-- **Open Progress**: reopens the live copy progress window if you closed it during an active copy.
-- **Cancel Copy**: stops the current copy task. Partially copied files remain on disk. A session manifest is written recording which files were successfully copied and which were not yet processed.
-- **Reveal Receipts**: appears after a cancelled or failed copy. Opens the local receipts folder (`~/Library/Application Support/CopyTrust/receipts/`) containing session manifests, receipt JSON/TXT, and logs.
-- **Reveal Manifest**: appears after a cancelled or failed copy. Opens the session manifest JSON directly in Finder.
-- **Prefix field**: inline text field next to the subfolder naming preview. Type a short tag (e.g. "2.1.8_b6") to prepend to the template-built subfolder name. Clear with the ✕ button. Also editable in Settings → Card Copy → Subfolder Naming.
-
-**Post-Copy Verification**
-- **Run Recommended Check**: starts the strongest follow-up check when CopyTrust has flagged something worth investigating.
-- **Review Latest Results**: opens the most recent deep-compare summary if one is available.
-- **Re-Verify Destinations**: re-hashes the copied files already on each destination.
-- **Retry MHL Export**: writes a fresh MHL from already-verified copy data without recopying media.
-- **Verify Using MHL…**: imports any `.mhl` file and checks the files listed in it. Shows a live "Verifying file X of Y…" progress indicator during verification.
-- **Retry Contact Sheet**: regenerates the contact sheet PDF (and EXIF CSV if enabled) from the latest completed copy results without recopying. Useful when the initial generation failed or was skipped.
-- **Deep Compare Files**: re-checks copied source/destination pairs using the verified file set.
-- **Open Compare Browser**: opens the detailed file table from the most recent file-check run.
-- **Rename Bad MHL**: renames manifest files that cannot be read or parsed to `.mhl.unreadable*` so they stop blocking re-verify.
-
-**Compare Browser**
-- **Copy Missing**: copies files marked `Missing Copy` directly into that destination pair, then re-runs file checks.
-
-### 8.2 Typical Operator Flow
-
-**Normal ingest flow**
-
-```text
-Add Sources
-  -> Add Destinations
-  -> Check Preflight
-  -> Start Copy
-  -> Review & Verify
-  -> Deep Compare Files (optional but recommended)
-  -> Open Compare Browser (if you want file-level proof)
-  -> Review Summary…
-  -> End Session (inside Session Summary)
-```
-
-**What each step is for**
-- `Add Sources`: load one or more cards/folders into the queue.
-- `Add Destinations`: choose one or more copy targets.
-- `Check Preflight`: confirm write access, reachability, and free-space warnings are acceptable before copying.
-- `Start Copy`: run the actual ingest for the next ready source.
-- `Review & Verify`: inspect the session summary and generated MHL links without closing the session.
-- `Deep Compare Files`: run the deeper verified-file compare when you want an extra operator-proof pass.
-- `Open Compare Browser`: inspect exact file-level results, then use `Copy Missing` if needed.
-- `Review Summary…`: use this after the queue is complete; it opens the session summary where you can review results and end the session.
-- `End Session`: writes the final session receipt, clears the session, and keeps destinations loaded for the next ingest.
-
-**Recommended verification pass after copy**
-
-```text
-Copy completes
-  -> Review & Verify
-  -> Re-Verify Destinations
-  -> Deep Compare Files
-  -> If compare passes, Review Summary…
-```
-
-This is the simplest trustworthy pattern for a typical user:
-- `Re-Verify Destinations` checks the generated MHL(s) against the copied files.
-- `Deep Compare Files` gives you a second, path-agnostic file proof if you want extra assurance.
-- If both are clean, the natural next step is to end the session.
-
-### 9. Verify with MHL (post-copy)
-After at least one source has been copied, a **Post-Copy Verification** section also appears below sources and destinations. Use it to independently verify your copies:
-
-**Drag-and-drop an MHL file:**
-1. Locate the `.mhl` file — either the one CopyTrust generated at the destination, or one from OffShoot, Silverstack, or another tool.
-2. Drag the `.mhl` file onto the drop zone in the Post-Copy Verification section.
-3. The app parses the MHL, then re-hashes every file listed in it (at the MHL's directory location) using xxHash64.
-4. Results appear inline: **matched** (green), **mismatched** (red), **missing** (orange).
-
-**Use the file picker:**
-1. Click **Verify Using MHL…** in the Post-Copy Verification section.
-2. Browse to the `.mhl` file and select it.
-3. Same verification runs as drag-and-drop.
-
-**From the Session Summary sheet:**
-1. Click **Review & Verify** to open the sheet.
-2. In the MHL Files section, click **Verify** next to any MHL entry.
-3. The sheet dismisses and verification runs against that MHL in the main view.
-
-**Typical workflow:**
-- Copy card A to Destination 1 and Destination 2 (with Full verification → MHL generated at each).
-- Click **Review & Verify** to see the summary and MHL links.
-- Click **Verify** on Destination 1's MHL to re-check its files.
-- Later, take the MHL to another machine and drop it onto that destination's copy to verify chain of custody.
-
-**Re-verify destinations:**
-- Click **Re-Verify Destinations** in the Post-Copy Verification section to re-hash copied files on all destinations.
-
-**If MHL verification fails:**
-- Verify panel now shows explicit issue banners (copy status unchanged vs MHL read/creation issue).
-- Use **Retry MHL Export** to regenerate missing/failed MHL artifacts from already-verified copy data (no recopy).
-- Use **Deep Compare Files** when operator assurance is required.
-- After the file-check pass completes, click **Open Compare Browser** to inspect the side-by-side file table for each source/destination pair.
-- If the browser shows `Missing Copy`, use **Copy Missing** to repair the destination immediately, then let the app re-run file checks.
-- The Post-Copy Verification section now separates bad manifests from destination file-access failures so the warning matches the real problem.
-- Failed MHL checks are now listed explicitly in the Verify panel with:
-  - filename
-  - full path
-  - exact failure reason
-  - whether the failure is the manifest itself or a referenced-file read/hash failure
-  - **Reveal**
-  - **Copy Paths**
-  - **Rename Bad MHL** (enabled only for manifest read/parse failures)
-
-**Rename Bad MHL (recommended only when the manifest itself is bad):**
-- Click **Rename Bad MHL** in the `Failed MHL Checks` section.
-- Only manifest read/parse failures are eligible.
-- Each unreadable manifest is renamed in place to:
-  - `original.mhl.unreadable`
-  - or `original.mhl.unreadable2`, `3`, etc. if needed
-- This is non-destructive:
-  - the damaged file is preserved for audit/manual review
-  - but it is no longer discovered as an `.mhl` on future re-verify runs
-- Recommended flow:
-1. Re-verify reports a manifest read/parse failure.
-2. Click **Deep Compare Files**.
-3. Click **Open Compare Browser** and confirm the copied files match.
-  4. Click **Rename Bad MHL**.
-  5. Click **Retry MHL Export** if you need a fresh manifest.
-  6. Re-run **Re-Verify Destinations**.
-- If the failure says the MHL loaded but referenced files could not be read, do not rename the MHL. Fix destination access/readability first, then retry verification.
-- Re-verify now keeps the destination's access grant active while it reads the MHL and hashes referenced files, reducing false "bad MHL" warnings caused by sandbox access loss.
-- `Rename Bad MHL` now renames using the destination folder's existing access grant, so the unreadable `.mhl` should actually move out of the active manifest set immediately.
-- `Retry MHL Export` now writes a newly timestamped MHL filename, making the regenerated manifest easy to identify.
-
-**If verification or receipt handling goes wrong**
-
-```text
-Verification warning or receipt warning
-  -> Read the issue banner
-  -> Deep Compare Files
-  -> Open Compare Browser
-  -> If Missing Copy: use Copy Missing
-  -> If bad manifest only: use Rename Bad MHL
-  -> Retry MHL Export (if needed)
-  -> Re-Verify Destinations
-  -> Review Summary…
-  -> If receipt copies still fail: choose Save Copies Elsewhere
-```
-
-Use that recovery order to avoid the common mistake of treating every MHL warning as a media-copy failure.
-
-**How Deep Compare Files now works:**
-- It compares the verified copied file set, not the raw source and destination folder trees.
-- Matching is content-first (`size + xxHash64BE`), not strict path-first.
-- If the same verified file exists elsewhere under the destination root, it is treated as a valid match.
-- Generated artifacts such as `.mhl` are ignored in this compare mode.
-- It runs across all copied source/destination pairs in the session, not just the most recent pair.
-- This means the file-check pass is answering:
-  - "Is the copied file present and intact?"
-  rather than:
-  - "Is the destination tree structurally identical?"
-
-### 9.1 Subfolder naming with increment
-- In **Settings → Card Copy**, template variable `{increment}` inserts a 1-based source queue index.
-- `{card_index}` still works for older saved templates, but `{increment}` is the user-facing name shown in the UI.
-- Example template: `{date}_{increment}_{alias}`
-- With three queued sources: `2026-02-27_1_A_CAM`, `2026-02-27_2_B_CAM`, `2026-02-27_3_C_CAM`.
-
-### 10. Eject source
-- On success, source shows safe-to-eject state.
-- Use eject controls as needed.
-
-### 11. End session
-- Click **Review & Verify** to open the Session Summary sheet.
-- Click **End Session** to finalize the session, write receipt files, and keep the destination set loaded for the next session.
-- If destination receipt copies cannot be written automatically, the app keeps the local receipt, warns you, and offers **Save Copies Elsewhere** as the default recovery action.
-- Each ingest action already writes its own `JSON`, `TXT`, and `LOG` artifacts to the destination `CopyTrust_Receipts/` folder.
-- Ending the session writes the aggregate session-close receipt files:
-  - plain text to each destination's `CopyTrust_Receipts/` folder
-  - JSON to `~/Library/Application Support/CopyTrust/receipts/`
-- Receipt includes source + destination transfer outcomes, verification level, duration, hash mismatch details, and MHL file references.
-
----
-
-## Receipt, MHL, and Log Locations
-
-### Session receipts
-- `<destination>/CopyTrust_Receipts/`
-- `~/Library/Application Support/CopyTrust/receipts/`
-- Every completed ingest action now writes its own named receipt set.
-- Session end still writes the aggregate session-close receipt.
-
-### Contact sheet PDF (when enabled)
-- `<destination>/CopyTrust_Receipts/contactsheet_{sourceAlias}_{date}.pdf`
-- Dark-themed US Letter PDF. Two layout styles: Row (one clip per row with detailed metadata) or Grid (3×4 poster, 12 items per page)
-- Videos: 3 frames + codec, FPS, frame count, resolution, audio channels. Photos: 1 thumbnail + full EXIF plus camera make/model when available
-- Header shows total clips, frames, duration, file size, source/destination paths, and camera summary when available
-- Toggle in **Settings → Post-Copy** → `Generate contact sheet PDF`
-- Optional toggle in **Settings → Post-Copy** → `Open contact sheet automatically after creation`
-
-### EXIF / media metadata CSV (when enabled)
-- `<destination>/CopyTrust_Receipts/exif_{sourceAlias}_{date}.csv`
-- Same 23-column format as Drop Verify CSV: camera, lens, exposure, resolution, duration, codec, bitrate, and more
-- Toggle in **Settings → Post-Copy → EXIF / Media Metadata CSV** → `Generate EXIF CSV after each ingest`
-- Included in receipt export when enabled
-
-### Session manifest
-- `<destination>/CopyTrust_Receipts/SESSION_MANIFEST_{sourceAlias}_{timestamp}.json`
-- `~/Library/Application Support/CopyTrust/receipts/SESSION_MANIFEST_{sourceAlias}_{timestamp}.json`
-- Written after every ingest (including cancelled ones). Records all verified, skipped, and failed files with structured reasons.
-- Status field: `completed`, `completed_with_errors`, `cancelled`, or `failed`.
-- On cancellation, the manifest captures which files were successfully copied before the cancel, so the operator knows exactly what made it and what didn't.
-- Use the **Manifest** button on completed source rows or **Reveal Manifest** in the Session Summary to open in Finder.
-
-### MHL hash lists (Full verification only)
-- Written to the destination root: `CopyTrust - {date} at {time} - {sourceName}.mhl`
-- MHL v1.1 XML with xxHash64 digests for every copied file
-- Can be re-imported into CopyTrust's Post-Copy Verification section to confirm file integrity at any time
-- Also compatible with OffShoot, Silverstack, ShotPut Pro, and YoYotta
-
-### Runtime log
-- `~/Library/Containers/com.copytrust.app/Data/Library/Application Support/CopyTrust/logs/<SESSION>/session_<SESSION>.log`
-- Or choose **Help → Reveal Session Log**.
-- Each completed ingest action also writes a per-ingest `.log` into each destination's `CopyTrust_Receipts/` folder.
-- Use **CopyTrust → Settings…** to open the dedicated CopyTrust settings sheet with `Card Copy`, `Camera Card Exclusions`, and `Post-Copy` tabs.
-- The **Post-Copy** export option now copies session receipts, per-copy logs, MHL files, contact sheets, and EXIF CSVs into the chosen export folder.
-
-### CopyTrust App Menus
-- **CopyTrust → Settings…** opens CopyTrust settings.
-- **Help → CopyTrust Help** opens the `First Steps & Recovery` guide.
-- **Help → Reveal Session Log** opens the active session log in Finder.
-- **Help → Reveal Export Folder** opens the configured export folder when one is set.
-- **About CopyTrust** shows version/build info and the `code.matx.ca` link.
-
-Use the runtime log to troubleshoot stalls, copy errors, and state transitions.
-
----
-
-## Other Tools in the Suite
-
-### Folder Copy Compare
-The original tool that inspired the entire suite. A simple post-copy sanity check: drop two folders and see if they match. Use it after a CopyTrust ingest, an Archiware P5 Sync, a Finder copy, rsync, or any other tool.
-
-- [FOLDER_COPY_COMPARE_README.md](FOLDER_COPY_COMPARE_README.md)
-- [FOLDER_COPY_COMPARE_USER_GUIDE.md](FOLDER_COPY_COMPARE_USER_GUIDE.md)
-
-### Drop Verify
-Single-folder drag-and-drop: generate an MHL, contact sheet PDF, and EXIF CSV from any folder.
-
-- [DROP_VERIFY_README.md](DROP_VERIFY_README.md)
-- [DROP_VERIFY_USER_GUIDE.md](DROP_VERIFY_USER_GUIDE.md)
-
-### MHL Verify
-Standalone MHL verification — load any `.mhl` file and verify it against the media on disk.
+# CopyTrust User Guide
+
+Date: 2026-04-18  
+
+## Purpose
+
+CopyTrust supports a load up and walk away model. Add camera card (or folder) sources and multiple destinations then let the app do all the copying, verifying and receipt writing. Trust the copy by verifying the session logs, file manifests, media hash lists, metadata spreadsheets and thumbnail contact sheets to prove it.
+
+This guide describes the main ways to use the app today and when each method makes sense.
+
+## Core Mental Model
+
+- A **source** is a camera card or upstream verified copy.
+- A **destination** is where CopyTrust writes the copy.
+- In a normal session, **every loaded source copies to every loaded destination**.
+- `Queue Current Session` saves the current setup and clears the workspace so another setup can be staged.
+- `Start Queue` runs queued sessions in order.
+- A **relay chain** means the verified output from one destination becomes the source for the next step.
+
+## Startup And Help
+
+CopyTrust now tries to keep startup guidance focused on the first real job instead of explaining every feature at once.
+
+What happens on first use:
+- the in-app help sheet opens automatically
+- it starts on `Quick Start`
+- `Advanced Start` is there when you intentionally need a relay-chain workflow
+
+How to reopen help:
+1. Open `Help > CopyTrust Help`.
+2. Start on `Quick Start` for the simplest `A -> B` path.
+3. Use `Advanced Start` only when you are intentionally setting up a relay chain.
+
+What `Quick Start` focuses on:
+- add one source and one destination
+- confirm preflight is clean
+- decide whether you want contact sheet PDF, EXIF/media CSV, or both
+- confirm `ExifTool` if richer metadata is needed
+- if contact sheet PDF is enabled, confirm `ffmpeg` for `MXF` and `REDCINE-X / REDline` for `R3D`
+
+What `Advanced Start` focuses on:
+- add one source and two destinations
+- use `Queue Relay Chain` to stage an ordered `A -> B -> C` path
+- leave this out of the way unless the session actually calls for relay copy
+
+## Workflow Summary
+
+| Method | Best for | Current status | Recommended setup |
+| --- | --- | --- | --- |
+| Method 1: One card to multiple destinations | Safe dual-copy ingest such as `A -> B` and `A -> C` | Implemented | One live session with one or more sources and two or more destinations |
+| Method 2: Relay chain | Fast first copy, then slower downstream copy such as `A -> B -> C` | Implemented, still being polished | One source plus ordered destinations, then `Queue Relay Chain` |
+| Method 3: Mixed queued sessions | Different cards going to different destination sets in walk-away order | Implemented | Separate queued sessions, then `Start Queue` |
+
+## Method 1: One Card To Multiple Destinations
+
+Example:
+- camera card `A`
+- destination `B`
+- destination `C`
+
+Use this when:
+- you want the same card copied directly to two or more destinations for safety
+- both destinations are ready now
+- you do not need to free the card before the slower destination finishes
+
+How to do it:
+1. Add camera card `A` to the source side.
+2. Add destination `B`.
+3. Add destination `C`.
+4. Click `Start This Session`.
+
+What CopyTrust does:
+- it treats this as one ingest session
+- source `A` copies to both `B` and `C`
+- trust-critical work completes before background PDF/CSV artifacts
+- `Review & Verify` lets you inspect the session without ending it
+- once all work is done, `Review Summary…` becomes the main review action
+
+Additional cards with the same destinations:
+- If you want the next camera card to follow the same destination set, you can keep using the same destination list.
+- Add another card source and it will also copy to the preselected destinations.
+- If you want a true walk-away queue with cards staged one after another, use `Queue Current Session` after each source-and-destination setup, then click `Start Queue`.
+
+When to prefer separate queued sessions instead:
+- when each card should be staged and reviewed as a distinct job
+- when the source cards will arrive over time
+- when you want a clearer per-card queue history
+
+## Method 2: Relay Chain
+
+Example:
+- camera card `A`
+- fast destination `B`
+- slower destination `C`
+
+Goal:
+- copy `A -> B` first
+- trust-verify that first leg
+- then use verified output on `B` as the source for `B -> C`
+
+Use this when:
+- destination `B` is the fastest safe offload target
+- destination `C` is slower, remote, or network-based
+- you want to free the camera card sooner
+
+How to do it:
+1. Add camera card `A` as the source.
+2. Add destinations in relay order:
+   `B` first, then `C`, then any later stops.
+3. Adjust the destination order if needed with the up/down controls.
+4. Check the visible relay order labels such as `Stop 1` and `Stop 2`.
+5. Click `Queue Relay Chain`.
+6. Click `Start Queue`.
+
+What CopyTrust does:
+- Step 1 starts from the original source.
+- Step 2 waits for the verified output from Step 1.
+- Later steps continue in order the same way.
+- PDF/CSV artifact work from Step 1 does not block Step 2.
+- The end-session receipt now summarizes the full relay run instead of only the last leg.
+
+Important note:
+- Relay chains are currently easiest when built from **one source and an ordered destination list**.
+- This is also the **recommended and intentionally visible UI path for now**.
+- In practice, that means the current relay workflow is: choose one source, choose two or more destinations in order, then use `Queue Relay Chain`.
+- If you want another camera card to follow the same relay path, stage that as a **separate relay-chain session**.
+- In other words, `A -> B -> C` and `D -> B -> C` should currently be queued as two separate relay chains, not one combined multi-source relay session.
+- A possible future option is a more explicit “finish `A -> B`, then choose `C` as the next destination from `B`” flow, but that is **not** the primary workflow CopyTrust is presenting in the UI today.
+
+Why this matters operationally:
+- the card gets offloaded to the fastest destination first
+- the second leg reads from a verified upstream copy instead of keeping the card mounted
+- slower NAS or network copies can happen after the first trusted copy exists
+
+## Method 3: Mixed Queued Sessions
+
+Example:
+- Session 1: camera card `A -> B`
+- Session 2: camera card `B -> D`
+
+Use this when:
+- different cards need different destinations
+- you want to preload multiple distinct jobs and then walk away
+- not every source shares the same destination set
+
+How to do it:
+1. Build the first source/destination setup.
+2. Click `Queue Current Session`.
+3. Build the second setup.
+4. Click `Queue Current Session` again.
+5. Repeat as needed.
+6. Use the queue arrows if you want to change the run order before copy begins.
+7. Click `Start Queue`.
+
+What CopyTrust does:
+- each setup becomes its own queued session
+- queued sessions run in order
+- trust-critical work for one session finishes before the next queued session starts
+- background artifact work can continue afterward without blocking the next queued session
+- queued rows can be intentionally reordered, including placing a standalone queued job before or between relay-chain rows
+
+This is the strongest fit for:
+- load-up-and-walk-away workflows
+- different destination groups
+- repeated operator staging before copy begins
+
+## Choosing The Right Method
+
+Use Method 1 when:
+- the same card should go directly to multiple destinations right now
+
+Use Method 2 when:
+- the first destination is the fast safe landing point
+- later destinations should read from that verified first copy
+
+Use Method 3 when:
+- different cards need different destination sets
+- you want a staged queue of separate jobs
+
+## Review And End Session
+
+During an active or partially completed session:
+- `Review & Verify` opens the session summary without ending the session
+- use this when you want to inspect results, MHL entries, or receipt text while more work may still happen
+
+When all queued work is complete:
+- `Review Summary…` becomes the main review button
+- the summary sheet is where you confirm the final run before ending it
+
+Current summary-sheet actions:
+- `Copy`
+- `Reveal Summary`
+- `Manifest`
+- `Log`
+- `End Session`
+- `End` and `Wait` when background PDF/CSV artifact work is still running
+
+What to expect from `End Session`:
+- the session is closed and the live workspace is cleared
+- the app keeps the finished run available for later review from the main UI
+- after ending, use `Review Last Summary…`, `Reveal Receipts`, `Reveal Log`, `Reveal Manifest`, or `Reset Session`
+
+What no longer applies:
+- the old expectation that destinations stay loaded after session end is no longer the current workflow
+
+## Safety Concept
+
+CopyTrust is designed around the idea that safety can mean either:
+- **multiple direct copies from the original card**, or
+- **a fast trusted first copy followed by downstream relay copies**
+
+Both are valid, but they serve different operational needs:
+- Direct multi-destination copy is simpler and gives parallel redundancy from the original source.
+- Relay chaining is better when the first destination is much faster than the later destination and the card needs to be freed sooner.
+
+## Current Practical Guidance
+
+Recommended today:
+- For `A -> B` and `A -> C`, use one normal session with multiple destinations.
+- For `A -> B -> C`, use `Queue Relay Chain`.
+- For `A -> B -> C` followed by another card taking the same path, queue each card as its own relay chain.
+- For different cards going to different destinations, use separate queued sessions and `Start Queue`.
+- Use `Help > CopyTrust Help` any time you want the in-app startup checklist again.
+
+Still improving:
+- clearer user-facing language around relay chains versus normal multi-destination sessions
+- possible future alternate relay authoring such as “after `A -> B`, choose `C` from `B`” without changing the current preferred workflow
+- fuller lineage visibility in manifests, receipts, and saved logs
