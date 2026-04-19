@@ -1,8 +1,6 @@
 # Folder Copy Compare User Guide
 
-Tested version: **v2.1.8 (Build 3)**. Stable release: **v2.1.7 (Build 5)**.
-
-This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
+This guide covers **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
 
 ## When to Use This App
 
