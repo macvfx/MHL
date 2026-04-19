@@ -1,7 +1,5 @@
 # Drop Verify
 
-Current version: **v2.1.8 (Build 4)**. Stable release: **v2.1.7 (Build 5)**.
-
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting.
 
 Drop a folder onto the app and it will recursively scan media files, then generate:
