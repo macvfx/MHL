@@ -1,4 +1,6 @@
-Current active testing version: **v2.2 (Build 2)** 
+# CopyTrust Testing Guide
+
+Active testing version: **v2.2 (Build 2)** 
 
 Current CopyTrust focus:
 - Queue sessions: load up and walk away workflow
