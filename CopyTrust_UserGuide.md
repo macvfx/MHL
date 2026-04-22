@@ -1,10 +1,11 @@
 # CopyTrust User Guide
 
-Date: 2026-04-18  
+Date: 2026-04-21  
+Branch baseline: `codex/v2.1.9-red-r3d-build2` (v2.2 Build 8)
 
 ## Purpose
 
-CopyTrust supports a load up and walk away model. Add camera card (or folder) sources and multiple destinations then let the app do all the copying, verifying and receipt writing. Trust the copy by verifying the session logs, file manifests, media hash lists, metadata spreadsheets and thumbnail contact sheets to prove it.
+CopyTrust supports more than one real ingest workflow. The app is strongest when the operator can choose the simplest safe pattern for the job instead of forcing every case into one queue model.
 
 This guide describes the main ways to use the app today and when each method makes sense.
 
@@ -132,6 +133,18 @@ Why this matters operationally:
 - the second leg reads from a verified upstream copy instead of keeping the card mounted
 - slower NAS or network copies can happen after the first trusted copy exists
 
+The session receipt now shows this directly. The `COPY SPEED SUMMARY` block lists each leg side by side so the speed differential is immediately visible:
+
+```
+COPY SPEED SUMMARY
+  [1] MacBook Pro SSD       218 MB/s copy  |  387 MB/s verify  |  4m 32s
+  [2] Synology NAS          387 MB/s copy  |  412 MB/s verify  |  2m 21s
+  --------------------------------------------------
+  Session total: 265.7 GB in 6m 53s  (avg 654 MB/s across all legs)
+```
+
+This is the receipt-level proof that the relay strategy worked — the card-to-SSD leg was faster than a direct card-to-NAS copy would have been, and the NAS leg ran from the verified local copy without keeping the card mounted.
+
 ## Method 3: Mixed Queued Sessions
 
 Example:
@@ -201,6 +214,8 @@ What to expect from `End Session`:
 - after ending, use `Review Last Summary…`, `Reveal Receipts`, `Reveal Log`, `Reveal Manifest`, or `Reset Session`
 
 What no longer applies:
+- there is no `Done`
+- there is no `Done + Clear`
 - the old expectation that destinations stay loaded after session end is no longer the current workflow
 
 ## Safety Concept
@@ -226,3 +241,4 @@ Still improving:
 - clearer user-facing language around relay chains versus normal multi-destination sessions
 - possible future alternate relay authoring such as “after `A -> B`, choose `C` from `B`” without changing the current preferred workflow
 - fuller lineage visibility in manifests, receipts, and saved logs
+- device speed history — persistent per-volume speed tracking across sessions for degradation detection and pre-copy time estimates 
