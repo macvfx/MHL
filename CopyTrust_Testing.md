@@ -1,8 +1,9 @@
 # CopyTrust Testing Guide
 
-Active testing version: **v2.2 (Build 2)** 
+Active testing version: **v2.2 (Build 8)** 
 
 Current CopyTrust focus:
+- accurate card detection in UI
 - Queue sessions: load up and walk away workflow
 - Destination of copy #1 can be source for copy #2 (aka relay-chain)
 - relay-chain copy workflow with ordered destinations and
@@ -11,7 +12,7 @@ Current CopyTrust focus:
 
 ## External Codec Test Setup
 
-For the active `v2.2 (Build 2)` testing:
+For the active `v2.2 (Build 8)` testing:
 
 - Enable `ExifTool metadata extraction` if you want richer metadata for unsupported/professional formats (Note: requires exiftool installed).
 - Enable `External thumbnail codecs` only if you want real preview thumbnails for formats the built-in AVFoundation path cannot decode. (Note: requires ffmpeg or RedCineX (aka redline) installed).
