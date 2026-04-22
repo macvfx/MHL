@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-04-21  
-Branch baseline: `codex/v2.1.9-red-r3d-build2` (v2.2 Build 8)
+v2.2 Build 8
 
 ## Purpose
 
