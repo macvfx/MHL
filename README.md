@@ -2,19 +2,25 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-Current version: **v2.2 (Build 8)** 
+Current version: **v2.2 (Build 14)** 
 
 Current CopyTrust focus on this branch:
 - relay-chain copy workflow with ordered destinations and `Queue Relay Chain`
-- destination reordering for `A -> B -> C` style copies
-- startup guidance that stays out of the way until needed
-- real-world resumable CopyTrust ingests
+- inline relay-chain callout with speed-ordering tip; right-click context menu on destination rows
+- real drive names in relay queue rows; volume name auto-populated for new destinations
+- read-only volumes blocked from destination role in volume browser and pool
+- inline expand panel on queued rows for alias editing and path reveal without loading
+- edit relay chain via `Edit` button — removes all legs and restores workspace for reordering
+- done button in progress sheet after cancel (alongside resume); MHL write failure guidance
+- `Review & Verify` promoted to primary after a cancelled session; `End Session` in main window
+- `Reset Session` always wipes the full queue; `Return to Queue` button for loaded sessions
 - camera card source detection hardening (Canon, RED, Arri, read-only badge)
 - copy speed summary in session receipts with per-leg comparison and JSON speed fields
 - persistent per-volume device speed history with trend tracking
 - reliable artifact writes to exFAT, SMB, and NFS destinations
 - session and per-copy log provenance headers (app, macOS, hostname, session ID)
 - hostname in all artifact formats: session manifest JSON, receipt JSON, and plaintext receipt
+
 
 ## External Codec Test Setup
 
@@ -41,16 +47,20 @@ Current tested expectations on this branch:
 - WMV and other sparse/no-preview formats: better metadata and clearer no-preview reasons even when no thumbnail is created
 - Stable `v2.1.8 Build 14`: ExifTool metadata only, unsupported-format placeholders still expected
 
-
-## What Changed Since v2.1.7 / v2.1.8 / v2.1.9
+### Version History 
 
 ### CopyTrust
-- Since `v2.1.8`, CopyTrust has evolved from a simpler multi-destination copy tool into a more complete ingest workflow with structured manifests, clearer end-of-run review, stronger cancel handling, and better post-run auditability.
-- `v2.1.8` focused on stability and trust records: per-run manifests, improved receipts, better cancel visibility, stronger contact-sheet behavior, and safer handling of unsupported media through placeholders instead of silent drops.
-- `v2.1.9` was the major workflow jump: trust-critical `copy + verify + MHL` now finish before PDF / CSV artifacts, cancelled ingests can resume from partial destination contents, queued sessions became real persisted queue objects, naming and file-prefix tools became much stronger, and logging became more useful for real-world troubleshooting.
-- `v2.2 (Build 2)` adds the current relay-copy workflow: one source plus ordered destinations, `Queue Relay Chain`, destination-order editing, clearer startup guidance, end-session summaries that reflect the full relay run, mixed-queue reorder fixes, better artifact retry / rebuild across queued runs, simpler post-run review, and a quick `Reveal` action on completed-source rows.
-- `v2.2 Builds 5–8` complete the current sprint: Build 5 adds `COPY SPEED SUMMARY` blocks to session receipts with per-leg copy/verify speed side by side. Build 6 adds persistent per-volume device speed history with trend analysis. Build 7 fixes artifact writes on exFAT destinations (the F_FULLFSYNC fallback), fixes `dest=""` in log lines, and adds structured provenance headers to all logs. Build 8 adds hostname to all artifact formats so every output carries a consistent provenance block.
-- Practical summary: CopyTrust now supports three clearer patterns in one app: direct multi-destination copy, mixed queued sessions, and relay-chain `A -> B -> C` ingest.
+**v2.2 Build 14** (active feature-test branch: `codex/v2.2`) — Edit Relay Chain: each relay chain queue row now shows an `Edit` button instead of up/down arrows. Clicking `Edit` on any leg removes all legs from the queue and restores the source and destinations to the workspace in their original order for reordering. Reorder destinations with the up/down arrows and click `Queue Relay Chain` again. `Edit` is disabled once any leg has started.
+
+**v2.2 Build 13** — `Reset Session` now unconditionally clears all queued sessions with no exceptions for loaded sessions. A new `Return to Queue` button appears when a queued session is loaded but copy has not started — it puts the session back in the queue and clears the workspace without touching other queued items.
+
+**v2.2 Build 11** — `Review & Verify` is now the primary blue button after a cancelled session; `Start This Session` is demoted to grey. `End Session` now appears directly in the main action bar after any run (completed or cancelled) so operators can close without being forced to open the summary sheet first.
+
+**v2.2 Build 10** — `Done` button added to the progress sheet after cancel, alongside `Resume`. When MHL writing fails but file data was copied and hash-verified, the destination row now shows a green "Hash Verified" header and an orange warning ("Files are safe. Use Drop Verify to create a new MHL.") rather than a red Failed state.
+
+**v2.2 Build 9** — Inline relay-chain callout appears above destination rows when one source and two or more destinations are loaded. Right-click context menu on destination rows (`Queue Relay Chain`, `Reveal in Finder`, `Remove Destination`). Relay queue rows show actual card and volume names and `Step N of M` labels. Destination alias auto-populated from macOS volume name. Read-only volumes blocked from destination role in volume browser and pool. Inline expand panel on queued rows for alias editing and path reveal. `Load → review` bug fixed to prevent accidental queue duplication.
+
+**v2.2 Build 8** (branch: `codex/v2.2`) — Hostname is now present in all three artifact formats: `"hostname"` added as a top-level field in both `SESSION_MANIFEST_*.json` and `ingest_*.json`, and a `Host    :` line added to the plaintext `ingest_*.txt` receipt. All three formats (session log, manifest JSON, receipt JSON + plaintext) now carry a consistent provenance block: app name, version, build, macOS version, hostname, and session ID. Drop Verify manifests receive hostname through the same code path.
 
 ### Drop Verify
 - Since `v2.1.8`, Drop Verify has become much more reliable about partial results, logging, export behavior, and unsupported-format handling.
