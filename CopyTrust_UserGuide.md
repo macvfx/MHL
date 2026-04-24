@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-04-21  
-v2.2 Build 8
+Date: 2026-04-23  
+Branch version v2.2 Build 14
 
 ## Purpose
 
@@ -106,27 +106,60 @@ Use this when:
 
 How to do it:
 1. Add camera card `A` as the source.
-2. Add destinations in relay order:
-   `B` first, then `C`, then any later stops.
-3. Adjust the destination order if needed with the up/down controls.
-4. Check the visible relay order labels such as `Stop 1` and `Stop 2`.
-5. Click `Queue Relay Chain`.
-6. Click `Start Queue`.
+2. Add destinations in relay order: `B` first (fastest drive — SSD), then `C` (slower — NAS).
+3. A blue callout card appears at the top of the destination list showing the chain path, e.g. `Card A → SSD → NAS`.
+4. Check the `Stop 1` / `Stop 2` labels on each destination row. Reorder with the up/down arrows if needed — **put the fastest drive first**.
+5. Click `Queue Relay Chain` in the callout (or right-click any destination row → **Queue Relay Chain**).
+6. Review the queued sessions panel — each relay leg shows its source type, destination name, and step context.
+7. Click `Start Queue`.
+
+Speed ordering tip:
+- Copy to your **fastest destination first** (SSD before NAS). This frees the camera card sooner and lets the slower NAS leg run from a local verified copy, not from the card itself.
+- The callout reminds you of this when you are about to queue.
 
 What CopyTrust does:
-- Step 1 starts from the original source.
-- Step 2 waits for the verified output from Step 1.
-- Later steps continue in order the same way.
+- Step 1 copies from the original camera card to the first destination and verifies it.
+- Step 2 waits for the verified output from Step 1, then copies from that verified folder — not the card.
+- Later steps continue in the same way.
 - PDF/CSV artifact work from Step 1 does not block Step 2.
-- The end-session receipt now summarizes the full relay run instead of only the last leg.
+- The end-session receipt summarises the full relay run with per-leg speed data.
+
+What the queue panel shows after queuing (reviewing before Start Queue):
+
+Each relay leg appears as a distinct row with a chain icon prefix and blue tint. For a card-to-SSD-to-NAS relay the operator sees:
+
+**Step 1 row:**
+```
+⦿ A001 → Samsung T7
+A001 · Camera Card  →  Samsung T7 · Drive
+Step 1 of 2 — copies from A001 (camera card).
+```
+
+**Step 2 row:**
+```
+⦿ Samsung T7 → Synology NAS
+Samsung T7 · Drive  →  Synology NAS · Network
+Step 2 of 2 — waits for Samsung T7 (drive) to be verified, then copies from it.
+```
+
+Hovering over either row shows the exact folder paths:
+```
+Source: /Volumes/A001
+Destination: /Volumes/Samsung T7/Ingest/ProjectX
+```
+
+Right-clicking a queue row offers:
+- **Reveal Source in Finder** — opens the source volume or folder directly
+- **Reveal Destination in Finder** — opens the destination folder directly
+
+Right-click shortcut on destination rows:
+- Right-clicking any destination row when relay conditions are met shows a **Queue Relay Chain** menu item — same action as the callout button.
+- The context menu also offers **Reveal in Finder** and **Remove Destination** for any destination at any time.
 
 Important note:
-- Relay chains are currently easiest when built from **one source and an ordered destination list**.
-- This is also the **recommended and intentionally visible UI path for now**.
-- In practice, that means the current relay workflow is: choose one source, choose two or more destinations in order, then use `Queue Relay Chain`.
-- If you want another camera card to follow the same relay path, stage that as a **separate relay-chain session**.
-- In other words, `A -> B -> C` and `D -> B -> C` should currently be queued as two separate relay chains, not one combined multi-source relay session.
-- A possible future option is a more explicit “finish `A -> B`, then choose `C` as the next destination from `B`” flow, but that is **not** the primary workflow CopyTrust is presenting in the UI today.
+- The current relay workflow requires **one source and two or more destinations in order**.
+- If you want another camera card to follow the same relay path, stage it as a **separate relay-chain session**.
+- `A → B → C` and `D → B → C` should be queued as two separate relay chains, not a combined multi-source relay session.
 
 Why this matters operationally:
 - the card gets offloaded to the fastest destination first
@@ -190,33 +223,147 @@ Use Method 3 when:
 - different cards need different destination sets
 - you want a staged queue of separate jobs
 
+## Reviewing a Queued Session Before Running It
+
+### Inline expand (Build 9+) — recommended
+
+Click the `›` chevron at the left edge of any queued row to expand a detail panel inline. No workspace change, no reset needed. Multiple rows can be expanded at once — useful for reviewing both legs of a relay chain side by side.
+
+The expanded panel shows:
+
+| | |
+|---|---|
+| 📷 `A001` | `Camera Card` · `/Volumes/A001` · Reveal |
+| 💾 `[Samsung T7  ]` | `Drive` · `/Volumes/Samsung T7/Ingest/ProjectX` · Reveal |
+
+- **Source rows** are read-only: name, type, path, Reveal in Finder.
+- **Destination rows** have an editable alias field — rename a destination without loading the session into the workspace. Changes take effect immediately on the queued item.
+- **Reveal** buttons open the exact source or destination folder in Finder.
+
+Hover over any queued row to see the full source and destination paths as a tooltip. Right-click any queued row for `Reveal Source in Finder` and `Reveal Destination in Finder`.
+
+### Load button — for running a specific leg out of queue order
+
+The `Load` button fills the workspace with a queued session's source and destination. Use it when you want to run a specific leg independently rather than using `Start Queue`.
+
+- After loading, press `Start This Session` to run it.
+- To put it back without running, click `Return to Queue` — this restores the session to `.queued` status and clears the workspace without touching any other queued items.
+- `Reset Session` wipes the entire queue and workspace. Use it only when you want to start completely fresh.
+- `Queue Current Session` is hidden while a session is loaded — this prevents accidentally enqueuing a duplicate.
+- Load is one-at-a-time: the button is disabled if another session is already loaded or a copy is running.
+
+For inspection and alias editing, prefer the `›` expand panel — it does not disturb the workspace.
+
+## Session Lifecycle — Start, Stop, Continue, Reset
+
+### Starting
+
+| Situation | Button |
+|-----------|--------|
+| Source and destination in workspace | `Start This Session` |
+| Sessions staged in the queue | `Start Queue` |
+| A specific queued leg loaded via Load | `Start This Session` (runs that leg only) |
+
+### During a running copy
+
+| Situation | Button |
+|-----------|--------|
+| Hide the progress sheet, keep copying | `Hide` (in progress sheet) |
+| Inspect results without stopping | `Review & Verify` (main window) |
+| Stop the copy | `Cancel Copy` (in progress sheet) |
+
+### After cancelling — progress sheet
+
+Two buttons appear together:
+
+- **`Resume`** — restarts from where it stopped; reconciled files are not re-copied
+- **`Done`** — dismisses the sheet and returns to the main window; the session remains in its cancelled state
+
+### After cancelling — main window
+
+```
+[ Review & Verify ]  [ End Session ]  [ Start This Session ]  [ Reset Session ]
+      primary ●          secondary        restart/retry            wipe all
+```
+
+- **Review & Verify** (blue) — inspect partial results before deciding; the right first step if anything looks unexpected
+- **End Session** — formally closes the session and saves whatever was captured; use this when you are done with this run whether it completed or not
+- **Start This Session** (grey, demoted) — available if you want to restart the copy
+- **Reset Session** — wipes the workspace and the entire queue; use only when you want to start completely fresh
+
+### After completing — main window
+
+```
+[ Review Summary… ]  [ End Session ]  [ Start This Session ]  [ Reset Session ]
+      primary ●          secondary          secondary              wipe all
+```
+
+- **Review Summary…** (blue) — opens the full session summary; `End Session` is also accessible from inside
+- **End Session** — closes directly without opening the summary; use when you are confident the run is good
+
+### Queue management with Load
+
+The `Load` button puts a specific queued session into the workspace for running out of order. Three actions are then available:
+
+| Button | Effect on queue |
+|--------|----------------|
+| `Start This Session` | Runs the loaded leg; removes it from queue on completion |
+| `Return to Queue` | Restores the leg to `.queued` status; clears workspace; rest of queue untouched |
+| `Reset Session` | Wipes workspace AND entire queue — all legs gone |
+
+Use `Return to Queue` to un-load without committing. Use `Reset Session` only when you want a clean slate.
+
+### Reset Session — what it clears
+
+Reset Session always clears:
+- All sources and destinations in the workspace
+- All copy results and run history in the current session
+- All queued sessions — every relay chain leg and standard queued item
+- All preflight and stats state
+
+It does not clear:
+- The speed history file (`device_speed_history.json`)
+- Previously closed session receipts and manifests on disk
+- The last closed review (accessible via `Review Last Summary…`)
+
 ## Review And End Session
 
-During an active or partially completed session:
-- `Review & Verify` opens the session summary without ending the session
-- use this when you want to inspect results, MHL entries, or receipt text while more work may still happen
+### During an active session
+`Review & Verify` opens the session summary without ending the session. Use this when you want to inspect results, MHL entries, or receipt text while more work may still happen.
 
-When all queued work is complete:
-- `Review Summary…` becomes the main review button
-- the summary sheet is where you confirm the final run before ending it
+### When a run completes or is cancelled
 
-Current summary-sheet actions:
-- `Copy`
+Two paths are available directly from the main window — no need to open the summary sheet first:
+
+| Button | When | What it does |
+|--------|------|-------------|
+| `Review Summary…` / `Review & Verify` | Always after a run | Opens the summary sheet for inspection. End Session is inside the sheet. |
+| `End Session` | Always after a run | Closes the session immediately and saves results without opening the summary sheet. |
+
+Use `End Session` in the main window when you are confident the run is good and just want to move on. Use `Review Summary…` when you want to check file counts, MHL entries, or receipt text before closing.
+
+`End Session` is available after both:
+- a **completed** run — all sources verified, queue finished
+- a **cancelled or failed** run — any partial results exist
+
+After a cancelled run the action bar reads (in priority order):
+```
+[ Review & Verify ]  [ End Session ]  [ Start This Session ]
+      primary ●          secondary          demoted
+```
+
+### What End Session does
+- Closes the session and clears the live workspace
+- Saves the result so it remains available for later review
+- After ending, use `Review Last Summary…`, `Reveal Receipts`, `Reveal Log`, `Reveal Manifest`, or `Reset Session` from the main window
+
+### Summary-sheet actions (if you open Review Summary first)
+- `Copy` — copies the receipt text to the clipboard
 - `Reveal Summary`
 - `Manifest`
 - `Log`
 - `End Session`
-- `End` and `Wait` when background PDF/CSV artifact work is still running
-
-What to expect from `End Session`:
-- the session is closed and the live workspace is cleared
-- the app keeps the finished run available for later review from the main UI
-- after ending, use `Review Last Summary…`, `Reveal Receipts`, `Reveal Log`, `Reveal Manifest`, or `Reset Session`
-
-What no longer applies:
-- there is no `Done`
-- there is no `Done + Clear`
-- the old expectation that destinations stay loaded after session end is no longer the current workflow
+- `End` / `Wait` when background PDF/CSV artifact work is still running
 
 ## Safety Concept
 
@@ -241,4 +388,4 @@ Still improving:
 - clearer user-facing language around relay chains versus normal multi-destination sessions
 - possible future alternate relay authoring such as “after `A -> B`, choose `C` from `B`” without changing the current preferred workflow
 - fuller lineage visibility in manifests, receipts, and saved logs
-- device speed history — persistent per-volume speed tracking across sessions for degradation detection and pre-copy time estimates 
+- device speed history — persistent per-volume speed tracking across sessions for degradation detection and pre-copy time estimates (planned)
