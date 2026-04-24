@@ -1,6 +1,6 @@
 # CopyTrust Field Checklist
 
-**Version under test:** v2.2 (Build 8)  
+**Version under test:** v2.2 (Build 14)  
 **Use this for:** fast operator-side validation during real camera card testing  
 **Full companion sheet:** `docs/COPYTRUST_QA_RUN_SHEET.md`
 
@@ -110,7 +110,7 @@ After the session, open the destination in Finder:
 Open the per-copy log from `CopyTrust_Receipts/` on the destination:
 
 - [ ] File opens with a header block, not raw event lines
-- [ ] `App:` line shows `CopyTrust 2.2 (Build 8)`
+- [ ] `App:` line shows `CopyTrust 2.2 (Build 14)`
 - [ ] `macOS:` line shows the correct macOS version
 - [ ] `Host:` line shows the correct hostname for the machine that ran the copy
 - [ ] `Session:` line shows an 8-character uppercase session tag
@@ -173,6 +173,59 @@ If this was a two-destination session:
 
 Speed seen for source (bytes/sec):  
 Speed seen for destination (bytes/sec):
+
+---
+
+## Progress Sheet — Cancel UX (Build 10)
+
+- [ ] Start a copy and click `Cancel Copy`
+- [ ] Progress sheet shows **both** `Done` and `Resume` buttons
+- [ ] `Done` closes the sheet and returns to main window (no duplicate in queue)
+- [ ] `Resume` restarts the copy from where it stopped
+
+---
+
+## Post-Cancel Main Window (Build 11)
+
+- [ ] After cancel + `Done`, main window shows `Review & Verify` as the primary blue button
+- [ ] `Start This Session` is grey (demoted)
+- [ ] `End Session` appears alongside `Review & Verify`
+- [ ] Clicking `End Session` closes the session and clears the workspace cleanly
+
+---
+
+## Post-Run Main Window (Build 11)
+
+- [ ] After a completed run, `Review Summary…` is the primary blue button
+- [ ] `End Session` also appears in the main action bar (no need to open summary sheet)
+- [ ] Clicking `End Session` directly closes the session; `Review Last Summary…` still works
+
+---
+
+## Relay Chain Queue (Builds 9 + 14)
+
+- [ ] With one source and two destinations loaded, blue relay callout appears above destinations
+- [ ] Callout shows chain path (e.g. `A001 → Samsung T7 → Synology NAS`) and speed-ordering tip
+- [ ] `Queue Relay Chain` button in callout queues two sessions and clears the workspace
+- [ ] Relay queue rows show actual drive names (not generic labels) and `Step N of M`
+- [ ] Relay queue rows show `Edit` button (not up/down arrows)
+- [ ] Clicking `Edit` on any leg removes all legs and restores workspace for reordering
+- [ ] `Edit` is disabled once any leg has started
+
+---
+
+## Return to Queue (Build 13)
+
+- [ ] Load a queued session via `Load`; `Return to Queue` button appears in action bar
+- [ ] Clicking `Return to Queue` puts session back in queue; workspace clears; other sessions untouched
+- [ ] `Return to Queue` is not visible once copy has started
+
+---
+
+## Reset Session — Full Queue Wipe (Build 13)
+
+- [ ] Queue a relay chain (two legs); click `Reset Session`; both legs disappear
+- [ ] Load a relay leg via `Load`; click `Reset Session`; entire queue is wiped (both legs gone)
 
 ---
 
