@@ -1,13 +1,14 @@
 # CopyTrust QA Run Sheet
 
-**Version under test:** v2.2 (Build 8)  
-**Date:** 2026-04-21  
-**Purpose:** Run a structured UI + real-media regression pass for CopyTrust, with special attention to trust-first completion, background artifact behavior, cancelled-session recovery, resumable ingest on real media, exFAT destination artifact writes, log provenance headers, and per-session speed history.
+**Version under test:** v2.2 (Build 14)  
+**Date:** 2026-04-23  
+**Purpose:** Run a structured UI + real-media regression pass for CopyTrust, with special attention to trust-first completion, background artifact behavior, cancelled-session recovery, resumable ingest on real media, exFAT destination artifact writes, log provenance headers, per-session speed history, relay chain UX, cancel/resume/end-session flows, and queue management.
 
 ## How To Use This Sheet
 - Run Section A first if you want a quick fixture sanity pass before touching real media.
 - Run Section B for actual camera card and removable-drive testing.
 - Run Section C to validate the v2.2 Build 6–8 features: exFAT artifact writes, log headers, hostname provenance, and device speed history.
+- Run Section D to validate Build 9–14 features: relay chain UX, cancel/resume flows, post-run action bar, queue management.
 - Record pass/fail notes inline or copy this file and fill in the blanks.
 - If something fails, capture:
   - exact step number
@@ -512,6 +513,163 @@ Record:
 
 ---
 
+---
+
+## Section D. v2.2 Build 9–14 Feature Validation
+
+Run these after at least one successful real-media pass in Section B.
+
+---
+
+### D1. Relay Chain Inline Callout (Build 9)
+
+Steps:
+1. Add one source and two destinations.
+2. Confirm a blue callout card appears above the destination rows showing the full chain path.
+3. Confirm the callout includes a speed-ordering tip and a `Queue Relay Chain` button.
+4. Click `Queue Relay Chain` in the callout. Confirm two sessions appear in the queue and the workspace clears.
+
+Record:
+- Relay callout appears: `PASS / FAIL`
+- Notes:
+
+---
+
+### D2. Right-Click Destination Row (Build 9)
+
+Steps:
+1. Load one source and two destinations.
+2. Right-click any destination row.
+3. Confirm `Queue Relay Chain`, `Reveal in Finder`, and `Remove Destination` appear.
+4. Remove one destination so only one remains. Right-click again. Confirm `Queue Relay Chain` is absent.
+
+Record:
+- Right-click menu: `PASS / FAIL`
+- Notes:
+
+---
+
+### D3. Relay Queue Row Labels (Build 9)
+
+Steps:
+1. Queue a relay chain.
+2. Expand the Queued Sessions panel.
+3. Confirm relay legs show actual card/drive names (e.g. `A001 → Samsung T7`).
+4. Confirm each leg shows `Step N of M` and a dependency note.
+5. Confirm relay legs show an `Edit` button (pencil), not up/down arrows.
+6. Confirm non-relay sessions still show up/down arrows.
+
+Record:
+- Queue row labels: `PASS / FAIL`
+- Edit button present on relay rows: `PASS / FAIL`
+- Notes:
+
+---
+
+### D4. Edit Relay Chain (Build 14)
+
+Steps:
+1. Add source and two destinations in the wrong order. Click `Queue Relay Chain`.
+2. Click `Edit` on either relay leg. Confirm both legs disappear and workspace is restored.
+3. Confirm any other queued sessions are untouched.
+4. Reorder destinations and click `Queue Relay Chain` again.
+5. Start the chain running. Confirm `Edit` is disabled.
+
+Record:
+- Edit removes legs and restores workspace: `PASS / FAIL`
+- Other queued sessions unaffected: `PASS / FAIL`
+- Edit disabled while running: `PASS / FAIL`
+- Notes:
+
+---
+
+### D5. Done + Resume In Progress Sheet (Build 10)
+
+Steps:
+1. Start a copy and click `Cancel Copy`.
+2. Confirm both `Done` and `Resume` appear in the progress sheet.
+3. Click `Done`. Confirm sheet closes and main window appears without a duplicate in the queue.
+4. Repeat — click `Resume` instead. Confirm copy restarts from where it stopped.
+
+Record:
+- Done button present: `PASS / FAIL`
+- Done closes without duplicate: `PASS / FAIL`
+- Resume restarts correctly: `PASS / FAIL`
+- Notes:
+
+---
+
+### D6. MHL Failure Guidance (Build 10)
+
+Steps (requires triggering an MHL write failure — e.g. locked destination folder):
+1. If reproducible, confirm the destination row shows a **green** "Hash Verified" header — not red "Failed".
+2. Confirm an orange warning appears with the error text and "Files are safe." guidance.
+3. Confirm a genuine verification failure (hash mismatch) still shows red `Failed`.
+
+Record:
+- MHL failure shows green + orange warning: `PASS / FAIL / N/A (could not trigger)`
+- Hash mismatch still shows red Failed: `PASS / FAIL`
+- Notes:
+
+---
+
+### D7–D9. Post-Run Main Window UX (Build 11)
+
+**After cancel:**
+1. Cancel a copy, click `Done` on the progress sheet.
+2. Confirm `Review & Verify` is the primary blue button.
+3. Confirm `Start This Session` is grey.
+4. Confirm `End Session` appears alongside `Review & Verify`.
+5. Click `End Session`. Confirm session closes and workspace clears.
+
+**After completed run:**
+1. Run a full copy to completion.
+2. Confirm `Review Summary…` is the primary blue button.
+3. Confirm `End Session` is also visible in the main action bar.
+4. Click `End Session` directly (without opening summary). Confirm session closes; `Review Last Summary…` still works.
+
+Record:
+- Review & Verify prominent after cancel: `PASS / FAIL`
+- Start This Session demoted: `PASS / FAIL`
+- End Session after cancel: `PASS / FAIL`
+- End Session after complete: `PASS / FAIL`
+- Notes:
+
+---
+
+### D10. Return To Queue (Build 13)
+
+Steps:
+1. Queue a relay chain.
+2. Click `Load` on Step 1. Confirm `Return to Queue` appears in the action bar.
+3. Click `Return to Queue`. Confirm Step 1 is back in the queue with `.queued` status.
+4. Confirm Step 2 is still in the queue untouched and the workspace is clear.
+5. Confirm `Return to Queue` is not visible once copy has started on the loaded session.
+
+Record:
+- Return to Queue appears: `PASS / FAIL`
+- Session returned to queue correctly: `PASS / FAIL`
+- Other sessions untouched: `PASS / FAIL`
+- Not visible after copy starts: `PASS / FAIL`
+- Notes:
+
+---
+
+### D11. Reset Session — Full Queue Wipe (Build 13)
+
+Steps:
+1. Queue a relay chain (two legs). Without running, click `Reset Session`. Confirm both legs are gone.
+2. Queue a relay chain, use `Load` on one leg, then click `Reset Session`. Confirm entire queue is wiped.
+3. Queue a relay chain, start and cancel it, then click `Reset Session`. Confirm full wipe.
+
+Record:
+- Basic relay reset: `PASS / FAIL`
+- Reset after Load: `PASS / FAIL`
+- Reset after cancel: `PASS / FAIL`
+- Notes:
+
+---
+
 ## Failure Triage Guide
 
 ### If the issue is UI-only
@@ -576,6 +734,19 @@ Capture immediately:
 - C5 Hostname in JSON artifacts:
 - C6 Device speed history file created:
 - C7 Multi-destination flag set:
+
+### Section D — v2.2 Build 9–14 Features
+- D1 Relay chain inline callout:
+- D2 Right-click destination menu:
+- D3 Relay queue row labels and Edit button:
+- D4 Edit relay chain restores workspace:
+- D5 Done + Resume in progress sheet:
+- D6 MHL failure guidance (green header, orange warning):
+- D7 Review & Verify promoted after cancel:
+- D8 End Session in main window after cancel:
+- D9 End Session in main window after completed run:
+- D10 Return to Queue button:
+- D11 Reset Session wipes entire queue:
 
 ## Ship Assessment
 - Ready to continue beta validation: `YES / NO`
