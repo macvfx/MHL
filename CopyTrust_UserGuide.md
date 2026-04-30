@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-04-23  
-Branch version v2.2 Build 14
+Date: 2026-04-27  
+v2.3 Build 5
 
 ## Purpose
 
@@ -123,6 +123,7 @@ What CopyTrust does:
 - Later steps continue in the same way.
 - PDF/CSV artifact work from Step 1 does not block Step 2.
 - The end-session receipt summarises the full relay run with per-leg speed data.
+- **Contact sheet PDF generation is faster for relay chains:** thumbnails generated for the first destination are cached on disk and reused for every subsequent leg — no redundant preview work for the same card content.
 
 What the queue panel shows after queuing (reviewing before Start Queue):
 
@@ -365,6 +366,34 @@ After a cancelled run the action bar reads (in priority order):
 - `End Session`
 - `End` / `Wait` when background PDF/CSV artifact work is still running
 
+## Destination Folder Safety
+
+CopyTrust validates the destination before any file transfer begins.
+
+### Duplicate subfolder names are blocked before copy starts
+
+If two pending sources would render to the same destination subfolder name (e.g. both use the same naming template and resolve to `ProjectX/A001`), `Start This Session` is blocked. The blocked-start message tells the operator which sources conflict and points to the source alias, prefix, or naming template as the fix path.
+
+### Fresh ingests cannot merge silently into existing folders
+
+If a fresh ingest targets a destination subfolder that already has content in it and no matching prior manifest exists, start is also blocked. This prevents the silent “copy into an old folder” scenario where new files are mixed with previous ingest output.
+
+### Resume is an explicit, validated path
+
+A pre-existing destination subfolder is only accepted when CopyTrust finds a matching prior manifest for exactly that source, destination set, and rendered subfolder. This is the Resume path. Any other pre-existing folder is treated as a collision, not a continuation.
+
+## Partial-Failure Recovery
+
+If a copy run fails mid-way (network drop, drive ejection, unexpected error), CopyTrust now preserves enough state to offer Resume — the same path available after an explicit cancel. Resume is offered when the source, destination set, and rendered subfolder still match the saved partial manifest.
+
+The progress sheet and the source row both surface this state as recoverable rather than treating every failure as a dead end.
+
+## Verify Diagnostics
+
+Before verification hashing begins, CopyTrust logs a structured diagnostic showing file count, byte count, reused files, and whether any prior copy failures or skipped files already exist. This provides context that was previously only reconstructable by replaying the full session log.
+
+If verification aborts, the abort path now logs the exact stage (source hashing vs destination hashing) and the file path that triggered the failure, instead of collapsing into a vague terminal error. JSON and plaintext receipts preserve failed/skipped file counts and the first recorded error line for post-run analysis.
+
 ## Safety Concept
 
 CopyTrust is designed around the idea that safety can mean either:
@@ -377,15 +406,8 @@ Both are valid, but they serve different operational needs:
 
 ## Current Practical Guidance
 
-Recommended today:
 - For `A -> B` and `A -> C`, use one normal session with multiple destinations.
 - For `A -> B -> C`, use `Queue Relay Chain`.
 - For `A -> B -> C` followed by another card taking the same path, queue each card as its own relay chain.
 - For different cards going to different destinations, use separate queued sessions and `Start Queue`.
 - Use `Help > CopyTrust Help` any time you want the in-app startup checklist again.
-
-Still improving:
-- clearer user-facing language around relay chains versus normal multi-destination sessions
-- possible future alternate relay authoring such as “after `A -> B`, choose `C` from `B`” without changing the current preferred workflow
-- fuller lineage visibility in manifests, receipts, and saved logs
-- device speed history — persistent per-volume speed tracking across sessions for degradation detection and pre-copy time estimates (planned)
