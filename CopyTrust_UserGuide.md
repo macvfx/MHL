@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-04-27  
-v2.3 Build 5
+Date: 2026-05-17  
+v2.4.3 Build 1
 
 ## Purpose
 
@@ -393,6 +393,86 @@ The progress sheet and the source row both surface this state as recoverable rat
 Before verification hashing begins, CopyTrust logs a structured diagnostic showing file count, byte count, reused files, and whether any prior copy failures or skipped files already exist. This provides context that was previously only reconstructable by replaying the full session log.
 
 If verification aborts, the abort path now logs the exact stage (source hashing vs destination hashing) and the file path that triggered the failure, instead of collapsing into a vague terminal error. JSON and plaintext receipts preserve failed/skipped file counts and the first recorded error line for post-run analysis.
+
+## Camera Card Exclusions
+
+Settings → Camera Card Exclusions lets you skip files or folders during copy. Each exclusion pattern has a type that controls how it matches against path components.
+
+### Pattern Types
+
+| Type | Matches when… | Example |
+|------|---------------|---------|
+| **Exact** | A folder or file name equals the pattern | `MISC` skips any folder named MISC |
+| **Suffix** | A folder or file name ends with the pattern | `.THM` skips `DJI_0001.THM` |
+| **Prefix** | A folder or file name starts with the pattern | `._` skips `._DSC0001.ARW` |
+| **Contains** | A folder or file name contains the pattern | `cache` skips `fcpcache` |
+| **Regex** | A folder or file name matches the regular expression | `(?i)\.mhl$` skips any `.mhl` file |
+
+### Dot-prefix shortcut
+
+Any pattern that starts with `.` (e.g. `.MP4`, `.THM`, `.LRV`) is automatically treated as a file-extension match. It works as a case-insensitive suffix regardless of which type is selected. This means `.MP4` will match `DJI_0001.MP4`, `video.mp4`, and `clip.Mp4`.
+
+### Case insensitivity
+
+All pattern types are case-insensitive. `MISC` matches `misc`, `.MP4` matches `.mp4`, and so on.
+
+## Destination Sort (Post-Copy)
+
+CopyTrust can optionally reorganize files on the destination into type-based subfolders after the trust chain is complete. The sort runs after copy, verify, MHL, and receipt writes — the integrity proof is sealed before any files are moved.
+
+### Enabling
+
+1. Open `Settings > Post-Copy`.
+2. Toggle **Sort files into type folders on destination**.
+3. Choose a folder mode and review the category list.
+
+### Folder Modes
+
+| Mode | Result | Example |
+|------|--------|---------|
+| **Flatten** (default) | All files of a type go directly into the type folder | `JPG/IMG_001.JPG` |
+| **Preserve Structure** | Source directory tree is kept inside the type folder | `JPG/DCIM/100/IMG_001.JPG` |
+
+In Flatten mode, if two files have the same name, the second is renamed automatically (`IMG_001_2.JPG`, `IMG_001_3.JPG`, etc.).
+
+### Default Categories
+
+| Category | Folder | Extensions |
+|----------|--------|------------|
+| JPG | `JPG` | jpeg, jpg, heic, heif, png, tiff, tif, bmp, gif |
+| RAW | `RAW` | cr3, cr2, arw, nef, dng, raf, orf, rw2, pef, srw, iiq, 3fr, fff, erf, nrw, gpr |
+| Video | `Video` | mov, mp4, m4v, avi, mts, m2ts, m2t, m2v, vob |
+| Pro Video | `Pro Video` | mxf, r3d, braw, ari, cdng |
+| Audio | `Audio` | wav, mp3, aac, aiff, bwf, flac |
+| Sidecar | `Sidecar` | xmp, thm, aae, lrv, srt |
+
+### Customizing Categories
+
+- Toggle individual categories on or off.
+- Edit the folder name (the actual subfolder created on disk).
+- Edit the extension list (comma-separated, case-insensitive).
+- Add new categories for project-specific file types.
+- Delete categories you do not need.
+- Use **Reset to Defaults** to restore the original six categories.
+
+### What is not moved
+
+- The `CopyTrust_Receipts/` folder is never touched by the sort.
+- Files with extensions that do not match any enabled category remain in place.
+- Empty source directories are cleaned up after sorting.
+
+### Pipeline order
+
+1. Copy files
+2. Verify hashes
+3. Write MHL
+4. Write per-copy receipt and log
+5. **Sort files on destination** (if enabled)
+6. Generate contact sheet PDF (uses sorted paths)
+7. Generate EXIF CSV (uses sorted paths)
+8. Export artifacts
+
+The contact sheet PDF and EXIF CSV reflect the sorted file locations, not the original copy layout.
 
 ## Safety Concept
 
