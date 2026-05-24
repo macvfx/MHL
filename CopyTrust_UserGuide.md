@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-05-17  
-v2.4.3 Build 1
+Date: 2026-05-23  
+Branch baseline: `main` (v2.4.7 Build 1)
 
 ## Purpose
 
@@ -157,6 +157,9 @@ Right-click shortcut on destination rows:
 - Right-clicking any destination row when relay conditions are met shows a **Queue Relay Chain** menu item — same action as the callout button.
 - The context menu also offers **Reveal in Finder** and **Remove Destination** for any destination at any time.
 
+Destination Sort and relay chains:
+- If Destination Sort is enabled, sorting is **skipped on intermediate legs** and only runs on the final destination. This prevents the sort from moving files while the next leg is reading from them. The final destination gets the organized type-folder layout.
+
 Important note:
 - The current relay workflow requires **one source and two or more destinations in order**.
 - If you want another camera card to follow the same relay path, stage it as a **separate relay-chain session**.
@@ -269,9 +272,12 @@ For inspection and alias editing, prefer the `›` expand panel — it does not 
 
 | Situation | Button |
 |-----------|--------|
+| Open the full progress sheet | `Progress` (icon-only, bottom bar) |
 | Hide the progress sheet, keep copying | `Hide` (in progress sheet) |
 | Inspect results without stopping | `Review & Verify` (main window) |
-| Stop the copy | `Cancel Copy` (in progress sheet) |
+| Stop the copy | `Cancel Copy` (bottom bar or progress sheet) |
+
+During copy, the action bar is streamlined: Reset Session, Card/Folder picker, and Preflight badge are hidden. The queue manager shows inline progress on the running row.
 
 ### After cancelling — progress sheet
 
@@ -282,25 +288,30 @@ Two buttons appear together:
 
 ### After cancelling — main window
 
+The action bar simplifies to just two (or three) clear options:
+
 ```
-[ Review & Verify ]  [ End Session ]  [ Start This Session ]  [ Reset Session ]
-      primary ●          secondary        restart/retry            wipe all
+[ Resume ]  [ Resume Queue ]  ...  "Session cancelled — resume or end?"  ...  [ End Session ]
+  primary      if queued                    status label                         secondary
 ```
 
-- **Review & Verify** (blue) — inspect partial results before deciding; the right first step if anything looks unexpected
-- **End Session** — formally closes the session and saves whatever was captured; use this when you are done with this run whether it completed or not
-- **Start This Session** (grey, demoted) — available if you want to restart the copy
-- **Reset Session** — wipes the workspace and the entire queue; use only when you want to start completely fresh
+- **Resume** (blue) — retry the copy from where it stopped; reconciled files are not re-copied
+- **Resume Queue** (blue) — appears when queued batches remain; starts the remaining queue without retrying the cancelled copy
+- **End Session** — formally closes the session and saves whatever was captured
+
+All other controls (Reset Session, Card/Folder picker, Preflight badge, Auto toggle, naming preview, Reveal buttons) are hidden in this state. **Review Summary**, **Reveal Receipts**, **Reveal Session Log**, and **Reveal Manifest** are accessible from the **File menu** at any time.
 
 ### After completing — main window
 
 ```
-[ Review Summary… ]  [ End Session ]  [ Start This Session ]  [ Reset Session ]
-      primary ●          secondary          secondary              wipe all
+[ Review Summary ]  ...  "Copy complete"  ...  [ End Session ]
+     primary ●                                    secondary
 ```
 
-- **Review Summary…** (blue) — opens the full session summary; `End Session` is also accessible from inside
+- **Review Summary** (blue) — opens the full session summary; `End Session` is also accessible from inside
 - **End Session** — closes directly without opening the summary; use when you are confident the run is good
+
+All other controls (Reset Session, Card/Folder picker, Preflight badge, Queue, naming preview, Start) are hidden. Reset and Start are available after ending the session. Review Summary, Reveal Receipts, Reveal Log, and Reveal Manifest are accessible from the **File menu** at any time.
 
 ### Queue management with Load
 
@@ -347,11 +358,11 @@ Use `End Session` in the main window when you are confident the run is good and 
 - a **completed** run — all sources verified, queue finished
 - a **cancelled or failed** run — any partial results exist
 
-After a cancelled run the action bar reads (in priority order):
+After a cancelled run the action bar simplifies to:
 ```
-[ Review & Verify ]  [ End Session ]  [ Start This Session ]
-      primary ●          secondary          demoted
+[ Resume ]  [ Resume Queue ]  ...  "Session cancelled — resume or end?"  ...  [ End Session ]
 ```
+Resume Queue only appears when queued batches remain.
 
 ### What End Session does
 - Closes the session and clears the live workspace
@@ -388,6 +399,106 @@ If a copy run fails mid-way (network drop, drive ejection, unexpected error), Co
 
 The progress sheet and the source row both surface this state as recoverable rather than treating every failure as a dead end.
 
+## Destination Volume Disconnect and Recovery
+
+CopyTrust actively monitors all destination volumes during a session. If a destination drive or NAS disconnects mid-copy, the app detects it immediately and takes the following steps:
+
+1. **Immediate detection** — macOS mount/unmount notifications are monitored in real time. When a destination path disappears, CopyTrust cancels the active copy within seconds rather than logging misleading "permission denied" errors for every remaining file.
+2. **Clear error message** — the log and UI show "Volume X is no longer available (unmounted or disconnected)" instead of a generic permission error.
+3. **Artifact cancellation** — any running contact sheet or CSV generation for the disconnected destination is stopped immediately.
+4. **Start button blocked** — the Start button is disabled while any destination is unavailable, with a message explaining which volume is missing.
+
+### Auto-Resume on Reconnect
+
+When the destination volume comes back (drive re-plugged, NAS remounted), CopyTrust:
+
+1. Detects the remount automatically via macOS notifications.
+2. Clears the unavailable state for that destination.
+3. Finds the first cancelled or failed source that was targeting the reconnected destination.
+4. Resumes the copy automatically — already-verified files are skipped and only remaining files are copied.
+5. Retries any failed artifact tasks (contact sheet, CSV, sort) for the reconnected destination.
+
+If auto-resume does not trigger (e.g. the source was removed or the session was ended), you can still use `Start This Session` to restart manually. The resume infrastructure will detect the partial manifest and skip verified files.
+
+### Pre-Copy Destination Check
+
+Before scanning or copying begins, all destination volumes are verified as reachable. If a destination has disappeared between setup and start, the copy is blocked with a clear message instead of failing mid-scan.
+
+### What Happens to In-Progress Files
+
+If a file was partially written when the volume disconnected, the incomplete file remains on the destination. On resume, CopyTrust reconciles the destination — it re-scans and re-hashes any files already present. A partially written file will fail hash verification and be re-copied from scratch.
+
+## macOS Notifications
+
+CopyTrust posts native macOS notifications for key events so you can walk away during long copies or multi-card queues and still know when something needs attention.
+
+### Notification Events
+
+| Event | Default | What it means |
+|-------|---------|---------------|
+| Copy Complete | On | A source finished copying and verifying to all destinations |
+| Copy Failed | On | A copy failed or was cancelled |
+| Volume Disconnect | On | A destination drive or NAS disconnected mid-session |
+| Volume Reconnect | On | A previously disconnected destination is available again |
+| Auto-Resume Started | On | CopyTrust is automatically resuming after a volume reconnect |
+| Verification Result | On | Hash verification passed or failed |
+| Artifacts Complete | Off | Contact sheet and CSV finished successfully |
+| Artifacts Failed | Off | Contact sheet or CSV generation failed |
+
+### Settings
+
+Open `Settings > Notifications` to toggle each event type on or off. The test button sends a sample notification to verify your system is configured correctly.
+
+### System Permissions
+
+On first launch, macOS will prompt you to allow notifications from CopyTrust. If notifications do not appear:
+1. Open **System Settings > Notifications > CopyTrust**.
+2. Ensure **Allow Notifications** is enabled.
+3. Choose your preferred alert style (Banners or Alerts).
+
+## Troubleshooting
+
+### Copy says "no permission" but the drive was disconnected
+
+Prior to v2.4.4, macOS would report "permission denied" errors when a volume mount point disappeared, which was misleading. In v2.4.4 and later, CopyTrust detects the real cause — volume unavailability — and reports it accurately. If you see this on an older version, check whether the destination drive or NAS is still connected.
+
+### Copy was interrupted — can I resume?
+
+Yes. CopyTrust saves a session manifest to local App Support after each verified file. When you restart a copy with the same source and destination, CopyTrust finds the manifest and offers resume. Already-verified files are skipped. If the interruption was a volume disconnect, auto-resume handles this automatically when the volume returns.
+
+### Artifacts stuck after a volume disconnect
+
+Prior to v2.4.4, artifact generation (contact sheet, CSV) could appear stuck after a destination disappeared because the failure was not detected promptly. In v2.4.4, running artifacts are cancelled immediately on disconnect and retried automatically on reconnect. If artifacts remain stuck, use `End Session` and re-run artifacts via Drop Verify on the destination folder.
+
+### Card 2 did not start after Card 1
+
+If Card 1's copy failed due to a volume disconnect, Card 2 was not started because the queue waits for trust-critical work to complete before advancing. In v2.4.4, the volume disconnect is detected immediately, so the failure is reported faster. Once the volume returns and auto-resume completes Card 1, the queue advances to Card 2 normally.
+
+### Notifications not appearing
+
+1. Check **System Settings > Notifications > CopyTrust** — notifications must be allowed.
+2. Check **Settings > Notifications** in CopyTrust — the event type must be toggled on.
+3. Use the **Send Test Notification** button in Settings to verify the system is working.
+4. Focus mode or Do Not Disturb will suppress notifications — check your macOS Focus settings.
+
+### The pipeline: what runs when
+
+Understanding the order of operations helps diagnose where an issue occurred:
+
+1. **Pre-copy checks** — destination reachability, free space, subfolder collisions
+2. **File scan** — enumerate source files, apply exclusion patterns
+3. **Copy + Inline Verify** — write files to all destinations; with inline verification (the default), each file is hashed at the source during copy, then immediately hashed at the destination and compared — pass/fail feedback appears per-file during this phase
+4. **Batch Verify** — if using Full (batch) verification instead of inline, all destination files are re-hashed and compared after the copy phase completes
+5. **MHL** — write MHL v1.1 manifest
+6. **Receipt + Log** — write per-copy receipt and session log
+7. **Sort** — reorganize files into type folders (if enabled)
+8. **Contact sheet PDF** — generate thumbnail contact sheet (if enabled)
+9. **EXIF CSV** — generate metadata CSV (if enabled)
+
+Steps 1–6 are trust-critical. Steps 7–9 are background artifacts that do not block the next queued session. A failure in step 8 does not affect the integrity of the copy — the files and their verification are already sealed.
+
+With inline verification (step 3), the separate batch verify phase (step 4) is skipped — verification completes as part of the copy. This means trust-complete status is reached sooner.
+
 ## Verify Diagnostics
 
 Before verification hashing begins, CopyTrust logs a structured diagnostic showing file count, byte count, reused files, and whether any prior copy failures or skipped files already exist. This provides context that was previously only reconstructable by replaying the full session log.
@@ -396,7 +507,7 @@ If verification aborts, the abort path now logs the exact stage (source hashing 
 
 ## Camera Card Exclusions
 
-Settings → Camera Card Exclusions lets you skip files or folders during copy. Each exclusion pattern has a type that controls how it matches against path components.
+Settings → Card Copy → Camera Card Exclusions lets you skip files or folders during card copy. Each exclusion pattern has a type that controls how it matches against path components. These exclusions only apply when using Card mode.
 
 ### Pattern Types
 
@@ -455,6 +566,21 @@ In Flatten mode, if two files have the same name, the second is renamed automati
 - Delete categories you do not need.
 - Use **Reset to Defaults** to restore the original six categories.
 
+### Relay chains and sorting
+
+In a relay chain (e.g. Card A → SSD B → NAS C), sorting is **skipped on intermediate destinations** and only runs on the final leg.
+
+Why: the next relay leg reads files from the previous destination. If the sort were moving files at the same time, the downstream copy could encounter missing files or a mix of sorted and unsorted paths. The intermediate destination is a transit point — the final destination is where the organized layout matters.
+
+Example with a three-leg relay and sort enabled:
+
+| Leg | Source | Destination | Sort? |
+|-----|--------|-------------|-------|
+| Step 1 | Card A | SSD B | No (intermediate — Step 2 reads from B) |
+| Step 2 | SSD B | NAS C | Yes (final leg — files sorted into type folders) |
+
+For a normal multi-destination session (not relay), every destination is sorted independently.
+
 ### What is not moved
 
 - The `CopyTrust_Receipts/` folder is never touched by the sort.
@@ -484,10 +610,347 @@ Both are valid, but they serve different operational needs:
 - Direct multi-destination copy is simpler and gives parallel redundancy from the original source.
 - Relay chaining is better when the first destination is much faster than the later destination and the card needs to be freed sooner.
 
+## Inline Verification
+
+Inline verification is the new default verification mode (v2.4.5). It replaces the batch verification pass with per-file verification during the copy phase.
+
+### How it works
+
+1. Each file is hashed at the source as it is being copied (xxHash64).
+2. Immediately after the file is written to the destination, the destination copy is hashed.
+3. The two hashes are compared. A pass/fail indicator appears next to each file in the progress view.
+4. If a mismatch is detected, the file is logged as failed and the copy continues to the next file.
+
+### Why inline is the default
+
+- **Faster feedback.** Errors are detected as they happen, not minutes later in a separate verification phase.
+- **Shorter total time.** Trust-complete status is reached as soon as the last file is copied and verified, with no separate verify pass.
+- **Same trust guarantee.** The hash comparison is identical to batch verification — the only difference is timing.
+
+### Verification levels
+
+| Level | Behaviour |
+|-------|-----------|
+| **Inline** (default) | Per-file hash during copy. No separate verify phase. |
+| **Full** | All files copied first, then all destination files re-hashed in a separate batch pass. |
+| **Quick** | Metadata-only check (size, date) — no hash verification. |
+| **None** | No verification at all. |
+
+### Post-copy re-verify
+
+An optional post-copy re-verify pass can be enabled in Settings. When on, the traditional batch verification runs after inline verification completes, using `bypassCache: true` to force reads from disk rather than OS cache. This provides a belt-and-suspenders guarantee for high-value ingests.
+
+### UI labelling
+
+When inline verification is active, all progress surfaces read **"Copying & Verifying"** instead of just "Copying":
+- The progress sheet badge shows "copying & verifying" with the overall percentage
+- The status message bar reads "Copying & Verifying to N destinations…"
+- The source row in the main window shows "Copying & Verifying"
+- The menu bar popover phase reads "Copying & Verifying"
+- Session log lines record `phase=copying+verifying`
+
+When using Full (batch) verification, labels remain unchanged: "Copying" during the copy phase, then "Verifying" during the separate verify phase.
+
+### MHL and receipts
+
+MHL generation works identically with inline verification. Hashes are accumulated during the copy phase and written after the last file completes. Receipts show the same fields regardless of verification mode.
+
+## Copy Type Presets
+
+Copy type presets let operators switch between camera-card and folder-copy configurations with one click. Each mode maintains its own independent settings profile — changes to Card settings never affect Folder settings and vice versa.
+
+### Preset picker
+
+A segmented control in the toolbar shows the active preset: **Card** or **Folder** (orange tint). Switching modes saves the current settings to the outgoing profile and loads the incoming profile. The picker is hidden during an active copy.
+
+### Preset defaults
+
+| Setting | Card | Folder |
+|---------|------|--------|
+| Subfolder naming | `{alias}_{date}` | `{alias}` |
+| Preserve original folder names | On | On |
+| Camera card exclusions | On (defaults) | Not applicable |
+| Destination sort | On | Off |
+| Verification level | Inline | Quick |
+| Auto-advance | On | Off |
+| Contact sheet | On | Off |
+| EXIF CSV | Off | Off |
+| Auto-eject | Off | Off |
+
+### Per-mode settings
+
+Each mode stores its own complete settings profile including: naming template, subfolder prefix, file prefix, preserve original names, verification level, post-copy re-verify, auto-advance, auto-eject, contact sheet (on/off, style, open after creation, hide placeholders), EXIF CSV, and destination sort (on/off, categories, folder mode).
+
+Configure each mode independently:
+- **Settings > Card Copy** — card-specific settings plus Camera Card Exclusions
+- **Settings > Folder Copy** — folder-specific settings
+- **Settings > Test** — built-in test harness to validate settings for either mode (see [Test Harness](#test-harness) below)
+
+Shared settings (not per-mode): operator name, external codecs, notifications, appearance, destination presets, receipt export.
+
+### Per-queue-item snapshots
+
+When a batch is queued, the full active profile is captured as a snapshot. Each queued item runs with exactly the settings chosen at staging time. You can queue a Card batch with inline verification, switch to Folder mode, queue a Folder batch with quick verification — each runs independently. Already-queued items are not affected by later settings changes.
+
+### Persistence
+
+Both profiles are saved to disk and survive app restarts. On first launch after upgrading, existing settings are migrated into the Card profile. The Folder profile starts with factory defaults.
+
+## Preserve Original Folder Names
+
+When **Preserve Original Folder Names** is enabled (default in both Card and Folder presets), the destination subfolder keeps the exact name, case, and spacing from the source volume's mount-point name.
+
+### What changes
+
+| Setting | Destination subfolder for source `2026-001 My Project` |
+|---------|--------------------------------------------------------|
+| Preserve off | `2026_001_My_Project` (sanitized, underscored) |
+| Preserve on (default) | `2026-001 My Project` (original name kept) |
+
+Preserve mode reads the raw volume name directly — dashes, spaces, dots, mixed case, and Unicode are all kept exactly as the source provides them. The source alias shown in the UI also matches the raw volume name.
+
+### What is still sanitized
+
+Only characters that are illegal on macOS/APFS are removed: `/`, `:`, and null bytes. Everything else — spaces, mixed case, Unicode, dashes, dots — is preserved.
+
+### What is not affected
+
+MHL filenames, receipt filenames, and manifest filenames always use the safe sanitized form. Only the destination subfolder name honours this setting.
+
+## Name Length Guard
+
+CopyTrust checks subfolder name length before copy begins (v2.4.5).
+
+### APFS limit
+
+APFS allows a maximum of 255 bytes per path component. With ASCII characters this means 255 characters; with multi-byte Unicode (emoji, CJK) the byte count may be higher than the character count.
+
+### What happens
+
+- If the rendered subfolder name exceeds 255 bytes, it is truncated at a clean character boundary (no split multi-byte characters).
+- The subfolder naming preview in the main window shows an orange warning icon when truncation would occur.
+- The total path length (destination root + subfolder + longest relative file path) is also checked against 1024 bytes.
+
+### When to expect this
+
+Name length issues are more likely with the Folder preset and Preserve Original Folder Names enabled, since sanitized names are typically shorter than original names.
+
+## Dark Mode
+
+CopyTrust defaults to dark appearance (v2.4.5).
+
+### Settings
+
+Open `Settings > Appearance` to choose:
+
+| Mode | Behaviour |
+|------|-----------|
+| **Always Dark** (default) | Dark appearance regardless of macOS setting |
+| **Follow System** | Follows the macOS Light/Dark appearance setting |
+
+## Menu Bar Progress
+
+CopyTrust shows copy progress in the macOS menu bar (v2.4.5).
+
+### Menu bar icon
+
+A `doc.on.doc` icon appears in the menu bar. During an active copy the icon fills in (`doc.on.doc.fill`).
+
+### Popover content (during copy)
+
+| Field | Example |
+|-------|---------|
+| Source name | `A001` |
+| Destination count | `2 destinations · Copying` |
+| Progress bar | Visual bar with percentage |
+| File count | `142 / 380 files` |
+| Bytes | `48.2 GB / 128.7 GB` |
+| Show CopyTrust | Button to bring the main window forward |
+
+### Idle state
+
+When no copy is running, the popover shows a green checkmark and "No active copies" with a Show CopyTrust button.
+
+### Use case
+
+The menu bar progress lets operators monitor copies without keeping the main CopyTrust window visible. Minimize or hide the window and check the menu bar icon for status.
+
+## Queue Manager — Staging During Active Copy
+
+When a copy starts, the UI transforms from the source/destination setup panels into a compact **Copy Queue** manager (v2.4.6). This provides a clear visual mode shift and makes it obvious that the app is in a running-copy state.
+
+### Queue Manager layout
+
+The queue manager replaces the two side-by-side panels with a single full-width panel showing:
+- A **running row** for the active copy — status icon, source name, arrow, destination names, preset badge, and live progress bar
+- **Queued rows** for staged batches — each showing source, destinations, preset, and status
+- **Completed/failed rows** that remain until manually cleared or auto-pruned after 24 hours
+- A **drop target strip** at the bottom for dragging volumes from the Available Volumes pool
+
+### Inline progress expansion
+
+Click the running row to expand it. The expanded view shows:
+- Per-destination progress bars with percentage and bytes
+- Copy speed and estimated time remaining
+- Recent verified files (today's session) with pass/fail icons
+- "Open Full Progress" button to access the detailed progress sheet
+- "Cancel" button
+
+An icon-only **Progress** button in the bottom action bar opens the full progress sheet on demand. The progress sheet no longer auto-opens when a copy starts — inline progress in the queue manager is the primary view.
+
+### How to stage the next batch
+
+Three ways to add a new batch during an active copy:
+
+1. **[+ Add] button** — click in the queue manager header. A sheet opens with available source volumes shown as wrapping chips (read-only and camera card volumes sorted first, volumes already in use filtered out) and pre-populated destinations from the running copy. Choose a preset (Card/Folder with orange segmented control), adjust destinations if needed, then click "Add to Queue."
+
+2. **Drop a volume** — drag a volume chip from the Available Volumes pool onto the dashed drop strip at the bottom of the queue manager. This creates a queued batch using that volume as the source and the current active destinations.
+
+3. **Click a volume in the pool** — while the queue manager is active, clicking a volume in the Available Volumes pool adds it directly to the queue using the current destinations.
+
+### What happens to staged batches
+
+Staged batches appear as queued rows in the queue manager. When the current copy completes, auto-advance picks up the next queued session and starts it automatically (if auto-advance is enabled). This works for batches added via [+ Add] during both direct-start copies and queued runs.
+
+### After cancelling with queued batches remaining
+
+If you cancel the first copy and queued batches remain, **Start Queue** appears prominently in the bottom action bar. Click it to start the remaining queued sessions without restarting the cancelled copy. The action bar is streamlined in this state — Reveal buttons are hidden, and Review & Verify is the primary inspection action.
+
+### Returning to setup mode
+
+When all queued items finish and no copy is running, the UI transitions back to the original source/destination setup panels. If queued items remain visible (completed, waiting for manual start), the queue manager stays active.
+
+### Auto-cleanup
+
+Completed, cancelled, and failed queue items older than 24 hours are automatically removed on app launch. Use the "Clear Done" button in the queue manager header for immediate manual cleanup.
+
+## Mixed Presets in Queue
+
+Each queued session stores the active copy preset at the time it was created (v2.4.5).
+
+### Visual indicator
+
+Queue rows show a coloured badge next to the session name:
+- **Card** — blue badge
+- **Folder** — green badge
+
+### Behaviour
+
+When a queued session starts, its stored preset is applied before the copy begins. This means different queue items can use different presets in the same queue run — for example, a Card-preset camera card ingest followed by a Folder-preset folder backup.
+
+### How presets are stored
+
+The preset is saved with the queued session item and persists across app restarts. Changing the active preset in the toolbar does not retroactively change already-queued sessions.
+
 ## Current Practical Guidance
 
 - For `A -> B` and `A -> C`, use one normal session with multiple destinations.
 - For `A -> B -> C`, use `Queue Relay Chain`.
 - For `A -> B -> C` followed by another card taking the same path, queue each card as its own relay chain.
 - For different cards going to different destinations, use separate queued sessions and `Start Queue`.
+- For camera card ingest, use the **Card** preset. For folder backup or archive, use the **Folder** preset.
+- To stage the next job while a copy runs, load sources and destinations, then click **Queue This Batch**.
+- Check the menu bar icon for copy progress without switching to the CopyTrust window.
 - Use `Help > CopyTrust Help` any time you want the in-app startup checklist again.
+- Use **Settings > Test** to validate that your current Card or Folder settings produce the expected results before running a real ingest.
+
+## Test Harness
+
+The built-in test harness (Settings > Test) generates controlled fixture files and runs the real copy engine to validate that naming, verification, exclusions, file prefix, and destination sort work as configured. It uses the same `IngestEngine.executeCopy` path as a real ingest — the only difference is the synthetic source files.
+
+### Why it exists
+
+Settings like naming templates, file prefixes, exclusion patterns, verification levels, and destination sort interact with each other. Changing one can affect outcomes in non-obvious ways. The test harness lets you confirm that your current configuration produces the expected results without needing a real camera card or waiting for a full ingest to complete.
+
+### Opening the test tab
+
+Open **Settings > Test**. The tab shows the current Card or Folder profile summary, scenario picker, path configuration, fixture options, and results.
+
+### Mode picker
+
+A **Card / Folder** segmented control at the top selects which mode profile to test. The profile summary below it shows the active settings that will be used: naming template, verification level, file prefix, exclusion status, and destination sort status. Switch modes to test each profile independently.
+
+### Scenarios
+
+Six test scenarios are available, each targeting a specific aspect of the copy engine:
+
+| Scenario | What it tests |
+|----------|---------------|
+| **Basic Copy** | Copy with current mode settings — verifies all files arrive at the destination |
+| **Naming Preservation** | Verifies `Preserve Original Folder Names` behaviour and template rendering |
+| **File Prefix** | Verifies the copied file prefix template renders correctly when enabled |
+| **Exclusion Pattern** | Verifies that enabled camera card exclusion patterns skip matching files |
+| **Verification Levels** | Tests none / quick / full / inline verification outcomes |
+| **Destination Sort** | Verifies files are sorted into type-based subfolders after copy |
+
+Each scenario focuses on one feature but runs the full copy pipeline. MHL generation, receipts, and verification all happen as they would in a real ingest.
+
+### Paths
+
+- **Source root** — where the synthetic source tree is created. Defaults to the system temp directory. Click Browse to choose a different location.
+- **Destination roots** — one or more destination folders where files are copied. Click the `+` button to add destinations and the `−` button to remove them.
+
+### Fixture options
+
+| Option | Choices | What it controls |
+|--------|---------|------------------|
+| **File count** | 5 / 20 / 50 | Number of synthetic files generated |
+| **Mix profile** | Camera Card / Mixed Media / Document Folder | Directory structure and file types |
+| **Size profile** | Tiny (1–10 KB) / Realistic (200 MB – 4 GB) / Large (1–20 GB) | Byte size of each generated file |
+| **Random seed** | Any integer | Seed for reproducible file content — same seed always produces the same files |
+
+Use **Tiny** size for quick validation runs. **Realistic** and **Large** sizes test with production-scale files but take proportionally longer.
+
+### Mix profiles
+
+- **Camera Card** — generates a `DCIM/` directory structure with `IMG_`, `DJI_`, `MVI_`, `DSC_`, and `CLIP_` prefixed files in `.JPG`, `.CR3`, `.MP4`, `.MOV`, `.ARW`, and `.MXF` formats. Mirrors the layout of a real camera card.
+- **Mixed Media** — generates files across `images/`, `video/`, `audio/`, `docs/`, and `sidecar/` directories with a variety of photo, video, audio, document, and sidecar formats.
+- **Document Folder** — generates nested directories (`reports/`, `invoices/`, `contracts/`, `notes/`, `archive/2025/`) with `.pdf`, `.xlsx`, `.docx`, `.txt`, and `.csv` files.
+
+### Running a test
+
+1. Select **Card** or **Folder** mode.
+2. Choose a scenario.
+3. Set the source and destination paths.
+4. Adjust fixture options if needed (defaults are fine for a quick check).
+5. Click **Run**.
+
+Progress text updates as the test moves through fixture generation, copy, verification, and analysis. When finished, colour-coded result pills appear.
+
+### Contextual tips
+
+The test tab shows scenario-specific tips when relevant settings are not active:
+- Running **File Prefix** with the file prefix setting disabled shows a warning that results may not reflect prefix behaviour.
+- Running **Destination Sort** with sort disabled shows a warning.
+- Running **Exclusion Pattern** with no active exclusion patterns shows a warning.
+
+### Reading results
+
+Results appear as colour-coded capsule labels:
+
+| Pill | Green means | Red means |
+|------|-------------|-----------|
+| **Generated** | Fixture files created successfully | Generation failed |
+| **Expected Copy** | Expected file count matches configuration | Count mismatch |
+| **Excluded** | Expected excluded count matches configuration | Exclusion logic error |
+| **Subfolder** | Destination subfolder name matches rendered template | Name mismatch |
+| **Prefix** | Destination filenames start with the rendered prefix | Prefix not applied |
+| **Verification** | All files passed hash verification | Verification failures |
+| **MHL** | MHL manifest file generated | MHL missing or write failure |
+| **Sorted** | Files moved to correct type-based subfolders | Sort mismatch |
+
+Below the pills, a per-destination analysis card shows expected vs actual file counts, plus any missing, unexpected, or failed files.
+
+### JSON reports
+
+Every test run saves a JSON report to `~/Library/Application Support/CopyTrust/TestReports/`. Reports include the full configuration snapshot, fixture manifest, expected vs actual results, and any mismatches. Use **Reveal Report** to open the reports directory in Finder.
+
+### Typical workflow
+
+1. Configure your Card or Folder settings as desired.
+2. Run the **Basic Copy** scenario with 5 files / Tiny to confirm the pipeline works.
+3. Run **Naming Preservation** if you changed the naming template or prefix.
+4. Run **File Prefix** if you enabled or changed the file prefix.
+5. Run **Exclusion Pattern** if you added or modified exclusion patterns.
+6. Run **Destination Sort** if you changed sort categories or folder mode.
+7. When all pills are green, your settings are validated for real use.
