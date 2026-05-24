@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-05-23  
-Branch baseline: `main` (v2.4.7 Build 1)
+v2.4.7 Build 1
 
 ## Purpose
 
