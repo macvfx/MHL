@@ -1,13 +1,9 @@
 # CopyTrust User Guide
 
 Date: 2026-05-23  
-Current branch baseline: `v2.4.7 (Build 1)` on `main`
+Current branch baseline: `v2.4.7 (Build 1)`
 
 This file is a short landing page for the current CopyTrust workflow.
-
-The canonical up-to-date guide is:
-
-- [docs/COPYTRUST_USER_GUIDE.md](docs/COPYTRUST_USER_GUIDE.md)
 
 ## Current Button Names and When Each Appears
 
