@@ -2,8 +2,19 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
+**v.2.4.7**
+
+CopyTrust version summaries (2.4.1 → 2.4.7):
+- 2.4.7 — Built-in test harness (Settings > Test) that generates synthetic fixtures and runs the real copy engine to validate naming, verification, exclusions, file prefix, and destination sort for both Card and Folder modes
+- 2.4.6 — Queue Manager two-mode UI (setup ↔ compact queue panel during copy), drag-to-queue and +Add staging, per-mode settings tabs (Card Copy / Folder Copy), per-queue-item settings snapshots, and camera card false-positive fix for writable drives
+- 2.4.5 — Inline per-file verification (new default), Card/Folder copy presets with independent settings profiles, preserve original folder names, name length guard, menu bar progress, dark mode, and queue staging during active copy
+- 2.4.4 — Destination volume monitoring with auto-resume on reconnect, pre-copy reachability checks, macOS notifications, and compact action bar
+- 2.4.3 — Pinned action bar so Start never scrolls off-screen, relay chain sort-skip fix, and session restore cleanup
+- 2.4.2 — Destination file sorting — automatically reorganize copied files into type-based subfolders (JPG, RAW, Video, Pro Video, Audio, Sidecar) after the trust chain is sealed
+- 2.4.1 — Copy progress improvements (smallest-first ordering, within-file byte progress) and NAS reliability fixes (F_FULLFSYNC hang, stale refresh after copy, main-thread hangs during batch copy)
+
 **v2.4.1 Build 7** — 
-- Folder Copy Compare copy reliability and progress sprint.
+- *Folder Copy Compare* copy reliability and progress sprint.
 -  Copy All Missing now sorts files smallest-to-largest so the file counter starts moving immediately even on batches containing very large files. The Data progress bar updates continuously as each file is being written — for a 127 GB file the progress bar moves from the first buffer flush rather than sitting at 0% until the whole file finishes.
 -  Also in this sprint: NAS/network copy hangs fixed (network volumes now use `fsync` instead of `F_FULLFSYNC`, which blocks indefinitely waiting for physical NAS flush);
 -  single-file copy on NAS fixed; Refresh in Subfolder Check drill-down now correctly reflects newly copied files by re-enumerating the target directory from disk;
