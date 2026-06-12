@@ -293,12 +293,9 @@ struct ContentView: View {
                     }
                 )
             } else {
-                ZStack {
-                    HTMLPreviewView(html: store.renderedHTML)
-                    FileDropOverlayView { urls in
-                        store.openMHLFiles(urls: urls)
-                    }
-                }
+                HTMLPreviewView(html: store.renderedHTML, onFilesDropped: { urls in
+                    store.openMHLFiles(urls: urls)
+                })
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)

@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 struct MHLFileDocument: FileDocument {
     static let readableContentTypes: [UTType] = [
         UTType(importedAs: "io.macadmins.pique.mediahashlist"),
+        UTType(importedAs: "nl.syncfactory.hedge.mac.mhl"),
         .xml
     ]
 
