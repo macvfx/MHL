@@ -117,6 +117,15 @@ In practice, that means:
 - the manifest is still understandable later
 - it is more archive-friendly than an opaque internal database
 
+## Classic MHL v1.1 vs ASC MHL v2.0
+
+There are two generations of the format in circulation:
+
+- **Classic MHL v1.1** — the original Pomfort-era format. Per-file data is stored as child elements (`<file>`, `<size>`, `<xxhash64>`). Still the most widely interchanged format; this is what the Media Trust Tools suite writes.
+- **ASC MHL v2.0** — the ASC MITC successor (`<hashlist version="2.0">`). File metadata moves into attributes on a `<path>` element, digests live in algorithm-named elements (`<xxh64>`, `<xxh3>`, `<c4>`…) with provenance (`action="original"` / `"verified"`), and manifests conventionally live in an `ascmhl/` folder that can chain multiple generations into a verifiable history. Silverstack 9+ writes ASC MHL by default, YoYotta v4 and ShotPut Pro support it, and some studios now require it for delivery.
+
+As of suite v2.5.1, the shared Media Trust Tools MHL engine **reads and verifies both generations** (xxh64, MD5, SHA-1 digests in v2.0 files) while continuing to **write v1.1** for maximum interchange compatibility. ASC MHL writing and the newer xxh3/xxh128 algorithms are on the roadmap.
+
 ## Why Use It With Drop Verify
 
 Drop Verify gives you a simple way to generate:

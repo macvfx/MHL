@@ -9,6 +9,8 @@
 
 It also includes a secondary `Handlers` tab for checking or changing the default app macOS uses for `.mhl`.
 
+> **Supported formats:** version 2.4.1 reads classic MHL v1.0/1.1 files. ASC MHL v2.0 hashlists (the Silverstack 9+ default) are not yet readable — they show "Zero bytes" and no hash entries ([#1](https://github.com/macvfx/MHL/issues/1)); support arrives with the 2.5.1 release. Until then, verify ASC MHL v2.0 files with `mhl-tool verify` or Folder Copy Compare.
+
 ## Opening MHL Files
 
 ### Option 1: Drag to the Dock Icon

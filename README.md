@@ -48,7 +48,7 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Per-destination preflight checks (free space, write permissions, reachability)
 - Post-copy verification with xxHash64 (None / Quick / Full)
 - **MHL v1.1** hash list generation — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta
-- MHL import verification — drag-and-drop any `.mhl` to re-verify destination files
+- MHL import verification — drag-and-drop any `.mhl` to re-verify destination files; reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+, OffShoot, YoYotta, ShotPut Pro) as of v2.5.1
 - **Auto-advance** multi-source copy with per-card subfolder naming
 - **Queued sessions** for walk-away ingest staging across different card/destination setups
 - **Relay-chain copy** for `A -> B -> C` workflows using one source plus ordered destinations and `Queue Relay Chain`
@@ -77,13 +77,15 @@ Standalone MHL verification. Load any `.mhl` file and verify whether the media f
 - Re-check copies, archive restores, and handoff deliveries
 - Works with MHLs from Drop Verify, CopyTrust, OffShoot, Silverstack, or any MHL-capable tool
 
+> **Known issue:** MHL Verify 2.4.1 cannot yet read ASC MHL v2.0 hashlists (the Silverstack 9+ default) — see [#1](https://github.com/macvfx/MHL/issues/1). The shared MHL engine gained ASC MHL v2.0 support in suite v2.5.1 (`mhl-tool`, CopyTrust, Folder Copy Compare); MHL Verify adopts it in its 2.5.1 release. Until then, verify Silverstack v2.0 files with `mhl-tool verify`.
+
 ## Folder Copy Compare
 
 The original tool that started the suite — a simple "did the copy work?" sanity check. Drop two folders and get an honest answer.
 
 Use after copying with CopyTrust, Archiware P5 Sync, a Finder copy, `rsync`, Hedge, ShotPut Pro, or any other tool.
 
-- **Compare mode** — Quick Scan (name, size, date) or Full Scan (xxHash64 / SHA-256 content hashing); per-file comparison: missing, extra, different, identical; **Copy All Missing** to sync differences, then **Refresh** to re-verify; MHL v1.1 generation and verification from either compared folder
+- **Compare mode** — Quick Scan (name, size, date) or Full Scan (xxHash64 / SHA-256 content hashing); per-file comparison: missing, extra, different, identical; **Copy All Missing** to sync differences, then **Refresh** to re-verify; MHL v1.1 generation and verification (reads MHL v1.x and ASC MHL v2.0 as of v2.5.1) from either compared folder
 - **Subfolder Check mode** — fast structural sanity check: aligns immediate subfolders side-by-side with file counts, total sizes, and Archiware P5 stub file detection (`.p5a` / `.p5c`); colour-coded match indicators (exact / close / different / one-side-only); click any matched row to drill down using the active Quick / Full Scan setting
 - **Date Only** quick-scan status plus per-file **Hash Check** for same-size, different-date pairs without forcing a full rescan
 - Folder selections persist across Compare / Subfolder Check mode switches; scan cancel is non-destructive; stub cleanup now shows progress and hides `Clean` on the `_P5 Stub Cleanup` folder
@@ -91,13 +93,13 @@ Use after copying with CopyTrust, Archiware P5 Sync, a Finder copy, `rsync`, Hed
 
 ## mhl-tool (CLI)
 
-Command-line tool for creating and verifying MHL v1.1 manifests. Same MHL engine as CopyTrust and Drop Verify, built for the terminal.
+Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL v1.x and ASC MHL v2.0 manifests (v2.5.1). Same MHL engine as CopyTrust and Drop Verify, built for the terminal.
 
 - `mhl-tool create <folder>` — hash files and write an MHL manifest
-- `mhl-tool verify <folder>` — verify files against MHL(s), auto-discovers `_Receipts`
+- `mhl-tool verify <folder>` — verify files against MHL(s), auto-discovers `_Receipts` and `ascmhl` folders
 - Media-only (default) or `--all-files` mode
 - JSON output for scripting, quiet mode for CI
-- Reads MHLs from any tool (OffShoot, Silverstack, ShotPut Pro, YoYotta)
+- Reads MHLs from any tool (OffShoot, Silverstack, ShotPut Pro, YoYotta), including ASC MHL v2.0 hashlists — the Silverstack 9+ default
 - Signed, notarized `.pkg` installer for distribution
 
 ## Keyboard Shortcuts

@@ -182,6 +182,8 @@ The app determines which scanned folder to verify based on the manifest location
 
 This is useful for verifying copies made by other tools or re-checking a previously generated manifest.
 
+Both manifest generations are supported (v2.5.1): classic **MHL v1.x** (CopyTrust, Drop Verify, OffShoot, ShotPut Pro, YoYotta) and **ASC MHL v2.0** — the default output of Pomfort Silverstack 9+. For ASC MHL files stored in an `ascmhl/` subfolder, paths resolve against that folder's parent automatically.
+
 ## Subfolder Check Mode
 
 ### What it does

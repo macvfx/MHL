@@ -13,6 +13,12 @@ It started as a default-handler utility, but the current app is primarily an MHL
 - Export the active MHL as JSON, Markdown, or RTF
 - Inspect and change the default macOS app for `.mhl`
 
+## Supported MHL Formats
+
+MHL Verify 2.4.1 reads **classic MHL v1.0/1.1** files (CopyTrust, Drop Verify, Hedge OffShoot, ShotPut Pro, YoYotta, and Silverstack 8.x and earlier).
+
+> **Known issue:** **ASC MHL v2.0** hashlists — the default output of Pomfort Silverstack 9+ — are not yet readable; they open but show "Zero bytes" and no usable hash entries. This is tracked as [#1](https://github.com/macvfx/MHL/issues/1). The shared Media Trust Tools MHL engine gained ASC MHL v2.0 read/verify support in suite v2.5.1, and MHL Verify adopts that engine in its 2.5.1 release. Until then, verify Silverstack ASC MHL files with `mhl-tool verify` or Folder Copy Compare.
+
 ## Main Workflows
 
 ### Open From the Dock

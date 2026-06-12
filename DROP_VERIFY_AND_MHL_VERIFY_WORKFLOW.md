@@ -32,6 +32,8 @@ It is best for:
 - confirming that an archived or handed-off copy still matches the original manifest
 - validating MHLs from Drop Verify, CopyTrust, Silverstack, OffShoot, YoYotta, or other compatible apps
 
+> **ASC MHL v2.0 note (June 2026):** Pomfort Silverstack 9+ writes ASC MHL v2.0 hashlists by default rather than classic MHL v1.1. MHL Verify 2.4.1 cannot yet read these files — they display "Zero bytes" with no usable hash entries (tracked as [macvfx/MHL#1](https://github.com/macvfx/MHL/issues/1)). The shared MHL engine gained ASC MHL v2.0 read/verify support in suite v2.5.1, so `mhl-tool verify`, CopyTrust re-verify, and Folder Copy Compare's Verify MHL handle Silverstack v2.0 files now; MHL Verify adopts the same engine in its 2.5.1 release. Until then, verify Silverstack ASC MHL files with `mhl-tool verify` or Folder Copy Compare.
+
 ## Recommended Workflow
 
 ### Workflow A: Create an MHL with Drop Verify, then verify it with MHL Verify

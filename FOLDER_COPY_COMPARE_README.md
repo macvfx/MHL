@@ -27,7 +27,7 @@ If the copy was made by something else and you just want a quick sanity check �
 - Detect broken symbolic links, report what they point to, and guide operator-reviewed relinking
 - Copy missing or changed files into the target
 - Generate an **MHL v1.1** manifest from either compared folder after a full xxHash64 scan
-- Verify an existing `.mhl` against the scanned folders
+- Verify an existing `.mhl` against the scanned folders — classic MHL v1.x and ASC MHL v2.0 (Silverstack 9+) as of v2.5.1
 
 ## What’s New in v2.3 (Build 7)
 
