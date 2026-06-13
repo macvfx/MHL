@@ -1,6 +1,6 @@
 # Folder Copy Compare User Guide
 
-Tested version: **v2.3 (Build 7)**.
+Tested version: **v2.4.9 (Build 1)**. Current development build: **v2.5.0 (Build 4, test)** — CopyTrust-only changes (error classification); Folder Copy Compare behaviour is unchanged.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
 
@@ -18,24 +18,66 @@ No setup, no session, no artifacts — just drop two folders and compare.
 
 ## Two Modes
 
-Folder Copy Compare has two modes, selectable from the **Compare | Subfolder Check** segment control at the top of the window:
+Folder Copy Compare has two modes, selectable from the **Compare | Subfolder Check** control at the top of the window:
 
-- **Compare** — the original full file-by-file comparison. Drop two folders, scan, compare. See all differences down to individual files.
+- **Compare** — the original full file-by-file comparison. Drop two folders, scan, compare. See all differences down to individual files. Optionally add a **Reference** folder to compare across three locations. Save comparisons as named profiles using the bookmark button.
 - **Subfolder Check** — a fast structural sanity check. Drop two folders, get a side-by-side view of their immediate subfolders with match indicators and stub file warnings. Click any row to drill down into a comparison of just that subfolder pair (Quick or Full Scan), then repair missing files or clean up P5 stubs in place.
 
 Use Compare when you want a complete answer. Use Subfolder Check when you want a quick overview first — especially useful after Archiware P5 restores or any operation that works folder-by-folder.
 
 **Switching modes does not clear your drop zones.** Folders loaded in Compare mode are carried over when you switch to Subfolder Check, and vice versa. You can switch freely without re-dropping.
 
-## What’s New in v2.3 (Build 7)
+## What’s New in v2.4.9 (Build 1)
 
-- **Folder selections are preserved on mode switch.** Switching between Compare and Subfolder Check no longer clears the drop zones — folders already loaded carry over automatically and a new scan starts immediately.
-- **Quick Scan is respected in Subfolder Check drill-down.** Clicking a subfolder pair now uses the active scan mode setting. Quick Scan produces a near-instant size-and-date comparison; Full Scan hashes every file for content accuracy.
-- **"Date Only" result status.** After a Quick Scan, files with the same name and size but different modification dates are now shown in their own yellow **Date Only** bucket instead of the red **Different content** bucket. This is a normal artefact of filesystem copies and is almost always harmless.
-- **Per-file Hash Check.** From any Date Only row, click the checkmark (✓) in the Actions column to hash just that one file pair. Source and target are hashed concurrently; the result — Identical, Different, or Failed — appears in the file detail panel without triggering a full rescan.
-- **Clearer scan progress labels.** The progress bar now shows "Hashing X% — N of ~M files" during a Full Scan and "Scanning X% — N of ~M files" during a Quick Scan. The final message reads "Hash complete — N files" or "Scan complete — N files" accordingly.
-- **Reliable cancel behaviour.** Cancelling a scan no longer shows an error alert or removes the folder from the drop zone. The folder stays visible with a "Scan cancelled" label and Reset is immediately available.
-- **Compare Folders button hidden in Subfolder Check mode.** The button was previously visible but irrelevant in Subfolder Check mode. Scans now fire automatically when folders are dropped.
+### Reference folder compare
+
+- Compare mode now supports an optional **Reference** folder for comparing the same content across three locations.
+- Click **Compare against a reference location** below the drop zones. A third purple drop zone appears alongside Source (green) and Target (blue).
+- Click **Compare All** to run the comparison. Results merge into a single table showing per-file status across all three locations.
+- Statuses include: all identical, all present but different, missing in source/target/reference, only in one location, and two-match-one-differs.
+- Filter by status, search by filename, and right-click any row to reveal the file in Finder at any of the three locations.
+- Click **Remove Reference** to return to standard two-folder comparison.
+
+### Saved profiles
+
+- Click the **Save as Profile** button (bookmark with plus icon) next to the mode picker to save the current comparison setup (source, target, optional reference, scan mode) as a named profile.
+- Open the **profile drawer** using the bookmark toggle button next to the mode picker.
+- Click **Load** on any profile to instantly populate the drop zones. Profiles with a reference folder automatically enable the reference drop zone.
+- Edit a profile’s name, paths, scan mode, or watch interval via the ⋯ menu.
+
+### Two-phase scan progress
+
+- Scanning now shows two clearly distinct phases: first **"Discovering files… N found"** while file enumeration runs, then **"Scanning/Hashing X% — N of M files"** with exact progress against the known total. No more approximate file counts.
+
+### Folder watch with drift detection
+
+- Toggle the **eye icon** on any saved profile to start watching its folders for changes.
+- The watch uses macOS FSEvents (`DispatchSource`) to detect file writes, renames, deletions, and attribute changes.
+- When drift is detected, a **macOS notification** is posted and a **red dot** appears on the profile row.
+- Watch interval is configurable per profile: 1 min, 5 min, 15 min, 30 min, or 1 hour.
+- Clear the drift alert with the **×** button. The bottom bar shows how many profiles are actively watched.
+
+## What’s New in v2.4.1 (Build 7)
+
+### Copy reliability and progress
+
+- **Copy All Missing sorts files smallest-first.** Files are copied smallest-to-largest so the file counter starts moving immediately — even when the batch contains very large files. Applies to both Compare mode and Subfolder Check drill-down.
+- **Within-file byte progress.** The Data progress bar and byte counter now update continuously as each file is being written, throttled to 100 ms. A 127 GB file shows real progress from the first buffer flush rather than sitting at 0% until the whole file finishes.
+- **NAS / network volume copy fixed.** `Copy All Missing` and per-file `Copy` no longer hang on SMB/NFS destinations. Network volumes now use `fsync` instead of `F_FULLFSYNC`, which blocks indefinitely waiting for a physical media flush the NAS may never promptly acknowledge. Local volumes (APFS, HFS+, exFAT on directly attached drives) still use `F_FULLFSYNC` for stronger durability.
+- **Subfolder Check drill-down Refresh fixed.** After copying missing files in a drill-down, clicking **Refresh** (or the automatic recompute that runs after a batch copy) now re-enumerates the target folder from disk. Newly copied files appear immediately rather than still showing as missing.
+
+### UI enhancements
+
+- **"Date Only Difference" label.** The Quick Scan status for same-size, different-date pairs is now labelled **Date Only Difference** throughout the UI for clarity.
+- **Check All Hashes.** A **Check All (N)** link appears in the Date Only Difference sidebar group whenever there are unchecked pairs. Hashing runs sequentially — one pair at a time — with a live "N of M" counter and a **Cancel** button. Partial results are preserved if you cancel.
+- **Clean Windows Files.** A **Clean Windows Files (N)** toolbar button appears when the comparison contains Windows system artifacts: `$RECYCLE.BIN` entries, `Desktop.ini`, `Thumbs.db`, `ehthumbs.db`, or `AUTORUN.INF`. A confirmation dialog is shown before anything moves; files go to the macOS Trash and are fully recoverable.
+
+### App-level — Check for Updates (v2.4 Build 1)
+
+- All three apps (FolderCopyCompare, CopyTrust, Drop Verify) now check GitHub Releases automatically at launch, at most once every 24 hours, silently. No alert unless an update is found.
+- A **Check for Updates…** menu item appears under the app name after About. Clicking it always checks immediately and reports the result.
+- When a newer release is available, an alert shows current and latest version numbers, release notes, and a **Download** button that opens the GitHub release page.
+- No analytics, no file download — only the version tag is fetched from GitHub.
 
 ## Getting Started
 
@@ -59,10 +101,26 @@ Use Compare when you want a complete answer. Use Subfolder Check when you want a
 
 **Tip:** If you already dropped folders in Compare mode, switching to Subfolder Check carries those folders over automatically and starts a Phase 1 scan immediately — no need to re-drop.
 
+### Reference compare
+
+1. In **Compare** mode, drop a source and target folder.
+2. Click **Compare against a reference location** below the drop zones.
+3. Drop a third folder onto the purple **Reference** zone.
+4. Click **Compare All**.
+5. Review the merged results table showing status across all three locations.
+
+### Saving and loading profiles
+
+1. Set up a comparison (with or without a reference folder) and run it.
+2. Click the **Save as Profile** button (bookmark with plus icon) next to the mode picker.
+3. Give it a name and save.
+4. To reload later: open the profile drawer (bookmark toggle), click **Load** on the saved profile.
+5. To watch for drift: click the **eye icon** on any profile. You'll receive a macOS notification when files change.
+
 ## Scan Modes
 
-- **Quick Scan** compares by file count, size, and date only — no hashing. Fast but cannot detect content changes where the file size and date are the same. Progress shows "Scanning X% — N of ~M files".
-- **Full Scan** hashes every file for content-level comparison. Use xxHash64 (default) for speed and MHL support. Progress shows "Hashing X% — N of ~M files".
+- **Quick Scan** compares by file count, size, and date only — no hashing. Fast but cannot detect content changes where the file size and date are the same. Progress shows "Discovering files… N found" during enumeration, then "Scanning X% — N of M files" during processing.
+- **Full Scan** hashes every file for content-level comparison. Use xxHash64 (default) for speed and MHL support. Progress shows "Discovering files… N found" during enumeration, then "Hashing X% — N of M files" during processing.
 
 The active scan mode applies everywhere: Compare mode, Subfolder Check drill-downs, and per-file Hash Check all use the same setting.
 
@@ -70,8 +128,10 @@ The active scan mode applies everywhere: Compare mode, Subfolder Check drill-dow
 
 Open **Folder Copy Compare > Settings** (`⌘,`) to configure:
 
-- **Exclusions** — file and folder patterns to skip during scanning (grouped by category).
-- **Scan Options** — symlink handling, hash algorithm, concurrency, and metadata cache.
+- **Exclusions** — file and folder patterns to skip during scanning (grouped by category: Coding, File Storage, System, Media Files, Camera Card). Every visible checkbox is respected: checked patterns are skipped and unchecked patterns remain included. The **System** group is enabled by default and excludes OS-generated directories (`.Spotlight-V100`, `.fseventsd`, `.Trashes`, `@eaDir`, `System Volume Information`, etc.). Camera Card patterns such as `MISC`, `THMBNL`, `.THM`, and `.LRV` are optional and are not silently forced on. All pattern matching is case-insensitive.
+- **Scan Options** — hidden files, symlink handling, hash algorithm, concurrency, and metadata cache. **Skip hidden files and folders** is enabled by default, excluding dot-prefixed items (e.g. `.git`, `.ssh`) from scans.
+
+Scanner tests cover this behavior: enabled file/folder-name matches are skipped, unchecked patterns such as `.tmp` and `THMBNL` remain included, and hidden files are controlled only by the hidden-file toggle.
 
 ### Hash Algorithm
 
@@ -93,11 +153,11 @@ After the scan completes, click **Compare Folders** to see:
 | **Missing in target** | Red | File exists in source but not in target |
 | **Extra in target** | Blue | File exists in target but not in source |
 | **Different content** | Orange | File exists in both places but content hashes differ |
-| **Date Only** | Yellow | File exists in both places, sizes match, but modification dates differ (Quick Scan only) |
+| **Date Only Difference** | Yellow | File exists in both places, sizes match, but modification dates differ (Quick Scan only) |
 | **Identical** | Green | File matches exactly |
 | **Symlink** | Grey | Symbolic link — shown for reference, not included in difference counts |
 
-Use the per-file **Copy** button or **Copy All Missing** to sync differences. Use **Refresh Comparison** to re-scan both folders and update results.
+Use the per-file **Copy** button or **Copy All Missing** to sync differences. **Copy All Missing** copies files in smallest-to-largest order so the file counter starts moving immediately. Use **Refresh Comparison** to re-scan both folders and update results.
 
 ### Broken Symlink Recovery
 
@@ -134,24 +194,42 @@ After running the recovery workflow, broken-symlink exports include:
 - recovery status
 - recovery error, if any
 
-### "Date Only" — understanding filesystem-copy date differences
+### "Date Only Difference" — understanding filesystem-copy date differences
 
 When a file is copied between filesystems (Finder copy, rsync, Archiware P5 restore, or any other tool), the modification date is often reset to the current time rather than preserved. A Quick Scan embeds the modification timestamp in its comparison hash, so two copies of the same file on different filesystems hash differently even though the content is byte-for-byte identical.
 
-**Date Only** surfaces this pattern as its own status instead of lumping it into **Different content**. An operator can immediately see that these pairs have matching sizes — a strong indicator of a harmless artefact — rather than investigating them as genuine data integrity issues.
+**Date Only Difference** surfaces this pattern as its own status instead of lumping it into **Different content**. An operator can immediately see that these pairs have matching sizes — a strong indicator of a harmless artefact — rather than investigating them as genuine data integrity issues.
 
-Date Only only appears in Quick Scan results. A Full Scan hashes content directly, so a Full Scan result of Identical means the files are provably identical, and Different means the content genuinely differs regardless of dates.
+Date Only Difference only appears in Quick Scan results. A Full Scan hashes content directly, so a Full Scan result of Identical means the files are provably identical, and Different means the content genuinely differs regardless of dates.
 
 ### Per-file Hash Check
 
-If you want to confirm that a Date Only pair is actually identical without running a full rescan of the entire folder, click the checkmark (✓) in the **Actions column** on that row.
+If you want to confirm that a Date Only Difference pair is actually identical without running a full rescan, click the checkmark (✓) in the **Actions column** on that row.
 
 - Source and target are hashed concurrently using the algorithm selected in Settings (xxHash64 or SHA-256).
 - A spinner appears in the row while hashing. The result appears in the file detail panel:
   - **Identical** (green shield): content confirmed identical. The date difference is harmless.
   - **Different** (red shield): hashes differ — the files are genuinely different and warrant investigation.
   - **Failed** (grey): one or both files could not be read.
-- The Hash Check button only appears on Date Only rows. Rows that already carry full-scan hashes are already content-verified and do not need an additional check.
+- The Hash Check button only appears on Date Only Difference rows. Rows that already carry full-scan hashes are already content-verified and do not need an additional check.
+
+### Check All Hashes (Date Only Difference group)
+
+To verify the entire Date Only Difference group without clicking each row individually, use **Check All (N)** — the link that appears below the Date Only Difference filter in the sidebar.
+
+- Hashing runs **sequentially** — one file pair at a time — so disk I/O stays focused. Results appear row by row as each pair completes.
+- Progress is shown inline as "N of M checked" with a spinner while running.
+- A **Cancel** button stops the sequence after the current pair finishes. Partial results are preserved — the button reappears for the remaining unchecked items.
+
+### Clean Windows Files
+
+When a folder was previously used on Windows, it may contain system artifacts that are meaningless on macOS: `$RECYCLE.BIN` entries, `Desktop.ini`, `Thumbs.db`, `ehthumbs.db`, or `AUTORUN.INF`.
+
+When any of these appear in the comparison, a **Clean Windows Files (N)** button appears in the compare toolbar.
+
+- A confirmation dialog is shown before any files are moved.
+- Files are sent to the **macOS Trash** (not permanently deleted — they can be recovered from Trash if needed).
+- The comparison list refreshes automatically after cleanup. The button is hidden when no artifacts are present.
 
 ## MHL Menu
 
@@ -255,7 +333,7 @@ Drop source and target (e.g. a P5 restore job folder and its origin)
   -> Review table for any red rows, missing subfolders, or stub warnings
   -> Click a suspicious row to drill down (Quick Scan — near-instant)
   -> Review missing, different, date-only, and identical file counts
-  -> For any Date Only rows, click Hash Check (shield) to confirm content
+  -> For any Date Only Difference rows, click Hash Check (shield) to confirm content
   -> Use Copy / Copy All Missing to repair missing files in that subfolder pair
   -> Use Clean on any side with P5 stubs to move them into _P5 Stub Cleanup
   -> Switch to Full Scan and re-drill if you need content-level verification
@@ -303,6 +381,16 @@ Drop folder as source
   -> Compare Folders
   -> MHL > Verify MHL
 ```
+
+## Check for Updates
+
+Folder Copy Compare checks GitHub Releases automatically at launch, at most once every 24 hours. The check is silent — no alert appears unless a newer release is found.
+
+To check manually at any time, choose **Folder Copy Compare > Check for Updates…** from the menu bar.
+
+- When a newer release is available, an alert shows the current and latest version numbers, release notes, and a **Download** button that opens the GitHub release page in your browser.
+- When already up to date, the alert confirms the current version matches the latest release.
+- No analytics or file download — only the version tag is fetched from GitHub.
 
 ## Help Menu
 

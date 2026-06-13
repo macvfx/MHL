@@ -9,15 +9,34 @@ It started as a default-handler utility, but the current app is primarily an MHL
 - Open `.mhl` files as native macOS documents
 - Open files by dragging onto the Dock icon, dragging into the app, or using the Open button
 - Review a single MHL in the reader
+- **Verify** the files listed in an MHL — re-hash them from disk and compare against the recorded digests (new in 2.5.1)
 - Compare two MHL files side by side
 - Export the active MHL as JSON, Markdown, or RTF
 - Inspect and change the default macOS app for `.mhl`
 
 ## Supported MHL Formats
 
-MHL Verify 2.4.1 reads **classic MHL v1.0/1.1** files (CopyTrust, Drop Verify, Hedge OffShoot, ShotPut Pro, YoYotta, and Silverstack 8.x and earlier).
+As of 2.5.1, MHL Verify uses **CopyCore**, the shared Media Trust Tools engine (the same parser and verifier as `mhl-tool`, CopyTrust, and Folder Copy Compare), and reads both manifest generations:
 
-> **Known issue:** **ASC MHL v2.0** hashlists — the default output of Pomfort Silverstack 9+ — are not yet readable; they open but show "Zero bytes" and no usable hash entries. This is tracked as [#1](https://github.com/macvfx/MHL/issues/1). The shared Media Trust Tools MHL engine gained ASC MHL v2.0 read/verify support in suite v2.5.1, and MHL Verify adopts that engine in its 2.5.1 release. Until then, verify Silverstack ASC MHL files with `mhl-tool verify` or Folder Copy Compare.
+- **Classic MHL v1.0/1.1** — CopyTrust, Drop Verify, Hedge OffShoot, ShotPut Pro, YoYotta, Silverstack 8.x and earlier
+- **ASC MHL v2.0** — the default output of Pomfort Silverstack 9+, including manifests stored in an `ascmhl/` folder; xxHash64, MD5, SHA-1, and SHA-256 digests, with per-entry `action` provenance
+
+Version 2.4.1 and earlier displayed ASC MHL v2.0 files as "Zero bytes" with no hash entries ([#1](https://github.com/macvfx/MHL/issues/1)) — fixed in 2.5.1.
+
+**Requires macOS 14 (Sonoma) or later** as of 2.5.1, aligning with the rest of the suite. macOS 13 users can stay on 2.4.1.
+
+## Verify Files Against an MHL (new in 2.5.1)
+
+Click `Verify…` in the `Reader` tab, or in any document window opened via **Open With › MHL Verify**.
+
+- The media folder is detected from the MHL's location automatically — including the ASC MHL `ascmhl/` layout — and can be changed to verify a copy in another location
+- Every file listed in the MHL is re-hashed from disk and compared against the recorded digest
+- Per-file progress, cancellable mid-file
+- Results show matched / mismatched / missing counts plus the expected and actual digests for every mismatch
+
+## About the Code in This Repo
+
+The [MHL_VERIFY_CODE](MHL_VERIFY_CODE) folder is a **reference snapshot** of the app's source, kept as a worked example of a macOS Quick Look extension (with preview rendering derived from [Pique](https://github.com/macadmins/pique)). It is not updated in lockstep with releases — as of 2.5.1 the shipping app's MHL parsing and verification moved into the shared (private) CopyCore engine, so the snapshot reflects the last self-contained version (2.4.1).
 
 ## Main Workflows
 

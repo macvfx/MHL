@@ -2,42 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**v.2.4.7**
-
-CopyTrust version summaries (2.4.1 → 2.4.7):
-- 2.4.7 — Built-in test harness (Settings > Test) that generates synthetic fixtures and runs the real copy engine to validate naming, verification, exclusions, file prefix, and destination sort for both Card and Folder modes
-- 2.4.6 — Queue Manager two-mode UI (setup ↔ compact queue panel during copy), drag-to-queue and +Add staging, per-mode settings tabs (Card Copy / Folder Copy), per-queue-item settings snapshots, and camera card false-positive fix for writable drives
-- 2.4.5 — Inline per-file verification (new default), Card/Folder copy presets with independent settings profiles, preserve original folder names, name length guard, menu bar progress, dark mode, and queue staging during active copy
-- 2.4.4 — Destination volume monitoring with auto-resume on reconnect, pre-copy reachability checks, macOS notifications, and compact action bar
-- 2.4.3 — Pinned action bar so Start never scrolls off-screen, relay chain sort-skip fix, and session restore cleanup
-- 2.4.2 — Destination file sorting — automatically reorganize copied files into type-based subfolders (JPG, RAW, Video, Pro Video, Audio, Sidecar) after the trust chain is sealed
-- 2.4.1 — Copy progress improvements (smallest-first ordering, within-file byte progress) and NAS reliability fixes (F_FULLFSYNC hang, stale refresh after copy, main-thread hangs during batch copy)
-
-**v2.4.1 Build 7** — 
-- *Folder Copy Compare* copy reliability and progress sprint.
--  Copy All Missing now sorts files smallest-to-largest so the file counter starts moving immediately even on batches containing very large files. The Data progress bar updates continuously as each file is being written — for a 127 GB file the progress bar moves from the first buffer flush rather than sitting at 0% until the whole file finishes.
--  Also in this sprint: NAS/network copy hangs fixed (network volumes now use `fsync` instead of `F_FULLFSYNC`, which blocks indefinitely waiting for physical NAS flush);
--  single-file copy on NAS fixed; Refresh in Subfolder Check drill-down now correctly reflects newly copied files by re-enumerating the target directory from disk;
--  `Date Only Difference` replaces the earlier "Date Only" label throughout the UI;
--  sequential Check All Hashes for the Date Only Difference group; and
--  Windows artifact cleanup (`$RECYCLE.BIN`, `Desktop.ini`, `Thumbs.db`, etc.) moved to Trash in one operation.
--  App hang fixes (Sentry-detected): `statusCounts` replaced with a single-pass `ItemCounts` struct; progress callbacks throttled to 100 ms.
-
-**v2.4 Build 1**  — All three apps now check for new releases on GitHub automatically at launch (at most once every 24 hours, silently). A **Check for Updates…** menu item appears under the app name after About. When a newer release is found, an alert shows version numbers, release notes, and a Download button linking to the GitHub release page. Powered by the `GitHubUpdateChecker` Swift package — no analytics, no file download, just the version tag.
-
-
-### MHL Verify (2.3 build 7)
-- Scrolling through an MHL's content in the Reader tab did not work. The scroll bar was visible but unresponsive.
-- MHL files created by production tools that generate their own file-type metadata are now recognised by MHL Verify.
-- The Quick Look extension now also previews `.mhl` files stamped with alternate type identifiers, consistent with the main app changes above.
-- The biggest gains since `v2.1.8` and `v2.1.9` are shared MHL correctness and interoperability rather than large UI changes.
-- MHLs written by the suite now preserve source path and source identity more accurately and no longer treat pre-existing `.mhl` receipts as media entries.
-- Practical summary: MHL verification across suite-generated manifests should now be more trustworthy and easier to compare with other MHL-capable tools.
-
-### mhl-tool (CLI)
-- The main changes since `v2.1.8` and `v2.1.9` are shared `CopyCore` MHL improvements rather than a large CLI workflow redesign.
-- The CLI now benefits from the same cleaner source metadata handling and `.mhl` entry filtering used by the apps.
-- Practical summary: `mhl-tool` now produces cleaner, more interoperable manifests that better match the current app-side trust workflow.
+**Current version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
 
 ## CopyTrust
 
@@ -72,12 +37,15 @@ Single-folder drag-and-drop verification. Drop a folder and generate trust artif
 
 ## MHL Verify
 
-Standalone MHL verification. Load any `.mhl` file and verify whether the media files still match.
+Standalone MHL reader and verifier. Load any `.mhl` file, review it, and verify whether the media files still match.
 
+- **Verify** action (new in 2.5.1): re-hashes every file listed in the MHL and reports matched / mismatched / missing with digests
+- Reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+ default, incl. `ascmhl/` folder layouts) — fixes [#1](https://github.com/macvfx/MHL/issues/1)
 - Re-check copies, archive restores, and handoff deliveries
-- Works with MHLs from Drop Verify, CopyTrust, OffShoot, Silverstack, or any MHL-capable tool
+- Works with MHLs from Drop Verify, CopyTrust, OffShoot, Silverstack, YoYotta, ShotPut Pro, or any MHL-capable tool
+- Requires macOS 14+ as of 2.5.1 (2.4.1 remains for macOS 13, but cannot read ASC MHL v2.0)
 
-> **Known issue:** MHL Verify 2.4.1 cannot yet read ASC MHL v2.0 hashlists (the Silverstack 9+ default) — see [#1](https://github.com/macvfx/MHL/issues/1). The shared MHL engine gained ASC MHL v2.0 support in suite v2.5.1 (`mhl-tool`, CopyTrust, Folder Copy Compare); MHL Verify adopts it in its 2.5.1 release. Until then, verify Silverstack v2.0 files with `mhl-tool verify`.
+See [MHL_VERIFY_README.md](MHL_VERIFY_README.md), [MHL_VERIFY_USER_GUIDE.md](MHL_VERIFY_USER_GUIDE.md), and [MHL_VERIFY_CHANGELOG.md](MHL_VERIFY_CHANGELOG.md).
 
 ## Folder Copy Compare
 

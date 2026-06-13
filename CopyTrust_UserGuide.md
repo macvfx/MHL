@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-05-23  
-v2.4.7 Build 1
+Date: 2026-06-09  
+Branch baseline: `main` (v2.5.0 Build 4, test)
 
 ## Purpose
 
@@ -462,6 +462,30 @@ On first launch, macOS will prompt you to allow notifications from CopyTrust. If
 
 Prior to v2.4.4, macOS would report "permission denied" errors when a volume mount point disappeared, which was misleading. In v2.4.4 and later, CopyTrust detects the real cause — volume unavailability — and reports it accurately. If you see this on an older version, check whether the destination drive or NAS is still connected.
 
+### Where to see the Session Health verdict (v2.5.0 Build 4)
+
+After every copy, CopyTrust classifies the results into a plain-language **Session Health** report:
+
+- **Session Summary sheet** — a Session Health card per source → destination with a status badge (green Clean / orange Warnings only / red Action required), a summary sentence, warnings and action items grouped by category (click to expand the file list and explanation), and recommendations.
+- **Receipt TXT** — a `Health:` verdict block per destination; every `MISMATCH:` line is annotated with its classification; transient skips are listed as `TRANSIENT:` lines.
+- **Receipt JSON** — per-destination `healthReport` object plus `transientFiles` and per-mismatch `classification`.
+- **Session log** — one `healthReport` line per destination with status and counts.
+
+### Session finished with warnings — "N transient files skipped"
+
+New in v2.5.0. When copying live editing projects (especially Final Cut Pro libraries), some files routinely vanish between the scan and the copy, or are macOS sandbox temp files (`name.sb-XXXXXXXX-XXXXXX`) the OS cleans up mid-session. These are now recorded as **transient skips** instead of errors, and the session ends as `completed_with_warnings` rather than `completed_with_errors`. Every skipped file is listed in the session manifest (`transientFiles`), so the archive record stays complete — review the list to confirm nothing you care about was skipped.
+
+Real problems are never downgraded: a disconnected source volume, a destination write failure, or a hash mismatch still reports as a real error.
+
+A related FCP note: the *Original Media* folder inside a project `.fcpbundle` is almost always symlinks — often broken ones pointing at old storage or a media transport drive. The real original media nearly always lives outside the bundle in the project folder structure, which CopyTrust archives directly.
+
+### A mismatch was reported — is my copy corrupt?
+
+New in v2.5.0: every size or hash mismatch now gets its own log line. Quick verify logs a three-way comparison — `scanSize` (when the source was scanned), `destSize` (what was copied), and `sourceNowSize` (the source right now):
+
+- **"source changed during session"** — the destination matches the source's current size. The file changed after the scan (normal for live FCP bundles); the copy is faithful.
+- **"UNEXPLAINED"** — the destination matches neither the scan-time nor the current source. Investigate: re-run the copy for that file or run a full-hash verify.
+
 ### Copy was interrupted — can I resume?
 
 Yes. CopyTrust saves a session manifest to local App Support after each verified file. When you restart a copy with the same source and destination, CopyTrust finds the manifest and offers resume. Already-verified files are skipped. If the interruption was a volume disconnect, auto-resume handles this automatically when the volume returns.
@@ -505,9 +529,26 @@ Before verification hashing begins, CopyTrust logs a structured diagnostic showi
 
 If verification aborts, the abort path now logs the exact stage (source hashing vs destination hashing) and the file path that triggered the failure, instead of collapsing into a vague terminal error. JSON and plaintext receipts preserve failed/skipped file counts and the first recorded error line for post-run analysis.
 
-## Camera Card Exclusions
+## Hidden Files
 
-Settings → Card Copy → Camera Card Exclusions lets you skip files or folders during card copy. Each exclusion pattern has a type that controls how it matches against path components. These exclusions only apply when using Card mode.
+Settings → Card Copy (or Folder Copy) → Hidden Files → **Skip hidden files and folders** controls whether dot-prefixed files and directories (e.g. `.git`, `.ssh`, `.Trash`) are included in copies. Enabled by default. Card and Folder modes store this setting independently.
+
+## Exclusions (Card and Folder)
+
+As of v2.5.0 Build 2, both Settings → Card Copy → Exclusions and Settings → Folder Copy → Exclusions use the **same grouped editor**: pattern groups (**File Storage**, **System**, **Camera Card**, **Custom**) with per-pattern checkboxes, an All/None toggle per group, and an active count. Card and Folder modes store their checkbox states independently.
+
+System group patterns: `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (Synology NAS), `System Volume Information` (Windows). File Storage covers `.DS_Store`, `Thumbs.db`, and the generated CopyTrust / Drop Verify artifacts (`CopyTrust_Receipts`, `Drop Verify_Receipts`, `receipt_` files, `.mhl` manifests). Camera Card covers `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db`.
+
+Defaults differ by mode:
+- **Card mode (fresh profiles): every pattern starts unchecked** — card ingests archive everything unless you opt in to exclusions.
+- **Folder mode**: File Storage and System patterns start enabled; Camera Card patterns start disabled.
+- Upgrading from an earlier version keeps your saved checkbox states in both modes.
+
+No pattern is silently forced on during copy — what you see checked is exactly what is excluded. Drop Verify exposes the same Camera Card pattern set in its own Exclusions tab, with its own independent checkbox states.
+
+### Custom patterns
+
+The add row at the bottom of the editor takes a pattern, a match type, and a target group. **Also add to Card/Folder mode** adds the same pattern to the other mode's list in one step. Custom patterns can be deleted (trash button); built-in patterns can be unchecked but not deleted.
 
 ### Pattern Types
 
@@ -534,8 +575,9 @@ CopyTrust can optionally reorganize files on the destination into type-based sub
 ### Enabling
 
 1. Open `Settings > Post-Copy`.
-2. Toggle **Sort files into type folders on destination**.
-3. Choose a folder mode and review the category list.
+2. Pick **Card Copy** or **Folder Copy** in the mode picker at the top — all Post-Copy artifact settings are stored per mode (v2.5.0 Build 2).
+3. Toggle **Sort files into type folders on destination**.
+4. Choose a folder mode and review the category list.
 
 ### Folder Modes
 
@@ -669,7 +711,11 @@ A segmented control in the toolbar shows the active preset: **Card** or **Folder
 |---------|------|--------|
 | Subfolder naming | `{alias}_{date}` | `{alias}` |
 | Preserve original folder names | On | On |
-| Camera card exclusions | On (defaults) | Not applicable |
+| Skip hidden files | On | On |
+| System exclusions | Off (fresh profiles, v2.5.0 b2) | On |
+| File Storage exclusions | Off (fresh profiles, v2.5.0 b2) | On |
+| Camera card exclusions | Optional, default off | Optional, default off |
+| Exclusion groups | File Storage, System, Camera Card, Custom | File Storage, System, Camera Card, Custom |
 | Destination sort | On | Off |
 | Verification level | Inline | Quick |
 | Auto-advance | On | Off |
@@ -679,11 +725,12 @@ A segmented control in the toolbar shows the active preset: **Card** or **Folder
 
 ### Per-mode settings
 
-Each mode stores its own complete settings profile including: naming template, subfolder prefix, file prefix, preserve original names, verification level, post-copy re-verify, auto-advance, auto-eject, contact sheet (on/off, style, open after creation, hide placeholders), EXIF CSV, and destination sort (on/off, categories, folder mode).
+Each mode stores its own complete settings profile including: naming template, subfolder prefix, file prefix, preserve original names, verification level, post-copy re-verify, hidden-file handling, exclusion pattern checkboxes, auto-advance, auto-eject, contact sheet (on/off, style, open after creation, hide placeholders), EXIF CSV, HTML directory tree (on/off, scope), and destination sort (on/off, categories, folder mode).
 
 Configure each mode independently:
-- **Settings > Card Copy** — card-specific settings plus Camera Card Exclusions
-- **Settings > Folder Copy** — folder-specific settings
+- **Settings > Card Copy** — card-specific settings plus the grouped Exclusions editor and Hidden Files toggle
+- **Settings > Folder Copy** — folder-specific settings plus the grouped Exclusions editor and Hidden Files toggle
+- **Settings > Post-Copy** — all artifact settings (contact sheet, EXIF CSV, HTML tree, destination sort) per mode via the Card/Folder picker at the top (v2.5.0 Build 2)
 - **Settings > Test** — built-in test harness to validate settings for either mode (see [Test Harness](#test-harness) below)
 
 Shared settings (not per-mode): operator name, external codecs, notifications, appearance, destination presets, receipt export.
@@ -864,7 +911,7 @@ Settings like naming templates, file prefixes, exclusion patterns, verification 
 
 ### Opening the test tab
 
-Open **Settings > Test**. The tab shows the current Card or Folder profile summary, scenario picker, path configuration, fixture options, and results.
+Open **Settings > Test**. The tab shows the current Card or Folder profile summary, scenario picker, path configuration, fixture options, and results. **Run Test**, **Reveal Source**, and **Reveal Report** stay visible in the bottom action bar so you do not need to scroll to start or inspect a run.
 
 ### Mode picker
 
@@ -872,23 +919,36 @@ A **Card / Folder** segmented control at the top selects which mode profile to t
 
 ### Scenarios
 
-Six test scenarios are available, each targeting a specific aspect of the copy engine:
+Seven test scenarios are available, each targeting a specific aspect of the copy engine:
 
 | Scenario | What it tests |
 |----------|---------------|
 | **Basic Copy** | Copy with current mode settings — verifies all files arrive at the destination |
 | **Naming Preservation** | Verifies `Preserve Original Folder Names` behaviour and template rendering |
 | **File Prefix** | Verifies the copied file prefix template renders correctly when enabled |
-| **Exclusion Pattern** | Verifies that enabled camera card exclusion patterns skip matching files |
+| **Exclusion Pattern** | Verifies that enabled exclusion patterns from the selected mode skip matching files |
+| **Folder/File Exclusions** | Creates known sample folders/files, applies sample exclusions, and verifies matching names are skipped |
 | **Verification Levels** | Tests none / quick / full / inline verification outcomes |
 | **Destination Sort** | Verifies files are sorted into type-based subfolders after copy |
 
 Each scenario focuses on one feature but runs the full copy pipeline. MHL generation, receipts, and verification all happen as they would in a real ingest.
 
+The **Folder/File Exclusions** scenario adds temporary sample exclusions for the run only:
+
+| Pattern | Type | Expected match |
+|---------|------|----------------|
+| `EXCLUDE_SAMPLE_FOLDER` | Exact | Any folder or file name equal to `EXCLUDE_SAMPLE_FOLDER` |
+| `exclude_sample_file` | Prefix | Files whose names start with `exclude_sample_file` |
+| `cache_proxy` | Prefix | Files whose names start with `cache_proxy` |
+
+These sample exclusions do not change saved Card or Folder settings.
+
 ### Paths
 
 - **Source root** — where the synthetic source tree is created. Defaults to the system temp directory. Click Browse to choose a different location.
-- **Destination roots** — one or more destination folders where files are copied. Click the `+` button to add destinations and the `−` button to remove them.
+- **Destination roots** — one or more destination folders where files are copied. Click **Add Destination Root…** to add destinations and the remove button to delete them from the test run.
+- **Use Preset** — loads destination presets saved from the main CopyTrust window and replaces the current test destination roots with that preset's destinations.
+- **Save as Preset…** — saves the current test destination roots back to the shared CopyTrust destination preset list.
 
 ### Fixture options
 
@@ -913,7 +973,7 @@ Use **Tiny** size for quick validation runs. **Realistic** and **Large** sizes t
 2. Choose a scenario.
 3. Set the source and destination paths.
 4. Adjust fixture options if needed (defaults are fine for a quick check).
-5. Click **Run**.
+5. Click **Run Test** in the bottom action bar.
 
 Progress text updates as the test moves through fixture generation, copy, verification, and analysis. When finished, colour-coded result pills appear.
 
@@ -923,6 +983,7 @@ The test tab shows scenario-specific tips when relevant settings are not active:
 - Running **File Prefix** with the file prefix setting disabled shows a warning that results may not reflect prefix behaviour.
 - Running **Destination Sort** with sort disabled shows a warning.
 - Running **Exclusion Pattern** with no active exclusion patterns shows a warning.
+- Running **Folder/File Exclusions** shows the sample patterns that will be applied for that run.
 
 ### Reading results
 
@@ -951,6 +1012,7 @@ Every test run saves a JSON report to `~/Library/Application Support/CopyTrust/T
 2. Run the **Basic Copy** scenario with 5 files / Tiny to confirm the pipeline works.
 3. Run **Naming Preservation** if you changed the naming template or prefix.
 4. Run **File Prefix** if you enabled or changed the file prefix.
-5. Run **Exclusion Pattern** if you added or modified exclusion patterns.
-6. Run **Destination Sort** if you changed sort categories or folder mode.
-7. When all pills are green, your settings are validated for real use.
+5. Run **Exclusion Pattern** if you added or modified saved exclusion patterns.
+6. Run **Folder/File Exclusions** when you want a controlled proof that file-name and folder-name exclusions are working.
+7. Run **Destination Sort** if you changed sort categories or folder mode.
+8. When all pills are green, your settings are validated for real use.

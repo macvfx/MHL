@@ -1,9 +1,13 @@
 # CopyTrust User Guide
 
 Date: 2026-05-23  
-Current branch baseline: `v2.4.7 (Build 1)`
+Current branch baseline: `v2.4.7 (Build 1)` on `main`
 
 This file is a short landing page for the current CopyTrust workflow.
+
+The canonical up-to-date guide is:
+
+- [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md)
 
 ## Current Button Names and When Each Appears
 
@@ -36,7 +40,7 @@ CopyTrust offers two copy type presets accessible via a segmented control in the
 | Preset | Best for | Key defaults |
 |--------|----------|-------------|
 | **Card** | Camera card ingest | `{alias}_{date}` naming, inline verification, contact sheet on, sort on, auto-advance on, camera card exclusions active, preserve original names on |
-| **Folder** | Folder backup / archive | `{alias}` naming, quick verification, contact sheet off, sort off, auto-advance off, preserve original names on |
+| **Folder** | Folder backup / archive | `{alias}` naming, quick verification, contact sheet off, sort off, auto-advance off, preserve original names on, File Storage / System / Camera Card exclusion groups |
 
 Each mode maintains its own **independent settings profile**. Changes to Card settings never affect Folder settings and vice versa. Configure each mode's defaults in **Settings > Card Copy** and **Settings > Folder Copy**.
 

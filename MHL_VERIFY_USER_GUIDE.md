@@ -2,14 +2,15 @@
 
 ## Overview
 
-`MHL Verify` gives you two main ways to work:
+`MHL Verify` gives you three main ways to work:
 
 - review a single `.mhl` file
+- **verify** the files an MHL describes against the media on disk
 - compare two `.mhl` files
 
 It also includes a secondary `Handlers` tab for checking or changing the default app macOS uses for `.mhl`.
 
-> **Supported formats:** version 2.4.1 reads classic MHL v1.0/1.1 files. ASC MHL v2.0 hashlists (the Silverstack 9+ default) are not yet readable — they show "Zero bytes" and no hash entries ([#1](https://github.com/macvfx/MHL/issues/1)); support arrives with the 2.5.1 release. Until then, verify ASC MHL v2.0 files with `mhl-tool verify` or Folder Copy Compare.
+> **Supported formats (2.5.1):** classic MHL v1.0/1.1 and ASC MHL v2.0 — the default output of Silverstack 9+, including manifests in an `ascmhl/` folder. Versions 2.4.1 and earlier showed ASC MHL v2.0 files as "Zero bytes" ([#1](https://github.com/macvfx/MHL/issues/1)); update if you see that. Requires macOS 14 or later.
 
 ## Opening MHL Files
 
@@ -52,6 +53,25 @@ When a file is open, the reader shows:
 - the underlying parsed MHL content
 
 Use the `Open Files` list to switch between currently loaded files.
+
+## Verifying Files Against an MHL
+
+Use Verify when you want to confirm that the media files an MHL describes are still intact — after a copy, a restore, or a handoff.
+
+1. Open the `.mhl` in the reader (or via **Open With › MHL Verify** from Finder).
+2. Click `Verify…`
+3. Check the **Media Folder** — it is detected from the MHL's location automatically. For ASC MHL files inside an `ascmhl/` folder, the parent folder is used. Click `Change…` to verify a copy in a different location.
+4. Click `Verify`.
+
+Every file listed in the MHL is re-hashed from disk and compared against the recorded digest. The sheet shows per-file progress and can be cancelled at any time, even partway through a large file.
+
+Results:
+
+- **Matched** — the file's hash matches the MHL entry
+- **Mismatched** — the file exists but its content differs; the expected and actual digests are listed for each mismatched file
+- **Missing** — a file listed in the MHL was not found in the media folder
+
+Use `Verify Again` to re-run after fixing problems, or to check a second copy by changing the media folder.
 
 ## Comparing Two Files
 

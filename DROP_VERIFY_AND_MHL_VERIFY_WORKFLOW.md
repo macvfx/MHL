@@ -32,7 +32,7 @@ It is best for:
 - confirming that an archived or handed-off copy still matches the original manifest
 - validating MHLs from Drop Verify, CopyTrust, Silverstack, OffShoot, YoYotta, or other compatible apps
 
-> **ASC MHL v2.0 note (June 2026):** Pomfort Silverstack 9+ writes ASC MHL v2.0 hashlists by default rather than classic MHL v1.1. MHL Verify 2.4.1 cannot yet read these files — they display "Zero bytes" with no usable hash entries (tracked as [macvfx/MHL#1](https://github.com/macvfx/MHL/issues/1)). The shared MHL engine gained ASC MHL v2.0 read/verify support in suite v2.5.1, so `mhl-tool verify`, CopyTrust re-verify, and Folder Copy Compare's Verify MHL handle Silverstack v2.0 files now; MHL Verify adopts the same engine in its 2.5.1 release. Until then, verify Silverstack ASC MHL files with `mhl-tool verify` or Folder Copy Compare.
+> **ASC MHL v2.0 note:** Pomfort Silverstack 9+ writes ASC MHL v2.0 hashlists by default rather than classic MHL v1.1. As of suite v2.5.1, the whole suite reads and verifies these — including MHL Verify, which also gained a built-in **Verify** action. MHL Verify 2.4.1 and earlier showed v2.0 files as "Zero bytes" with no usable hash entries ([macvfx/MHL#1](https://github.com/macvfx/MHL/issues/1)); update to 2.5.1 if you see that.
 
 ## Recommended Workflow
 
@@ -125,8 +125,23 @@ That keeps the roles clear:
 - Drop Verify = create trust package
 - MHL Verify = verify trust package
 
+## Command-Line Alternative: mhl-tool
+
+`mhl-tool` does the same MHL create and verify operations from the terminal. Use it when you need scripting, automation, SSH access, or batch processing.
+
+```bash
+# Same as Drop Verify → create MHL
+mhl-tool create /Volumes/RAID/A001
+
+# Same as MHL Verify → verify MHL
+mhl-tool verify /Volumes/RAID/A001
+```
+
+The full command reference is included with the `mhl-tool` installer package (see Releases).
+
 ## Notes
 
 - Drop Verify creates media-focused artifacts and only hashes media files for its MHL output in the current implementation.
 - MHL Verify is the better tool when the main question is simply: "Do these files still match this manifest?"
+- `mhl-tool` is the best choice when the workflow is scripted, remote, or headless.
 - Using both tools gives you both artifact creation and follow-up validation in separate steps, which can be easier to explain to operators and clients.

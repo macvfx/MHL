@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current release: **v2.3 (Build 5)**.
+Current app version: **v2.4.7 (Build 2)**.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting.
 
@@ -9,11 +9,13 @@ Drop a folder onto the app and it will recursively scan media files, then genera
 - `MHL (Media Hash List)`
 - `Contact sheet PDF`
 - `EXIF camera metadata CSV`
+- `HTML directory tree` (optional, requires `tree`)
 
 It is designed as a simpler sibling to `CopyTrust`, for situations where you want trust artifacts and metadata reports without the full multi-destination ingest workflow.
 
 Drop Verify can also use:
 - `ExifTool` for richer unsupported and sparse-video metadata
+- `tree` for HTML directory tree output (based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
 - `ffmpeg` for real MXF and MPEG-2 family contact-sheet thumbnails
 - `REDline` for real R3D contact-sheet thumbnails
 
@@ -24,11 +26,26 @@ Recommended operator setup:
 - Open `Drop Verify > Settings… > External Codecs`
 - Enable `ExifTool metadata extraction`
 - Use `Auto-Detect` or `Browse…` to select `exiftool`
+- In the `tree` section, use `Auto-Detect` or `Browse…` to set the tree path
 - Enable `External thumbnail codecs`
 - Enable `MXF`, `M2V`, `M2T`, `M2TS`, `VOB`, and/or `R3D`
 - Use:
   - `ffmpeg` for MXF and MPEG-2 family thumbnails
   - `REDline` for R3D thumbnails
+
+### tree (HTML directory output)
+
+The `tree` command generates collapsible HTML directory listings. This feature is based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML).
+
+Setup:
+1. Install tree: `brew install tree` (Homebrew) or `sudo port install tree` (MacPorts)
+2. Open `Settings > External Codecs`
+3. In the `tree` section, click `Auto-Detect` or `Browse…`
+4. Verify status shows green
+5. Open `Settings > Outputs` and enable `HTML directory tree`
+6. Choose scope: `Entire folder only` or `Each subfolder + entire folder`
+
+The HTML output uses `tree -J` (JSON mode) to build a self-contained HTML file with collapsible `<details>` elements for directories. Common locations checked by Auto-Detect: `/opt/homebrew/bin/tree`, `/usr/local/bin/tree`, `/opt/local/bin/tree`.
 
 Current expected results:
 - `MXF` = ExifTool metadata + ffmpeg thumbnails
@@ -43,12 +60,20 @@ Current expected results:
 - Recursive folder scan
 - Hidden files excluded by default
 - User-configurable exclusion patterns
+- Camera Card exclusion patterns are optional and disabled by default: `MISC`, `THMBNL`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, and `.Db`
+- Checked exclusions are skipped; unchecked exclusions remain included
 
 ## Outputs
 
 By default, Drop Verify writes artifacts into the dropped folder inside:
 
 - `Drop Verify_Receipts/`
+
+Artifact filenames follow the pattern `dropverify_<type>_<folderName>_<date-time>.<ext>`:
+- `Drop Verify - 2026-06-07 at 15.19.19 - LiveCam.mhl`
+- `dropverify_contactsheet_LiveCam_2026-06-07-151919.pdf`
+- `dropverify_exif_output_LiveCam_2026-06-07-151919.csv`
+- `dropverify_tree_LiveCam_2026-06-07-151919.html`
 
 It can also mirror generated artifacts to a separate export folder if enabled in Settings.
 
@@ -61,15 +86,23 @@ Drop Verify includes settings for:
 - `MHL (Media Hash List)`
 - `Contact sheet PDF (thumbnails and camera data)` — row or grid layout
 - `EXIF camera metadata CSV (Spreadsheet)`
+- `HTML directory tree` — collapsible HTML view of folder structure (requires tree)
 - `ExifTool metadata extraction` for unsupported/professional formats and sparse video formats such as MXF, R3D, MPEG-2 family files, and WMV
+- `tree` for HTML directory tree generation (based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
 - `External thumbnail codecs` (currently branch-tested for MXF and MPEG-2 family via ffmpeg and R3D via REDline)
 - contact sheet layout style (Row or Grid 3×4)
 - hide unsupported format placeholders from contact sheet (MXF, R3D, M2V, etc. omitted from PDF; still in CSV and MHL)
 - export generated artifacts to an extra export folder
 - exclude hidden files
-- manage exclusion patterns
+- manage exclusion patterns, including optional Camera Card patterns
 - open locally written artifacts after completion
 - operator name
+
+## Exclusions
+
+Drop Verify applies only the exclusion checkboxes that are enabled in `Settings > Exclusions`. Built-in generated-artifact patterns such as `Drop Verify_Receipts`, `CopyTrust_Receipts`, contact sheets, generated MHLs, and Drop Verify reports are enabled by default so a later run does not treat prior outputs as source media.
+
+The Camera Card group is available for operators who want to skip common camera-side metadata or proxy folders/files. These patterns are not silently forced on. If `THMBNL` is unchecked, matching folders remain part of the scan; if it is checked, matching folders are skipped. Existing saved settings are migrated additively, so new built-in options appear without changing the checkbox state of patterns you already had.
 
 ## Session Logs
 
@@ -89,7 +122,7 @@ If the app cannot create or write the session log, Drop Verify now shows a non-f
 
 ## External Codec Status
 
-On `v2.3 (Build 5)`:
+On `v2.3 (Build 5)` in `codex/v2.2`:
 
 - MXF metadata is populated through ExifTool when enabled
 - MXF contact sheets use ffmpeg for real thumbnails when enabled
@@ -109,4 +142,4 @@ On `v2.3 (Build 5)`:
 ## Documentation
 
 - [Drop Verify User Guide](DROP_VERIFY_USER_GUIDE.md)
-- [Project Changelog](CHANGELOG.md)
+- [Release Notes](RELEASE_NOTES.md)
