@@ -7,7 +7,8 @@ One line per release, newest first. Detailed changes live in each app's own docu
 
 | Version | Date | Summary |
 |---|---|---|
-| **2.5.1** | 2026-06-12 | ASC MHL v2.0 (Silverstack 9+) read/verify support in the shared CopyCore engine — fixes [#1](https://github.com/macvfx/MHL/issues/1); `ascmhl/` folder layouts; mid-file verification cancellation; mhl-tool version aligned |
+| **2.5.2** *(testing)* | 2026-06-13 | CopyTrust: fixes MHL verification reporting all files missing ("0 matched", "MHL file not found") on **sorted** copies — a delivery MHL now describes the sorted layout and every verify action targets it, while the original source MHL is kept in `CopyTrust_Receipts/`; a destination drop/reconnect no longer re-runs the sort; new per-copy `PROVENANCE_*.json` records the settings used and the source→destination file mapping. **2.5.1 remains the stable release.** |
+| **2.5.1** *(stable)* | 2026-06-12 | ASC MHL v2.0 (Silverstack 9+) read/verify support in the shared CopyCore engine — fixes [#1](https://github.com/macvfx/MHL/issues/1); `ascmhl/` folder layouts; mid-file verification cancellation; mhl-tool version aligned |
 | 2.5.0 | 2026-06-09/10 | CopyTrust Session Health Report: structured error classification, per-mismatch explanations, health verdicts in Session Summary, receipts, and logs; per-mode artifact settings |
 | 2.4.9 | 2026-06-07 | Folder Copy Compare reference-folder (3-way) compare, saved profiles with folder watch, two-phase scan progress; CopyTrust HTML tree artifact; Drop Verify session history |
 | 2.4.8 | 2026-06-06 | Drop Verify HTML directory tree output (ProjectToHTML) with in-app Drop Verify Help; exclusion verification tests; version alignment; Sentry scoped to CopyTrust only |

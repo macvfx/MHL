@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Current version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
+**Stable version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. **CopyTrust 2.5.2 is in testing** — it fixes MHL verification on **sorted** copies (where verification could report all files missing) and adds a per-copy provenance record. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
 
 ## CopyTrust
 

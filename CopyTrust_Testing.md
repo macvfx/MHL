@@ -1,8 +1,19 @@
 # CopyTrust Testing Guide
 
-Active testing version: **v2.2 (Build 8)** 
+Active testing version: **2.5.2** — 2.5.1 is the current stable release.
 
-Current CopyTrust focus:
+## 2.5.2 testing focus (sorted-copy MHL verify fix)
+
+The headline fix: when **Destination Sort** is enabled, verification could report every file as missing on an otherwise perfect copy ("0 matched", "MHL file not found"), because the copy-time MHL described the pre-sort layout. What to test:
+
+- Run a **sorted** card ingest, then use **Verify Using MHL** / **Re-Verify Destinations** — verification should pass against the sorted layout.
+- Confirm the destination root holds a single delivery MHL, with the original source MHL preserved under `CopyTrust_Receipts/… - Source.mhl`, and a `PROVENANCE_*.json` record alongside the receipts.
+- Simulate an **unreliable network destination**: let the destination drop and reconnect mid-pipeline — the sort must not re-run (no `…_2` renamed files).
+- Confirm **plain (unsorted) copies** are unchanged — the single copy-time MHL at the destination root verifies as before.
+- Cover the common workflows: a→b, a→b+c (fan-out), a→b→c (relay), each with destination alias and sort.
+
+Earlier focus areas (still valid):
+
 - accurate card detection in UI
 - Queue sessions: load up and walk away workflow
 - Destination of copy #1 can be source for copy #2 (aka relay-chain)
