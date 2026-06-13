@@ -22,7 +22,7 @@ Use this for `A -> B` and `A -> C`.
 Expected result:
 - the source copies directly to each loaded destination
 - copy, verification, MHL, receipts, and logs finish before the session is considered trust-complete
-- PDF and CSV artifacts can continue afterward in the background
+- PDF, CSV, and HTML tree artifacts can continue afterward in the background
 
 ### Relay chain
 Use this for `A -> B -> C`.

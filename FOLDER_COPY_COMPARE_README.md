@@ -101,7 +101,7 @@ If the copy was made by something else and you just want a quick sanity check â€
 | Tool | Purpose |
 |------|---------|
 | **CopyTrust** | Multi-source, multi-destination camera card ingest with receipts, MHL, and contact sheets |
-| **Drop Verify** | Single-folder drag-and-drop artifact generation (MHL + contact sheet + EXIF CSV) |
+| **Drop Verify** | Single-folder drag-and-drop artifact generation (MHL + contact sheet + EXIF CSV + optional HTML directory tree) |
 | **MHL Verify** | Standalone MHL file verification against any media set |
 | **Folder Copy Compare** | Post-copy sanity check â€” compare two folders, copy missing files, optionally generate or verify MHL |
 

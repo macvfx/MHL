@@ -68,7 +68,7 @@ Use this for `A -> B` and `A -> C`.
 Expected result:
 - the source copies directly to each loaded destination
 - copy, verification, MHL, receipts, and logs finish before the session is considered trust-complete
-- PDF and CSV artifacts can continue afterward in the background
+- PDF, CSV, and HTML tree artifacts can continue afterward in the background
 
 ### Relay chain
 Use this for `A -> B -> C` — camera card to drive to NAS.
@@ -277,7 +277,7 @@ CopyTrust now monitors destination volumes in real time. If a destination drive 
 1. The active copy is cancelled immediately with a clear message.
 2. The Start button is blocked until the volume returns.
 3. When the volume remounts, the copy resumes automatically — verified files are skipped.
-4. Failed artifacts (contact sheet, CSV) are retried.
+4. Failed artifacts (contact sheet, CSV, HTML tree) are retried.
 
 If auto-resume does not trigger, use `Start This Session` manually — the resume infrastructure will detect partial progress and skip verified files.
 

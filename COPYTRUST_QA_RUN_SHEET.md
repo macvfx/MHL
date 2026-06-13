@@ -246,15 +246,29 @@ Record:
 - Notes:
 
 ## B10. Background Artifact Non-Blocking Behavior
-Run a two-source session with contact sheet and EXIF CSV enabled.
+Run a two-source session with contact sheet, EXIF CSV, and HTML directory tree enabled.
 
 Check:
-- after source 1 completes trust-critical work, source 2 can start without waiting for source 1 PDF/CSV completion
+- after source 1 completes trust-critical work, source 2 can start without waiting for source 1 PDF/CSV/HTML-tree completion
 - `Completed Sources` shows background artifact state clearly
-- `Ready to eject` reflects trust completion, not PDF/CSV completion
+- `Ready to eject` reflects trust completion, not PDF/CSV/HTML-tree completion
 
 Record:
 - Background artifact non-blocking behavior: `PASS / FAIL / N/A`
+- Notes:
+
+## B10a. CopyTrust HTML Directory Tree Artifact (v2.4.9)
+Enable `HTML Directory Tree` in `Settings > Post-Copy` (requires the `tree` CLI tool). Run an ingest with at least one nested subfolder.
+
+Check:
+- HTML tree file(s) are written to `CopyTrust_Receipts/` after copy + verify and included in the receipt export
+- `Entire folder only` scope produces one HTML file for the whole destination
+- `Each subfolder + entire folder` scope produces one HTML file per immediate subfolder plus one for the whole folder
+- HTML tree generation runs as a background artifact and does not block trust completion or eject
+- with `tree` not installed/configured, the artifact is skipped cleanly without failing the trust-critical copy
+
+Record:
+- CopyTrust HTML directory tree artifact: `PASS / FAIL / N/A`
 - Notes:
 
 ## B11. Cancel And Resume Real-World Workflow
