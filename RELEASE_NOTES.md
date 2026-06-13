@@ -10,7 +10,7 @@ One line per release, newest first. Detailed changes live in each app's own docu
 | **2.5.1** | 2026-06-12 | ASC MHL v2.0 (Silverstack 9+) read/verify support in the shared CopyCore engine — fixes [#1](https://github.com/macvfx/MHL/issues/1); `ascmhl/` folder layouts; mid-file verification cancellation; mhl-tool version aligned |
 | 2.5.0 | 2026-06-09/10 | CopyTrust Session Health Report: structured error classification, per-mismatch explanations, health verdicts in Session Summary, receipts, and logs; per-mode artifact settings |
 | 2.4.9 | 2026-06-07 | Folder Copy Compare reference-folder (3-way) compare, saved profiles with folder watch, two-phase scan progress; CopyTrust HTML tree artifact; Drop Verify session history |
-| 2.4.8 | 2026-06-06 | Exclusion verification tests; version alignment; Sentry scoped to CopyTrust only |
+| 2.4.8 | 2026-06-06 | Drop Verify HTML directory tree output (ProjectToHTML) with in-app Drop Verify Help; exclusion verification tests; version alignment; Sentry scoped to CopyTrust only |
 | 2.4.1 (7) | 2026-05-01 | Copy progress: smallest-first ordering, within-file byte progress; NAS/SMB copy hang fixes; Check All Hashes; Clean Windows Files; Check for Updates in all apps |
 | 2.3 | 2026-04-25/29 | Subfolder Check repair workflows, guided symlink recovery, P5 stub cleanup |
 
