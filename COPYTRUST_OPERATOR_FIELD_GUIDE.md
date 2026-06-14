@@ -42,7 +42,7 @@ After a copy completes, on the destination drive:
    - `ingest_*.json` + `ingest_*.txt` (receipt)
    - `SESSION_MANIFEST_*.json`
    - `PROVENANCE_*.json` (2.5.2)
-4. **Verify it** — drag the `.mhl` back into CopyTrust (or **Verify Using MHL**); it should report **all files matched**, 0 missing.
+4. **Verify it** — drag the `.mhl` back into CopyTrust (or verify with **MHL Verify**); it should report **all files matched**, 0 missing.
 5. **Health verdict** — the Session Summary shows a green/clean health verdict (or clearly-labelled warnings).
 
 If verification reports files missing on a copy you believe is good, and **Destination
@@ -59,6 +59,35 @@ Before relying on a new build or a new machine:
 - Confirm all five receipt files above appear on **both** destinations (exFAT included).
 - Cancel a copy mid-run, then **Resume** — verified files are reused, not recopied.
 - Queue a relay chain (`card → SSD → NAS`) and confirm both legs copy and verify.
+
+---
+
+## Artifact test (contact sheet PDF / EXIF CSV / HTML tree)
+
+Artifacts are optional and some depend on external command-line tools. Verify they
+generate before relying on them on a job.
+
+1. **Install the helper tools you need** (Homebrew, or point CopyTrust at them in
+   Settings):
+   - `exiftool` — richer EXIF metadata for the CSV and pro/unsupported formats
+   - `ffmpeg` — contact-sheet thumbnails for MXF and the MPEG-2 family (`m2v`, `m2t`, `m2ts`, `vob`)
+   - `redline` (REDline) — contact-sheet thumbnails for R3D
+   - `tree` — required for the HTML directory tree artifact
+   *(Install only what your media needs — e.g. REDline only for RED jobs.)*
+2. **Configure the artifact options** in `Settings > Post-Copy` (per Card / Folder
+   mode): enable Contact sheet PDF, EXIF CSV, and/or HTML directory tree, and under
+   `Settings > External Codecs` enable ExifTool / external thumbnail codecs and
+   `Auto-Detect` (or `Browse…`) each tool.
+3. **Run a card copy** and let it finish copy + verify + MHL.
+4. **Confirm the artifacts appear** in the destination (and `CopyTrust_Receipts/`):
+   - Contact sheet **PDF** — and that it **auto-opens** when configured to
+   - EXIF **CSV**
+   - **HTML** directory tree (`tree` installed)
+   - Pro-format thumbnails render (not placeholders) for MXF / R3D / MPEG-2 when the
+     matching tool is enabled.
+
+Artifacts run as background work **after** the trust chain (copy + verify + MHL) is
+sealed, so a missing or failed artifact never invalidates the copy.
 
 ---
 
