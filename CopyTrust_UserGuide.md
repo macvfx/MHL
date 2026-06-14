@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-06-09  
-Branch baseline: `main` (v2.5.0 Build 4, test)
+Date: 2026-06-13  
+Release status: **2.5.1 stable**; **2.5.2 in testing** on `main` (sorted-copy MHL verify fix — see "Sorted copies and MHL verification")
 
 ## Purpose
 
@@ -642,6 +642,35 @@ For a normal multi-destination session (not relay), every destination is sorted 
 
 The contact sheet PDF and EXIF CSV reflect the sorted file locations, not the original copy layout.
 
+### Known Issues (Destination Sort)
+
+Both items below affect only the optional sort step. The copy, verify, MHL, and
+receipt trust chain is never affected.
+
+**1. Relay chains sort only the final destination — _known limitation, for now._**
+If you set up a relay-chain queue **and** enable Destination Sort, only the **final**
+destination is sorted. Intermediate destinations stay in their original layout — and
+because the sort decision is made once, at copy time, they are not sorted later either
+(there is no second pass after the chain finishes). This is intentional: it stops the
+sort from moving files while the next leg is reading from them.
+
+| Leg | Source | Destination | Sorted? |
+|-----|--------|-------------|---------|
+| Step 1 | Card A | SSD B | No — intermediate, keeps original layout |
+| Step 2 | SSD B | NAS C | Yes — final leg, type-folder layout |
+
+If you need every copy sorted, use a normal (non-relay) multi-destination session,
+where each destination is sorted independently.
+
+**2. A destination disconnect _during_ the sort can re-run the sort — _bug._**
+The sort is one-shot once it finishes. But if a destination volume disconnects while
+the sort is still moving files and you reconnect it, the app may re-run the sort over
+a partially-sorted folder. In Flatten mode this can create duplicate `…_2` files; in
+Preserve Structure mode it logs harmless "file already moved" errors. The integrity
+proof (copy/verify/MHL) is already sealed and is unaffected. Workaround: avoid
+unplugging the destination until the post-copy sort/artifact step reports complete.
+A fix is being scoped without touching the working copy path.
+
 ## Safety Concept
 
 CopyTrust is designed around the idea that safety can mean either:
@@ -696,6 +725,19 @@ When using Full (batch) verification, labels remain unchanged: "Copying" during 
 ### MHL and receipts
 
 MHL generation works identically with inline verification. Hashes are accumulated during the copy phase and written after the last file completes. Receipts show the same fields regardless of verification mode.
+
+#### Sorted copies and MHL verification (2.5.2, testing)
+
+When **Destination Sort** is on, files are moved into type folders (`Video/`, `Proxy/`, …) *after* the copy. The MHL written during the copy describes the pre-sort layout, so a single MHL alone would point at paths that no longer exist once sorting completes.
+
+From 2.5.2, CopyTrust handles this automatically:
+
+- A **delivery MHL** describing the sorted layout is written to the destination root, and every verify action — **Verify Using MHL**, **Re-Verify Destinations**, **Retry MHL Export** — targets it.
+- The original **source MHL** is preserved as provenance under `CopyTrust_Receipts/… - Source.mhl`, so the destination root holds exactly one verifiable MHL.
+- A **`PROVENANCE_<source>_<timestamp>.json`** record is written to `CopyTrust_Receipts/` for every copy: the settings used (naming, sort categories, folder mode) plus the per-file source→destination mapping (identity for a plain copy).
+- If a network destination drops and reconnects mid-pipeline, the sort is **not** re-run (it is one-shot) — only unfinished artifacts are retried.
+
+> 2.5.2 is in testing. 2.5.1 remains the stable release. Plain (unsorted) copies are unchanged: the single copy-time MHL at the destination root is the one you verify against.
 
 ## Copy Type Presets
 
