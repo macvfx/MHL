@@ -70,7 +70,7 @@ generate before relying on them on a job.
 1. **Install the helper tools you need** (Homebrew, or point CopyTrust at them in
    Settings):
    - `exiftool` — richer EXIF metadata for the CSV and pro/unsupported formats
-   - `ffmpeg` — contact-sheet thumbnails for MXF and the MPEG-2 family (`m2v`, `m2t`, `m2ts`, `vob`)
+   - `ffmpeg` — contact-sheet thumbnails for MXF and **any file extension you add that ffmpeg can decode** (the `Settings > External Codecs` ffmpeg panel has an editable File extensions list — defaults include `mxf`, `m2v`, `m2ts`; add others such as DJI `lrf` low-res files)
    - `redline` (REDline) — contact-sheet thumbnails for R3D
    - `tree` — required for the HTML directory tree artifact
    *(Install only what your media needs — e.g. REDline only for RED jobs.)*
@@ -83,8 +83,9 @@ generate before relying on them on a job.
    - Contact sheet **PDF** — and that it **auto-opens** when configured to
    - EXIF **CSV**
    - **HTML** directory tree (`tree` installed)
-   - Pro-format thumbnails render (not placeholders) for MXF / R3D / MPEG-2 when the
-     matching tool is enabled.
+   - Pro-format thumbnails render (not placeholders) for MXF, R3D, and any
+     extension you've added to ffmpeg's list (e.g. DJI `lrf`) when the matching
+     tool is enabled.
 
 Artifacts run as background work **after** the trust chain (copy + verify + MHL) is
 sealed, so a missing or failed artifact never invalidates the copy.
