@@ -27,6 +27,8 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Built-in Help flow with `Quick Start`, `Advanced Start`, and a Help menu entry to reopen CopyTrust guidance
 - Asynchronous contact-sheet auto-open and richer verify-start / verify-abort diagnostics for easier troubleshooting
 
+Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — features + 2-minute field test), [User Guide](CopyTrust_UserGuide.md) (full), [Workflow Guide](CopyTrust_WorkflowGuide.md) (relay strategy), [Quick Start](CopyTrust_QuickStart.md).
+
 
 ## Drop Verify
 
