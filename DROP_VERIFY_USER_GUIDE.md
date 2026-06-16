@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.5.2 (Build 2)**.
+Current app version: **v2.5.3 (Build 1)**.
 
 ## External Codec Setup
 
@@ -110,16 +110,16 @@ You can open individual artifacts from the app after generation.
 - Spreadsheet-friendly export of file path and metadata fields
 - Intended for reporting, sorting, and review in Numbers, Excel, or Google Sheets
 - When ExifTool is configured, CSV output also includes richer ExifTool-backed fields such as start timecode, audio sample rate, audio bit depth, and firmware/application version where available for MXF and R3D
-- The active Build 2 branch can also populate fields such as `VideoFormat`, `ReelNumber`, `CameraSerialNumber`, `StorageModel`, and `StorageSerialNumber` where ExifTool provides them.
+- The current testing build can also populate fields such as `VideoFormat`, `ReelNumber`, `CameraSerialNumber`, `StorageModel`, and `StorageSerialNumber` where ExifTool provides them.
 - CSV can be generated without MHL. In that mode Drop Verify indexes media and reads metadata, but does not hash files.
 
 ### HTML directory tree
 - HTML view of the folder's directory structure
 - Opens in any web browser — self-contained, no external dependencies
-- **Project summary index** generates a lightweight top-level project index directly in Drop Verify and does not require the external `tree` command.
+- **Project summary index** generates a lightweight top-level project index directly in Drop Verify.
 - **One HTML per top-level folder** generates an index plus one recursive HTML tree for each immediate subfolder. This is the recommended recursive mode for very large projects and network shares.
 - **Entire project** generates one recursive HTML tree for the whole dropped folder. Use it only when a single complete tree file is required.
-- Recursive modes use native file enumeration and render collapsible `<details>` elements for directories.
+- Recursive modes use native file enumeration and render collapsible `<details>` elements for directories. No HTML tree mode requires the external `tree` command.
 - For very large project folders or slow network shares, use **Project summary index** or **One HTML per top-level folder** rather than **Entire project** unless a single complete tree file is required.
 - If HTML directory tree is the only enabled output, Drop Verify skips media hashing and metadata analysis entirely. This is the fastest way to create a project folder summary.
 
