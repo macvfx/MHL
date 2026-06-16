@@ -1,13 +1,13 @@
 # Drop Verify User Guide
 
-Current app version: **v2.4.7 (Build 2)**.
+Current app version: **v2.5.2 (Build 2)**.
 
 ## External Codec Setup
 
 The tested unsupported-format setup is:
 
 - `ExifTool` for MXF and R3D metadata
-- `tree` for HTML directory tree output
+- `tree` for recursive HTML directory tree output
 - `ffmpeg` for MXF contact-sheet thumbnails
 - `REDline` for R3D contact-sheet thumbnails
 
@@ -24,7 +24,7 @@ Recommended setup:
 
 Expected branch behavior:
 - ExifTool enriches MXF and R3D metadata in the contact sheet and CSV when enabled.
-- tree generates HTML directory tree output when enabled and valid.
+- tree generates recursive HTML directory tree output when enabled and valid. The Project summary index mode does not require tree.
 - ffmpeg provides MXF thumbnails when enabled and valid.
 - REDline provides R3D thumbnails when enabled and valid.
 - If ffmpeg or REDline fails, Drop Verify falls back to the placeholder behavior and logs the attempt.
@@ -38,7 +38,7 @@ You drag a folder into the app, and it generates artifact types for media files 
 - `MHL (Media Hash List)`
 - `Contact sheet PDF`
 - `EXIF camera metadata CSV`
-- `HTML directory tree` (optional, requires `tree` — based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- `HTML directory tree` (optional project index or recursive tree output — recursive modes use [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
 
 ## Basic Workflow
 
@@ -51,7 +51,7 @@ You drag a folder into the app, and it generates artifact types for media files 
   - `MHL (Media Hash List)`
   - `Contact sheet PDF (thumbnails and camera data)`
   - `EXIF camera metadata CSV (Spreadsheet)`
-  - `HTML directory tree` (requires tree configured in External Codecs)
+  - `HTML directory tree` (Project summary index does not require tree; recursive modes require tree configured in External Codecs)
 - Choose **Contact sheet layout**: Row (detailed metadata) or Grid (3×4 poster, 12 items per page).
 - Optionally enable **Hide unsupported format placeholders** to omit files that cannot generate thumbnails (MXF, R3D, M2V, etc.) from the contact sheet PDF. These files still appear in the EXIF CSV and MHL.
 - Optionally enable **ExifTool metadata extraction** and **external thumbnail codecs** for MXF and R3D (see External Codec Setup above).
@@ -73,7 +73,7 @@ The app runs through these stages:
 - extract image/video metadata
 - write CSV
 - render contact sheet PDF
-- generate HTML directory tree (if tree is configured and enabled)
+- generate HTML directory tree/index (if enabled; recursive modes require tree)
 - write/export artifacts
 
 Use the **Cancel** button in the header bar to stop at any time without quitting the app. On cancel, a partial session manifest is saved recording which files were verified before the cancellation. A **Reveal Manifest** button appears in the status card to open it.
@@ -110,15 +110,14 @@ You can open individual artifacts from the app after generation.
 - The active Build 2 branch can also populate fields such as `VideoFormat`, `ReelNumber`, `CameraSerialNumber`, `StorageModel`, and `StorageSerialNumber` where ExifTool provides them.
 
 ### HTML directory tree
-- Collapsible HTML view of the folder's directory structure
+- HTML view of the folder's directory structure
 - Opens in any web browser — self-contained, no external dependencies
-- Based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML)
-- Requires the `tree` command-line tool (install via `brew install tree` or `sudo port install tree`)
-- Configure in Settings > External Codecs, then enable in Settings > Outputs
-- Two scope modes:
-  - **Entire folder only** — generates one HTML file for the whole dropped folder
-  - **Each subfolder + entire folder** — generates one HTML per immediate subfolder, plus one for the entire folder
-- Uses `tree -J` (JSON mode) to produce structured output, then renders collapsible `<details>` elements for directories
+- **Project summary index** generates a lightweight top-level project index directly in Drop Verify and does not require the external `tree` command.
+- **One HTML per top-level folder** generates an index plus one recursive HTML tree for each immediate subfolder. This is the recommended recursive mode for very large projects and network shares.
+- **Entire project** generates one recursive HTML tree for the whole dropped folder. Use it only when a single complete tree file is required.
+- Recursive modes require the `tree` command-line tool (install via `brew install tree` or `sudo port install tree`)
+- Recursive modes are based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML) and use `tree -J` (JSON mode) to produce structured output, then render collapsible `<details>` elements for directories
+- For very large project folders or slow network shares, use **Project summary index** or **One HTML per top-level folder** rather than **Entire project** unless a single complete tree file is required.
 
 ## Exclusions
 
@@ -141,10 +140,10 @@ All artifact filenames follow the pattern `dropverify_<type>_<folderName>_<date-
 | MHL | `Drop Verify - 2026-06-07 at 15.19.19 - LiveCam.mhl` |
 | Contact Sheet | `dropverify_contactsheet_LiveCam_2026-06-07-151919.pdf` |
 | EXIF CSV | `dropverify_exif_output_LiveCam_2026-06-07-151919.csv` |
-| HTML Tree | `dropverify_tree_LiveCam_2026-06-07-151919.html` |
+| HTML Tree / Index | `dropverify_tree_index_LiveCam_2026-06-07-151919.html` or `dropverify_tree_LiveCam_2026-06-07-151919.html` |
 | Session Manifest | `SESSION_MANIFEST_LiveCam_2026-06-07-151919.json` |
 
-When "Each subfolder + entire folder" mode is selected, each subfolder also produces its own HTML tree file (e.g. `dropverify_tree_Subfolder1_2026-06-07-151919.html`). Only the top-level file is shown as a clickable link in the Artifacts card.
+When "One HTML per top-level folder" mode is selected, each immediate subfolder produces its own HTML tree file (e.g. `dropverify_tree_Subfolder1_2026-06-07-151919.html`) and the generated index links to those files. The index file is shown as the clickable HTML artifact in the Artifacts card.
 
 ## Output Locations
 
@@ -173,6 +172,8 @@ Drop Verify writes per-session log files to:
 Each log captures the full timeline of a run: session start, folder path, scan results, file counts, artifact paths, errors, cancellation, and completion. Use the in-app `Reveal Logs` button to open the current run's log folder when troubleshooting.
 
 If Drop Verify cannot create or write the session log, the run can still finish normally. In that case the app shows a non-fatal warning in the `Run Status` card so logging problems are visible without being confused with artifact-generation failures. The `Reveal Logs` button lives in the `Artifacts` section whenever a log directory is available.
+
+For stuck or ambiguous runs, see [Drop Verify Troubleshooting](DROP_VERIFY_TROUBLESHOOTING.md). It includes the process, child-command, sample, `lsof`, log-tail, and artifact-check commands used to distinguish a still-running job from a stuck optional artifact.
 
 ## In-App Help
 

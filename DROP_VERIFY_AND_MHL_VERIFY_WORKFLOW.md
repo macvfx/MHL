@@ -15,7 +15,7 @@ Use Drop Verify when you want to generate new artifact files from a folder:
 - `MHL (Media Hash List)`
 - `Contact sheet PDF`
 - `EXIF camera metadata CSV`
-- `HTML directory tree` (optional, requires `tree`)
+- `HTML directory tree/index` (optional; Project summary index is native, recursive modes require `tree`)
 
 It is best for:
 
@@ -44,7 +44,7 @@ It is best for:
    - `MHL (Media Hash List)`
    - `Contact sheet PDF`
    - `EXIF camera metadata CSV`
-   - `HTML directory tree` (optional, requires `tree`)
+   - `HTML directory tree/index` (optional; Project summary index is native, recursive modes require `tree`)
 3. Drop a media folder into Drop Verify.
 4. Let Drop Verify finish writing artifacts.
 5. Open the generated folder:

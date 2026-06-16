@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v2.4.7 (Build 2)**.
+Current app version: **v2.5.2 (Build 2)**.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting.
 
@@ -9,13 +9,13 @@ Drop a folder onto the app and it will recursively scan media files, then genera
 - `MHL (Media Hash List)`
 - `Contact sheet PDF`
 - `EXIF camera metadata CSV`
-- `HTML directory tree` (optional, requires `tree`)
+- `HTML directory tree` (optional project index or recursive tree output)
 
 It is designed as a simpler sibling to `CopyTrust`, for situations where you want trust artifacts and metadata reports without the full multi-destination ingest workflow.
 
 Drop Verify can also use:
 - `ExifTool` for richer unsupported and sparse-video metadata
-- `tree` for HTML directory tree output (based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- `tree` for recursive HTML directory tree output (based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
 - `ffmpeg` for real MXF and MPEG-2 family contact-sheet thumbnails
 - `REDline` for real R3D contact-sheet thumbnails
 
@@ -43,9 +43,9 @@ Setup:
 3. In the `tree` section, click `Auto-Detect` or `Browse…`
 4. Verify status shows green
 5. Open `Settings > Outputs` and enable `HTML directory tree`
-6. Choose scope: `Entire folder only` or `Each subfolder + entire folder`
+6. Choose mode: `Project summary index`, `One HTML per top-level folder`, or `Entire project`
 
-The HTML output uses `tree -J` (JSON mode) to build a self-contained HTML file with collapsible `<details>` elements for directories. Common locations checked by Auto-Detect: `/opt/homebrew/bin/tree`, `/usr/local/bin/tree`, `/opt/local/bin/tree`.
+`Project summary index` is generated directly by Drop Verify and does not require `tree`. Recursive modes use `tree -J` (JSON mode) to build self-contained HTML files with collapsible `<details>` elements for directories. Common locations checked by Auto-Detect: `/opt/homebrew/bin/tree`, `/usr/local/bin/tree`, `/opt/local/bin/tree`.
 
 Current expected results:
 - `MXF` = ExifTool metadata + ffmpeg thumbnails
@@ -86,9 +86,9 @@ Drop Verify includes settings for:
 - `MHL (Media Hash List)`
 - `Contact sheet PDF (thumbnails and camera data)` — row or grid layout
 - `EXIF camera metadata CSV (Spreadsheet)`
-- `HTML directory tree` — collapsible HTML view of folder structure (requires tree)
+- `HTML directory tree` — lightweight project index or collapsible HTML view of folder structure
 - `ExifTool metadata extraction` for unsupported/professional formats and sparse video formats such as MXF, R3D, MPEG-2 family files, and WMV
-- `tree` for HTML directory tree generation (based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- `tree` for recursive HTML directory tree generation (based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
 - `External thumbnail codecs` (currently branch-tested for MXF and MPEG-2 family via ffmpeg and R3D via REDline)
 - contact sheet layout style (Row or Grid 3×4)
 - hide unsupported format placeholders from contact sheet (MXF, R3D, M2V, etc. omitted from PDF; still in CSV and MHL)

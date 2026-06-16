@@ -72,10 +72,10 @@ generate before relying on them on a job.
    - `exiftool` — richer EXIF metadata for the CSV and pro/unsupported formats
    - `ffmpeg` — contact-sheet thumbnails for MXF and **any file extension you add that ffmpeg can decode** (the `Settings > External Codecs` ffmpeg panel has an editable File extensions list — defaults include `mxf`, `m2v`, `m2ts`; add others such as DJI `lrf` low-res files)
    - `redline` (REDline) — contact-sheet thumbnails for R3D
-   - `tree` — required for the HTML directory tree artifact
+   - `tree` — required only for recursive HTML tree modes; Project summary index does not require it
    *(Install only what your media needs — e.g. REDline only for RED jobs.)*
 2. **Configure the artifact options** in `Settings > Post-Copy` (per Card / Folder
-   mode): enable Contact sheet PDF, EXIF CSV, and/or HTML directory tree, and under
+   mode): enable Contact sheet PDF, EXIF CSV, and/or HTML directory tree, choose Project summary index, One HTML per top-level folder, or Entire project, and under
    `Settings > External Codecs` enable ExifTool / external thumbnail codecs and
    `Auto-Detect` (or `Browse…`) each tool.
 3. **Run a card copy** and let it finish copy + verify + MHL.

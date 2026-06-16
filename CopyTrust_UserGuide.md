@@ -767,7 +767,7 @@ A segmented control in the toolbar shows the active preset: **Card** or **Folder
 
 ### Per-mode settings
 
-Each mode stores its own complete settings profile including: naming template, subfolder prefix, file prefix, preserve original names, verification level, post-copy re-verify, hidden-file handling, exclusion pattern checkboxes, auto-advance, auto-eject, contact sheet (on/off, style, open after creation, hide placeholders), EXIF CSV, HTML directory tree (on/off, scope), and destination sort (on/off, categories, folder mode).
+Each mode stores its own complete settings profile including: naming template, subfolder prefix, file prefix, preserve original names, verification level, post-copy re-verify, hidden-file handling, exclusion pattern checkboxes, auto-advance, auto-eject, contact sheet (on/off, style, open after creation, hide placeholders), EXIF CSV, HTML directory tree (on/off, mode), and destination sort (on/off, categories, folder mode). HTML tree modes are **Project summary index** (native, no `tree` required), **One HTML per top-level folder**, and **Entire project** (recursive modes require `tree`).
 
 Configure each mode independently:
 - **Settings > Card Copy** — card-specific settings plus the grouped Exclusions editor and Hidden Files toggle

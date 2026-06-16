@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. **CopyTrust 2.5.2 is in testing** — it fixes MHL verification on **sorted** copies (where verification could report all files missing) and adds a per-copy provenance record. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
+**Stable version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. **CopyTrust 2.5.3 is in testing** — it includes the sorted-copy MHL verification fix, per-copy provenance records, and safer HTML tree/index output. **Drop Verify 2.5.2 is in testing** for the same safer HTML tree/index modes. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
 
 ## CopyTrust
 
@@ -20,7 +20,7 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Destination relay-order staging with visible `Stop 1`, `Stop 2`; queued relay legs can be pulled back into the workspace with `Edit` for reordering
 - **Resumable CopyTrust ingest** for cancelled same-source/same-destination runs and failed partial runs when the saved manifest still matches the same source, destinations, and rendered subfolder
 - **Contact sheet PDF** (row or grid layout) and **EXIF metadata CSV** after each ingest — professional formats (MXF, R3D, BRAW, ARRIRAW, M2V, VOB) show placeholders in the stable release, while this branch uses ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, and REDline for R3D thumbnails. PDF/CSV run as independent background artifacts after trust-critical copy + verify + MHL completion.
-- Optional **HTML directory tree** artifact after copy + verify (requires `tree` — based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML)); enable in Settings > Post-Copy with entire-folder or per-subfolder scope (v2.4.9)
+- Optional **HTML directory tree** artifact after copy + verify; enable in Settings > Post-Copy with `Project summary index` (native, no `tree` required), `One HTML per top-level folder`, or `Entire project` (recursive modes use `tree -J`, based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
 - Session receipts (JSON + TXT), per-ingest logs, and optional export to a separate folder, including overall relay-chain summaries at session close
 - Verify panel: Deep Compare Files, Compare Browser, Copy Missing, Retry MHL Export
 - Safe-to-eject flow after successful transfer
@@ -35,7 +35,7 @@ Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — featu
 Single-folder drag-and-drop verification. Drop a folder and generate trust artifacts — no copy, no session, no setup.
 
 - Media-only recursive scan with configurable exclusion patterns
-- Generates **MHL**, **contact sheet PDF** (row or grid), **EXIF metadata CSV**, and optional **HTML directory tree** (requires `tree` — based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- Generates **MHL**, **contact sheet PDF** (row or grid), **EXIF metadata CSV**, and optional **HTML directory tree/index** (`Project summary index` is native; recursive modes use `tree -J`, based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
 - Writes artifacts into the folder and/or mirrors them to an export folder
 - Built-in **Help > Drop Verify Help** with setup guides for external codecs, HTML tree, and output options
 
