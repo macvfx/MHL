@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. **CopyTrust 2.5.3 is in testing** — it includes the sorted-copy MHL verification fix, per-copy provenance records, and safer HTML tree/index output. **Drop Verify 2.5.2 is in testing** for the same safer HTML tree/index modes. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
+**Stable version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. **CopyTrust 2.5.3 is in testing** — it includes the sorted-copy MHL verification fix, per-copy provenance records, and safer HTML tree/index output. **Drop Verify 2.5.2 is in testing** for safer HTML tree/index modes and exact output-toggle behavior. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
 
 ## CopyTrust
 
@@ -34,8 +34,9 @@ Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — featu
 
 Single-folder drag-and-drop verification. Drop a folder and generate trust artifacts — no copy, no session, no setup.
 
-- Media-only recursive scan with configurable exclusion patterns
-- Generates **MHL**, **contact sheet PDF** (row or grid), **EXIF metadata CSV**, and optional **HTML directory tree/index** (`Project summary index` is native; recursive modes use `tree -J`, based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- Media-focused recursive scan with configurable exclusion patterns when media artifacts are selected
+- Generates selected outputs only: **MHL**, **contact sheet PDF** (row or grid), **EXIF metadata CSV**, and optional **HTML directory tree/index** (`Project summary index` is native; recursive modes use `tree -J`, based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- MHL output is what triggers hashing and session manifest creation; CSV/contact-sheet-only modes can run without hashes, and HTML-tree-only mode skips media analysis entirely
 - Writes artifacts into the folder and/or mirrors them to an export folder
 - Built-in **Help > Drop Verify Help** with setup guides for external codecs, HTML tree, and output options
 

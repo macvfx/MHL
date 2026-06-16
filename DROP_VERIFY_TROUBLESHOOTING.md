@@ -4,17 +4,24 @@ Use this when Drop Verify appears stuck, the UI still says it is working, or the
 
 ## Quick Read
 
-Drop Verify writes the core trust artifacts before optional HTML tree output:
+Drop Verify now runs only the work required for the selected outputs:
 
-1. Scan and hash media files.
-2. Write MHL.
-3. Write metadata CSV.
-4. Generate contact sheet PDF.
-5. Optionally generate an HTML project summary index, or recursive HTML tree files with the external `tree` command.
-6. Optionally export artifacts to a separate folder.
-7. Write the final manifest and success log lines.
+1. If MHL is enabled, scan media, hash files, write MHL, and write a session manifest.
+2. If CSV is enabled, scan media and read metadata for the CSV.
+3. If contact sheet is enabled, scan media and create thumbnails/metadata for the PDF.
+4. If HTML tree is enabled, generate a project summary index or recursive HTML tree files.
+5. Optionally export selected artifacts to a separate folder.
+6. Write success or failure log lines.
 
-If MHL, CSV, and PDF exist but the app is still running, the core proof artifacts may be complete while a secondary artifact is stuck. The Project summary index mode is native; the recursive tree modes are the ones that can wait on the external `tree` process.
+If MHL, CSV, and PDF exist but the app is still running, the selected media artifacts may be complete while HTML tree output is still running. The Project summary index mode is native; the recursive tree modes are the ones that can wait on the external `tree` process.
+
+If only HTML tree/index is enabled, Drop Verify should log:
+
+```text
+Tree-only run - skipping media hash and metadata analysis.
+```
+
+That is expected. Tree-only mode does not create an MHL, CSV, contact sheet, or session manifest.
 
 ## Expected Finish Lines
 
@@ -25,6 +32,13 @@ Artifacts complete - MHL * contact sheet * CSV
   MHL: /path/to/Drop Verify_Receipts/...
   Contact sheet: /path/to/Drop Verify_Receipts/...
   CSV: /path/to/Drop Verify_Receipts/...
+Session finished successfully.
+```
+
+For a no-MHL report run, the log can also include:
+
+```text
+Manifest skipped - MHL/hash output is disabled.
 Session finished successfully.
 ```
 
@@ -105,11 +119,11 @@ Look for:
 - `dropverify_contactsheet_*.pdf`
 - optional `dropverify_tree_*.html`
 
-If MHL, CSV, and PDF exist, the core Drop Verify artifacts are present even if optional HTML tree generation failed afterward.
+Match this list to the outputs selected in Settings. Disabled outputs should not exist. If MHL is disabled, no MHL or session manifest is expected. If HTML tree is the only selected output, an HTML file is the only expected artifact.
 
 ## Recover From A Stuck HTML Tree
 
-If `pgrep -P <DropVerifyPID> -fl .` shows a long-running `tree -J` child and MHL/CSV/PDF are already present, terminate only the child process first:
+If `pgrep -P <DropVerifyPID> -fl .` shows a long-running `tree -J` child and any non-tree artifacts you selected are already present, terminate only the child process first:
 
 ```zsh
 kill <TreePID>
@@ -121,13 +135,15 @@ Drop Verify may then report:
 tree command failed with exit code 15
 ```
 
-Exit code 15 means the `tree` command received SIGTERM. This means the optional HTML tree artifact was stopped. It does not mean the already written MHL, CSV, and PDF failed.
+Exit code 15 means the `tree` command received SIGTERM. This means the HTML tree artifact was stopped. It does not mean already written MHL, CSV, or PDF artifacts failed.
 
 If Drop Verify does not recover within 30-60 seconds after killing the child process, quit Drop Verify normally.
 
 ## When To Disable HTML Tree
 
-For very large project folders, network shares, or folders with many nested files, use **Project summary index** or **One HTML per top-level folder** unless a single complete recursive tree is required. **Entire project** can create a very large secondary artifact, and it is still secondary to the MHL, CSV, and contact sheet.
+For very large project folders, network shares, or folders with many nested files, use **Project summary index** or **One HTML per top-level folder** unless a single complete recursive tree is required. **Entire project** can create a very large artifact.
+
+For a fast folder-only report, enable only **HTML directory tree** and choose **Project summary index**. That path skips media scanning, hashing, metadata extraction, and the session manifest.
 
 ## Evidence To Save
 

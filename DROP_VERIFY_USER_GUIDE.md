@@ -33,12 +33,14 @@ Expected branch behavior:
 
 Drop Verify is a one-folder analysis tool.
 
-You drag a folder into the app, and it generates artifact types for media files found inside that folder:
+You drag a folder into the app, choose the artifacts you want, and Drop Verify does only the work required for those selected outputs:
 
 - `MHL (Media Hash List)`
 - `Contact sheet PDF`
 - `EXIF camera metadata CSV`
 - `HTML directory tree` (optional project index or recursive tree output — recursive modes use [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+
+The MHL is the hash-producing trust artifact. If MHL is disabled, Drop Verify can still create CSV, contact sheet, or HTML tree/index outputs without hashing files.
 
 ## Basic Workflow
 
@@ -65,18 +67,20 @@ You drag a folder into the app, and it generates artifact types for media files 
 
 Drop Verify scans recursively and only includes media files.
 
+Exception: if the only enabled output is `HTML directory tree`, Drop Verify skips media scanning, hashing, and metadata extraction, then generates the requested folder tree/index directly.
+
 ### 4. Wait for artifact generation
-The app runs through these stages:
+The app runs only the stages needed for the selected outputs:
 
-- scan media files
-- hash files for MHL generation
-- extract image/video metadata
-- write CSV
-- render contact sheet PDF
-- generate HTML directory tree/index (if enabled; recursive modes require tree)
-- write/export artifacts
+- scan media files when MHL, CSV, or contact sheet output is selected
+- hash files only when MHL output is selected
+- extract image/video metadata when CSV or contact sheet output needs it
+- write CSV when enabled
+- render contact sheet PDF when enabled
+- generate HTML directory tree/index when enabled
+- write/export selected artifacts
 
-Use the **Cancel** button in the header bar to stop at any time without quitting the app. On cancel, a partial session manifest is saved recording which files were verified before the cancellation. A **Reveal Manifest** button appears in the status card to open it.
+Use the **Cancel** button in the header bar to stop at any time without quitting the app. When a hashing run is cancelled, a partial session manifest is saved recording which files were verified before the cancellation. A **Reveal Manifest** button appears in the status card to open it. Runs that do not produce hashes do not write a session manifest.
 
 **Read-only media:** If the dropped folder is on read-only media (locked SD card, encrypted drive, write-protected volume), Drop Verify detects this before scanning and prompts you to choose an export folder. If an export folder is already configured in Settings, artifacts are written there automatically — the export folder is revealed in Finder when done, and artifact rows show an "Exported" badge with clickable links to the exported files.
 
@@ -92,6 +96,7 @@ You can open individual artifacts from the app after generation.
 ### MHL (Media Hash List)
 - Industry-standard manifest of file hashes
 - Useful for later verification and handoff records
+- Enabling MHL is what makes Drop Verify hash media files and write a session manifest
 
 ### Contact sheet PDF
 - Quick visual summary of media found in the dropped folder
@@ -108,6 +113,7 @@ You can open individual artifacts from the app after generation.
 - Intended for reporting, sorting, and review in Numbers, Excel, or Google Sheets
 - When ExifTool is configured, CSV output also includes richer ExifTool-backed fields such as start timecode, audio sample rate, audio bit depth, and firmware/application version where available for MXF and R3D
 - The active Build 2 branch can also populate fields such as `VideoFormat`, `ReelNumber`, `CameraSerialNumber`, `StorageModel`, and `StorageSerialNumber` where ExifTool provides them.
+- CSV can be generated without MHL. In that mode Drop Verify indexes media and reads metadata, but does not hash files.
 
 ### HTML directory tree
 - HTML view of the folder's directory structure
@@ -118,6 +124,7 @@ You can open individual artifacts from the app after generation.
 - Recursive modes require the `tree` command-line tool (install via `brew install tree` or `sudo port install tree`)
 - Recursive modes are based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML) and use `tree -J` (JSON mode) to produce structured output, then render collapsible `<details>` elements for directories
 - For very large project folders or slow network shares, use **Project summary index** or **One HTML per top-level folder** rather than **Entire project** unless a single complete tree file is required.
+- If HTML directory tree is the only enabled output, Drop Verify skips media hashing and metadata analysis entirely. This is the fastest way to create a project folder summary.
 
 ## Exclusions
 
@@ -156,11 +163,13 @@ When enabled, Drop Verify writes selected outputs into the dropped folder under:
 When enabled, the app also copies generated artifacts to a separate export folder you choose in Settings.
 
 ### Session manifest
-After every run (including cancelled ones), Drop Verify writes a session manifest:
+When MHL/hash output is enabled, Drop Verify writes a session manifest:
 
 - `Drop Verify_Receipts/SESSION_MANIFEST_{folderName}_{timestamp}.json`
 
-The manifest records every verified file with path, size, and xxHash64 hash. On cancellation, it captures which files were verified before the cancel (`"status": "cancelled"`). The JSON uses `filesVerified` / `bytesVerified` keys (distinct from CopyTrust's `filesCopied` / `bytesCopied`).
+The manifest records every verified file with path, size, and xxHash64 hash. On cancellation during a hashing run, it captures which files were verified before the cancel (`"status": "cancelled"`). The JSON uses `filesVerified` / `bytesVerified` keys (distinct from CopyTrust's `filesCopied` / `bytesCopied`).
+
+If MHL is disabled, Drop Verify skips file hashing and does not write a session manifest. The session log records `Manifest skipped - MHL/hash output is disabled.`
 
 ## Session Logs
 
@@ -182,6 +191,7 @@ Use the **Help > Drop Verify Help** menu to open a built-in help sheet covering 
 ## Notes
 
 - Drop Verify is media-focused and does not generate MHL entries for non-media files.
+- Tree-only runs are folder-focused and do not require media files or hashes.
 - Hidden files are excluded by default.
 - Exclusion checkboxes are operator-controlled; Camera Card patterns are not silently forced on.
 - The app is intended for post-copy verification/reporting, not multi-destination ingest.

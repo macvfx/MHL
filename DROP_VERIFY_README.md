@@ -2,9 +2,9 @@
 
 Current app version: **v2.5.2 (Build 2)**.
 
-`Drop Verify` is a lightweight macOS app target for one-folder trust reporting.
+`Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
-Drop a folder onto the app and it will recursively scan media files, then generate:
+Drop a folder onto the app, choose the outputs you want, and it will generate only those selected artifacts:
 
 - `MHL (Media Hash List)`
 - `Contact sheet PDF`
@@ -12,6 +12,8 @@ Drop a folder onto the app and it will recursively scan media files, then genera
 - `HTML directory tree` (optional project index or recursive tree output)
 
 It is designed as a simpler sibling to `CopyTrust`, for situations where you want trust artifacts and metadata reports without the full multi-destination ingest workflow.
+
+The MHL option is what triggers file hashing. If MHL is disabled, CSV/contact-sheet report runs can skip hashes, and HTML-tree-only runs skip media scanning, hashing, and metadata extraction entirely.
 
 Drop Verify can also use:
 - `ExifTool` for richer unsupported and sparse-video metadata
@@ -63,11 +65,19 @@ Current expected results:
 - Camera Card exclusion patterns are optional and disabled by default: `MISC`, `THMBNL`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, and `.Db`
 - Checked exclusions are skipped; unchecked exclusions remain included
 
+Tree-only exception: if `HTML directory tree` is the only selected output, Drop Verify does not scan media files. It generates the requested folder index/tree directly. `Project summary index` is native and does not require `tree`; recursive modes use the configured external `tree` command.
+
 ## Outputs
 
 By default, Drop Verify writes artifacts into the dropped folder inside:
 
 - `Drop Verify_Receipts/`
+
+Disabled outputs are not generated. For example:
+- MHL on = media hashes + MHL + session manifest
+- CSV only = media index + metadata CSV, no file hashes
+- Contact sheet only = media index + thumbnails/metadata, no file hashes
+- HTML tree only = folder tree/index, no media scan and no hashes
 
 Artifact filenames follow the pattern `dropverify_<type>_<folderName>_<date-time>.<ext>`:
 - `Drop Verify - 2026-06-07 at 15.19.19 - LiveCam.mhl`
@@ -98,6 +108,8 @@ Drop Verify includes settings for:
 - open locally written artifacts after completion
 - operator name
 
+At least one output must be selected. If all outputs are off, Drop Verify stops before scanning and asks you to choose an artifact output.
+
 ## Exclusions
 
 Drop Verify applies only the exclusion checkboxes that are enabled in `Settings > Exclusions`. Built-in generated-artifact patterns such as `Drop Verify_Receipts`, `CopyTrust_Receipts`, contact sheets, generated MHLs, and Drop Verify reports are enabled by default so a later run does not treat prior outputs as source media.
@@ -119,6 +131,13 @@ If the app cannot create or write the session log, Drop Verify now shows a non-f
 
 - **Hash-prefetch pipeline**: The file analysis loop now kicks off the next file's hash before EXIF extraction begins on the current file, keeping card I/O continuously busy. Eliminates the per-file idle gap between hashing and metadata extraction. File ordering and progress reporting are fully preserved; cancellation explicitly stops the prefetch task.
 - **FileIntegrityHasher buffer 1 MB**: SHA-256, SHA-1, and MD5 read buffer increased from 256 KB to 1 MB, matching the xxHash64 pipeline. Reduces syscall count by ~4× for SHA-based integrity checks.
+
+## What's New in v2.5.2 (Build 2)
+
+- **Output toggles are exact**: disabled artifacts are not generated and then deleted; they are skipped before their work starts.
+- **Tree-only mode can be no-hash**: when HTML directory tree is the only selected output, Drop Verify skips media scanning, hashing, metadata extraction, and session manifest creation.
+- **Report-only modes can avoid hashing**: CSV/contact-sheet runs without MHL can index media and gather metadata/thumbnails without producing xxHash values.
+- **Session manifests are hash-run records**: manifests are written when MHL/hash output is enabled; no-hash runs log that the manifest was skipped.
 
 ## External Codec Status
 
