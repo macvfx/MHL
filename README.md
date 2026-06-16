@@ -20,7 +20,7 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Destination relay-order staging with visible `Stop 1`, `Stop 2`; queued relay legs can be pulled back into the workspace with `Edit` for reordering
 - **Resumable CopyTrust ingest** for cancelled same-source/same-destination runs and failed partial runs when the saved manifest still matches the same source, destinations, and rendered subfolder
 - **Contact sheet PDF** (row or grid layout) and **EXIF metadata CSV** after each ingest — professional formats (MXF, R3D, BRAW, ARRIRAW, M2V, VOB) show placeholders in the stable release, while this branch uses ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, and REDline for R3D thumbnails. PDF/CSV run as independent background artifacts after trust-critical copy + verify + MHL completion.
-- Optional **HTML directory tree** artifact after copy + verify; enable in Settings > Post-Copy with `Project summary index` (native, no `tree` required), `One HTML per top-level folder`, or `Entire project` (recursive modes use `tree -J`, based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- Optional **HTML directory tree** artifact after copy + verify; enable in Settings > Post-Copy with `Project summary index`, `One HTML per top-level folder`, or `Entire project`, all generated natively
 - Session receipts (JSON + TXT), per-ingest logs, and optional export to a separate folder, including overall relay-chain summaries at session close
 - Verify panel: Deep Compare Files, Compare Browser, Copy Missing, Retry MHL Export
 - Safe-to-eject flow after successful transfer
@@ -35,7 +35,7 @@ Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — featu
 Single-folder drag-and-drop verification. Drop a folder and generate trust artifacts — no copy, no session, no setup.
 
 - Media-focused recursive scan with configurable exclusion patterns when media artifacts are selected
-- Generates selected outputs only: **MHL**, **contact sheet PDF** (row or grid), **EXIF metadata CSV**, and optional **HTML directory tree/index** (`Project summary index` is native; recursive modes use `tree -J`, based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- Generates selected outputs only: **MHL**, **contact sheet PDF** (row or grid), **EXIF metadata CSV**, and optional native **HTML directory tree/index**
 - MHL output is what triggers hashing and session manifest creation; CSV/contact-sheet-only modes can run without hashes, and HTML-tree-only mode skips media analysis entirely
 - Writes artifacts into the folder and/or mirrors them to an export folder
 - Built-in **Help > Drop Verify Help** with setup guides for external codecs, HTML tree, and output options

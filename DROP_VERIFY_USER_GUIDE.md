@@ -7,7 +7,6 @@ Current app version: **v2.5.2 (Build 2)**.
 The tested unsupported-format setup is:
 
 - `ExifTool` for MXF and R3D metadata
-- `tree` for recursive HTML directory tree output
 - `ffmpeg` for MXF contact-sheet thumbnails
 - `REDline` for R3D contact-sheet thumbnails
 
@@ -15,7 +14,6 @@ Recommended setup:
 - Open `Drop Verify > Settings… > External Codecs`
 - Turn on `Enable ExifTool metadata extraction`
 - Use `Auto-Detect` or `Browse…` for `exiftool`
-- In the `tree` section, use `Auto-Detect` or `Browse…` to set the tree path
 - Turn on `Enable external thumbnail codecs`
 - Enable the `MXF` and `R3D` format toggles you want to test
 - Use `Auto-Detect` or `Browse…` for:
@@ -24,7 +22,7 @@ Recommended setup:
 
 Expected branch behavior:
 - ExifTool enriches MXF and R3D metadata in the contact sheet and CSV when enabled.
-- tree generates recursive HTML directory tree output when enabled and valid. The Project summary index mode does not require tree.
+- HTML directory tree output is generated natively and does not require the external `tree` command.
 - ffmpeg provides MXF thumbnails when enabled and valid.
 - REDline provides R3D thumbnails when enabled and valid.
 - If ffmpeg or REDline fails, Drop Verify falls back to the placeholder behavior and logs the attempt.
@@ -38,7 +36,7 @@ You drag a folder into the app, choose the artifacts you want, and Drop Verify d
 - `MHL (Media Hash List)`
 - `Contact sheet PDF`
 - `EXIF camera metadata CSV`
-- `HTML directory tree` (optional project index or recursive tree output — recursive modes use [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML))
+- `HTML directory tree` (optional project index or recursive tree output)
 
 The MHL is the hash-producing trust artifact. If MHL is disabled, Drop Verify can still create CSV, contact sheet, or HTML tree/index outputs without hashing files.
 
@@ -53,7 +51,7 @@ The MHL is the hash-producing trust artifact. If MHL is disabled, Drop Verify ca
   - `MHL (Media Hash List)`
   - `Contact sheet PDF (thumbnails and camera data)`
   - `EXIF camera metadata CSV (Spreadsheet)`
-  - `HTML directory tree` (Project summary index does not require tree; recursive modes require tree configured in External Codecs)
+  - `HTML directory tree` (generated natively; no external `tree` command required)
 - Choose **Contact sheet layout**: Row (detailed metadata) or Grid (3×4 poster, 12 items per page).
 - Optionally enable **Hide unsupported format placeholders** to omit files that cannot generate thumbnails (MXF, R3D, M2V, etc.) from the contact sheet PDF. These files still appear in the EXIF CSV and MHL.
 - Optionally enable **ExifTool metadata extraction** and **external thumbnail codecs** for MXF and R3D (see External Codec Setup above).
@@ -121,8 +119,7 @@ You can open individual artifacts from the app after generation.
 - **Project summary index** generates a lightweight top-level project index directly in Drop Verify and does not require the external `tree` command.
 - **One HTML per top-level folder** generates an index plus one recursive HTML tree for each immediate subfolder. This is the recommended recursive mode for very large projects and network shares.
 - **Entire project** generates one recursive HTML tree for the whole dropped folder. Use it only when a single complete tree file is required.
-- Recursive modes require the `tree` command-line tool (install via `brew install tree` or `sudo port install tree`)
-- Recursive modes are based on [ProjectToHTML](https://github.com/RSKGroup/ProjectToHTML) and use `tree -J` (JSON mode) to produce structured output, then render collapsible `<details>` elements for directories
+- Recursive modes use native file enumeration and render collapsible `<details>` elements for directories.
 - For very large project folders or slow network shares, use **Project summary index** or **One HTML per top-level folder** rather than **Entire project** unless a single complete tree file is required.
 - If HTML directory tree is the only enabled output, Drop Verify skips media hashing and metadata analysis entirely. This is the fastest way to create a project folder summary.
 
