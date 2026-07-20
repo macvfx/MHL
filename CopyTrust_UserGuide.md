@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-07-19  
-Release status: **2.5.1 stable**; **2.5.4 in testing** on `main` (contact sheet split + large-card timeout fix — see "Contact Sheets (Post-Copy)"; 2.5.2 sorted-copy MHL verify fix — see "Sorted copies and MHL verification"; 2.5.3 native HTML trees)
+Release status: **2.5.3 stable** (sorted-copy MHL verify fix — see "Sorted copies and MHL verification" — plus native HTML trees); **2.5.4 in testing** on `main` (contact sheet split + large-card timeout fix — see "Contact Sheets (Post-Copy)")
 
 ## Purpose
 
@@ -756,18 +756,18 @@ When using Full (batch) verification, labels remain unchanged: "Copying" during 
 
 MHL generation works identically with inline verification. Hashes are accumulated during the copy phase and written after the last file completes. Receipts show the same fields regardless of verification mode.
 
-#### Sorted copies and MHL verification (2.5.2, testing)
+#### Sorted copies and MHL verification (since 2.5.2; in 2.5.3 stable)
 
 When **Destination Sort** is on, files are moved into type folders (`Video/`, `Proxy/`, …) *after* the copy. The MHL written during the copy describes the pre-sort layout, so a single MHL alone would point at paths that no longer exist once sorting completes.
 
-From 2.5.2, CopyTrust handles this automatically:
+Since 2.5.2 (stable as of 2.5.3), CopyTrust handles this automatically:
 
 - A **delivery MHL** describing the sorted layout is written to the destination root, and every verify action — **Verify Using MHL**, **Re-Verify Destinations**, **Retry MHL Export** — targets it.
 - The original **source MHL** is preserved as provenance under `CopyTrust_Receipts/… - Source.mhl`, so the destination root holds exactly one verifiable MHL.
 - A **`PROVENANCE_<source>_<timestamp>.json`** record is written to `CopyTrust_Receipts/` for every copy: the settings used (naming, sort categories, folder mode) plus the per-file source→destination mapping (identity for a plain copy).
 - If a network destination drops and reconnects mid-pipeline, the sort is **not** re-run (it is one-shot) — only unfinished artifacts are retried.
 
-> 2.5.2 is in testing. 2.5.1 remains the stable release. Plain (unsorted) copies are unchanged: the single copy-time MHL at the destination root is the one you verify against.
+> Sorted-copy MHL handling shipped in the 2.5.3 stable release. Plain (unsorted) copies are unchanged: the single copy-time MHL at the destination root is the one you verify against.
 
 ## Copy Type Presets
 

@@ -5,8 +5,9 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.1**. **2.5.2** (sorted-copy MHL verification fix + provenance)
-is in testing — see [RELEASE_NOTES.md](RELEASE_NOTES.md).
+Stable release: **2.5.3** (includes the 2.5.2 sorted-copy MHL verification fix +
+provenance and native HTML trees). **2.5.4** (contact sheet split + large-card
+timeout fix) is in testing — see [RELEASE_NOTES.md](RELEASE_NOTES.md).
 
 ---
 

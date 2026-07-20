@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-05-23  
-Current branch baseline: `v2.4.7 (Build 1)` on `main`
+Release status: **2.5.3 stable**; **2.5.4 in testing** (contact sheet split + large-card timeout fix)
 
 This file is a short landing page for the current CopyTrust workflow.
 
