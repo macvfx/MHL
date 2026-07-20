@@ -7,6 +7,7 @@ One line per release, newest first. Detailed changes live in each app's own docu
 
 | Version | Date | Summary |
 |---|---|---|
+| **CopyTrust 2.5.4 / Drop Verify 2.5.4** *(testing)* | 2026-07-19 | New **Split large contact sheets** setting in both apps (Off / every 250 / 500 / 1,000 files): large cards and folders are written as numbered PDFs (`…_part1of9.pdf`) with a "Part x of y — files a–b" header line instead of one very large PDF. Fixes the large-card contact sheet timeout: the 180 s limit now scales with file count, a timed-out run stops promptly and leaves no orphaned PDFs, and with auto-open enabled a multi-part result is revealed in Finder instead of opening every PDF. |
 | **CopyTrust 2.5.3 / Drop Verify 2.5.3** *(testing)* | 2026-06-15 | Current testing release for both apps after 2.5.1 stable. CopyTrust includes the sorted-copy MHL verification fix, per-copy provenance records, and the no-re-sort reconnect fix. Drop Verify includes exact output toggles, no-hash CSV/contact-sheet modes when MHL is off, and HTML-tree-only runs that skip media analysis. Both apps now generate Project summary index, One HTML per top-level folder, and Entire project HTML trees with built-in file enumeration, so the external `tree` command is no longer required. |
 | **2.5.2** *(internal testing milestone)* | 2026-06-13/15 | Pre-2.5.3 testing notes: CopyTrust sorted-copy verification/provenance work and Drop Verify output-toggle/no-hash workflow fixes. Superseded by the combined CopyTrust 2.5.3 / Drop Verify 2.5.3 testing release above. |
 | **2.5.1** *(stable)* | 2026-06-12 | ASC MHL v2.0 (Silverstack 9+) read/verify support in the shared CopyCore engine — fixes [#1](https://github.com/macvfx/MHL/issues/1); `ascmhl/` folder layouts; mid-file verification cancellation; mhl-tool version aligned |
@@ -15,6 +16,8 @@ One line per release, newest first. Detailed changes live in each app's own docu
 | 2.4.8 | 2026-06-06 | Drop Verify HTML directory tree output (ProjectToHTML) with in-app Drop Verify Help; exclusion verification tests; version alignment; Sentry scoped to CopyTrust only |
 | 2.4.1 (7) | 2026-05-01 | Copy progress: smallest-first ordering, within-file byte progress; NAS/SMB copy hang fixes; Check All Hashes; Clean Windows Files; Check for Updates in all apps |
 | 2.3 | 2026-04-25/29 | Subfolder Check repair workflows, guided symlink recovery, P5 stub cleanup |
+
+> **Doc updates pending (2.5.4):** `CopyTrust_UserGuide.md` and `DROP_VERIFY_USER_GUIDE.md` in this repo still describe 2.5.3. Update them to cover the **Split large contact sheets** setting (numbered part PDFs with per-part header ranges), the scaled contact sheet timeout on large cards, and auto-open revealing multi-part results in Finder.
 
 ## MHL Verify
 
