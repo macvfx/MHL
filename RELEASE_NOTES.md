@@ -17,8 +17,6 @@ One line per release, newest first. Detailed changes live in each app's own docu
 | 2.4.1 (7) | 2026-05-01 | Copy progress: smallest-first ordering, within-file byte progress; NAS/SMB copy hang fixes; Check All Hashes; Clean Windows Files; Check for Updates in all apps |
 | 2.3 | 2026-04-25/29 | Subfolder Check repair workflows, guided symlink recovery, P5 stub cleanup |
 
-> **Doc updates pending (2.5.4):** `CopyTrust_UserGuide.md` and `DROP_VERIFY_USER_GUIDE.md` in this repo still describe 2.5.3. Update them to cover the **Split large contact sheets** setting (numbered part PDFs with per-part header ranges), the scaled contact sheet timeout on large cards, and auto-open revealing multi-part results in Finder.
-
 ## MHL Verify
 
 | Version | Date | Summary |

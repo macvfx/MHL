@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.5.3 (Build 1)**.
+Current app version: **v2.5.4 (Build 1)**.
 
 ## External Codec Setup
 
@@ -54,6 +54,7 @@ The MHL is the hash-producing trust artifact. If MHL is disabled, Drop Verify ca
   - `HTML directory tree` (generated natively; no external `tree` command required)
 - Choose **Contact sheet layout**: Row (detailed metadata) or Grid (3×4 poster, 12 items per page).
 - Optionally enable **Hide unsupported format placeholders** to omit files that cannot generate thumbnails (MXF, R3D, M2V, etc.) from the contact sheet PDF. These files still appear in the EXIF CSV and MHL.
+- Optionally set **Split large contact sheets** (v2.5.4): **Off — single PDF** (default), or every **250 / 500 / 1,000** files. Folders over the limit are written as numbered PDFs (`…_part1of3.pdf`, `…_part2of3.pdf`, …), each with a "Part x of y — files a–b" line in the header.
 - Optionally enable **ExifTool metadata extraction** and **external thumbnail codecs** for MXF and R3D (see External Codec Setup above).
 - Optionally enable export to an extra export folder.
 - Leave `Exclude hidden files` enabled unless you explicitly need hidden content scanned.
@@ -105,6 +106,7 @@ You can open individual artifacts from the app after generation.
 - Recent Build 2 polish: REDline validation now better recognizes working installs, R3D contact-sheet thumbnails render at a more practical size, and crowded unsupported-format metadata blocks are trimmed back in the PDF.
 - Header shows a summary when files could not be previewed (e.g. "2 files without preview (MXF: 1, R3D: 1)")
 - Footer shows "Drop Verify" branding (CopyTrust contact sheets show "CopyTrust")
+- **Split large contact sheets** (v2.5.4): when a split limit is set and the folder exceeds it, output is multiple numbered PDFs instead of one very large one. Each part's header identifies its part number and file range; the extra export folder receives every part. The header's total-size figure is the size of the scanned media, not of the PDF itself.
 
 ### EXIF camera metadata CSV
 - Spreadsheet-friendly export of file path and metadata fields

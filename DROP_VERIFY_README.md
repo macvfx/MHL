@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v2.5.3 (Build 1)**.
+Current app version: **v2.5.4 (Build 1)**.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
@@ -140,6 +140,11 @@ If the app cannot create or write the session log, Drop Verify now shows a non-f
 - **Safer large-folder behavior**: recursive tree output no longer waits on a child `tree -J` process, and unreadable directories are rendered as warning rows where possible.
 - **Cleaner reports**: generated receipt folders are skipped so prior CopyTrust or Drop Verify artifacts are not folded into new tree reports.
 - **Legacy tree setting**: the `tree` path in External Codecs is retained only for diagnostics; operators can leave it unset.
+
+## What's New in v2.5.4 (Build 1)
+
+- **Split large contact sheets**: new setting (Off — single PDF, or every 250 / 500 / 1,000 files). Folders over the limit are written as numbered part PDFs (`…_part1of3.pdf`), each with a "Part x of y — files a–b" header line. The extra export folder receives every part.
+- **Contact sheet content unchanged**: same thumbnails, EXIF, header, and footer — only how many PDFs carry it. The header's total-size figure is the size of the scanned media, not of the PDF.
 
 ## External Codec Status
 

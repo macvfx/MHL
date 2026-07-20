@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-06-13  
-Release status: **2.5.1 stable**; **2.5.2 in testing** on `main` (sorted-copy MHL verify fix — see "Sorted copies and MHL verification")
+Date: 2026-07-19  
+Release status: **2.5.1 stable**; **2.5.4 in testing** on `main` (contact sheet split + large-card timeout fix — see "Contact Sheets (Post-Copy)"; 2.5.2 sorted-copy MHL verify fix — see "Sorted copies and MHL verification"; 2.5.3 native HTML trees)
 
 ## Purpose
 
@@ -671,6 +671,36 @@ proof (copy/verify/MHL) is already sealed and is unaffected. Workaround: avoid
 unplugging the destination until the post-copy sort/artifact step reports complete.
 A fix is being scoped without touching the working copy path.
 
+## Contact Sheets (Post-Copy)
+
+Contact sheet settings live in **Settings > Post-Copy > Contact Sheet**, stored per mode (Card/Folder). Layout is **Row** (one clip per row with detailed metadata, 7 per page) or **Grid** (3×4 poster, 12 per page).
+
+### Split large contact sheets (v2.5.4)
+
+A 4,000+-file card in Grid layout produces a single PDF with hundreds of pages. **Split large contact sheets** caps how many files go into each PDF:
+
+- **Off — single PDF** (default) · **Every 250 files** · **Every 500 files** · **Every 1,000 files**
+- Cards over the limit are written as numbered parts: `copytrust_contactsheet_<alias>_<stamp>_part1of9.pdf`, `_part2of9.pdf`, …
+- Each part's header carries a **"Part x of y — files a–b"** line so a printed or emailed part identifies its file range on its own. Thumbnails, EXIF, and all other content are unchanged — only how many PDFs carry it.
+- Receipt export, the extra export folder, and **Retry missing artifacts** all recognize split parts.
+
+Example: a 4,391-file card split at 500 produces 9 PDFs of roughly 42 grid pages each.
+
+### Open automatically with multiple parts
+
+When **Open contact sheet automatically after creation** is on:
+- a single PDF opens in Preview as before;
+- a split run **reveals the parts selected in Finder** (in `CopyTrust_Receipts/`) instead of opening a stack of Preview windows.
+
+### Large-card generation time and timeout (fixed in v2.5.4)
+
+Contact sheet generation for RAW-heavy cards is preview-bound (roughly 0.25 s per file — a 4,391-file JPG+RAW card takes ~17 minutes). Before v2.5.4 a fixed 180-second timeout raced this work but could not stop it: the session reported *"Contact sheet timed out after 180s"* and *"1 failed"* while the full PDF was silently written to `CopyTrust_Receipts/` anyway — never acknowledged, never auto-opened.
+
+From v2.5.4:
+- the timeout scales with the card (180 s minimum, ~0.75 s per file — a 4,391-file card gets ~55 minutes);
+- a genuinely timed-out or cancelled run now stops promptly and removes any partial or already-written part PDFs, so a reported failure means no PDFs are left on the destination;
+- use **Retry missing artifacts** (or Drop Verify on the destination folder) to regenerate after a timeout.
+
 ## Safety Concept
 
 CopyTrust is designed around the idea that safety can mean either:
@@ -767,7 +797,7 @@ A segmented control in the toolbar shows the active preset: **Card** or **Folder
 
 ### Per-mode settings
 
-Each mode stores its own complete settings profile including: naming template, subfolder prefix, file prefix, preserve original names, verification level, post-copy re-verify, hidden-file handling, exclusion pattern checkboxes, auto-advance, auto-eject, contact sheet (on/off, style, open after creation, hide placeholders), EXIF CSV, HTML directory tree (on/off, mode), and destination sort (on/off, categories, folder mode). HTML tree modes are **Project summary index** (native, no `tree` required), **One HTML per top-level folder**, and **Entire project** (recursive modes require `tree`).
+Each mode stores its own complete settings profile including: naming template, subfolder prefix, file prefix, preserve original names, verification level, post-copy re-verify, hidden-file handling, exclusion pattern checkboxes, auto-advance, auto-eject, contact sheet (on/off, style, open after creation, hide placeholders, split limit), EXIF CSV, HTML directory tree (on/off, mode), and destination sort (on/off, categories, folder mode). HTML tree modes are **Project summary index** (native, no `tree` required), **One HTML per top-level folder**, and **Entire project** (recursive modes require `tree`).
 
 Configure each mode independently:
 - **Settings > Card Copy** — card-specific settings plus the grouped Exclusions editor and Hidden Files toggle

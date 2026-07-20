@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. **CopyTrust 2.5.3 and Drop Verify 2.5.3 are in testing** — including the CopyTrust sorted-copy MHL verification fix, per-copy provenance records, Drop Verify output-toggle fixes, and built-in HTML tree/index enumeration. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
+**Stable version: 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support across the suite and a new Verify action in MHL Verify. **CopyTrust 2.5.4 and Drop Verify 2.5.4 are in testing** — new **Split large contact sheets** setting (numbered part PDFs for large cards), a fixed large-card contact sheet timeout that no longer leaves orphaned PDFs, and Finder reveal for multi-part auto-open; plus the 2.5.2/2.5.3 sorted-copy MHL verification fix, per-copy provenance records, Drop Verify output-toggle fixes, and built-in HTML tree/index enumeration. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
 
 ## CopyTrust
 
