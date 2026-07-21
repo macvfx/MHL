@@ -875,6 +875,8 @@ Open `Settings > Appearance` to choose:
 
 CopyTrust shows copy progress in the macOS menu bar (v2.4.5).
 
+As of v2.5.4 Build 3, the post-copy verification phase gets its own presentation: the blue copy bar is replaced by an **orange verification bar** with its own percentage (averaged across destinations, matching the activity log's `verify NN%` lines) and a "Copy complete — verifying" label, instead of a full copy bar that looked stuck. The live activity log also gains a copy-phase heartbeat — a line every ~5 seconds with percent, file-copy count, bytes copied, and current speed — so the log is no longer silent between "starting copy" and the verify lines.
+
 ### Menu bar icon
 
 A `doc.on.doc` icon appears in the menu bar. During an active copy the icon fills in (`doc.on.doc.fill`).
