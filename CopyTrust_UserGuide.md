@@ -692,6 +692,10 @@ When **Open contact sheet automatically after creation** is on:
 - a single PDF opens in Preview as before;
 - a split run **reveals the parts selected in Finder** (in `CopyTrust_Receipts/`) instead of opening a stack of Preview windows.
 
+### If no contact sheet appears: check the active mode (v2.5.4 Build 2)
+
+Artifact settings are per mode, and drag-dropping a source can auto-select the copy mode — a card copied in Folder mode uses the Folder profile, where the contact sheet is **off** by default. From Build 2 the activity log states this explicitly (`contactSheet: disabled in Folder mode settings — skipped`), and the `contactSheet: generating` line shows the style, split setting, and timeout in effect. Build 2 also adds heartbeat logging: the metadata pass (which runs before the first preview and can take a while on RAW-heavy cards) logs its start and progress every 500 files, and split runs log each part as it is written.
+
 ### Large-card generation time and timeout (fixed in v2.5.4)
 
 Contact sheet generation for RAW-heavy cards is preview-bound (roughly 0.25 s per file — a 4,391-file JPG+RAW card takes ~17 minutes). Before v2.5.4 a fixed 180-second timeout raced this work but could not stop it: the session reported *"Contact sheet timed out after 180s"* and *"1 failed"* while the full PDF was silently written to `CopyTrust_Receipts/` anyway — never acknowledged, never auto-opened.

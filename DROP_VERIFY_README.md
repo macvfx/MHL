@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v2.5.4 (Build 1)**.
+Current app version: **v2.5.4 (Build 2)**.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
@@ -78,7 +78,7 @@ Artifact filenames follow the pattern `dropverify_<type>_<folderName>_<date-time
 - `Drop Verify - 2026-06-07 at 15.19.19 - LiveCam.mhl`
 - `dropverify_contactsheet_LiveCam_2026-06-07-151919.pdf`
 - `dropverify_exif_output_LiveCam_2026-06-07-151919.csv`
-- `dropverify_tree_LiveCam_2026-06-07-151919.html`
+- `tree_LiveCam_2026-06-07-151919.html` (Build 2; older builds wrote `dropverify_tree_…`)
 
 It can also mirror generated artifacts to a separate export folder if enabled in Settings.
 
@@ -141,10 +141,11 @@ If the app cannot create or write the session log, Drop Verify now shows a non-f
 - **Cleaner reports**: generated receipt folders are skipped so prior CopyTrust or Drop Verify artifacts are not folded into new tree reports.
 - **Legacy tree setting**: the `tree` path in External Codecs is retained only for diagnostics; operators can leave it unset.
 
-## What's New in v2.5.4 (Build 1)
+## What's New in v2.5.4 (Builds 1–2)
 
 - **Split large contact sheets**: new setting (Off — single PDF, or every 250 / 500 / 1,000 files). Folders over the limit are written as numbered part PDFs (`…_part1of3.pdf`), each with a "Part x of y — files a–b" header line. The extra export folder receives every part.
 - **Contact sheet content unchanged**: same thumbnails, EXIF, header, and footer — only how many PDFs carry it. The header's total-size figure is the size of the scanned media, not of the PDF.
+- **Neutral tree filenames (Build 2)**: HTML tree artifacts are now `tree_…` / `tree_index_…` in both Drop Verify and CopyTrust (previously `dropverify_tree_…` everywhere). Old filenames are still recognized.
 
 ## External Codec Status
 
