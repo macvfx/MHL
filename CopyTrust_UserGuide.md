@@ -675,6 +675,21 @@ A fix is being scoped without touching the working copy path.
 
 Contact sheet settings live in **Settings > Post-Copy > Contact Sheet**, stored per mode (Card/Folder). Layout is **Row** (one clip per row with detailed metadata, 7 per page) or **Grid** (3×4 poster, 12 per page).
 
+### Unsupported media, external codecs, and placeholders
+
+CopyTrust makes thumbnails natively for photos and common video, but it can't decode **professional and proxy formats** — MXF, R3D, BRAW, ARRIRAW, CinemaDNG, the MPEG‑2 family, and DJI `.LRF` proxies. What happens to those files on the contact sheet depends on two settings:
+
+- **External thumbnail codecs** (Settings > External Codecs — a *shared*, not per-mode, setting). This is the switch that lets CopyTrust shell out to **ffmpeg** (MXF, MPEG‑2 family, LRF) and **REDline** (R3D) to extract real thumbnail frames.
+  - **Off:** unsupported files appear as **"No Preview" placeholder tiles** with their filename and metadata. Fast — no external tools run.
+  - **On:** CopyTrust runs ffmpeg/REDline per file to get real thumbnails. This is the right choice when you want a visual sheet of MXF/R3D footage, but it is **much heavier**: a card full of proxies or MXF means one external-tool invocation per file, so contact-sheet generation takes substantially longer than an all-JPEG/RAW card. Plan for it on proxy/MXF-heavy ingests.
+
+- **Hide unsupported format placeholders** (per mode, under Contact Sheet).
+  - **Off (default, recommended):** no-preview files still appear as placeholder tiles in the sheet. This is the leanest path — CopyTrust does not do any extra up-front work to decide what to hide.
+  - **On:** files that can't produce a thumbnail are **omitted** from the PDF entirely (they still appear in the EXIF CSV and MHL). Turning this on makes CopyTrust run an extra preview pass up front to determine which files to drop, so it is slower on proxy/MXF-heavy cards. Use it only when you specifically want a clean sheet with no placeholder tiles.
+  - Cosmetic note: with hide-placeholders **off**, the sheet header does not print a "N files without preview" count (the placeholder tiles convey it); with it **on**, that count appears.
+
+**Practical guidance for proxy/MXF-heavy cards:** decide whether you actually need real thumbnails for those formats. If yes, enable external codecs and expect longer generation. If placeholders are fine, leave external codecs off for a fast sheet. Either way, leave **hide placeholders off** unless you specifically need the no-placeholder look — it's the lighter path. (Contact sheet generation is a background artifact and never blocks copy, verify, MHL, or receipts; if it fails you can retry just that artifact — see below.)
+
 ### Split large contact sheets (v2.5.4)
 
 A 4,000+-file card in Grid layout produces a single PDF with hundreds of pages. **Split large contact sheets** caps how many files go into each PDF:
@@ -696,9 +711,9 @@ When **Open contact sheet automatically after creation** is on:
 
 Contact Sheet, EXIF CSV, and HTML Tree each show their own status line (working / done / failed) with their own **Retry** button, so a failed contact sheet no longer hides that the CSV and tree succeeded — and you can retry just the one that needs it. **Rebuild All** regenerates the whole set.
 
-### Proxy / MXF cards: contact sheet hang fixed (v2.5.4 Build 4)
+### Proxy / MXF cards: contact sheet hang (fixed in v2.5.4 Build 4)
 
-Earlier builds could hang forever generating a contact sheet on cards with camera proxies (`.LRF`) or professional formats (MXF/R3D): the log showed ffmpeg extracting thumbnails, then went silent with no PDF and no failure, and stop/restart re-hung. This was a subprocess deadlock (a blocking read on ffmpeg's output) that also defeated the timeout, made worse by a redundant preview pass that ran even when placeholders were shown. Build 4 makes external-tool subprocesses reliably killable and skips that redundant pass when placeholders are shown, so generation completes (or fails cleanly and is retryable) instead of wedging. Proxy-heavy cards are fastest with **hide placeholders off**.
+Historical note for anyone on an older build: contact sheets on cards with camera proxies (`.LRF`) or professional formats (MXF/R3D) could hang forever — ffmpeg logged thumbnails, then generation went silent with no PDF and no failure, and stop/restart re-hung. It was a subprocess deadlock that also defeated the timeout. **Fixed in v2.5.4 Build 4**: external-tool subprocesses are now reliably killable and the redundant up-front preview pass is skipped when placeholders are shown, so generation completes — or fails cleanly and is retryable — instead of wedging. If you are on an older build and see this, update; as a stopgap, turning **external codecs off** avoids it (unsupported files render as placeholders with no external tools). See *"Unsupported media, external codecs, and placeholders"* above for how to configure these cards.
 
 ### If no contact sheet appears: check the active mode (v2.5.4 Build 2)
 

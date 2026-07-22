@@ -46,6 +46,8 @@ Each mode maintains its own **independent settings profile**. Changes to Card se
 
 Switch presets before setting up a session. The preset picker is hidden during an active copy to keep the action bar clean. Individual settings remain overridable within the active mode.
 
+**Contact sheets on proxy/MXF cards:** the contact sheet is a background artifact (never blocks copy/verify/MHL). For cards heavy in camera proxies (`.LRF`) or professional formats (MXF/R3D), enabling **external thumbnail codecs** (Settings > External Codecs, shared) makes CopyTrust run ffmpeg/REDline per file for real thumbnails — worth it for a visual sheet, but expect noticeably longer generation. Leave **external codecs off** for a fast sheet where those files appear as "No Preview" placeholders, and leave **hide placeholders off** unless you specifically want them omitted. See the "Unsupported media, external codecs, and placeholders" section of the User Guide.
+
 ### Per-queue-item settings snapshots
 
 Each queued session captures a **full snapshot** of the active mode's settings at the moment it is queued. This means:
