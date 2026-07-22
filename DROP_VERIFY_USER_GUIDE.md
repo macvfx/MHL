@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.5.4 (Build 3)**.
+Current app version: **v2.5.4 (Build 4)**.
 
 ## External Codec Setup
 

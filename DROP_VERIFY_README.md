@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v2.5.4 (Build 3)**.
+Current app version: **v2.5.4 (Build 4)**.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 

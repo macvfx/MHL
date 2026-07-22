@@ -692,6 +692,14 @@ When **Open contact sheet automatically after creation** is on:
 - a single PDF opens in Preview as before;
 - a split run **reveals the parts selected in Finder** (in `CopyTrust_Receipts/`) instead of opening a stack of Preview windows.
 
+### Per-artifact status and retry (v2.5.4 Build 4)
+
+Contact Sheet, EXIF CSV, and HTML Tree each show their own status line (working / done / failed) with their own **Retry** button, so a failed contact sheet no longer hides that the CSV and tree succeeded — and you can retry just the one that needs it. **Rebuild All** regenerates the whole set.
+
+### Proxy / MXF cards: contact sheet hang fixed (v2.5.4 Build 4)
+
+Earlier builds could hang forever generating a contact sheet on cards with camera proxies (`.LRF`) or professional formats (MXF/R3D): the log showed ffmpeg extracting thumbnails, then went silent with no PDF and no failure, and stop/restart re-hung. This was a subprocess deadlock (a blocking read on ffmpeg's output) that also defeated the timeout, made worse by a redundant preview pass that ran even when placeholders were shown. Build 4 makes external-tool subprocesses reliably killable and skips that redundant pass when placeholders are shown, so generation completes (or fails cleanly and is retryable) instead of wedging. Proxy-heavy cards are fastest with **hide placeholders off**.
+
 ### If no contact sheet appears: check the active mode (v2.5.4 Build 2)
 
 Artifact settings are per mode, and drag-dropping a source can auto-select the copy mode — a card copied in Folder mode uses the Folder profile, where the contact sheet is **off** by default. From Build 2 the activity log states this explicitly (`contactSheet: disabled in Folder mode settings — skipped`), and the `contactSheet: generating` line shows the style, split setting, and timeout in effect. Build 2 also adds heartbeat logging: the metadata pass (which runs before the first preview and can take a while on RAW-heavy cards) logs its start and progress every 500 files, and split runs log each part as it is written.
