@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v2.5.4 (Build 4)**.
+Current app version: **v2.5.4 (Build 5)**.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
@@ -75,10 +75,12 @@ Disabled outputs are not generated. For example:
 - HTML tree only = folder tree/index, no media scan and no hashes
 
 Artifact filenames follow the pattern `dropverify_<type>_<folderName>_<date-time>.<ext>`:
-- `Drop Verify - 2026-06-07 at 15.19.19 - LiveCam.mhl`
-- `dropverify_contactsheet_LiveCam_2026-06-07-151919.pdf`
-- `dropverify_exif_output_LiveCam_2026-06-07-151919.csv`
-- `tree_LiveCam_2026-06-07-151919.html` (Build 2; older builds wrote `dropverify_tree_…`)
+- `Drop Verify - 2026-06-07 at 15.19.19 - LiveCam.mhl` (MHL keeps its industry-style name)
+- `LiveCam_2026-06-07-151919_dropverify_contactsheet.pdf`
+- `LiveCam_2026-06-07-151919_dropverify_exif.csv`
+- `LiveCam_2026-06-07-151919_dropverify_tree.html`
+
+  Subject-first as of v2.5.4 Build 5 (`<subject>_<stamp>_dropverify_<type>`); older builds wrote `dropverify_<type>_<subject>_<stamp>` / `tree_…`. Both are still recognized.
 
 It can also mirror generated artifacts to a separate export folder if enabled in Settings.
 
