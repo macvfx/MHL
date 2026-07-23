@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3** — sorted-copy MHL verification fix, per-copy provenance records, output-toggle fixes, and built-in HTML tree/index enumeration. **MHL Verify and mhl-tool stable at 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support and the Verify action. **CopyTrust 2.5.4 and Drop Verify 2.5.4 are in testing (Build 5)** — subject-first artifact filenames (`<subject>_<stamp>_<app>_<type>`) across both apps; **Split large contact sheets** (numbered part PDFs for large cards), a fixed large-card contact sheet timeout that no longer leaves orphaned PDFs, Finder reveal for multi-part auto-open, a fix for contact sheets hanging forever on proxy (LRF) / MXF-heavy cards (killable subprocesses + skipped redundant preview audit), per-artifact status and individual Retry for Contact Sheet / EXIF CSV / HTML Tree, disabled-artifact skip logging, generation heartbeat logs, the activity-log copy heartbeat, and an orange menu bar verification bar. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
+**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3** — sorted-copy MHL verification fix, per-copy provenance records, output-toggle fixes, and built-in HTML tree/index enumeration. **MHL Verify and mhl-tool stable at 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support and the Verify action. **CopyTrust 2.5.4 and Drop Verify 2.5.4 are in testing (Build 6)** — successful Quick-verification copies now generate their enabled contact sheet PDF, EXIF CSV, HTML tree, and destination sort instead of silently producing nothing; artifact rows always finish instead of spinning forever. Build 6 also includes subject-first artifact filenames (`<subject>_<stamp>_<app>_<type>`), split contact sheets, the large-card timeout and proxy/MXF hang fixes, per-artifact status and Retry, activity-log heartbeat, and menu-bar verification progress. One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
 
 ## CopyTrust
 
@@ -11,15 +11,15 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Volume browser and **Volume Pool** for fast source/destination setup
 - Destination preset groups for one-click restore of saved destination sets
 - Per-destination preflight checks (free space, write permissions, reachability)
-- Post-copy verification with xxHash64 (None / Quick / Full)
-- **MHL v1.1** hash list generation — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta
+- Verification levels: **Quick** existence/size checking, **Full** post-copy xxHash64, or **Inline** hash verification during copy
+- **MHL v1.1** hash list generation for Full/Inline verification — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta
 - MHL import verification — drag-and-drop any `.mhl` to re-verify destination files; reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+, OffShoot, YoYotta, ShotPut Pro) as of v2.5.1
 - **Auto-advance** multi-source copy with per-card subfolder naming
 - **Queued sessions** for walk-away ingest staging across different card/destination setups
 - **Relay-chain copy** for `A -> B -> C` workflows using one source plus ordered destinations and `Queue Relay Chain`
 - Destination relay-order staging with visible `Stop 1`, `Stop 2`; queued relay legs can be pulled back into the workspace with `Edit` for reordering
 - **Resumable CopyTrust ingest** for cancelled same-source/same-destination runs and failed partial runs when the saved manifest still matches the same source, destinations, and rendered subfolder
-- **Contact sheet PDF** (row or grid layout) and **EXIF metadata CSV** after each ingest — professional formats (MXF, R3D, BRAW, ARRIRAW, M2V, VOB) show placeholders in the stable release, while this branch uses ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, and REDline for R3D thumbnails. PDF/CSV run as independent background artifacts after trust-critical copy + verify + MHL completion.
+- **Contact sheet PDF** (row or grid layout) and **EXIF metadata CSV** after each ingest — professional formats (MXF, R3D, BRAW, ARRIRAW, M2V, VOB) show placeholders in the stable release, while this branch uses ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, and REDline for R3D thumbnails. PDF/CSV run as independent background artifacts after the selected verification completes; Quick mode does not invent hashes or an MHL.
 - Optional **HTML directory tree** artifact after copy + verify; enable in Settings > Post-Copy with `Project summary index`, `One HTML per top-level folder`, or `Entire project`, all generated natively
 - Session receipts (JSON + TXT), per-ingest logs, and optional export to a separate folder, including overall relay-chain summaries at session close
 - Verify panel: Deep Compare Files, Compare Browser, Copy Missing, Retry MHL Export

@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
-Date: 2026-04-18  
-Current branch baseline: `v2.2 (Build 2)` 
+Date: 2026-07-22
+Current testing release: `v2.5.4 (Build 6)`
 
 This file is a Quick Start for the current CopyTrust workflow.
 
@@ -21,7 +21,7 @@ Use this for `A -> B` and `A -> C`.
 
 Expected result:
 - the source copies directly to each loaded destination
-- copy, verification, MHL, receipts, and logs finish before the session is considered trust-complete
+- copy, selected verification, receipts, and logs finish before completion; Full/Inline also write a hash-backed MHL, while Quick does not
 - PDF, CSV, and HTML tree artifacts can continue afterward in the background
 
 ### Relay chain
@@ -36,7 +36,7 @@ Use this for `A -> B -> C`.
 Expected result:
 - `A -> B` runs first
 - once verified, the output of `B` becomes the source for `B -> C`
-- background PDF and CSV work does not block the next relay leg
+- background PDF, CSV, and HTML tree work does not block the next relay leg
 
 ### Mixed queued sessions
 Use this when different cards need different destination sets.

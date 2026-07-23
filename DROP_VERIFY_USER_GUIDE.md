@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.5.4 (Build 5)**.
+Current app version: **v2.5.4 (Build 6)**. Build 6 aligns the shared release number; it contains no Drop Verify behavior change.
 
 ## External Codec Setup
 
@@ -139,17 +139,17 @@ The Camera Card group includes optional patterns for common card-side folders an
 
 ## Expected Artifact Filenames
 
-All artifact filenames follow the pattern `dropverify_<type>_<folderName>_<date-time>.<ext>`:
+New artifacts use the subject-first pattern `<folderName>_<date-time>_dropverify_<type>.<ext>`:
 
 | Artifact | Filename example |
 |----------|-----------------|
 | MHL | `Drop Verify - 2026-06-07 at 15.19.19 - LiveCam.mhl` |
-| Contact Sheet | `dropverify_contactsheet_LiveCam_2026-06-07-151919.pdf` |
-| EXIF CSV | `dropverify_exif_output_LiveCam_2026-06-07-151919.csv` |
-| HTML Tree / Index | `dropverify_tree_index_LiveCam_2026-06-07-151919.html` or `dropverify_tree_LiveCam_2026-06-07-151919.html` |
+| Contact Sheet | `LiveCam_2026-06-07-151919_dropverify_contactsheet.pdf` |
+| EXIF CSV | `LiveCam_2026-06-07-151919_dropverify_exif.csv` |
+| HTML Tree / Index | `LiveCam_2026-06-07-151919_dropverify_tree_index.html` or `LiveCam_2026-06-07-151919_dropverify_tree.html` |
 | Session Manifest | `SESSION_MANIFEST_LiveCam_2026-06-07-151919.json` |
 
-When "One HTML per top-level folder" mode is selected, each immediate subfolder produces its own HTML tree file (e.g. `dropverify_tree_Subfolder1_2026-06-07-151919.html`) and the generated index links to those files. The index file is shown as the clickable HTML artifact in the Artifacts card.
+When "One HTML per top-level folder" mode is selected, each immediate subfolder produces its own HTML tree file and the generated subject-first index links to those files. The index file is shown as the clickable HTML artifact in the Artifacts card. Legacy pre-Build-5 filenames are still recognized.
 
 ## Output Locations
 

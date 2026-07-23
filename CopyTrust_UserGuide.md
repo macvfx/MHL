@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-07-19  
-Release status: **2.5.3 stable** (sorted-copy MHL verify fix — see "Sorted copies and MHL verification" — plus native HTML trees); **2.5.4 in testing** on `main` (contact sheet split + large-card timeout fix — see "Contact Sheets (Post-Copy)")
+Date: 2026-07-22
+Release status: **2.5.3 stable** (sorted-copy MHL verify fix — see "Sorted copies and MHL verification" — plus native HTML trees); **2.5.4 Build 6 in testing** on `main` (Quick-verification artifact fix — see "Quick verification and descriptive artifacts")
 
 ## Purpose
 
@@ -513,13 +513,13 @@ Understanding the order of operations helps diagnose where an issue occurred:
 2. **File scan** — enumerate source files, apply exclusion patterns
 3. **Copy + Inline Verify** — write files to all destinations; with inline verification (the default), each file is hashed at the source during copy, then immediately hashed at the destination and compared — pass/fail feedback appears per-file during this phase
 4. **Batch Verify** — if using Full (batch) verification instead of inline, all destination files are re-hashed and compared after the copy phase completes
-5. **MHL** — write MHL v1.1 manifest
+5. **MHL (Full/Inline only)** — write an MHL v1.1 manifest from hash-backed entries; Quick intentionally skips MHL
 6. **Receipt + Log** — write per-copy receipt and session log
 7. **Sort** — reorganize files into type folders (if enabled)
 8. **Contact sheet PDF** — generate thumbnail contact sheet (if enabled)
 9. **EXIF CSV** — generate metadata CSV (if enabled)
 
-Steps 1–6 are trust-critical. Steps 7–9 are background artifacts that do not block the next queued session. A failure in step 8 does not affect the integrity of the copy — the files and their verification are already sealed.
+Steps 1–6 are trust-critical for the selected verification level. Steps 7–9 are background artifacts that do not block the next queued session. A failure in step 8 does not affect the integrity of the copy — the files and their verification are already sealed.
 
 With inline verification (step 3), the separate batch verify phase (step 4) is skipped — verification completes as part of the copy. This means trust-complete status is reached sooner.
 
@@ -710,6 +710,18 @@ When **Open contact sheet automatically after creation** is on:
 ### Per-artifact status and retry (v2.5.4 Build 4)
 
 Contact Sheet, EXIF CSV, and HTML Tree each show their own status line (working / done / failed) with their own **Retry** button, so a failed contact sheet no longer hides that the CSV and tree succeeded — and you can retry just the one that needs it. **Rebuild All** regenerates the whole set.
+
+### Quick verification and descriptive artifacts (fixed in v2.5.4 Build 6)
+
+Quick verification checks that every delivered file exists and has the expected size; it does not calculate the content hashes required for an MHL. Contact sheet PDF, EXIF CSV, HTML tree, and destination sorting do not require those hashes and are generated from CopyTrust's delivered-file inventory.
+
+Build 5 incorrectly used the hash-backed file list as the input to every post-copy artifact. A successful Quick copy therefore produced no PDF/CSV/tree and could leave the enabled artifact rows spinning. Build 6 separates delivered files from hash evidence:
+
+- Quick mode creates enabled contact sheet, EXIF CSV, and HTML tree artifacts after the size check succeeds.
+- Quick-mode destination sorting works and the descriptive artifacts use the sorted paths.
+- Quick mode still does **not** write an MHL or claim hash verification.
+- Full and Inline modes retain their hash-backed MHL behavior.
+- Every enabled artifact status row reaches a terminal done, failed, skipped, or **Nothing to do** state.
 
 ### Proxy / MXF cards: contact sheet hang (fixed in v2.5.4 Build 4)
 

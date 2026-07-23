@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-05-23  
-Release status: **2.5.3 stable**; **2.5.4 in testing** (contact sheet split + large-card timeout fix)
+Date: 2026-07-22
+Release status: **2.5.3 stable** (sorted-copy MHL verify fix, native HTML trees); **2.5.4 Build 6 in testing** on `main` (Quick-verification artifact fix)
 
 This file is a short landing page for the current CopyTrust workflow.
 
@@ -48,6 +48,8 @@ Switch presets before setting up a session. The preset picker is hidden during a
 
 **Contact sheets on proxy/MXF cards:** the contact sheet is a background artifact (never blocks copy/verify/MHL). For cards heavy in camera proxies (`.LRF`) or professional formats (MXF/R3D), enabling **external thumbnail codecs** (Settings > External Codecs, shared) makes CopyTrust run ffmpeg/REDline per file for real thumbnails — worth it for a visual sheet, but expect noticeably longer generation. Leave **external codecs off** for a fast sheet where those files appear as "No Preview" placeholders, and leave **hide placeholders off** unless you specifically want them omitted. See the "Unsupported media, external codecs, and placeholders" section of the User Guide.
 
+**Quick verification and artifacts (fixed in Build 6):** Quick verifies destination existence and size without creating content hashes. Contact sheet PDF, EXIF CSV, HTML tree, and destination sorting now use the separate delivered-file inventory and work normally in Quick mode. MHL remains hash-backed and is not produced by Quick mode. Artifact rows always stop at a terminal status rather than spinning after a zero-work result.
+
 ### Per-queue-item settings snapshots
 
 Each queued session captures a **full snapshot** of the active mode's settings at the moment it is queued. This means:
@@ -69,7 +71,7 @@ Use this for `A -> B` and `A -> C`.
 
 Expected result:
 - the source copies directly to each loaded destination
-- copy, verification, MHL, receipts, and logs finish before the session is considered trust-complete
+- copy, selected verification, receipts, and logs finish before the session is considered complete; Full/Inline also write a hash-backed MHL, while Quick does not
 - PDF, CSV, and HTML tree artifacts can continue afterward in the background
 
 ### Relay chain
@@ -96,7 +98,7 @@ Use this for `A -> B -> C` — camera card to drive to NAS.
 Expected result:
 - `A -> B` runs first — camera card copies to the local drive and is verified
 - once verified, the output of `B` becomes the source for `B -> C` — NAS copy reads from the local drive, not the card
-- background PDF and CSV work does not block the next relay leg
+- background PDF, CSV, and HTML tree work does not block the next relay leg
 - automatic contact-sheet PDF opening does not block receipt or artifact completion
 - the camera card can be ejected as soon as Step 1 is trust-complete
 - **contact sheet PDF is faster for Step 2 and later:** thumbnails from Step 1 are cached and reused — no redundant preview generation for the same card content
