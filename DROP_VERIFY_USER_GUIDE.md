@@ -99,9 +99,18 @@ hashes already computed, so it does not re-read or re-hash the media, and it
 re-exports to your export folder when one is configured. The MHL is part of the
 hash/verify pass and has no separate Retry.
 
-> On read-only (export-only) media, retrying the **contact sheet** needs the
-> dropped folder to still be accessible — retry it shortly after the run. CSV
-> and tree retry are unaffected.
+**Read-only sources on retry.** If the dropped folder is read-only (a locked
+camera card or a folder with no write permission), a retry never fails for lack
+of a place to write: it uses your configured **export folder** if one is set,
+otherwise it falls back to a default writable location (`/Users/Shared`, or
+`/private/tmp` if that is unavailable). The chosen location is shown in the run
+status and written to the session log, and the artifact row's link opens the
+file there.
+
+> Rebuilding the **contact sheet** still needs the source media to be readable
+> to make thumbnails. If the card has been physically ejected, re-insert it
+> before retrying the contact sheet; the CSV and tree do not need the media
+> re-read.
 
 ## What Each Artifact Is For
 
