@@ -268,6 +268,17 @@ For inspection and alias editing, prefer the `›` expand panel — it does not 
 | Sessions staged in the queue | `Start Queue` |
 | A specific queued leg loaded via Load | `Start This Session` (runs that leg only) |
 
+**Copy-mode confirmation (v2.5.5).** Because dragging a card in auto-selects
+the copy mode, it is easy to start a card in Folder mode by accident — which
+uses Quick verification and skips the contact sheet. To catch this, a
+confirmation appears when you start a copy, summarizing the active **mode**
+(Card / Folder), **verification level**, enabled **artifacts**, **destination
+sort**, and **contact-sheet split**. Click **Continue** to proceed or **Cancel**
+to fix the settings first. It appears only when you start a new session — an
+auto-advanced next card or a resumed copy is never interrupted. Turn it off (or
+back on) in **Settings → Post-Copy → Before Copy**, or tick "Don't ask again" in
+the sheet itself.
+
 ### During a running copy
 
 | Situation | Button |
@@ -473,7 +484,9 @@ After every copy, CopyTrust classifies the results into a plain-language **Sessi
 
 ### Session finished with warnings — "N transient files skipped"
 
-New in v2.5.0. When copying live editing projects (especially Final Cut Pro libraries), some files routinely vanish between the scan and the copy, or are macOS sandbox temp files (`name.sb-XXXXXXXX-XXXXXX`) the OS cleans up mid-session. These are now recorded as **transient skips** instead of errors, and the session ends as `completed_with_warnings` rather than `completed_with_errors`. Every skipped file is listed in the session manifest (`transientFiles`), so the archive record stays complete — review the list to confirm nothing you care about was skipped.
+New in v2.5.0. When copying live editing projects (especially Final Cut Pro libraries), some files routinely vanish between the scan and the copy. These are recorded as **transient skips** instead of errors, and the session ends as `completed_with_warnings` rather than `completed_with_errors`. Every skipped file is listed in the session manifest (`transientFiles`), so the archive record stays complete — review the list to confirm nothing you care about was skipped.
+
+**macOS sandbox temp files** (`name.sb-XXXXXXXX-XXXXXX`, created by FCP/Motion during editing) are handled differently as of **v2.5.5**: they are treated like any other exclusion pattern — skipped silently at scan time, never copied, and **not** listed as transient skips or shown in the Session Health report. The count is noted once in the session log (`excluded N macOS sandbox temp file(s) (.sb-*)`) and nowhere else, so they no longer add noise to your warnings.
 
 Real problems are never downgraded: a disconnected source volume, a destination write failure, or a hash mismatch still reports as a real error.
 
@@ -911,6 +924,8 @@ Open `Settings > Appearance` to choose:
 CopyTrust shows copy progress in the macOS menu bar (v2.4.5).
 
 As of v2.5.4 Build 3, the post-copy verification phase gets its own presentation: the blue copy bar is replaced by an **orange verification bar** with its own percentage (averaged across destinations, matching the activity log's `verify NN%` lines) and a "Copy complete — verifying" label, instead of a full copy bar that looked stuck. The live activity log also gains a copy-phase heartbeat — a line every ~5 seconds with percent, file-copy count, bytes copied, and current speed — so the log is no longer silent between "starting copy" and the verify lines.
+
+As of v2.5.5, the expanded activity log pane is **resizable**: drag the handle at its bottom edge to grow it toward filling the window, and the chosen height is remembered across launches. Each copy also logs a one-line mode summary at the start (`copy mode=Card verify=inline artifacts=[…] sort=on contactSheetSplit=500 exclusionsEnabled=3 destinations=2`) so a saved log shows exactly how the session was configured.
 
 ### Menu bar icon
 

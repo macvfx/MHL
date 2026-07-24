@@ -90,6 +90,19 @@ If local output is enabled, artifacts are written into:
 
 You can open individual artifacts from the app after generation.
 
+**Per-artifact status and retry (v2.5.5).** The Contact Sheet, Metadata CSV, and
+Project Tree HTML each generate independently and show their own status
+(generating → done / nothing to do / failed). If one fails, the others still
+complete — click that row's **Retry** to regenerate just that artifact, or
+**Rebuild All** to regenerate the whole set. Retry reuses the folder scan and
+hashes already computed, so it does not re-read or re-hash the media, and it
+re-exports to your export folder when one is configured. The MHL is part of the
+hash/verify pass and has no separate Retry.
+
+> On read-only (export-only) media, retrying the **contact sheet** needs the
+> dropped folder to still be accessible — retry it shortly after the run. CSV
+> and tree retry are unaffected.
+
 ## What Each Artifact Is For
 
 ### MHL (Media Hash List)

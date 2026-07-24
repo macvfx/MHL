@@ -6,9 +6,16 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
 Stable release: **2.5.3** (includes the 2.5.2 sorted-copy MHL verification fix +
-provenance and native HTML trees). **2.5.4 Build 6** is in testing; it restores
-post-copy artifacts after Quick verification and includes the contact-sheet
-reliability work — see [RELEASE_NOTES.md](RELEASE_NOTES.md).
+provenance and native HTML trees). **2.5.5 Build 1** is in testing; it adds a
+mode-confirmation summary before a copy starts (so an accidental Folder-mode card
+copy is caught first), a resizable activity log, silent handling of `.sb-*`
+sandbox temp files, and per-artifact Retry in Drop Verify — on top of the 2.5.4
+contact-sheet reliability work. See [RELEASE_NOTES.md](RELEASE_NOTES.md).
+
+> **Before a copy starts, check the confirmation.** CopyTrust now shows the
+> active mode (Card / Folder), verification level, and artifact settings before
+> it begins. If you meant a Card copy, make sure it does not say **Folder** —
+> Folder mode uses Quick verification and skips the contact sheet.
 
 ---
 
