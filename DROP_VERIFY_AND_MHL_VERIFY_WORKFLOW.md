@@ -141,7 +141,7 @@ mhl-tool create /Volumes/RAID/A001
 mhl-tool verify /Volumes/RAID/A001
 ```
 
-See [MHLToolPackage/README.md](MHLToolPackage/README.md) for the full command reference.
+See the [mhl-tool section in the repository README](README.md#mhl-tool-cli) for the public command reference.
 
 ## Notes
 

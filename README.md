@@ -41,7 +41,11 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Built-in Help flow with `Quick Start`, `Advanced Start`, and a Help menu entry to reopen CopyTrust guidance
 - Asynchronous contact-sheet auto-open and richer verify-start / verify-abort diagnostics for easier troubleshooting
 
-Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — features + 2-minute field test), [User Guide](CopyTrust_UserGuide.md) (full), [Workflow Guide](CopyTrust_WorkflowGuide.md) (relay strategy), [Quick Start](CopyTrust_QuickStart.md).
+Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — features + 2-minute field test), [User Guide](CopyTrust_UserGuide.md) (full), [Workflow Guide](CopyTrust_WorkflowGuide.md) (relay strategy), [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md) ([PDF](CopyTrust_Illustrated_Workflow_Guide.pdf)), [Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md), and [Quick Start](CopyTrust_QuickStart.md).
+
+The illustrated guide images are stored in
+[`assets/copytrust_workflows/`](assets/copytrust_workflows/), so they render
+directly on GitHub as well as in a local checkout.
 
 
 ## Drop Verify
@@ -97,3 +101,16 @@ Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL
 - `⌘K` — Compare Folders
 - `⌘R` — Refresh Comparison
 - `⌘⇧N` — Reset both folders
+
+## More Documentation
+
+- Drop Verify: [README](DROP_VERIFY_README.md), [User Guide](DROP_VERIFY_USER_GUIDE.md),
+  [Troubleshooting](DROP_VERIFY_TROUBLESHOOTING.md), and
+  [Drop Verify / MHL Verify Workflow](DROP_VERIFY_AND_MHL_VERIFY_WORKFLOW.md)
+- Folder Copy Compare: [README](FOLDER_COPY_COMPARE_README.md) and
+  [User Guide](FOLDER_COPY_COMPARE_USER_GUIDE.md)
+- Testing and operations: [CopyTrust 2.6 Beta Test Notes](TEST_NOTES_v2.6.0.md)
+  and [Sentry Observability](SENTRY_OBSERVABILITY.md)
+- Background: [What Is MHL and Why Use It?](WHAT_IS_MHL_AND_WHY_USE_IT.md)
+- Release history: [Media Trust Tools Release Notes](RELEASE_NOTES.md) and
+  [MHL Verify Changelog](MHL_VERIFY_CHANGELOG.md)

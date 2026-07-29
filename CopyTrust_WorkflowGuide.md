@@ -7,7 +7,7 @@ This file is a short landing page for the current CopyTrust workflow.
 
 The canonical up-to-date guide is:
 
-- [docs/COPYTRUST_USER_GUIDE.md](docs/COPYTRUST_USER_GUIDE.md)
+- [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md)
 
 ## Current Button Names and When Each Appears
 
@@ -314,6 +314,6 @@ If notifications do not appear, check **System Settings > Notifications > CopyTr
 
 Open **Settings > Test** to validate that your Card or Folder settings produce the expected copy results without needing a real camera card. The harness generates synthetic fixture files and runs the real copy engine, then compares expected vs actual outcomes.
 
-Six scenarios cover basic copy, naming preservation, file prefix, exclusion patterns, verification levels, and destination sort. Results are shown as colour-coded pills (green = pass, red = fail) with per-destination analysis. JSON reports are saved to `~/Library/Application Support/CopyTrust/TestReports/`.
+Seven scenarios cover basic copy, naming preservation, file prefix, exclusion patterns, folder/file exclusions, verification levels, and destination sort. Results are shown as colour-coded pills (green = pass, red = fail) with per-destination analysis. JSON reports are saved to `~/Library/Application Support/CopyTrust/TestReports/`.
 
-See the [CopyTrust User Guide](COPYTRUST_USER_GUIDE.md#test-harness) for full details.
+See the [CopyTrust User Guide](CopyTrust_UserGuide.md#test-harness) for full details.

@@ -1,5 +1,9 @@
 # MHL 2.0 Support Plan — Media Trust Tools v2.5.1
 
+> **Archived:** This proposal was implemented in Media Trust Tools 2.5.1.
+> Current behavior is documented in the product guides and
+> [RELEASE_NOTES.md](../RELEASE_NOTES.md).
+
 **Status:** Proposed
 **Date:** 2026-06-12
 **Tracking issue:** [macvfx/MHL#1](https://github.com/macvfx/MHL/issues/1) — *MHL Verify: Silverstack MHL v2.0 — "Zero bytes" display bug + no verify action available*

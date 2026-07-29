@@ -177,4 +177,4 @@ On `v2.3 (Build 5)` in `codex/v2.2`:
 ## Documentation
 
 - [Drop Verify User Guide](DROP_VERIFY_USER_GUIDE.md)
-- [Project Changelog](CHANGELOG.md)
+- [Media Trust Tools Release Notes](RELEASE_NOTES.md)
