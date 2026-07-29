@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
-Date: 2026-07-22
-Current testing release: `v2.5.4 (Build 6)`
+Date: 2026-07-28
+Current testing release: `v2.6.0 (Build 1 beta)`
 
 This file is a Quick Start for the current CopyTrust workflow.
 
@@ -15,14 +15,28 @@ Use this for `A -> B` and `A -> C`.
 1. Add one source.
 2. Add one or more destinations.
 3. Confirm preflight is clean.
-4. Click `Start This Session`.
+4. Click `Start This Session` and check the pre-copy summary, including the
+   explicit `Proxy: Off` line or selected proxy codec/scale/Final Cut folder.
 5. Use `Review & Verify` during the run if you want to inspect results without ending the session.
 6. When all work is done, click `Review Summary…`, then `End Session`.
 
 Expected result:
 - the source copies directly to each loaded destination
 - copy, selected verification, receipts, and logs finish before completion; Full/Inline also write a hash-backed MHL, while Quick does not
-- PDF, CSV, and HTML tree artifacts can continue afterward in the background
+- PDF, CSV, HTML tree, and optional proxy artifacts can continue afterward in
+  the background
+
+### Optional proxy media beta
+
+In Settings → Post-Copy → Proxy Media, choose H.264 or HEVC and 12.5%, 25%, or
+50%. Optionally enable the dated `Final Cut Proxy Media/YYYY-MM-DD` layout.
+CopyTrust preserves the original basename and writes `.mov` so the files can be
+placed and relinked later in Final Cut Pro.
+
+This feature is beta. Real encode tests cover MOV and MXF; other inputs work
+only when CopyTrust's packaged ffmpeg can decode them. Watch per-clip progress
+in the UI and active log, then review the JSON, TXT, and LOG evidence. A proxy
+failure never changes the verified-original copy result.
 
 ### Relay chain
 Use this for `A -> B -> C`.
@@ -73,3 +87,7 @@ After `End Session`, use the main UI for:
 - `Reset Session`
 
 The main workspace is cleared at session end, so use those review buttons instead of expecting the previous sources or destinations to remain loaded.
+
+When the copied root is an `.fcpbundle` or another macOS package, CopyTrust
+places `CopyTrust_Receipts` and proxy folders beside the package. Ordinary
+folder copies retain their existing internal receipt layout.

@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-07-22
-Release status: **2.5.3 stable** (sorted-copy MHL verify fix — see "Sorted copies and MHL verification" — plus native HTML trees); **2.5.4 Build 6 in testing** on `main` (Quick-verification artifact fix — see "Quick verification and descriptive artifacts")
+Date: 2026-07-28
+Release status: **2.5.3 stable**; **2.6.0 Build 1 public beta prerelease** on `main` (proxy media beta and package-safe receipt placement)
 
 ## Purpose
 
@@ -273,7 +273,9 @@ the copy mode, it is easy to start a card in Folder mode by accident — which
 uses Quick verification and skips the contact sheet. To catch this, a
 confirmation appears when you start a copy, summarizing the active **mode**
 (Card / Folder), **verification level**, enabled **artifacts**, **destination
-sort**, and **contact-sheet split**. Click **Continue** to proceed or **Cancel**
+sort**, **contact-sheet split**, and an explicit **Proxy** line. Proxy states
+**Off**, or shows the chosen codec, percentage, and Final Cut folder setting.
+Click **Continue** to proceed or **Cancel**
 to fix the settings first. It appears only when you start a new session — an
 auto-advanced next card or a resumed copy is never interrupted. Turn it off (or
 back on) in **Settings → Post-Copy → Before Copy**, or tick "Don't ask again" in
@@ -682,7 +684,8 @@ a partially-sorted folder. In Flatten mode this can create duplicate `…_2` fil
 Preserve Structure mode it logs harmless "file already moved" errors. The integrity
 proof (copy/verify/MHL) is already sealed and is unaffected. Workaround: avoid
 unplugging the destination until the post-copy sort/artifact step reports complete.
-A fix is being scoped without touching the working copy path.
+A fix is being scoped without touching the working copy path. See
+`docs/COPYTRUST_WORKFLOW_TRACE.md` §7 for detail and mitigation options.
 
 ## Contact Sheets (Post-Copy)
 
@@ -713,6 +716,110 @@ A 4,000+-file card in Grid layout produces a single PDF with hundreds of pages. 
 - Receipt export, the extra export folder, and **Retry missing artifacts** all recognize split parts.
 
 Example: a 4,391-file card split at 500 produces 9 PDFs of roughly 42 grid pages each.
+
+## Proxy Media (Post-Copy)
+
+> **Beta in 2.6.0:** Test proxy creation and relinking with expendable copies
+> before adopting it as production policy. Proxy generation is separate from
+> the original-copy trust result.
+
+Enable **Generate proxy media after verified copy** in **Settings > Post-Copy >
+Proxy Media** for the selected Card or Folder mode. Choose:
+
+- **HEVC / H.265** — HEVC Main 10 in a MOV container, recommended for current
+  Final Cut Pro workflows.
+- **H.264** — H.264 High in a MOV container for broader compatibility.
+- **Frame size** — 12.5%, 25%, or 50% of each source dimension. Aspect ratio is
+  preserved and dimensions are rounded to even pixels.
+
+CopyTrust uses the packaged `/usr/local/bin/ffmpeg` and
+`/usr/local/bin/ffprobe`; it does not select a Homebrew or MacPorts copy.
+Transcoding begins only after copy and verification, and after the lighter
+contact-sheet/CSV/tree work. A proxy failure is reported in its own retryable
+status row and never changes the verified-copy result.
+
+By default, proxies are written beneath:
+
+`CopyTrust_Proxies/<source subfolders>/OriginalFileName.mov`
+
+Enable **Create Final Cut Proxy Media dated folder** to write:
+
+`Final Cut Proxy Media/YYYY-MM-DD/<source subfolders>/OriginalFileName.mov`
+
+The date is the completed-copy date. Source subfolders are retained so camera
+cards containing duplicate basenames do not overwrite one another. The proxy
+basename always matches the delivered original exactly, with only its extension
+changed to `.mov`. Field testing with both CopyTrust H.264 and HEVC proxies
+confirmed that Final Cut Pro reconnects them after they are named this way.
+
+Automated real-encode tests cover a MOV source and an MXF source. Other
+standard formats should work when the packaged ffmpeg can decode their video
+and audio streams. File-extension recognition is not a decoder guarantee;
+proprietary media such as R3D or BRAW is not claimed as supported by this beta
+unless the packaged ffmpeg can decode it. Failures are logged and remain
+retryable without changing the verified-copy result.
+
+The generated proxy folders are built-in exclusions, so later CopyTrust scans
+do not ingest previously generated derivatives as source media.
+
+### Proxy receipt, summary, and session log
+
+After proxy generation, each destination receives three evidence files beneath:
+
+`CopyTrust_Receipts/Proxy Media/`
+
+- `proxy_receipt_<source>_<stamp>.json` is the structured receipt. It records
+  the operator, session, selected codec and percentage, packaged tool paths,
+  every original-to-proxy path pair, both ffprobe snapshots, individual
+  comparison results, and failed encode attempts.
+- `proxy_receipt_<source>_<stamp>.txt` is the operator-readable summary. It
+  states the explicit choice (for example, **H.264 at 50%** or **HEVC / H.265
+  at 25%**), identifies the original and proxy paths, and lists every
+  comparison as PASS, FAIL, or N/A.
+- `proxy_receipt_<source>_<stamp>.log` records timestamped encode starts,
+  percentage/speed/ETA heartbeats, completions, failures, comparison results,
+  and the final batch result.
+
+The proxy comparison validates the requested codec and calculated frame size,
+then compares frame rate, duration within approximately one frame, starting
+timecode, reported color metadata, audio track count, and each reported audio
+track's sample rate, channels, channel layout, and language. Codec, profile,
+pixel format, bitrate, and frame dimensions are expected proxy changes.
+Container-private metadata that ffprobe cannot meaningfully compare is not
+described as equal. A missing original field is recorded as N/A, while a
+reported original value that differs is a validation failure.
+
+During a long encode, the Proxy Media status row updates about every five
+seconds with the current clip/total, percentage, encode speed, and estimated
+remaining time—for example, `Proxy 2/12 — 63% · 1.40× · ~18s remaining`.
+The app's live session log records the same heartbeat with numeric percentage,
+encoded seconds, speed, and ETA, along with the selected codec and scale.
+Clips that do not report a usable duration still show encoded time and speed
+without inventing a percentage or ETA.
+
+The log also records original and proxy paths, dimensions, audio-track counts,
+timecodes, comparison pass/fail counts, and the final receipt paths. All three
+proxy evidence files are included when receipt export to an additional folder
+is enabled.
+
+### macOS packages and Final Cut libraries
+
+Finder presents macOS packages as conceptually single items even though they
+are directories ([macOS bundle background](https://en.wikipedia.org/wiki/Bundle_%28macOS%29)).
+When the copied root is a recognized package—for example,
+`Show Library.fcpbundle`—CopyTrust does not add receipt or proxy directories to
+the package contents. It writes these as siblings instead:
+
+```text
+Destination/
+├── Show Library.fcpbundle
+├── CopyTrust_Receipts/
+└── Final Cut Proxy Media/        (when enabled)
+```
+
+This applies to contact sheets, CSV, HTML, provenance, archived source MHL,
+proxy evidence, and proxy media. Ordinary folders retain the existing layout,
+with `CopyTrust_Receipts` inside the copied folder.
 
 ### Open automatically with multiple parts
 
@@ -925,7 +1032,7 @@ CopyTrust shows copy progress in the macOS menu bar (v2.4.5).
 
 As of v2.5.4 Build 3, the post-copy verification phase gets its own presentation: the blue copy bar is replaced by an **orange verification bar** with its own percentage (averaged across destinations, matching the activity log's `verify NN%` lines) and a "Copy complete — verifying" label, instead of a full copy bar that looked stuck. The live activity log also gains a copy-phase heartbeat — a line every ~5 seconds with percent, file-copy count, bytes copied, and current speed — so the log is no longer silent between "starting copy" and the verify lines.
 
-As of v2.5.5, the expanded activity log pane is **resizable**: drag the handle at its bottom edge to grow it toward filling the window, and the chosen height is remembered across launches. Each copy also logs a one-line mode summary at the start (`copy mode=Card verify=inline artifacts=[…] sort=on contactSheetSplit=500 exclusionsEnabled=3 destinations=2`) so a saved log shows exactly how the session was configured.
+As of v2.5.5, the expanded activity log pane is **resizable**: drag the handle at its bottom edge to grow it toward filling the window, and the chosen height is remembered across launches. Each copy also logs a one-line mode summary at the start. In 2.6.0 that line explicitly includes `proxy=off` or the selected codec/scale/Final Cut folder (`copy mode=Card verify=inline artifacts=[…] proxy=hevc-25%-fcpFolder=on sort=on contactSheetSplit=500 exclusionsEnabled=3 destinations=2`) so a saved log shows exactly how the session was configured.
 
 ### Menu bar icon
 

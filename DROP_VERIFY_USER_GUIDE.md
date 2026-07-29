@@ -1,6 +1,7 @@
 # Drop Verify User Guide
 
-Current app version: **v2.5.4 (Build 6)**. Build 6 aligns the shared release number; it contains no Drop Verify behavior change.
+Current app version: **v2.6.0 (Build 1 beta)**. This release keeps Drop Verify
+receipts beside macOS packages instead of writing inside them.
 
 ## External Codec Setup
 
@@ -39,6 +40,14 @@ You drag a folder into the app, choose the artifacts you want, and Drop Verify d
 - `HTML directory tree` (optional project index or recursive tree output)
 
 The MHL is the hash-producing trust artifact. If MHL is disabled, Drop Verify can still create CSV, contact sheet, or HTML tree/index outputs without hashing files.
+
+### Package-safe receipt placement
+
+If the analyzed root is a macOS package such as a Final Cut Pro
+`Show Library.fcpbundle`, Drop Verify writes `Drop Verify_Receipts` beside the
+package. It does not modify the package contents. MHL, contact sheets, CSV,
+HTML tree, manifests, retries, and Reveal Receipts all use the sibling folder.
+Ordinary folders continue to receive `Drop Verify_Receipts` inside the folder.
 
 ## Basic Workflow
 

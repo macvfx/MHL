@@ -1,6 +1,8 @@
 # Folder Copy Compare User Guide
 
-Tested version: **v2.4.9 (Build 1)**. Current development build: **v2.5.0 (Build 4, test)** — CopyTrust-only changes (error classification); Folder Copy Compare behaviour is unchanged.
+Current version: **v2.6.0 (Build 1 beta)**. The build number is aligned with
+CopyTrust and Drop Verify; Folder Copy Compare's core comparison behavior is
+unchanged in this prerelease.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
 

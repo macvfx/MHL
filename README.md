@@ -2,7 +2,16 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3** — sorted-copy MHL verification fix, per-copy provenance records, output-toggle fixes, and built-in HTML tree/index enumeration. **MHL Verify and mhl-tool stable at 2.5.1** — ASC MHL v2.0 (Silverstack 9+) support and the Verify action. **CopyTrust 2.5.5 and Drop Verify 2.5.5 are in testing (Build 1)** — a copy now shows a **mode-confirmation** summary (mode, verification level, artifacts, sort, split) before it starts, so an accidental Folder-mode card copy is caught first; the activity log is resizable and logs a one-line mode summary per copy; **`.sb-*` sandbox temp files** are skipped silently like any other exclusion instead of being flagged as transient skips; and **Drop Verify** gains per-artifact status with individual **Retry** and **Rebuild All** for the Contact Sheet, Metadata CSV, and Project Tree HTML. (The 2.5.4 line — split contact sheets, large-card timeout and proxy/MXF hang fixes, subject-first artifact filenames, and the Quick-verification artifact fix — folds in below.) One-line history in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes in each app's docs.
+**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3.** **CopyTrust 2.6.0
+and Drop Verify 2.6.0 Build 1 are a public beta prerelease.** CopyTrust adds
+optional post-copy H.264 or HEVC MOV proxies at 12.5%, 25%, or 50%, with live
+per-clip progress and JSON/TXT/LOG evidence. The pre-copy confirmation now
+explicitly shows Proxy Off or the selected codec, scale, and Final Cut folder
+choice. CopyTrust and Drop Verify also keep receipts and proxies beside
+`.fcpbundle` and other macOS package roots instead of placing them inside the
+package. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
+in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes are in each app's
+docs.
 
 ## CopyTrust
 
@@ -20,6 +29,11 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Destination relay-order staging with visible `Stop 1`, `Stop 2`; queued relay legs can be pulled back into the workspace with `Edit` for reordering
 - **Resumable CopyTrust ingest** for cancelled same-source/same-destination runs and failed partial runs when the saved manifest still matches the same source, destinations, and rendered subfolder
 - **Contact sheet PDF** (row or grid layout) and **EXIF metadata CSV** after each ingest — professional formats (MXF, R3D, BRAW, ARRIRAW, M2V, VOB) show placeholders in the stable release, while this branch uses ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, and REDline for R3D thumbnails. PDF/CSV run as independent background artifacts after the selected verification completes; Quick mode does not invent hashes or an MHL.
+- **Proxy media beta (2.6.0)** — optional H.264 High or HEVC Main 10 MOV
+  derivatives at 12.5%, 25%, or 50%, with an optional
+  `Final Cut Proxy Media/YYYY-MM-DD` layout, exact-basename relinking, live
+  progress, and JSON/TXT/LOG evidence. Real encode tests cover MOV and MXF;
+  broader formats depend on the packaged ffmpeg decoder.
 - Optional **HTML directory tree** artifact after copy + verify; enable in Settings > Post-Copy with `Project summary index`, `One HTML per top-level folder`, or `Entire project`, all generated natively
 - Session receipts (JSON + TXT), per-ingest logs, and optional export to a separate folder, including overall relay-chain summaries at session close
 - Verify panel: Deep Compare Files, Compare Browser, Copy Missing, Retry MHL Export
@@ -38,6 +52,8 @@ Single-folder drag-and-drop verification. Drop a folder and generate trust artif
 - Generates selected outputs only: **MHL**, **contact sheet PDF** (row or grid), **EXIF metadata CSV**, and optional native **HTML directory tree/index**
 - MHL output is what triggers hashing and session manifest creation; CSV/contact-sheet-only modes can run without hashes, and HTML-tree-only mode skips media analysis entirely
 - Writes artifacts into the folder and/or mirrors them to an export folder
+- For package roots such as `.fcpbundle`, writes `Drop Verify_Receipts` beside
+  the package; ordinary folders retain their existing internal receipt layout
 - Built-in **Help > Drop Verify Help** with setup guides for external codecs, HTML tree, and output options
 
 ## MHL Verify

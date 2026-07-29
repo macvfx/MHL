@@ -1,6 +1,7 @@
 # Drop Verify
 
-Current app version: **v2.5.4 (Build 6)**. Build 6 aligns the shared release number; it contains no Drop Verify behavior change.
+Current app version: **v2.6.0 (Build 1 beta)**. This release keeps receipts
+beside macOS packages instead of writing inside them.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
@@ -64,9 +65,14 @@ Tree-only exception: if `HTML directory tree` is the only selected output, Drop 
 
 ## Outputs
 
-By default, Drop Verify writes artifacts into the dropped folder inside:
+By default, Drop Verify writes artifacts into an ordinary dropped folder inside:
 
 - `Drop Verify_Receipts/`
+
+Package exception: when the analyzed root is a macOS package such as
+`Show Library.fcpbundle`, the receipt folder is created beside the package.
+Drop Verify does not modify package contents. MHL, PDF, CSV, HTML, manifests,
+retry, history, and Reveal Receipts use the sibling folder.
 
 Disabled outputs are not generated. For example:
 - MHL on = media hashes + MHL + session manifest
@@ -84,9 +90,7 @@ Artifact filenames follow the pattern `dropverify_<type>_<folderName>_<date-time
 
 It can also mirror generated artifacts to a separate export folder if enabled in Settings.
 
-**Per-artifact status and retry (v2.5.5):** the Contact Sheet, Metadata CSV, and Project Tree HTML generate independently, each with its own status (generating → done / nothing to do / failed). If one fails the others still complete, and each row has an individual **Retry** plus a **Rebuild All**. Retry reuses the completed scan and hashes — no re-scan, no re-hash — and re-exports to the export folder when configured. The MHL is part of the hash/verify pass and has no separate Retry.
-
-**Read-only media:** If the dropped folder is on read-only media (e.g. a locked SD card, encrypted external drive, or write-protected volume), Drop Verify detects this automatically and prompts you to choose an export folder. If an export folder is already configured, artifacts are written there without prompting. On a **retry**, a read-only source never blocks regeneration: the configured export folder is used if set, otherwise artifacts fall back to a default writable location (`/Users/Shared`, else `/private/tmp`), with the location shown in the status and log. (Rebuilding the contact sheet still needs the source media readable — re-insert an ejected card first.)
+**Read-only media:** If the dropped folder is on read-only media (e.g. a locked SD card, encrypted external drive, or write-protected volume), Drop Verify detects this automatically and prompts you to choose an export folder. If an export folder is already configured, artifacts are written there without prompting.
 
 ## Settings
 
@@ -173,4 +177,4 @@ On `v2.3 (Build 5)` in `codex/v2.2`:
 ## Documentation
 
 - [Drop Verify User Guide](DROP_VERIFY_USER_GUIDE.md)
-- [Release Notes](RELEASE_NOTES.md)
+- [Project Changelog](CHANGELOG.md)

@@ -1,13 +1,13 @@
 # CopyTrust User Guide
 
-Date: 2026-07-22
-Release status: **2.5.3 stable** (sorted-copy MHL verify fix, native HTML trees); **2.5.4 Build 6 in testing** on `main` (Quick-verification artifact fix)
+Date: 2026-07-28
+Release status: **2.5.3 stable**; **2.6.0 Build 1 public beta prerelease** on `main`
 
 This file is a short landing page for the current CopyTrust workflow.
 
 The canonical up-to-date guide is:
 
-- [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md)
+- [docs/COPYTRUST_USER_GUIDE.md](docs/COPYTRUST_USER_GUIDE.md)
 
 ## Current Button Names and When Each Appears
 
@@ -49,6 +49,19 @@ Switch presets before setting up a session. The preset picker is hidden during a
 **Contact sheets on proxy/MXF cards:** the contact sheet is a background artifact (never blocks copy/verify/MHL). For cards heavy in camera proxies (`.LRF`) or professional formats (MXF/R3D), enabling **external thumbnail codecs** (Settings > External Codecs, shared) makes CopyTrust run ffmpeg/REDline per file for real thumbnails — worth it for a visual sheet, but expect noticeably longer generation. Leave **external codecs off** for a fast sheet where those files appear as "No Preview" placeholders, and leave **hide placeholders off** unless you specifically want them omitted. See the "Unsupported media, external codecs, and placeholders" section of the User Guide.
 
 **Quick verification and artifacts (fixed in Build 6):** Quick verifies destination existence and size without creating content hashes. Contact sheet PDF, EXIF CSV, HTML tree, and destination sorting now use the separate delivered-file inventory and work normally in Quick mode. MHL remains hash-backed and is not produced by Quick mode. Artifact rows always stop at a terminal status rather than spinning after a zero-work result.
+
+**Proxy media beta (2.6.0):** In Settings → Post-Copy → Proxy Media, optionally
+choose H.264 or HEVC / H.265 and 12.5%, 25%, or 50%. The pre-copy confirmation
+explicitly shows Proxy Off or the selected settings. During encoding, the UI
+and active log show per-clip percentage, speed, and ETA. JSON/TXT/LOG evidence
+records the choice and original/proxy metadata comparison. MOV and MXF have
+real automated encode coverage; other formats depend on the packaged ffmpeg's
+decoder support.
+
+**Package-safe artifacts (2.6.0):** If the copied root is a macOS package such
+as `Show Library.fcpbundle`, `CopyTrust_Receipts`, `CopyTrust_Proxies`, and
+`Final Cut Proxy Media` are written beside the package. CopyTrust never adds
+them to the package contents. Ordinary folder placement is unchanged.
 
 ### Per-queue-item settings snapshots
 

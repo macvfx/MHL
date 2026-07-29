@@ -5,17 +5,17 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.3** (includes the 2.5.2 sorted-copy MHL verification fix +
-provenance and native HTML trees). **2.5.5 Build 1** is in testing; it adds a
-mode-confirmation summary before a copy starts (so an accidental Folder-mode card
-copy is caught first), a resizable activity log, silent handling of `.sb-*`
-sandbox temp files, and per-artifact Retry in Drop Verify — on top of the 2.5.4
-contact-sheet reliability work. See [RELEASE_NOTES.md](RELEASE_NOTES.md).
+Stable release: **2.5.3**. **2.6.0 Build 1 is a public beta prerelease** adding
+optional H.264/HEVC proxy media with live progress and evidence, explicit proxy
+state in the pre-copy confirmation, and package-safe receipt placement for
+Final Cut libraries. See [RELEASE_NOTES.md](RELEASE_NOTES.md).
 
 > **Before a copy starts, check the confirmation.** CopyTrust now shows the
 > active mode (Card / Folder), verification level, and artifact settings before
 > it begins. If you meant a Card copy, make sure it does not say **Folder** —
-> Folder mode uses Quick verification and skips the contact sheet.
+> Folder mode uses Quick verification and skips the contact sheet. The same
+> sheet now explicitly says **Proxy: Off** or shows the codec, scale, and Final
+> Cut folder choice.
 
 ---
 
@@ -36,6 +36,7 @@ existence and size verification without hashes.
 | Resumable ingest | Cancelled or partially-failed runs resume without recopying verified files |
 | Destination Sort (optional) | Reorganizes the copy into type folders (JPG / RAW / Video / …) **after** the trust chain is sealed |
 | Receipts & artifacts | JSON + TXT receipts, per-copy log, session manifest, optional contact-sheet PDF, EXIF CSV, HTML directory tree |
+| Proxy media (2.6.0 beta) | Optional H.264/HEVC MOV at 12.5%, 25%, or 50%; live per-clip progress; optional dated Final Cut layout; JSON/TXT/LOG validation evidence |
 | Provenance (2.5.2) | `PROVENANCE_*.json` records the settings used and the source→destination file mapping |
 | Safe-to-eject + auto-eject | Eject is gated on the selected copy/verification workflow completing; Full/Inline also require their MHL |
 
@@ -62,6 +63,10 @@ delivered (sorted) layout.
 For a Quick copy, confirm the files, clean Session Health result, receipt/log, and
 enabled descriptive artifacts. No MHL is expected because Quick does not calculate
 content hashes.
+
+For an `.fcpbundle` or another macOS package root, confirm
+`CopyTrust_Receipts` and any proxy folder are **beside** the package, not inside
+it. Ordinary folder copies retain their existing internal receipt placement.
 
 ---
 
@@ -108,6 +113,11 @@ generate before relying on them on a job.
 Artifacts run as background work after the selected verification is sealed, so a
 missing or failed descriptive artifact never invalidates the copy. Build 6 uses a
 delivered-file inventory for these artifacts; Quick mode still does not invent hashes.
+
+For the 2.6.0 proxy beta, test both codecs with expendable media first. Real
+automated encodes cover MOV and MXF; broader input support depends on the
+packaged ffmpeg decoder. Confirm the pre-copy choice, live progress, exact
+original basename with `.mov`, and matching proxy JSON/TXT/LOG evidence.
 
 ---
 

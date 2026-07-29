@@ -20,6 +20,8 @@ Use Drop Verify when you want to generate new artifact files from a folder:
 It is best for:
 
 - post-copy reporting
+- package-safe reporting: when the analyzed root is a macOS package such as
+  `.fcpbundle`, `Drop Verify_Receipts` is written beside it rather than inside
 - packaging deliverable trust artifacts
 - creating an MHL for a media folder that does not already have one
 
@@ -48,7 +50,7 @@ It is best for:
 3. Drop a media folder into Drop Verify.
 4. Let Drop Verify finish writing artifacts.
 5. Open the generated folder:
-   - `Drop Verify_Receipts/`
+   - `Drop Verify_Receipts/` (inside an ordinary folder; beside a macOS package)
 6. Locate the generated `.mhl` file.
 7. Open **MHL Verify**.
 8. Load or drag the `.mhl` file into MHL Verify.
@@ -139,7 +141,7 @@ mhl-tool create /Volumes/RAID/A001
 mhl-tool verify /Volumes/RAID/A001
 ```
 
-The full command reference is included with the `mhl-tool` installer package (see Releases).
+See [MHLToolPackage/README.md](MHLToolPackage/README.md) for the full command reference.
 
 ## Notes
 
