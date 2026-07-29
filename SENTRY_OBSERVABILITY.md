@@ -1,65 +1,80 @@
-# Sentry Observability — What It Is and What It Collects
+# CopyTrust Sentry Observability
 
-**Applies to:** FolderCopyCompare, CopyTrust, Drop Verify (all v2.3+)
+Date reviewed: 2026-07-29
+Applies to: CopyTrust 2.6 public beta
 
----
+## Scope
 
-## What Sentry Is
+The current source tree initializes Sentry in **CopyTrust only**. Drop Verify
+and Folder Copy Compare do not initialize or link Sentry in the current build.
+CopyTrust also skips Sentry initialization in its deterministic documentation
+screenshot mode.
 
-Sentry is a third-party crash reporting and performance monitoring service. When one of these apps crashes, hangs, or throws an unhandled error, Sentry captures a diagnostic report and sends it to a private project dashboard at sentry.io. The dashboard is accessible only to the developer (Mat X, org: `macvfx`).
+Sentry is used for crash, hang, performance, profiling, and diagnostic-log
+visibility. It is not an advertising or product-analytics system.
 
-Sentry is used here purely for development diagnostics — to understand where crashes happen and how the apps perform under real conditions. It is not used for analytics, advertising, or user tracking of any kind.
+## Current Configuration
 
----
+CopyTrust currently configures:
 
-## What Sentry Collects
+- crash and unhandled-error reporting;
+- performance tracing with `tracesSampleRate = 1.0`;
+- profiling with `sessionSampleRate = 1.0` and trace lifecycle;
+- Sentry's experimental logs integration;
+- the German Sentry ingest endpoint for the private `macvfx` project.
 
-### Crash and Error Reports
-- Full symbolicated stack trace at the point of crash (the exact file and line number, resolved via dSYM debug symbols uploaded at build time)
-- Unhandled Swift errors and exceptions
-- NSErrors that propagate without being caught
-- The sequence of events leading up to the crash (breadcrumbs: recent UI interactions, network requests, log messages — up to the last 100)
+The two `1.0` values mean the beta source requests 100% trace and profiling
+sampling. There is no in-app Sentry toggle in the current build.
 
-### Performance Traces
-- App launch duration
-- SwiftUI view render times
-- File I/O operation timing (relevant for folder scans and hash runs)
-- Network request URLs, HTTP methods, status codes, and durations for any outgoing requests made by the app
+## Data That May Be Sent
 
-### Profiling
-- CPU flame graphs sampled during active traces — shows which functions are consuming time during operations like folder scanning or file hashing
-- Used to identify performance bottlenecks in scan and hash workflows
+Depending on the event and SDK integrations, diagnostic events may contain:
 
-### Device and App Context
-- macOS version and CPU architecture
-- App version and build number
-- Available memory and disk space at the time of the event
-- Whether the app was in the foreground or background
+- symbolicated stack traces and exception/error descriptions;
+- app version/build, macOS version, CPU architecture, memory, and runtime state;
+- performance spans, profiling samples, and operation timing;
+- breadcrumbs or diagnostic log messages recorded before an error;
+- network request metadata or error context captured by an SDK integration;
+- text values emitted by CopyTrust or an underlying framework.
 
----
+Because logs, breadcrumbs, and error descriptions can contain dynamic text,
+this document does **not** promise that a file name or path can never appear.
+CopyTrust is not designed to upload media files, folder contents, MHL files,
+receipts, hashes, or generated artifacts to Sentry as attachments, but
+operator-derived names or paths may still occur in diagnostic text and should
+be treated as potentially present until client-side scrubbing is implemented
+and verified.
 
-## What Sentry Does Not Collect
+## Data Not Explicitly Enabled By CopyTrust
 
-| What | Why not |
-|------|---------|
-| IP addresses | `sendDefaultPii` is explicitly disabled (it is off by default; the setup wizard enables it — we removed it) |
-| User identity | `SentrySDK.setUser()` is never called; no name, email, or user ID is attached to any event |
-| File paths or folder contents | Sentry only sees the app's own code execution, not the data it processes |
-| File names, sizes, or hash values from user scans | These never enter the Sentry SDK |
-| Keystrokes, clipboard, or pasteboard content | Not collected by the SDK |
-| Screenshots or view hierarchy | `attachScreenshot` and `attachViewHierarchy` are not enabled |
-| Location data | Not requested and not available to the SDK |
-| Any data while the app is not running | Sentry is inactive between launches |
+The current initialization code does not:
 
----
+- call `SentrySDK.setUser`;
+- add custom file attachments;
+- explicitly enable screenshot attachments;
+- explicitly enable view-hierarchy attachments;
+- request location, clipboard, or keystroke data.
 
-## Data Handling
+The source also does not explicitly set `sendDefaultPii`, `beforeSend`, or
+`beforeBreadcrumb`. IP handling, server-side data scrubbing, access controls,
+and retention are Sentry project settings and cannot be proven from this
+repository alone.
 
-- Events are sent to Sentry's EU ingest endpoint (`ingest.de.sentry.io`) under the developer's private project
-- No data is shared with third parties beyond Sentry's own infrastructure
-- Sample rates are currently set to 1.0 (100%) for development; these will be reduced before any public release
-- Sentry integration is present from v2.3 onwards and is noted in the changelog for each affected app
+## Required Review Before Stable Release
 
----
+Before promoting this beta configuration to a stable public release:
 
-*Last updated: 2026-04-24 — v2.3 Build 1*
+1. reduce or deliberately approve the trace and profiling sample rates;
+2. add and test client-side filtering for events, breadcrumbs, and logs;
+3. review representative production events for paths, filenames, and other
+   operator-derived values;
+4. confirm Sentry project IP scrubbing, data-scrubbing, access, and retention
+   settings;
+5. decide whether CopyTrust needs an in-app diagnostics opt-out;
+6. update this document from the released source and verified project settings.
+
+Sentry references:
+
+- [Apple SDK options](https://docs.sentry.io/platforms/apple/guides/macos/configuration/options/)
+- [Apple SDK logs](https://docs.sentry.io/platforms/apple/guides/macos/logs/)
+- [Sensitive-data guidance](https://docs.sentry.io/platforms/apple/guides/macos/data-management/sensitive-data/)

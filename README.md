@@ -110,7 +110,7 @@ Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL
 - Folder Copy Compare: [README](FOLDER_COPY_COMPARE_README.md) and
   [User Guide](FOLDER_COPY_COMPARE_USER_GUIDE.md)
 - Testing and operations: [CopyTrust 2.6 Beta Test Notes](TEST_NOTES_v2.6.0.md)
-  and [Sentry Observability](SENTRY_OBSERVABILITY.md)
+  and [CopyTrust Sentry Observability](SENTRY_OBSERVABILITY.md)
 - Background: [What Is MHL and Why Use It?](WHAT_IS_MHL_AND_WHY_USE_IT.md)
 - Release history: [Media Trust Tools Release Notes](RELEASE_NOTES.md) and
   [MHL Verify Changelog](MHL_VERIFY_CHANGELOG.md)

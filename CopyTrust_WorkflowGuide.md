@@ -1,13 +1,13 @@
-# CopyTrust User Guide
+# CopyTrust Workflow Guide
 
 Date: 2026-07-28
 Release status: **2.5.3 stable**; **2.6.0 Build 1 public beta prerelease** on `main`
 
-This file is a short landing page for the current CopyTrust workflow.
-
-The canonical up-to-date guide is:
-
-- [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md)
+This is the workflow-strategy companion to the
+[full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
+[Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md). Use it
+for button states, direct-copy strategy, mixed queues, relay chains, and
+session lifecycle guidance.
 
 ## Current Button Names and When Each Appears
 

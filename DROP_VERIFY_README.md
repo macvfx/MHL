@@ -157,7 +157,7 @@ If the app cannot create or write the session log, Drop Verify now shows a non-f
 
 ## External Codec Status
 
-On `v2.3 (Build 5)` in `codex/v2.2`:
+Current 2.6 beta behavior when the optional external tools are enabled:
 
 - MXF metadata is populated through ExifTool when enabled
 - MXF contact sheets use ffmpeg for real thumbnails when enabled

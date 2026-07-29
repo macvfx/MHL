@@ -145,5 +145,9 @@ Typical reasons to use it:
 ## Current Limits
 
 - Dock-drop opens separate document windows; it is not the compare workflow
-- Comparison currently focuses on summary readability, with a deeper file-level diff table planned next
+- Compare includes summary differences plus a file-level table with
+  changed/added/removed/unchanged filters, left/right sizes and hashes, and
+  selected-file details
+- The Compare sheet does not yet export a dedicated comparison report;
+  **Save As** exports the active MHL document
 - Folder import loads matching `.mhl` files into the picker list rather than opening a separate chooser dialog

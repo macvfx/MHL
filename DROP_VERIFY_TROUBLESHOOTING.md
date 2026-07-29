@@ -42,6 +42,15 @@ Manifest skipped - MHL/hash output is disabled.
 Session finished successfully.
 ```
 
+## Read Per-Artifact Status
+
+Contact Sheet, Metadata CSV, and Project Tree HTML run independently. Each row
+should reach a terminal result: **Done**, **Nothing to do**, or **Failed**. A
+failed row can be regenerated with its own **Retry** action; **Rebuild All**
+regenerates the complete requested set. Retry reuses the completed scan and
+hashes, and re-exports when an export folder is configured. MHL is part of the
+hash/verify pass and does not have a separate Retry row.
+
 If the last meaningful line is about previews or contact-sheet completion, Drop Verify has not reached its normal final state.
 
 ## Check Whether The App Is Still Running
@@ -115,11 +124,16 @@ find "/path/to/project/Drop Verify_Receipts" -maxdepth 2 -type f -print -exec ls
 Look for:
 
 - `.mhl`
-- `.csv`
-- `dropverify_contactsheet_*.pdf`
-- optional `dropverify_tree_*.html`
+- `<subject>_<stamp>_dropverify_contactsheet.pdf` (or numbered `_partNofM` PDFs)
+- `<subject>_<stamp>_dropverify_exif.csv`
+- optional `<subject>_<stamp>_dropverify_tree.html` or
+  `<subject>_<stamp>_dropverify_tree_index.html`
 
-Match this list to the outputs selected in Settings. Disabled outputs should not exist. If MHL is disabled, no MHL or session manifest is expected. If HTML tree is the only selected output, an HTML file is the only expected artifact.
+Legacy `dropverify_<type>_<subject>_<stamp>` and `tree_…` names can still be
+recognized when reviewing output from older builds. Match the current files to
+the outputs selected in Settings. Disabled outputs should not exist. If MHL is
+disabled, no MHL or session manifest is expected. If HTML tree is the only
+selected output, an HTML file is the only expected artifact.
 
 ## Recover From A Stuck HTML Tree
 
