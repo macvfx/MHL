@@ -119,6 +119,10 @@ beta passes your site acceptance tests.
 
 Pipeline: `copy → verify → MHL → post-copy actions → P5 archive request`.
 Restore through P5 and verify every restored file against the capture MHL.
+Follow
+[CopyTrust → P5 Restore and Hash Verification](CopyTrust_P5_Restore_and_Verify_Workflow.md)
+for the complete current procedure and planned coordinated Restore & Verify
+improvements.
 
 ### Relay chain
 Use this for `A -> B -> C` — camera card to drive to NAS.

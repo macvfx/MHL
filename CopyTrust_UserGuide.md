@@ -682,6 +682,12 @@ tool to calculate xxHash64 again and compare it with the capture-time values.
 The `CT_XXH64` field is searchable context in the P5 web GUI; the MHL remains
 the portable file-by-file verification record.
 
+The full manual restore, path/count/byte reconciliation, and hash-verification
+procedure is in
+[CopyTrust → P5 Restore and Hash Verification](CopyTrust_P5_Restore_and_Verify_Workflow.md).
+It also records the planned coordinated workflow. CopyTrust 2.7.0 does not yet
+submit or automatically verify a P5 restore.
+
 ## Destination Sort (Post-Copy)
 
 CopyTrust can optionally reorganize files on the destination into type-based subfolders after the trust chain is complete. The sort runs after copy, verify, MHL, and receipt writes — the integrity proof is sealed before any files are moved.

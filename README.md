@@ -49,7 +49,7 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Built-in Help flow with `Quick Start`, `Advanced Start`, and a Help menu entry to reopen CopyTrust guidance
 - Asynchronous contact-sheet auto-open and richer verify-start / verify-abort diagnostics for easier troubleshooting
 
-Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — features + 2-minute field test), [User Guide](CopyTrust_UserGuide.md) (full), [Workflow Guide](CopyTrust_WorkflowGuide.md) (relay strategy), [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md) ([PDF](CopyTrust_Illustrated_Workflow_Guide.pdf)), [Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md), and [Quick Start](CopyTrust_QuickStart.md).
+Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — features + 2-minute field test), [User Guide](CopyTrust_UserGuide.md) (full), [Workflow Guide](CopyTrust_WorkflowGuide.md) (relay strategy), [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md) ([PDF](CopyTrust_Illustrated_Workflow_Guide.pdf)), [P5 Restore & Verify](CopyTrust_P5_Restore_and_Verify_Workflow.md), [Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md), and [Quick Start](CopyTrust_QuickStart.md).
 
 The illustrated guide images are stored in
 [`assets/copytrust_workflows/`](assets/copytrust_workflows/), so they render
