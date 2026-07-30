@@ -26,7 +26,8 @@ tests.
 - The P5 client must see the destination at the same absolute path.
 - P5 failure does not change a successful copy/verification verdict.
 
-Live baseline: P5 8.0.4 job `10029` archived a CopyCore Inline-verified PNG,
+Tested baseline (private fixture identifiers anonymized): P5 8.0.4 archived a
+CopyCore Inline-verified PNG,
 sidecar, and MHL. Readback returned complete hashes, `64x36` image dimensions,
 and the expected CopyTrust metadata.
 

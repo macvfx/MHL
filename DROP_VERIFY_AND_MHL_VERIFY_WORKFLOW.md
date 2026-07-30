@@ -135,10 +135,10 @@ That keeps the roles clear:
 
 ```bash
 # Same as Drop Verify → create MHL
-mhl-tool create /Volumes/RAID/A001
+mhl-tool create /Volumes/Example_RAID/A001
 
 # Same as MHL Verify → verify MHL
-mhl-tool verify /Volumes/RAID/A001
+mhl-tool verify /Volumes/Example_RAID/A001
 ```
 
 See the [mhl-tool section in the repository README](README.md#mhl-tool-cli) for the public command reference.

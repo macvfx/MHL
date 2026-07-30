@@ -21,7 +21,8 @@ CopyTrust currently configures:
 - performance tracing with `tracesSampleRate = 1.0`;
 - profiling with `sessionSampleRate = 1.0` and trace lifecycle;
 - Sentry's experimental logs integration;
-- the German Sentry ingest endpoint for the private `macvfx` project.
+- the configured regional Sentry ingest endpoint for the app's telemetry
+  project.
 
 The two `1.0` values mean the beta source requests 100% trace and profiling
 sampling. There is no in-app Sentry toggle in the current build.

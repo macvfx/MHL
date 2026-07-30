@@ -134,13 +134,13 @@ Use this for `A -> B -> C` — camera card to drive to NAS.
 5. Click `Queue Relay Chain` in the callout, or right-click any destination row → **Queue Relay Chain**.
 6. Review the queued sessions panel before clicking Start Queue. Each leg shows:
    ```
-   ⦿ A001 → Samsung T7
-   A001 · Camera Card  →  Samsung T7 · Drive
+   ⦿ A001 → Example SSD
+   A001 · Camera Card  →  Example SSD · Drive
    Step 1 of 2 — copies from A001 (camera card).
 
-   ⦿ Samsung T7 → Synology NAS
-   Samsung T7 · Drive  →  Synology NAS · Network
-   Step 2 of 2 — waits for Samsung T7 (drive) to be verified, then copies from it.
+   ⦿ Example SSD → Example NAS
+   Example SSD · Drive  →  Example NAS · Network
+   Step 2 of 2 — waits for Example SSD (drive) to be verified, then copies from it.
    ```
    Hover any row to see exact folder paths. Right-click for `Reveal Source in Finder` or `Reveal Destination in Finder`.
 7. Click `Start Queue`.
@@ -203,7 +203,7 @@ For a relay-chain session the summary makes the strategy legible at a glance:
 ```
 COPY SPEED SUMMARY
   [1] MacBook Pro SSD       218 MB/s copy  |  387 MB/s verify  |  4m 32s
-  [2] Synology NAS          387 MB/s copy  |  412 MB/s verify  |  2m 21s
+  [2] Example NAS           387 MB/s copy  |  412 MB/s verify  |  2m 21s
   --------------------------------------------------
   Session total: 265.7 GB in 6m 53s  (avg 654 MB/s across all legs)
 ```

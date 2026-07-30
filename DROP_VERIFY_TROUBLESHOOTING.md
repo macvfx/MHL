@@ -88,7 +88,7 @@ pgrep -P <DropVerifyPID> -fl .
 Legacy stuck tree result from older builds:
 
 ```text
-38175 /opt/local/bin/tree -J /Volumes/MAIN-VAN/Clients/WBM Technologies/FCL IT Event Case Studies
+38175 /opt/local/bin/tree -J /Volumes/Example_Server/Clients/Example_Client/Example_Project
 ```
 
 If the sample shows `-[NSConcreteTask waitUntilExit]` and `pgrep -P` shows `tree -J`, you are likely testing an older build that still waits for the external HTML tree command.

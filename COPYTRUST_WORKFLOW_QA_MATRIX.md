@@ -215,9 +215,10 @@ Use expendable fixtures and a non-deleting archive plan.
 | P8 | Offline P5 | Stop or misconfigure the test server and run an eligible copy. | Copy remains successful; password-free deferred request records the actionable error and can be dry-run by the helper. |
 | P9 | Restore verification | Restore the fixture through P5 and verify it against the archived MHL. | Restored file count/path are reviewed and every file xxHash64 matches before acceptance. |
 
-Known live baseline: P5 8.0.4 job `10029` archived a CopyCore Inline-verified
-PNG, text sidecar, and MHL to `Default-Archive`; readback returned both complete
-hashes, `64x36` image dimensions, and the expected CopyTrust fields.
+Known tested baseline (private fixture identifiers anonymized): P5 8.0.4
+archived a CopyCore Inline-verified PNG, text sidecar, and MHL to a non-deleting
+test index; readback returned both complete hashes, `64x36` image dimensions,
+and the expected CopyTrust fields.
 
 ## J. Screenshot and Guide Validation
 

@@ -131,22 +131,22 @@ Each relay leg appears as a distinct row with a chain icon prefix and blue tint.
 
 **Step 1 row:**
 ```
-⦿ A001 → Samsung T7
-A001 · Camera Card  →  Samsung T7 · Drive
+⦿ A001 → Example SSD
+A001 · Camera Card  →  Example SSD · Drive
 Step 1 of 2 — copies from A001 (camera card).
 ```
 
 **Step 2 row:**
 ```
-⦿ Samsung T7 → Synology NAS
-Samsung T7 · Drive  →  Synology NAS · Network
-Step 2 of 2 — waits for Samsung T7 (drive) to be verified, then copies from it.
+⦿ Example SSD → Example NAS
+Example SSD · Drive  →  Example NAS · Network
+Step 2 of 2 — waits for Example SSD (drive) to be verified, then copies from it.
 ```
 
 Hovering over either row shows the exact folder paths:
 ```
 Source: /Volumes/A001
-Destination: /Volumes/Samsung T7/Ingest/ProjectX
+Destination: /Volumes/Example_SSD/Ingest/Example_Project
 ```
 
 Right-clicking a queue row offers:
@@ -175,7 +175,7 @@ The session receipt now shows this directly. The `COPY SPEED SUMMARY` block list
 ```
 COPY SPEED SUMMARY
   [1] MacBook Pro SSD       218 MB/s copy  |  387 MB/s verify  |  4m 32s
-  [2] Synology NAS          387 MB/s copy  |  412 MB/s verify  |  2m 21s
+  [2] Example NAS           387 MB/s copy  |  412 MB/s verify  |  2m 21s
   --------------------------------------------------
   Session total: 265.7 GB in 6m 53s  (avg 654 MB/s across all legs)
 ```
@@ -238,7 +238,7 @@ The expanded panel shows:
 | | |
 |---|---|
 | 📷 `A001` | `Camera Card` · `/Volumes/A001` · Reveal |
-| 💾 `[Samsung T7  ]` | `Drive` · `/Volumes/Samsung T7/Ingest/ProjectX` · Reveal |
+| 💾 `[Example SSD ]` | `Drive` · `/Volumes/Example_SSD/Ingest/Example_Project` · Reveal |
 
 - **Source rows** are read-only: name, type, path, Reveal in Finder.
 - **Destination rows** have an editable alias field — rename a destination without loading the session into the workspace. Changes take effect immediately on the queued item.
@@ -396,7 +396,7 @@ CopyTrust validates the destination before any file transfer begins.
 
 ### Duplicate subfolder names are blocked before copy starts
 
-If two pending sources would render to the same destination subfolder name (e.g. both use the same naming template and resolve to `ProjectX/A001`), `Start This Session` is blocked. The blocked-start message tells the operator which sources conflict and points to the source alias, prefix, or naming template as the fix path.
+If two pending sources would render to the same destination subfolder name (e.g. both use the same naming template and resolve to `Example_Project/A001`), `Start This Session` is blocked. The blocked-start message tells the operator which sources conflict and points to the source alias, prefix, or naming template as the fix path.
 
 ### Fresh ingests cannot merge silently into existing folders
 
