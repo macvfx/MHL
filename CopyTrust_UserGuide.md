@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-07-28
-Release status: **2.5.3 stable**; **2.6.0 Build 1 public beta prerelease** on `main` (proxy media beta and package-safe receipt placement)
+Date: 2026-07-29
+Release status: **2.5.3 stable**; **2.7.0 Build 1 public beta prerelease** on `main` for controlled Archiware P5 archive testing. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
 
 ## Purpose
 
@@ -582,6 +582,101 @@ Any pattern that starts with `.` (e.g. `.MP4`, `.THM`, `.LRV`) is automatically 
 ### Case insensitivity
 
 All pattern types are case-insensitive. `MISC` matches `misc`, `.MP4` matches `.mp4`, and so on.
+
+## Archiware P5 Archive (Testing)
+
+CopyTrust can hand one verified destination to an Archiware P5 archive plan
+after the copy trust chain and enabled post-copy work finish. This is opt-in and
+is the CopyTrust 2.7.0 Build 1 beta feature for controlled testing before
+production use.
+
+### Configure P5
+
+1. Open **Settings → P5 Archive**.
+2. Enter the P5 host or IP address, REST port, API version (normally `v1`), and
+   username.
+3. Enter the password and click **Save Password**. It is stored in the macOS
+   Keychain, not UserDefaults or an archive request file.
+4. Click **Test Connection & Load**.
+5. Select the live **Archive Index**, **P5 Client**, and **Archive Plan**.
+6. Confirm that the selected P5 client can access the CopyTrust destination at
+   exactly the same absolute path.
+7. Optionally enter a CopyTrust destination role such as `Archive Master`. With
+   no role, CopyTrust selects the first verified destination.
+8. Turn on **Archive verified copies to P5** only when the selections are
+   correct.
+
+CopyTrust labels and refuses any plan whose P5 details say it deletes source
+files. Use a non-deleting archive plan for camera originals.
+
+### What is submitted
+
+Automatic P5 submission requires a destination with successful hash
+verification and a valid xxHash64 for every file. Inline and Full verification
+can satisfy this. Quick and None/copy-only modes cannot: CopyTrust does not
+invent hashes or describe them as MHL-verified.
+
+Before submission, CopyTrust additively creates these P5 archive-index keys so
+they are visible and searchable in the P5 web GUI:
+
+| P5 key | GUI label | Value |
+| --- | --- | --- |
+| `CT_ASSET` | CT Asset | Stable CopyTrust result identifier |
+| `CT_XXH64` | CT xxHash64 | Original verified/MHL xxHash64 |
+| `CT_FRAME` | Frame Size | Video frame or still-image dimensions |
+| `CT_KIND` | Media Kind | image, video, media, or file |
+| `CT_CODEC` | Codec | Reported video codec |
+| `CT_FPS` | Frame Rate | Reported frame rate |
+| `CT_TC` | Start TC | Reported starting timecode |
+| `CT_REEL` | Reel | Reported reel or clip basename |
+| `CT_CARD` | Source Card | CopyTrust source alias |
+| `CT_CAMERA` | Camera | Reported camera make/model |
+| `CT_DATE` | Capture Date | Reported capture date |
+| `CT_STATE` | CT State | `verified` or `needs_hash_verification` |
+
+Detailed EXIF, contact sheets, MHL, provenance, proxy evidence, and normal
+CopyTrust receipts stay as files beside the originals and are included as
+`supporting_evidence` paths in the same P5 request. The P5 fields on originals
+remain bounded and useful for operator search.
+
+### Offline or unconfigured P5
+
+Keep **Always write a deferred P5 request JSON** enabled. Each eligible
+destination then receives:
+
+`CopyTrust_Receipts/COPYTRUST_P5_ARCHIVE_REQUEST_<source>_<timestamp>.json`
+
+The file contains exact local paths, sizes, hashes, P5 metadata, server target
+hints, archive job ID, and state. It never contains the P5 password. If P5 is
+offline or incomplete, the verified copy remains successful and the JSON
+explains what is required next.
+
+The deferred-submission helper is included with the private CopyTrust source.
+Validate the request without changing P5:
+
+```bash
+scripts/copytrust-p5-archive.py \
+  "/path/to/COPYTRUST_P5_ARCHIVE_REQUEST_A001_20260729_120000.json"
+```
+
+Submit only after reviewing the dry run:
+
+```bash
+scripts/copytrust-p5-archive.py --submit \
+  "/path/to/COPYTRUST_P5_ARCHIVE_REQUEST_A001_20260729_120000.json"
+```
+
+The script prompts for the password without echoing it. For unattended
+automation it can read `P5_PASSWORD` from the environment. It updates the same
+JSON atomically with the P5 job ID and final state.
+
+### Restore and re-verification
+
+Restore remains a deliberate P5 operator action. After P5 restores the archived
+folder, use the preserved MHL in CopyTrust, MHL Verify, or another compatible
+tool to calculate xxHash64 again and compare it with the capture-time values.
+The `CT_XXH64` field is searchable context in the P5 web GUI; the MHL remains
+the portable file-by-file verification record.
 
 ## Destination Sort (Post-Copy)
 

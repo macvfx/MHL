@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
-Date: 2026-07-28
-Release status: **2.5.3 stable**; **2.6.0 Build 1 public beta prerelease** on `main`
+Date: 2026-07-29
+Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 1 public beta prerelease** for controlled P5 archive testing
 
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
@@ -63,6 +63,12 @@ as `Show Library.fcpbundle`, `CopyTrust_Receipts`, `CopyTrust_Proxies`, and
 `Final Cut Proxy Media` are written beside the package. CopyTrust never adds
 them to the package contents. Ordinary folder placement is unchanged.
 
+**P5 archive post-copy action (2.7.0 testing):** Configure the P5 server,
+archive index, client, and a non-deleting archive plan in Settings → P5
+Archive. Full or Inline verification can submit one verified destination after
+sorting and enabled artifacts finish. Quick or copy-only work writes a deferred
+request with `needs_hash_verification` and is never automatically submitted.
+
 ### Per-queue-item settings snapshots
 
 Each queued session captures a **full snapshot** of the active mode's settings at the moment it is queued. This means:
@@ -86,6 +92,23 @@ Expected result:
 - the source copies directly to each loaded destination
 - copy, selected verification, receipts, and logs finish before the session is considered complete; Full/Inline also write a hash-backed MHL, while Quick does not
 - PDF, CSV, and HTML tree artifacts can continue afterward in the background
+
+### Verified destination to Archiware P5 (2.7.0 testing)
+
+Use this only with expendable media and a non-deleting P5 archive plan until the
+beta passes your site acceptance tests.
+
+1. In Settings → P5 Archive, enter the server and credentials, then click
+   `Test Connection & Load`.
+2. Select the archive index, P5 client, and non-deleting archive plan. Confirm
+   the P5 client sees the destination at the same absolute path.
+3. Select Full or Inline verification and enable automatic P5 archive.
+4. Run the copy and wait for verification, MHL, and enabled post-copy work.
+5. Inspect the `COPYTRUST_P5_ARCHIVE_REQUEST_*.json`, then confirm the job,
+   archived paths, and `CT_*` fields in P5 Web.
+
+Pipeline: `copy → verify → MHL → post-copy actions → P5 archive request`.
+Restore through P5 and verify every restored file against the capture MHL.
 
 ### Relay chain
 Use this for `A -> B -> C` — camera card to drive to NAS.

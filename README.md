@@ -2,8 +2,9 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3.** **CopyTrust 2.6.0
-and Drop Verify 2.6.0 Build 1 are a public beta prerelease.** CopyTrust adds
+**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3.** **CopyTrust 2.7.0 Build 1 is
+a public beta prerelease for controlled Archiware P5 archive testing.** Drop
+Verify remains at 2.6.0 Build 1. CopyTrust 2.6 adds
 optional post-copy H.264 or HEVC MOV proxies at 12.5%, 25%, or 50%, with live
 per-clip progress and JSON/TXT/LOG evidence. The pre-copy confirmation now
 explicitly shows Proxy Off or the selected codec, scale, and Final Cut folder
@@ -22,6 +23,13 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Per-destination preflight checks (free space, write permissions, reachability)
 - Verification levels: **Quick** existence/size checking, **Full** post-copy xxHash64, or **Inline** hash verification during copy
 - **MHL v1.1** hash list generation for Full/Inline verification — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta
+- **Archiware P5 archive integration (2.7.0 testing)** — configure a P5 server,
+  archive index, client, and non-deleting plan; after Full/Inline verification
+  and post-copy work, submit one verified destination with GUI-visible,
+  searchable xxHash64, frame/image size, and other bounded media metadata
+- **Auditable deferred P5 handoff** — password-free request JSON preserves
+  paths, hashes, metadata, supporting evidence, target hints, job ID/state, and
+  retry diagnostics when P5 is offline or automatic archive is disabled
 - MHL import verification — drag-and-drop any `.mhl` to re-verify destination files; reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+, OffShoot, YoYotta, ShotPut Pro) as of v2.5.1
 - **Auto-advance** multi-source copy with per-card subfolder naming
 - **Queued sessions** for walk-away ingest staging across different card/destination setups

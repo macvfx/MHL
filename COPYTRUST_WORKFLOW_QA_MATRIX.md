@@ -1,7 +1,7 @@
-# CopyTrust 2.6 Workflow QA Matrix
+# CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-07-29
-Applies to: CopyTrust 2.6.x beta; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 2.7.0 Build 1 beta; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -9,10 +9,6 @@ release-specific notes.
 This matrix tests what an operator actually does. It does not replace the unit
 suite or real-media testing. Run it with expendable fixtures before a beta is
 treated as production-ready.
-
-Public beta testers can run the operator sections directly. The command-line
-baseline, fixture generator, and screenshot automation are maintainer checks
-run from the private CopyTrust source checkout.
 
 ## Evidence Rules
 
@@ -203,7 +199,27 @@ Use one source and at least two ordered destinations.
 
 Visual checkpoint: `04-relay-chain.png`.
 
-## I. Screenshot and Guide Validation
+## I. Archiware P5 Archive (2.7.0 testing)
+
+Use expendable fixtures and a non-deleting archive plan.
+
+| ID | Check | Procedure | Expected evidence |
+|---|---|---|---|
+| P1 | Connection and discovery | Enter the P5 server and credentials, then use Test Connection & Load. | Live archive indexes, P5 clients, and plans populate; password is stored in Keychain and absent from preferences/request JSON. |
+| P2 | Delete-plan guard | Select a plan whose details report `deletefiles` or `deleteall`. | Plan is visibly unsafe and automatic submission is blocked. |
+| P3 | Client path visibility | Confirm the selected P5 client can resolve the destination at the same absolute path. | Preflight succeeds; a hidden or differently mounted path produces a deferred/error state rather than a false success. |
+| P4 | Full/Inline submission | Run a small Full or Inline verified copy with automatic P5 archive enabled. | Request JSON contains valid 16-digit xxHash64 values, P5 job ID/state, and the server accepts the archive selection. |
+| P5 | Quick gate | Run Quick verification with deferred JSON enabled. | No automatic submission; request state is `needs_hash_verification` and no hash is invented. |
+| P6 | GUI metadata | Inspect and search the archived originals in P5. | `CT_*` keys are visible/searchable and contain expected hash, frame/image size, kind, codec/timecode/camera values when available. |
+| P7 | Supporting evidence | Inspect the selection/request. | MHL, provenance, receipts, contact sheet, EXIF CSV, and proxy evidence that exist are marked as supporting evidence. |
+| P8 | Offline P5 | Stop or misconfigure the test server and run an eligible copy. | Copy remains successful; password-free deferred request records the actionable error and can be dry-run by the helper. |
+| P9 | Restore verification | Restore the fixture through P5 and verify it against the archived MHL. | Restored file count/path are reviewed and every file xxHash64 matches before acceptance. |
+
+Known live baseline: P5 8.0.4 job `10029` archived a CopyCore Inline-verified
+PNG, text sidecar, and MHL to `Default-Archive`; readback returned both complete
+hashes, `64x36` image dimensions, and the expected CopyTrust fields.
+
+## J. Screenshot and Guide Validation
 
 Capture the deterministic documentation set:
 
@@ -212,18 +228,15 @@ scripts/capture-copytrust-workflow-screenshots.sh
 scripts/build-copytrust-workflow-guide.sh
 ```
 
-This section is maintainer-only; public testers can inspect the published
-screenshots and PDF instead.
-
 Expected:
 
 - only declared screenshots are present;
 - each image has the dimensions declared in the screenshot manifest;
 - images are distinct and ordered;
 - the guide generator rejects missing images or broken manifest rows;
-- `CopyTrust_Illustrated_Workflow_Guide.md` contains every declared screenshot and
+- `docs/CopyTrust_Illustrated_Workflow_Guide.md` contains every declared screenshot and
   matching operator caption;
-- `CopyTrust_Illustrated_Workflow_Guide.pdf` contains the same ordered
+- `docs/CopyTrust_Illustrated_Workflow_Guide.pdf` contains the same ordered
   scenarios and embedded images;
 - screenshot/demo code is Debug-only and a Release build still succeeds.
 
@@ -235,6 +248,8 @@ Do not call the workflow ready if:
 - an artifact remains permanently queued/running;
 - queue or relay dependencies can start out of order;
 - proxy work changes the verified-original result;
+- P5 accepts a Quick/copy-only job, a source-deleting plan, or an incomplete hash;
+- P5 job/metadata cannot be confirmed in its own web GUI;
 - package artifacts are written inside `.fcpbundle`;
 - the generated guide contains stale controls, missing screenshots, duplicate
   images, or broken links.
