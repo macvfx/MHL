@@ -6,8 +6,18 @@ Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 1 public beta prerelea
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
 [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md). Use it
-for button states, direct-copy strategy, mixed queues, relay chains, and
-session lifecycle guidance.
+for button states, direct-copy strategy, P5 archive handoff, mixed queues,
+relay chains, and session lifecycle guidance.
+
+The illustrated guide now includes a workflow atlas for:
+
+- direct `A → B`;
+- fan-out `A → B` and `A → C`;
+- relay `A → B`, then verified `B → C`;
+- `A → B`, then archive verified B to P5;
+- fan-out to B/C with only the designated Archive Master sent to P5;
+- naming, verification, sorting, artifacts, proxies, and P5 stage order;
+- offline P5 request, later submission, restore, and MHL/xxHash64 verification.
 
 ## Current Button Names and When Each Appears
 

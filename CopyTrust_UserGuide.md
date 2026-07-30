@@ -590,6 +590,10 @@ after the copy trust chain and enabled post-copy work finish. This is opt-in and
 is the CopyTrust 2.7.0 Build 1 beta feature for controlled testing before
 production use.
 
+See the [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md)
+for direct, fan-out, relay, Archive Master, offline handoff, and restore
+topology charts.
+
 ### Configure P5
 
 1. Open **Settings → P5 Archive**.
