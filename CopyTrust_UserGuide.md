@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-07-29
-Release status: **2.5.3 stable**; **2.7.0 Build 1 public beta prerelease** on `main` for controlled Archiware P5 archive testing. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
+Date: 2026-07-31
+Release status: **2.5.3 stable**; **2.7.0 Build 8 public prerelease** for controlled Archiware P5 archive, queue, and privacy-safe Sentry integration testing. Build 8 includes all Build 7 P5 fixes. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
 
 ## Purpose
 
@@ -587,7 +587,7 @@ All pattern types are case-insensitive. `MISC` matches `misc`, `.MP4` matches `.
 
 CopyTrust can hand one verified destination to an Archiware P5 archive plan
 after the copy trust chain and enabled post-copy work finish. This is opt-in and
-is the CopyTrust 2.7.0 Build 1 beta feature for controlled testing before
+is the CopyTrust 2.7.0 Build 8 public-prerelease feature for controlled testing before
 production use.
 
 See the [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md)
@@ -975,6 +975,28 @@ Both are valid, but they serve different operational needs:
 - Direct multi-destination copy is simpler and gives parallel redundancy from the original source.
 - Relay chaining is better when the first destination is much faster than the later destination and the card needs to be freed sooner.
 
+### Crash-report privacy
+
+CopyTrust uses Sentry for crash and app-hang diagnosis. It is configured **not
+to capture or transmit media paths or private information**. This includes
+source and destination paths, media filenames, P5 hosts and URLs, credentials,
+request headers, P5 client/plan/index/job details, and operator, customer,
+project, or client information. It does not attach session logs, receipts,
+manifests, contact sheets, screenshots, or media.
+
+Automatic file-I/O and network tracing, performance tracing/profiling,
+failed-request capture, session tracking, interaction breadcrumbs, and Sentry
+logs are disabled. Before upload, an on-device filter removes messages,
+exception text, requests and headers, user/server fields, tags, extras,
+breadcrumbs, source context, filenames, and full binary paths.
+
+In a Debug build, **Settings → Test → Sentry Integration → Send Privacy-Safe
+Test Event** sends one synthetic exception through this same on-device filter
+and displays its event ID. It contains no media, path, P5, credential,
+operator, or client data and does not force a crash. In Sentry it remains
+identifiable by the exception type `CopyTrustSentryIntegrationTest`, while its
+exception value is replaced with `Redacted by CopyTrust privacy filter`.
+
 ## Inline Verification
 
 Inline verification is the new default verification mode (v2.4.5). It replaces the batch verification pass with per-file verification during the copy phase.
@@ -1252,6 +1274,12 @@ Settings like naming templates, file prefixes, exclusion patterns, verification 
 ### Opening the test tab
 
 Open **Settings > Test**. The tab shows the current Card or Folder profile summary, scenario picker, path configuration, fixture options, and results. **Run Test**, **Reveal Source**, and **Reveal Report** stay visible in the bottom action bar so you do not need to scroll to start or inspect a run.
+
+Debug builds also show **Sentry Integration** at the top of this tab. Use its
+privacy-safe test-event button after changing the Sentry project or DSN. Match
+the displayed event ID in Sentry and confirm no path or private fields arrived.
+This verifies delivery and filtering, not crash persistence or dSYM
+symbolication.
 
 ### Mode picker
 

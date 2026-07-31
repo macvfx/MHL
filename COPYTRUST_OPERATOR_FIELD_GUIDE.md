@@ -5,7 +5,7 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.3**. **2.7.0 Build 1 is a public beta prerelease** adding
+Stable release: **2.5.3**. **2.7.0 Build 8 is a public prerelease** adding
 controlled post-copy archive to Archiware P5. Use expendable fixtures,
 Full/Inline verification, a non-deleting plan, and a path visible identically
 to the selected P5 client. Review the request JSON and P5 Web job/metadata;

@@ -1,7 +1,7 @@
 # CopyTrust Sentry Observability
 
-Date reviewed: 2026-07-29
-Applies to: CopyTrust 2.6 public beta
+Date reviewed: 2026-07-31
+Applies to: CopyTrust 2.7.0 Build 8 and later
 
 ## Scope
 
@@ -10,69 +10,61 @@ and Folder Copy Compare do not initialize or link Sentry in the current build.
 CopyTrust also skips Sentry initialization in its deterministic documentation
 screenshot mode.
 
-Sentry is used for crash, hang, performance, profiling, and diagnostic-log
-visibility. It is not an advertising or product-analytics system.
+Sentry is used for privacy-filtered crash and app-hang diagnostics. It is not
+an advertising, analytics, or user-tracking system.
 
-## Current Configuration
+## Privacy Contract
 
-CopyTrust currently configures:
+CopyTrust is configured **not to capture or transmit media paths or private
+information** in Sentry reports. This includes source and destination paths,
+media filenames, P5 hosts and URLs, credentials and request headers, P5
+clients/plans/indexes/job identifiers, session logs and artifacts, and
+operator, customer, project, or client information.
 
-- crash and unhandled-error reporting;
-- performance tracing with `tracesSampleRate = 1.0`;
-- profiling with `sessionSampleRate = 1.0` and trace lifecycle;
-- Sentry's experimental logs integration;
-- the configured regional Sentry ingest endpoint for the app's telemetry
-  project.
+CopyTrust disables file-I/O and network tracing, performance
+tracing/profiling, failed-request capture, session tracking, breadcrumbs, and
+Sentry logs. A final on-device event filter rejects breadcrumbs and removes
+requests, messages, exception descriptions, filenames, paths, user/server
+data, tags, extras, source context, and custom context fields before upload.
 
-The two `1.0` values mean the beta source requests 100% trace and profiling
-sampling. There is no in-app Sentry toggle in the current build.
+## Minimal Data Allowed
 
-## Data That May Be Sent
+- Crash and app-hang stack functions and instruction addresses
+- Mach-O image identifiers and addresses needed for dSYM symbolication
+- The basename of a loaded executable or framework, never its full path
+- App release/build and Sentry platform identifier
 
-Depending on the event and SDK integrations, diagnostic events may contain:
+CopyTrust does not attach logs, receipts, manifests, contact sheets,
+screenshots, view hierarchies, replay, media, or other artifacts. Future dSYM
+uploads exclude source files while retaining the symbols needed to resolve a
+crash.
 
-- symbolicated stack traces and exception/error descriptions;
-- app version/build, macOS version, CPU architecture, memory, and runtime state;
-- performance spans, profiling samples, and operation timing;
-- breadcrumbs or diagnostic log messages recorded before an error;
-- network request metadata or error context captured by an SDK integration;
-- text values emitted by CopyTrust or an underlying framework.
+## Server-Side Privacy
 
-Because logs, breadcrumbs, and error descriptions can contain dynamic text,
-this document does **not** promise that a file name or path can never appear.
-CopyTrust is not designed to upload media files, folder contents, MHL files,
-receipts, hashes, or generated artifacts to Sentry as attachments, but
-operator-derived names or paths may still occur in diagnostic text and should
-be treated as potentially present until client-side scrubbing is implemented
-and verified.
+`sendDefaultPii` is explicitly false. Sentry's **Prevent Storing of IP
+Addresses** and server-side data-scrubbing settings must also be enabled
+because the application cannot control how the receiving service handles its
+connection IP. Retention and deletion of events already received by Sentry are
+also controlled by the Sentry project or organization.
 
-## Data Not Explicitly Enabled By CopyTrust
+## Integration Test
 
-The current initialization code does not:
+Debug builds expose **Settings → Test → Sentry Integration → Send Privacy-Safe
+Test Event**. It sends a synthetic `CopyTrustSentryIntegrationTest` exception
+through the normal on-device filter, waits briefly for the SDK to flush, and
+displays the submitted event ID. Delivery is confirmed only when that ID
+appears in Sentry. It contains no media, path, P5, credential, operator, or
+client data and does not force a crash. Its received value must be `Redacted by
+CopyTrust privacy filter`, with no private fields present.
 
-- call `SentrySDK.setUser`;
-- add custom file attachments;
-- explicitly enable screenshot attachments;
-- explicitly enable view-hierarchy attachments;
-- request location, clipboard, or keystroke data.
+This verifies DSN delivery and filtering. A separate controlled crash and
+debug-file check is still required to prove crash persistence and dSYM
+symbolication.
 
-The source also does not explicitly set `sendDefaultPii`, `beforeSend`, or
-`beforeBreadcrumb`. IP handling, server-side data scrubbing, access controls,
-and retention are Sentry project settings and cannot be proven from this
-repository alone.
-
-## Required Review Before Stable Release
-
-Before promoting this beta configuration to a stable public release:
-
-1. reduce or deliberately approve the trace and profiling sample rates;
-2. add and test client-side filtering for events, breadcrumbs, and logs;
-3. review representative production events for paths, filenames, and other
-   operator-derived values;
-4. confirm Sentry project IP scrubbing, data-scrubbing, access, and retention
-   settings;
-5. decide whether CopyTrust needs an in-app diagnostics opt-out;
-6. update this document from the released source and verified project settings.
+**Build 8 live result:** the synthetic event was received in the recreated
+`apple-macos` project, and its exception value was `Redacted by CopyTrust
+privacy filter`. This confirms that the filter ran before the event reached
+Sentry; it does not yet confirm release dSYM symbolication.
 
 Sentry references:
 

@@ -2,8 +2,8 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3.** **CopyTrust 2.7.0 Build 1 is
-a public beta prerelease for controlled Archiware P5 archive testing.** Drop
+**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3.** **CopyTrust 2.7.0 Build 8 is
+a public prerelease for controlled Archiware P5 archive, queue, and privacy-safe Sentry testing.** Drop
 Verify remains at 2.6.0 Build 1. CopyTrust 2.6 adds
 optional post-copy H.264 or HEVC MOV proxies at 12.5%, 25%, or 50%, with live
 per-clip progress and JSON/TXT/LOG evidence. The pre-copy confirmation now
@@ -30,6 +30,13 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - **Auditable deferred P5 handoff** — password-free request JSON preserves
   paths, hashes, metadata, supporting evidence, target hints, job ID/state, and
   retry diagnostics when P5 is offline or automatic archive is disabled
+- **Build 8 P5 hardening** — each destination has an explicit **Archive to P5**
+  checkbox; preflight names the selected index/client/plan and requires the
+  `CT_*` metadata keys; queued copies continue while P5 submission and bounded
+  job polling complete asynchronously; artifact rows finish independently
+- **Privacy-safe Sentry diagnostics** — paths and private values are filtered
+  on device before transmission; a live synthetic event reached the recreated
+  project with its exception value already redacted
 - MHL import verification — drag-and-drop any `.mhl` to re-verify destination files; reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+, OffShoot, YoYotta, ShotPut Pro) as of v2.5.1
 - **Auto-advance** multi-source copy with per-card subfolder naming
 - **Queued sessions** for walk-away ingest staging across different card/destination setups

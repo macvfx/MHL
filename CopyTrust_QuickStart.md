@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
-Date: 2026-07-29
-Current testing release: `v2.7.0 (Build 1 beta)`
+Date: 2026-07-31
+Current testing release: `v2.7.0 (Build 8 public prerelease)`
 
 CopyTrust 2.7 adds an optional Archiware P5 archive action for controlled
 testing. Configure Settings → P5 Archive, use Full or Inline verification,
@@ -10,7 +10,7 @@ in P5 Web. Quick/copy-only work is never auto-submitted.
 
 This file is a Quick Start for the current CopyTrust workflow.
 
-The canonical up-to-date guide is: COPYTRUST_UserGuide.md
+The canonical up-to-date guide is: [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md)
 
 ## Recommended Workflows
 

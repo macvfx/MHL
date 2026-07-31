@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
-Date: 2026-07-29
-Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 1 public beta prerelease** for controlled P5 archive testing
+Date: 2026-07-31
+Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 8 public prerelease**, including all Build 7 P5 fixes plus recreated Sentry-project validation
 
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
@@ -78,6 +78,13 @@ archive index, client, and a non-deleting archive plan in Settings → P5
 Archive. Full or Inline verification can submit one verified destination after
 sorting and enabled artifacts finish. Quick or copy-only work writes a deferred
 request with `needs_hash_verification` and is never automatically submitted.
+
+**Crash-report privacy (2.7.0):** CopyTrust is configured not to capture or
+transmit media paths or private information through Sentry. File/network
+tracing, requests, logs, breadcrumbs, sessions, and performance telemetry are
+disabled. A final on-device filter removes source/destination paths, media
+filenames, P5 connection and job details, credentials, and operator/client
+information before a crash or app-hang report can be uploaded.
 
 ### Per-queue-item settings snapshots
 

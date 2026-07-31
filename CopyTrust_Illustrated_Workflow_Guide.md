@@ -10,9 +10,15 @@ Use the [2.7 Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md) for the
 matching proof checks and evidence requirements.
 
 For the complete control reference and operating detail, see the
-[CopyTrust User Guide](COPYTRUST_USER_GUIDE.md). A printable version of this
+[CopyTrust User Guide](CopyTrust_UserGuide.md). A printable version of this
 guide is available as
 [CopyTrust_Illustrated_Workflow_Guide.pdf](CopyTrust_Illustrated_Workflow_Guide.pdf).
+
+**Crash-report privacy:** CopyTrust is configured not to capture or transmit
+media paths or private information through Sentry. File/network tracing, logs,
+breadcrumbs, sessions, and performance telemetry are disabled, and a final
+on-device filter removes media paths and filenames, P5 details, credentials,
+and operator/client information before diagnostic upload.
 
 ## 01. Choose a copy mode
 
