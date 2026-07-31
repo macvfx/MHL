@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-07-31
-Applies to: CopyTrust 2.7.0 Build 8 public prerelease; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 2.7.0 Build 9 public prerelease; includes the Build 8 P5/privacy baseline plus proxy validation and retry-state corrections; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -161,9 +161,11 @@ proxy fails.
 | F8 | Cancel | Cancel during encode. Encoder exits and no `.partial.mov` remains. |
 | F9 | Unsupported decoder | Test an expendable proprietary/unusual codec. | Failure is isolated, explicit, retryable, and does not alter original verification. |
 | F10 | Package placement | Proxy folders created for an `.fcpbundle` are siblings, not package contents. |
+| F11 | Unspecified audio language | An original reporting audio language `und` and a proxy omitting that tag both normalize to unspecified; a successful encode completes instead of becoming a false failure. |
+| F12 | Retry status | Selecting Retry immediately changes a terminal failed proxy row to Running; completion then replaces it with a checkmark or a new actionable failure. |
 
 Visual checkpoint: `05-post-copy-actions.png`; retain proxy progress and
-evidence screenshots as manual QA evidence when executing F1–F10.
+evidence screenshots as manual QA evidence when executing F1–F12.
 
 ## G. Mixed Queue
 

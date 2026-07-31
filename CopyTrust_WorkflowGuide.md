@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
 Date: 2026-07-31
-Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 8 public prerelease**, including all Build 7 P5 fixes plus recreated Sentry-project validation
+Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 9 public prerelease**, including the Build 8 P5/privacy baseline plus accurate proxy validation and retry status
 
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the

@@ -1,7 +1,7 @@
 # CopyTrust Sentry Observability
 
 Date reviewed: 2026-07-31
-Applies to: CopyTrust 2.7.0 Build 8 and later
+Applies to: CopyTrust 2.7.0 Build 8 and later, including the Build 9 prerelease
 
 ## Scope
 

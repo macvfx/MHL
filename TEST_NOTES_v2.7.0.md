@@ -1,4 +1,4 @@
-# CopyTrust 2.7.0 (Build 8) — P5 Archive, Queue, and Sentry Integration Testing Notes
+# CopyTrust 2.7.0 (Build 9) — P5 Archive, Queue, Proxy, and Sentry Integration Testing Notes
 
 Date: 2026-07-31
 Status: Public prerelease for controlled testing
@@ -6,6 +6,12 @@ App: CopyTrust
 
 Use expendable fixtures and a non-deleting P5 plan. Confirm both CopyTrust's
 request and P5 Web; archive submission alone is not acceptance proof.
+
+Build 9 corrects proxy result reporting found during a successful field test:
+all 20 proxies encoded, but 14 were falsely failed because `und` and an omitted
+language tag were treated as different. These both mean unspecified. Metadata
+warnings are now separate from encode failures, and Retry visibly resets the
+artifact row to Running before its new result.
 
 | Test | Expected result |
 |---|---|
@@ -21,6 +27,8 @@ request and P5 Web; archive submission alone is not acceptance proof.
 | Pre-copy summary | P5 On/Off plus selected index, client, and plan are visible before copying |
 | Mixed queue | Each job retains its artifact/P5 settings and the queue advances while P5 work completes |
 | Artifact status | Each artifact independently reaches completed, skipped, or failed; unrelated rows do not keep spinning |
+| Proxy result | Every successful encode completes; equivalent `und`/omitted language metadata does not create a false failure |
+| Proxy retry | Failed row changes to Running immediately, then shows the new complete or failed result |
 | P5 polling | Routine polls stay quiet; periodic progress and terminal success/failure remain visible |
 | Successful P5 completion | No session-teardown crash; destination/archive status remains inspectable |
 | P5 offline | Verified copy stays successful; request records retry details |

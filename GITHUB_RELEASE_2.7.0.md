@@ -1,9 +1,17 @@
-# CopyTrust 2.7.0 (Build 8) — P5 Archive, Queue, and Sentry Integration Beta
+# CopyTrust 2.7.0 (Build 9) — P5 Archive, Queue, Proxy, and Sentry Integration Beta
 
 CopyTrust can now archive a hash-verified destination directly to Archiware P5
 after the copy trust chain and enabled post-copy actions finish.
 
-Build 8 includes all Build 7 P5 and queue hardening: an explicit **Archive to
+Build 9 corrects a proxy-reporting issue found during a successful real-world
+copy, artifact, proxy, and P5 archive test. All 20 proxies encoded successfully,
+but 14 were falsely shown as failed because the original MP4 reported an
+unspecified audio language as `und` while the MOV proxy omitted the language
+tag. Those equivalent values now compare correctly. Genuine metadata warnings
+remain visible without being counted as encoding failures, and Retry visibly
+transitions from Running to the new result.
+
+Build 9 includes all Build 8 and Build 7 P5 and queue hardening: an explicit **Archive to
 P5** checkbox per destination; required `CT_*` metadata-key preflight with an
 operator-approved install action; captured artifact/P5 settings for queued
 jobs; independent artifact completion states; and bounded asynchronous P5 job
@@ -36,6 +44,8 @@ tests.
   an actionable, password-free deferred request.
 - Queue mixed jobs and confirm copies keep advancing while artifact rows and P5
   status reach independent terminal states.
+- Confirm every successfully encoded proxy receives a checkmark; if Retry is
+  used, confirm the row changes to Running and then to the new terminal result.
 - In a Debug build, send the Sentry integration event and confirm the received
   exception value is `Redacted by CopyTrust privacy filter`.
 

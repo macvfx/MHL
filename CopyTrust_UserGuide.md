@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-07-31
-Release status: **2.5.3 stable**; **2.7.0 Build 8 public prerelease** for controlled Archiware P5 archive, queue, and privacy-safe Sentry integration testing. Build 8 includes all Build 7 P5 fixes. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
+Release status: **2.5.3 stable**; **2.7.0 Build 9 public prerelease** for controlled Archiware P5 archive, queue, proxy, and privacy-safe Sentry integration testing. Build 9 adds accurate proxy validation and retry status to the Build 8/Build 7 P5 and privacy baseline. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
 
 ## Purpose
 
@@ -587,7 +587,7 @@ All pattern types are case-insensitive. `MISC` matches `misc`, `.MP4` matches `.
 
 CopyTrust can hand one verified destination to an Archiware P5 archive plan
 after the copy trust chain and enabled post-copy work finish. This is opt-in and
-is the CopyTrust 2.7.0 Build 8 public-prerelease feature for controlled testing before
+is the CopyTrust 2.7.0 Build 9 public-prerelease feature for controlled testing before
 production use.
 
 See the [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md)
