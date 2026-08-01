@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
-Date: 2026-07-31
-Applies to: CopyTrust 2.7.0 Build 10 public prerelease; includes relay-chain-aware P5 pre-checks and per-destination proxy routing plus the Build 9 proxy-validation and Build 8 P5/privacy baseline; keep the 2.5.3 stable line available for comparison
+Date: 2026-08-01
+Applies to: CopyTrust 2.7.0 Build 11 beta; includes visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -80,6 +80,10 @@ scripts/test_ffmpeg_proxies.sh \
 | A4 | Confirmation enabled | Start a prepared fixture session. | Confirmation names Card/Folder, verification, sorting, contact-sheet split, enabled artifacts, and a dedicated Proxy line. |
 | A5 | Proxy off clarity | Disable proxy media and start. | Confirmation and log say `Proxy: Off` / `proxy=off`; absence is explicit. |
 | A6 | Queued snapshot | Queue a Card job, then change mode/settings before queuing a Folder job. | Each queue row has the correct preset badge and later runs using its captured settings. |
+| A7 | Direct topology | Start one source to one destination. | Top diagram shows source → destination and the destination card agrees with the configured choices. |
+| A8 | Fan-out topology | Start multiple sources and/or destinations. | Diagram identifies the multi-source/multi-destination job and every destination has a separate card. |
+| A9 | Relay topology | Queue a relay and start it. | Diagram shows the ordered relay chain; cards identify step and dependency context. |
+| A10 | Active plus queue topology | Start a job with two later items queued. | Diagram distinguishes the active source/destination and reports two queued items. |
 
 Visual checkpoints: `01-copy-mode.png` and `05-post-copy-actions.png`.
 
@@ -133,7 +137,7 @@ Enable contact sheet, EXIF CSV, and HTML tree. Repeat E1–E5 in Quick and Inlin
 | ID | Check | Expected evidence |
 |---|---|---|
 | E1 | Delivered inventory | PDF/CSV/tree are generated from delivered files even when Quick has no hashes. |
-| E2 | Independent states | Each artifact row reaches Done, Failed, Skipped, or Nothing to do. No row spins permanently. |
+| E2 | Independent states | Run PDF/CSV/tree plus a slower proxy job and watch each row. Each artifact row reaches Done, Failed, Skipped, or Nothing to do as soon as its own generator finishes; completed descriptive rows show checkmarks while Proxy Media alone continues spinning. |
 | E3 | Contact sheet | PDF opens and has the configured layout, source name, verification state, and expected media/placeholders. |
 | E4 | EXIF CSV | CSV contains delivered media rows and subject-first filename. |
 | E5 | HTML tree | Selected tree mode produces the expected native HTML output. |
@@ -178,10 +182,13 @@ evidence screenshots as manual QA evidence when executing F1–F14.
 | G3 | Inline review | Expand rows and inspect/edit aliases. | Multiple rows can be reviewed without loading or resetting the workspace. |
 | G4 | Load/Return | Load a pending row, then Return to Queue. | Workspace clears and the queue remains intact without duplication. |
 | G5 | Add while running | During a copy use `+ Add`, then also test drop-to-queue. | Active copy continues; new batch is staged with explicit source/destination/mode. |
-| G6 | Auto-advance | Leave Auto enabled. | Next ready job starts only after trust-critical work for the current job completes. |
+| G6 | Start Queue latch | Queue Card and Folder jobs, capture Auto off in one profile, then click Start Queue. | The complete runnable list advances after each trust-complete copy; per-profile Auto does not stop the explicit queue run. |
 | G7 | Cancel/Resume Queue | Cancel the active job while another remains. | Resume retries current work; Resume Queue skips to remaining queued work. |
 | G8 | Persistence | Quit and relaunch with pending jobs. | Pending queue restores once, in order, without duplicates. |
 | G9 | Reset warning | Use Reset Session only after confirming the destructive warning. | Workspace and complete queue are cleared; Return to Queue remains the safe unload action. |
+| G10 | Per-job artifact snapshot | Queue jobs with different artifact/proxy settings and start the queue. | Each job's background outputs match its captured settings even after the next profile activates. |
+| G11 | Completion states | Observe a job after copy while artifacts/P5 remain active. | Row distinguishes Copy complete, Artifacts running, P5 archive running, needs attention, and Fully complete. |
+| G12 | Structured workflow log | Inspect each job's session log. | `workflow setup`, source, and per-destination entries record topology, queue item, verification, artifacts, proxy and P5 choices. |
 
 Visual checkpoint: `03-mixed-queue.png`.
 
@@ -200,6 +207,9 @@ Use one source and at least two ordered destinations.
 | H7 | Artifacts | Enable background artifacts. | Later relay leg does not wait for PDF/CSV/tree/proxy work after upstream trust completes. |
 | H8 | Speed receipt | End session. | Receipt identifies every leg and gives per-leg copy/verify speeds. |
 | H9 | Card release | After Step 1 becomes trust-complete, inspect safe-to-eject state. | Original card can be released while downstream work continues from B. |
+| H10 | Immutable workflow plan | Queue a relay, inspect `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json`, then run it. | Plan exists before execution, contains ordered step/dependency IDs and explicit destination choices, contains no password, and its bytes do not change. |
+| H11 | Receipt export linkage | Inspect every relay leg's receipts. | The same workflow plan is exported into each `CopyTrust_Receipts` folder and logs link the active queue item back to it. |
+| H12 | Sequence isolation | Queue and complete a relay, then queue another relay with matching paths. | The second chain has a new sequence ID and does not reuse the first chain's completed rows or dependencies. |
 
 Visual checkpoint: `04-relay-chain.png`.
 

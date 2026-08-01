@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-07-31
-Release status: **2.5.3 stable**; **2.7.0 Build 10 public prerelease** for controlled Archiware P5 archive, queue, proxy, and privacy-safe Sentry integration testing. Build 10 adds relay-chain-aware P5 pre-checks and independent per-destination proxy selection to the Build 9 proxy validation and Build 8/Build 7 P5/privacy baseline. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
+Date: 2026-08-01
+Release status: **2.5.3 stable**; **2.7.0 Build 11 public prerelease** for controlled workflow-review, relay-chain, Archiware P5, proxy, and privacy-safe Sentry integration testing. Build 11 adds a visual pre-copy workflow review, immutable relay plans, structured workflow logging, and stricter relay-queue isolation. It includes Build 10's relay-aware P5 pre-check and independent per-destination proxy selection. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
 
 ## Purpose
 
@@ -17,6 +17,8 @@ This guide describes the main ways to use the app today and when each method mak
 - `Queue Current Session` saves the current setup and clears the workspace so another setup can be staged.
 - `Start Queue` runs queued sessions in order.
 - A **relay chain** means the verified output from one destination becomes the source for the next step.
+- Before a new run begins, the **workflow review** shows the overall topology and one card per destination, including that destination's proxy and P5 choices.
+- A queued relay chain writes an immutable, password-free `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json` that binds its ordered legs, dependencies, and destination choices.
 
 ## Startup And Help
 
@@ -124,6 +126,8 @@ What CopyTrust does:
 - PDF/CSV artifact work from Step 1 does not block Step 2.
 - The end-session receipt summarises the full relay run with per-leg speed data.
 - **Contact sheet PDF generation is faster for relay chains:** thumbnails generated for the first destination are cached on disk and reused for every subsequent leg — no redundant preview work for the same card content.
+- when the chain is queued, it writes one immutable workflow plan with the sequence ID, ordered destinations, step IDs, dependencies, verification/artifact settings, and explicit per-destination proxy/P5 choices
+- every relay session log identifies its active queue item and links back to that plan; the plan is exported beside each leg's receipts
 
 What the queue panel shows after queuing (reviewing before Start Queue):
 
@@ -205,8 +209,12 @@ How to do it:
 What CopyTrust does:
 - each setup becomes its own queued session
 - queued sessions run in order
+- `Start Queue` remains latched until the runnable list finishes; a queued
+  Card/Folder profile with Auto Advance off does not stop an explicit queue run
 - trust-critical work for one session finishes before the next queued session starts
 - background artifact work can continue afterward without blocking the next queued session
+- completed rows distinguish copy completion, artifacts, P5 archive, post-copy
+  issues, and full completion
 - queued rows can be intentionally reordered, including placing a standalone queued job before or between relay-chain rows
 
 This is the strongest fit for:
@@ -268,13 +276,19 @@ For inspection and alias editing, prefer the `›` expand panel — it does not 
 | Sessions staged in the queue | `Start Queue` |
 | A specific queued leg loaded via Load | `Start This Session` (runs that leg only) |
 
-**Copy-mode confirmation (v2.5.5).** Because dragging a card in auto-selects
+**Pre-copy workflow review (expanded in 2.7.0 Build 11).** Because dragging a card in auto-selects
 the copy mode, it is easy to start a card in Folder mode by accident — which
 uses Quick verification and skips the contact sheet. To catch this, a
-confirmation appears when you start a copy, summarizing the active **mode**
-(Card / Folder), **verification level**, enabled **artifacts**, **destination
-sort**, **contact-sheet split**, and an explicit **Proxy** line. Proxy states
-**Off**, or shows the chosen codec, percentage, and Final Cut folder setting.
+review appears when you start a copy. Its top-level diagram distinguishes a
+single direct copy, multi-source/multi-destination fan-out, an ordered relay
+chain, or one active copy followed by queued work. A separate card for every
+destination identifies its source context, queue/relay step, verification,
+sorting, artifacts, and explicit **Proxies** and **P5 Archive** states. Proxy
+and P5 choices are evaluated across the complete relay sequence, including a
+choice that exists only on a later stop.
+
+The review also summarizes the active **mode** (Card / Folder), **verification
+level**, enabled **artifacts**, **destination sort**, and **contact-sheet split**.
 Click **Continue** to proceed or **Cancel**
 to fix the settings first. It appears only when you start a new session — an
 auto-advanced next card or a resumed copy is never interrupted. Turn it off (or
@@ -524,17 +538,38 @@ If Card 1's copy failed due to a volume disconnect, Card 2 was not started becau
 
 Understanding the order of operations helps diagnose where an issue occurred:
 
-1. **Pre-copy checks** — destination reachability, free space, subfolder collisions
+1. **Workflow review and pre-copy checks** — topology, per-destination choices, destination reachability, free space, and subfolder collisions
 2. **File scan** — enumerate source files, apply exclusion patterns
 3. **Copy + Inline Verify** — write files to all destinations; with inline verification (the default), each file is hashed at the source during copy, then immediately hashed at the destination and compared — pass/fail feedback appears per-file during this phase
 4. **Batch Verify** — if using Full (batch) verification instead of inline, all destination files are re-hashed and compared after the copy phase completes
 5. **MHL (Full/Inline only)** — write an MHL v1.1 manifest from hash-backed entries; Quick intentionally skips MHL
 6. **Receipt + Log** — write per-copy receipt and session log
 7. **Sort** — reorganize files into type folders (if enabled)
-8. **Contact sheet PDF** — generate thumbnail contact sheet (if enabled)
-9. **EXIF CSV** — generate metadata CSV (if enabled)
+8. **Contact sheet PDF + EXIF CSV + HTML tree** — descriptive artifacts run concurrently (when enabled)
+9. **Proxy media** — starts after the descriptive artifacts so encoding does not starve them
+10. **P5 archive** — submits the destination with **Archive to P5** checked after enabled artifacts finish
 
-Steps 1–6 are trust-critical for the selected verification level. Steps 7–9 are background artifacts that do not block the next queued session. A failure in step 8 does not affect the integrity of the copy — the files and their verification are already sealed.
+Steps 1–6 are trust-critical for the selected verification level. Steps 7–10
+are background work that does not block the next queued session. End Session
+waits for that background work unless the operator explicitly stops it. An
+artifact or P5 failure does not change the already sealed copy/verification
+verdict.
+
+### Workflow plan and log evidence
+
+When a relay chain is queued, CopyTrust writes
+`CopyTrust/workflow-plans/COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json`. This is
+an immutable record of the operator's queued intent: sources, ordered
+destinations, queue and sequence identifiers, step dependencies, verification
+and post-copy settings, and each destination's explicit proxy/P5 selections.
+It contains non-secret P5 configuration only; passwords are never written.
+
+Each leg's session log records a structured `workflow setup`, `workflow source`,
+and `workflow destination` block. It also identifies the active queue item,
+sequence step, dependency, and workflow-plan path. A copy of the plan is placed
+in that leg's `CopyTrust_Receipts` folder so exported evidence remains linked
+to the run that consumed it. A later relay with matching paths receives a new
+sequence ID and cannot silently reuse rows from the earlier chain.
 
 With inline verification (step 3), the separate batch verify phase (step 4) is skipped — verification completes as part of the copy. This means trust-complete status is reached sooner.
 
@@ -552,7 +587,7 @@ Settings → Card Copy (or Folder Copy) → Hidden Files → **Skip hidden files
 
 As of v2.5.0 Build 2, both Settings → Card Copy → Exclusions and Settings → Folder Copy → Exclusions use the **same grouped editor**: pattern groups (**File Storage**, **System**, **Camera Card**, **Custom**) with per-pattern checkboxes, an All/None toggle per group, and an active count. Card and Folder modes store their checkbox states independently.
 
-System group patterns: `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (Synology NAS), `System Volume Information` (Windows). File Storage covers `.DS_Store`, `Thumbs.db`, and the generated CopyTrust / Drop Verify artifacts (`CopyTrust_Receipts`, `Drop Verify_Receipts`, `receipt_` files, `.mhl` manifests). Camera Card covers `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db`.
+System group patterns: `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (Example NAS), `System Volume Information` (Windows). File Storage covers `.DS_Store`, `Thumbs.db`, and the generated CopyTrust / Drop Verify artifacts (`CopyTrust_Receipts`, `Drop Verify_Receipts`, `receipt_` files, `.mhl` manifests). Camera Card covers `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db`.
 
 Defaults differ by mode:
 - **Card mode (fresh profiles): every pattern starts unchecked** — card ingests archive everything unless you opt in to exclusions.
@@ -587,7 +622,7 @@ All pattern types are case-insensitive. `MISC` matches `misc`, `.MP4` matches `.
 
 CopyTrust can hand one verified destination to an Archiware P5 archive plan
 after the copy trust chain and enabled post-copy work finish. This is opt-in and
-is the CopyTrust 2.7.0 Build 10 public-prerelease feature for controlled testing before
+was introduced in CopyTrust 2.7.0 Build 7 and remains in Build 11 for controlled testing before
 production use.
 
 See the [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md)
@@ -605,9 +640,9 @@ topology charts.
 5. Select the live **Archive Index**, **P5 Client**, and **Archive Plan**.
 6. Confirm that the selected P5 client can access the CopyTrust destination at
    exactly the same absolute path.
-7. Optionally enter a CopyTrust destination role such as `Archive Master`. With
-   no role, CopyTrust selects the first verified destination.
-8. Turn on **Archive verified copies to P5** only when the selections are
+7. In the CopyTrust job, check **Archive to P5** beside the one destination P5
+   should archive. Selecting another destination clears the previous selection.
+8. Turn on **Archive verified copies to P5** only when the destination and P5 selections are
    correct.
 
 CopyTrust labels and refuses any plan whose P5 details say it deletes source
@@ -643,10 +678,30 @@ CopyTrust receipts stay as files beside the originals and are included as
 `supporting_evidence` paths in the same P5 request. The P5 fields on originals
 remain bounded and useful for operator search.
 
+### Multi-destination output policy
+
+For a normal multi-destination copy, CopyTrust generates each enabled contact
+sheet, EXIF CSV, and HTML tree independently on every eligible destination.
+Proxy output is destination-specific: use **Create proxies** on each destination
+row to send proxies to one destination, several destinations, all destinations,
+or none. The global Post-Copy proxy setting still controls codec, frame size,
+Final Cut folder layout, and whether proxy generation is enabled at all.
+
+P5 is intentionally narrower: it selects exactly one successfully verified
+destination using the **Archive to P5** checkbox on that destination row. The
+selection is retained in destination presets and captured with queued jobs.
+Other destinations remain ordinary verified copies and are not submitted to P5
+by that job.
+
+For a relay chain, the pre-copy confirmation reviews the P5 selection across
+the complete chain. A first leg therefore identifies a P5 destination selected
+on a later relay stop instead of incorrectly warning that no destination was
+selected.
+
 ### Offline or unconfigured P5
 
-Keep **Always write a deferred P5 request JSON** enabled. Each eligible
-destination then receives:
+Keep **Always write a deferred P5 request JSON** enabled. The selected
+**Archive to P5** destination then receives:
 
 `CopyTrust_Receipts/COPYTRUST_P5_ARCHIVE_REQUEST_<source>_<timestamp>.json`
 
@@ -655,7 +710,6 @@ hints, archive job ID, and state. It never contains the P5 password. If P5 is
 offline or incomplete, the verified copy remains successful and the JSON
 explains what is required next.
 
-The deferred-submission helper is included with the private CopyTrust source.
 Validate the request without changing P5:
 
 ```bash
@@ -682,31 +736,11 @@ tool to calculate xxHash64 again and compare it with the capture-time values.
 The `CT_XXH64` field is searchable context in the P5 web GUI; the MHL remains
 the portable file-by-file verification record.
 
-### Multi-destination output policy
-
-For a normal multi-destination copy, CopyTrust generates each enabled contact
-sheet, EXIF CSV, and HTML tree independently on every eligible destination.
-Proxy output is destination-specific: use **Create proxies** on each destination
-row to send proxies to one destination, several destinations, all destinations,
-or none. The global Post-Copy proxy setting still controls codec, frame size,
-Final Cut folder layout, and whether proxy generation is enabled at all.
-
-P5 is intentionally narrower: it selects exactly one successfully verified
-destination using the **Archive to P5** checkbox on that destination row. The
-selection is retained in destination presets and captured with queued jobs.
-Other destinations remain ordinary verified copies and are not submitted to P5
-by that job.
-
-For a relay chain, the pre-copy confirmation reviews the P5 selection across
-the complete chain. A first leg therefore identifies a P5 destination selected
-on a later relay stop instead of incorrectly warning that no destination was
-selected.
-
-The full manual restore, path/count/byte reconciliation, and hash-verification
-procedure is in
-[CopyTrust → P5 Restore and Hash Verification](CopyTrust_P5_Restore_and_Verify_Workflow.md).
-It also records the planned coordinated workflow. CopyTrust 2.7.0 does not yet
-submit or automatically verify a P5 restore.
+The complete current operator procedure—including restore preview, receiving
+client and landing-path checks, path/count/byte reconciliation, MHL result
+interpretation, and the planned coordinated workflow—is in
+[CopyTrust → P5 Restore and Hash Verification](COPYTRUST_P5_RESTORE_AND_VERIFY_WORKFLOW.md).
+CopyTrust 2.7.0 does not yet submit or automatically verify a P5 restore.
 
 ## Destination Sort (Post-Copy)
 
@@ -955,7 +989,11 @@ When **Open contact sheet automatically after creation** is on:
 
 ### Per-artifact status and retry (v2.5.4 Build 4)
 
-Contact Sheet, EXIF CSV, and HTML Tree each show their own status line (working / done / failed) with their own **Retry** button, so a failed contact sheet no longer hides that the CSV and tree succeeded — and you can retry just the one that needs it. **Rebuild All** regenerates the whole set.
+Contact Sheet, EXIF CSV, HTML Tree, and Proxy Media each show their own status
+line (working / done / failed). Each spinner changes to a checkmark or result as
+soon as that artifact generator finishes, so a slower proxy does not leave an
+already-created PDF, CSV, or tree spinning. Failed rows have their own **Retry**
+button, and **Rebuild All** regenerates the whole set.
 
 ### Quick verification and descriptive artifacts (fixed in v2.5.4 Build 6)
 
@@ -1004,16 +1042,22 @@ source and destination paths, media filenames, P5 hosts and URLs, credentials,
 request headers, P5 client/plan/index/job details, and operator, customer,
 project, or client information. It does not attach session logs, receipts,
 manifests, contact sheets, screenshots, or media.
-
 Automatic file-I/O and network tracing, performance tracing/profiling,
 failed-request capture, session tracking, interaction breadcrumbs, and Sentry
-logs are disabled. Before upload, an on-device filter removes messages,
-exception text, requests and headers, user/server fields, tags, extras,
-breadcrumbs, source context, filenames, and full binary paths.
+logs are disabled.
+
+Before an event is uploaded, CopyTrust removes messages, exception text,
+requests and headers, user/server fields, tags, extras, breadcrumbs, source
+context, filenames, and full binary paths. It retains the app release/build,
+Sentry platform identifier, crash addresses, image identifiers, module
+basenames, and stack functions required for symbolication. IP-address storage
+must also be disabled in the Sentry project's server-side privacy settings;
+the application cannot enforce retention or deletion after an event reaches
+Sentry.
 
 In a Debug build, **Settings → Test → Sentry Integration → Send Privacy-Safe
 Test Event** sends one synthetic exception through this same on-device filter
-and displays its event ID. It contains no media, path, P5, credential,
+and displays its event ID. The event contains no media, path, P5, credential,
 operator, or client data and does not force a crash. In Sentry it remains
 identifiable by the exception type `CopyTrustSentryIntegrationTest`, while its
 exception value is replaced with `Redacted by CopyTrust privacy filter`.
@@ -1116,7 +1160,14 @@ Shared settings (not per-mode): operator name, external codecs, notifications, a
 
 ### Per-queue-item snapshots
 
-When a batch is queued, the full active profile is captured as a snapshot. Each queued item runs with exactly the settings chosen at staging time. You can queue a Card batch with inline verification, switch to Folder mode, queue a Folder batch with quick verification — each runs independently. Already-queued items are not affected by later settings changes.
+When a batch is queued, the full active profile and non-secret P5 target choices
+are captured as snapshots. Each queued item runs with exactly the settings
+chosen at staging time. P5 passwords remain only in Keychain and are resolved
+for the captured server identity when post-copy work begins. You can queue a
+Card batch with inline verification, switch to Folder mode, queue a Folder
+batch with quick verification, and each runs independently. Already-queued
+items and their background artifacts are not affected by later settings
+changes.
 
 ### Persistence
 
@@ -1298,9 +1349,9 @@ Open **Settings > Test**. The tab shows the current Card or Folder profile summa
 
 Debug builds also show **Sentry Integration** at the top of this tab. Use its
 privacy-safe test-event button after changing the Sentry project or DSN. Match
-the displayed event ID in Sentry and confirm no path or private fields arrived.
-This verifies delivery and filtering, not crash persistence or dSYM
-symbolication.
+the displayed event ID in Sentry and inspect the received event to confirm that
+the privacy filter removed private fields. This verifies delivery and filtering;
+it does not replace a separate controlled crash/dSYM symbolication test.
 
 ### Mode picker
 

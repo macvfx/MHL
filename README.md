@@ -2,8 +2,8 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3.** **CopyTrust 2.7.0 Build 10 is
-a public prerelease for controlled Archiware P5 archive, queue, proxy, and privacy-safe Sentry testing.** Drop
+**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3.** **CopyTrust 2.7.0 Build 11 is
+a public prerelease for controlled workflow-review, relay evidence, Archiware P5, queue, proxy, and privacy-safe Sentry testing.** Drop
 Verify remains at 2.6.0 Build 1. CopyTrust 2.6 adds
 optional post-copy H.264 or HEVC MOV proxies at 12.5%, 25%, or 50%, with live
 per-clip progress and JSON/TXT/LOG evidence. The pre-copy confirmation now
@@ -30,6 +30,12 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - **Auditable deferred P5 handoff** — password-free request JSON preserves
   paths, hashes, metadata, supporting evidence, target hints, job ID/state, and
   retry diagnostics when P5 is offline or automatic archive is disabled
+- **Build 11 workflow review and relay evidence** — the pre-copy window shows
+  direct, fan-out, relay, or active-plus-queued topology and one card per
+  destination. Relay authoring writes an immutable password-free workflow plan
+  with ordered step/dependency IDs and proxy/P5 choices; structured logs link
+  each active queue item to that plan, which is exported with every leg's
+  receipts. Fresh sequence IDs prevent stale matching queue rows from being reused.
 - **Build 10 relay and proxy routing** — P5 pre-check evaluates the complete
   relay chain, including a selection on a later stop. Each destination also has
   its own **Create proxies** checkbox, independent of its single-select

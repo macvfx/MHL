@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
-Date: 2026-07-31
-Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 10 public prerelease**, including relay-chain-aware P5 pre-checks, per-destination proxy selection, and the Build 9 proxy-validation and Build 8 P5/privacy baseline
+Date: 2026-08-01
+Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 11 public prerelease**, adding visual workflow review, immutable relay plans, structured per-destination logs, and relay-sequence isolation to Build 10's relay-aware P5 pre-check and per-destination proxy selection
 
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
@@ -18,6 +18,22 @@ The illustrated guide now includes a workflow atlas for:
 - fan-out to B/C with only the designated Archive Master sent to P5;
 - naming, verification, sorting, artifacts, proxies, and P5 stage order;
 - offline P5 request, later submission, restore, and MHL/xxHash64 verification.
+- the Build 11 pre-copy topology review and durable workflow-plan/log evidence.
+
+## Pre-Copy Workflow Review (Build 11)
+
+Before a new session starts, CopyTrust presents the whole job rather than only
+the current destination row. The top diagram distinguishes:
+
+- one source to one destination;
+- multiple sources and/or multiple destinations;
+- an ordered source-to-relay chain;
+- one active source/destination followed by queued work.
+
+Every destination has its own card showing source context, queue/relay step,
+verification, sorting and artifacts, plus explicit **Proxies** and **P5
+Archive** states. Review all cards before continuing. A P5 or proxy choice on a
+later relay stop is included; it is not mistaken for an unselected workflow.
 
 ## Current Button Names and When Each Appears
 
@@ -115,26 +131,34 @@ Expected result:
 ### Verified destination to Archiware P5 (2.7.0 testing)
 
 Use this only with expendable media and a non-deleting P5 archive plan until the
-beta passes your site acceptance tests.
+beta has passed your site acceptance tests.
 
 1. In Settings → P5 Archive, enter the server and credentials, then click
    `Test Connection & Load`.
 2. Select the archive index, P5 client, and non-deleting archive plan. Confirm
-   the P5 client sees the destination at the same absolute path.
-3. Select Full or Inline verification and enable automatic P5 archive.
-4. Run the copy and wait for verification, MHL, and enabled post-copy work.
-5. Inspect the `COPYTRUST_P5_ARCHIVE_REQUEST_*.json`, then confirm the job,
-   archived paths, and `CT_*` fields in P5 Web.
+   the P5 client sees the CopyTrust destination at the same absolute path.
+3. Select Full or Inline verification and enable `Archive verified copies to
+   P5`. In the CopyTrust destination list, check `Archive to P5` beside the one
+   destination that P5 should archive.
+4. Run the copy and wait for copy, verification, MHL, sorting, and enabled
+   artifacts to finish.
+5. Inspect `CopyTrust_Receipts/COPYTRUST_P5_ARCHIVE_REQUEST_*.json` for the P5
+   job ID/state, then confirm the job and `CT_*` fields in the P5 web GUI.
 
-Pipeline: `copy → verify → MHL → post-copy actions → P5 archive request`.
-Restore through P5 and verify every restored file against the capture MHL. For
-relay chains, the pre-copy check evaluates the P5 choice across all legs, so a
-P5 destination on a later stop is reported without a false no-destination
+Pipeline order:
+
+`copy → verify → MHL → sort/artifacts/proxy/provenance → P5 archive request`
+
+P5 failure is supplementary: it leaves the successful copy result intact and
+records an actionable deferred request. Restore is performed in P5; verify the
+restored files against the preserved capture MHL/xxHash64 before accepting them.
+For relay chains, the pre-copy check evaluates the P5 choice across all legs,
+so a P5 destination on a later stop is reported without a false no-destination
 warning.
 Follow
-[CopyTrust → P5 Restore and Hash Verification](CopyTrust_P5_Restore_and_Verify_Workflow.md)
-for the complete current procedure and planned coordinated Restore & Verify
-improvements.
+[CopyTrust → P5 Restore and Hash Verification](COPYTRUST_P5_RESTORE_AND_VERIFY_WORKFLOW.md)
+for the complete manual restore, reconciliation, and hash-verification procedure
+and the explicitly planned coordinated workflow.
 
 ### Relay chain
 Use this for `A -> B -> C` — camera card to drive to NAS.
@@ -164,6 +188,17 @@ Expected result:
 - automatic contact-sheet PDF opening does not block receipt or artifact completion
 - the camera card can be ejected as soon as Step 1 is trust-complete
 - **contact sheet PDF is faster for Step 2 and later:** thumbnails from Step 1 are cached and reused — no redundant preview generation for the same card content
+- queueing writes an immutable `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json` with ordered legs, queue/sequence/step IDs, dependencies, and each destination's proxy/P5 choices
+- each session log identifies its active queue item and plan; the same plan is exported into every leg's `CopyTrust_Receipts` folder
+
+### Relay workflow evidence
+
+The workflow plan is written when the chain is authored, before any leg runs,
+and is never rewritten to reflect later state. It contains no password. Session
+logs add structured `workflow setup`, `workflow source`, and `workflow
+destination` entries that link execution back to the plan. A newly queued chain
+always receives a new sequence identity, even if its paths match a prior chain,
+so stale completed rows cannot satisfy its dependencies.
 
 ### Mixed queued sessions
 Use this when different cards need different destination sets.
@@ -363,6 +398,6 @@ If notifications do not appear, check **System Settings > Notifications > CopyTr
 
 Open **Settings > Test** to validate that your Card or Folder settings produce the expected copy results without needing a real camera card. The harness generates synthetic fixture files and runs the real copy engine, then compares expected vs actual outcomes.
 
-Seven scenarios cover basic copy, naming preservation, file prefix, exclusion patterns, folder/file exclusions, verification levels, and destination sort. Results are shown as colour-coded pills (green = pass, red = fail) with per-destination analysis. JSON reports are saved to `~/Library/Application Support/CopyTrust/TestReports/`.
+Seven scenarios cover basic copy, naming preservation, file prefix, custom exclusion patterns, known folder/file exclusion matching, verification levels, and destination sort. Results are shown as colour-coded pills (green = pass, red = fail) with per-destination analysis. JSON reports are saved to `~/Library/Application Support/CopyTrust/TestReports/`.
 
 See the [CopyTrust User Guide](CopyTrust_UserGuide.md#test-harness) for full details.

@@ -1,193 +1,259 @@
-# CopyTrust → P5 Restore and Hash Verification
+# CopyTrust → P5 Restore and Hash Verification Workflow
 
-**Status:** Manual workflow for CopyTrust 2.7.0 Build 10 public prerelease
+**Status:** Manual operating procedure for CopyTrust 2.7.0 Build 11 public prerelease
 **Last updated:** 2026-07-31
 
-This workflow closes the integrity loop:
+This workflow closes the integrity loop after a CopyTrust delivery has been
+archived to Archiware P5:
 
 `capture → verified copy → MHL → P5 archive → P5 restore → MHL verification`
 
-Three separate checks are required:
+It separates three different proofs:
 
-1. P5 reports that its restore job completed.
-2. The restored paths, file count, and bytes match the approved restore preview.
-3. Recalculated hashes for the restored originals match the delivery MHL.
+1. **P5 job completion** says that P5 completed its restore job.
+2. **Restore reconciliation** checks that the expected paths, file count, and
+   bytes arrived at the restore destination.
+3. **MHL verification** recalculates each restored file's xxHash64 and compares
+   it with the value recorded at ingest.
 
-A restored copy should not be accepted until all three pass.
+All three should pass before a restored copy is accepted.
 
-## What works today
+## Current capability boundary
 
-CopyTrust 2.7.0 can submit a Full- or Inline-verified destination to Archiware
-P5 after post-copy work. The archived originals receive GUI-visible `CT_*`
-metadata, including `CT_XXH64`, and the destination retains its MHL, receipts,
-and password-free P5 archive-request JSON.
+CopyTrust 2.7.0 can archive a Full- or Inline-verified destination to P5 and
+write GUI-visible `CT_*` metadata, including `CT_XXH64`. It also preserves the
+delivery MHL and the password-free P5 archive-request receipt.
 
-Restore remains an operator action in P5 or P5 Archive Browser. Hash
-verification is then run with CopyTrust **Verify Using MHL**, MHL Verify, or
-`mhl-tool verify`. CopyTrust does not yet orchestrate those steps automatically.
+CopyTrust does **not** currently submit a restore job or automatically verify a
+completed restore. The current tools divide the work as follows:
 
-| Stage | Tool | Proof |
+| Stage | Current tool | Evidence |
 | --- | --- | --- |
-| Find the archived delivery | P5 Web or P5 Archive Browser | Folder/version and `CT_*` metadata |
-| Preview and restore | P5 Archive Browser or P5 Web | Selection, client, destination, job ID/status |
-| Reconcile restore | P5 Archive Browser/operator inspection | Actual paths, file count, and bytes |
-| Verify restored bytes | CopyTrust, MHL Verify, or `mhl-tool` | Match/mismatch/missing/unreadable results |
+| Find the archived delivery | P5 Web or P5 Archive Browser | Archive index entry, path, version, `CT_*` metadata |
+| Preview and restore a folder | P5 Archive Browser or P5 Web | Requested folder, client, relocate path, job ID/status |
+| Reconcile the restored tree | P5 Archive Browser and/or operator inspection | Actual paths, file count, and bytes |
+| Recalculate and compare hashes | CopyTrust **Verify Using MHL**, MHL Verify, or `mhl-tool verify` | Matched, mismatched, missing, and unreadable files |
+| Search or spot-check one original | P5 Web `CT_XXH64` field | Searchable contextual copy of the ingest hash |
 
-`CT_XXH64` is useful searchable context and can help diagnose an individual
-item. The MHL remains the portable file-by-file authority for the delivery.
+The MHL is the portable, file-by-file integrity authority. `CT_XXH64` helps
+search and diagnose an item in P5, but it does not replace verification of the
+complete delivery against the preserved MHL.
 
-## Operator flow
+## Workflow
 
 ```mermaid
 flowchart TD
-    A["Find the exact archived delivery/version"] --> B["Preview files, bytes, tapes, receiving client, and landing path"]
-    B --> C{"Preview exact and safe?"}
-    C -- "No" --> H["Hold and correct the request"]
-    C -- "Yes" --> D["Submit whole-folder restore and monitor P5"]
+    A["Find the archived delivery and intended version"] --> B["Preview folder, files, bytes, tapes, client, and landing path"]
+    B --> C{"Preview is exact and safe?"}
+    C -- "No" --> H["Hold: correct selection, destination, or media availability"]
+    C -- "Yes" --> D["Submit whole-folder P5 restore and monitor job"]
     D --> E["Reconcile actual paths, file count, and bytes"]
     E --> F{"Restore matches preview?"}
     F -- "No" --> H
     F -- "Yes" --> G["Verify restored root against delivery MHL"]
-    G --> I{"Every required file matches?"}
+    G --> I{"Every listed file matches?"}
     I -- "No" --> H
-    I -- "Yes" --> J["Accept restore and retain evidence"]
+    I -- "Yes" --> J["Accept restored copy and retain verification evidence"]
 ```
 
-### 1. Find the correct archive version
+## Practical operator procedure
 
-Search P5 using the delivery folder/card name and, where useful, CopyTrust
-fields such as `CT_ASSET_ID`, `CT_SOURCE`, `CT_CAPTURE_DATE`, `CT_XXH64`,
-frame/image size, or original relative path. If a path was archived more than
-once, explicitly choose the intended version.
+### 1. Identify the intended archive
 
-Keep the associated evidence:
+Search P5 by the delivery folder or card name. CopyTrust metadata such as
+`CT_SOURCE`, `CT_ASSET_ID`, `CT_CAPTURE_DATE`, `CT_XXH64`, frame/image size,
+and original relative path can help disambiguate similar names.
+
+If P5 contains multiple archived versions, explicitly choose the required
+version. A matching folder name alone is not sufficient.
+
+Retain the related CopyTrust evidence when available:
 
 - delivery MHL;
 - `COPYTRUST_P5_ARCHIVE_REQUEST_*.json`;
 - CopyTrust receipt, manifest, and session log;
 - P5 archive job ID.
 
-### 2. Preview before restoring
+### 2. Preview the restore
 
-Prefer a whole-folder restore for a complete CopyTrust delivery. Confirm:
+Prefer a **whole-folder restore** for a complete CopyTrust delivery. Before
+submitting it, record:
 
-- archive index and selected folder/version;
+- archive index and selected folder;
 - expected descendant file count and logical bytes;
-- required tapes or offline media;
+- required tapes/volumes, including offline media;
 - receiving P5 client;
-- `relocate` path and computed landing root;
-- overwrite and collision risk.
+- `relocate` destination;
+- computed landing folder;
+- overwrite or collision risk.
 
-The destination `client` is the P5 client that receives the files. Its
-`relocate` path may not belong to the Mac showing the operator interface.
+The destination `client` is the P5 client that receives the restored files. The
+`relocate` path belongs to that client and may not be a path on the Mac running
+the operator UI.
 
-A folder restore normally lands at:
+For a directory restore, the expected layout is normally:
 
 ```text
 <relocate>/<archived-folder-name>/<preserved subtree>
 ```
 
-Example:
+For example:
 
 ```text
 relocate: /Volumes/Restore_Staging
-selection: /Projects/Show/Camera/A001
-landing root: /Volumes/Restore_Staging/A001
+archive selection: /Projects/Show/Camera/A001
+expected landing root: /Volumes/Restore_Staging/A001
 ```
 
-Individual file handles can flatten under `relocate` unless each entry has an
-explicit safe `targetPath`. Do not silently widen a subset request to its
-containing folder. Subset restore requires per-output preview and collision
-checking.
+Do not silently replace a selected-file restore with its containing folder.
+Individual file handles can flatten under `relocate` unless every entry has a
+safe, explicit `targetPath`. Subset restore remains an advanced workflow that
+needs collision checks and a preview of every output path.
 
-### 3. Restore and reconcile
+### 3. Submit and monitor the P5 job
 
-Submit the reviewed restore and retain its P5 job ID and final report. P5 job
-success alone is not content proof.
+Submit the reviewed folder restore. Record the P5 restore job ID and monitor it
+to a terminal state. Capture the final P5 job report when available.
 
-Compare the completed output with the preview:
+A P5 `success` state is necessary, but it is not proof that the intended
+content and layout arrived. Continue with reconciliation and hashing.
 
-- requested versus actual paths;
+### 4. Reconcile the restored tree
+
+Compare the completed restore with the preview:
+
 - requested versus actual file count;
 - requested versus actual logical bytes;
-- expected versus actual landing root;
+- expected versus actual relative paths;
+- expected landing root versus actual landing root;
 - missing, extra, unreadable, or overwritten paths.
 
-Stop and investigate any difference.
+Stop and investigate if these do not agree. Do not treat a successful job state
+as permission to skip this check.
 
-Some filesystems normalize Unicode filenames differently, such as NFC versus
-NFD. Record a name/path normalization difference separately from a content
-mismatch. Matching content hashes can prove that the file bytes are unchanged.
+Filename normalization can differ between filesystems, particularly NFC versus
+NFD Unicode. Report a path/name normalization difference separately from a
+content mismatch: identical content hashes can prove the bytes are unchanged
+even when the visible or encoded filename differs.
 
-### 4. Select the correct MHL
+### 5. Locate the delivery MHL
 
-Use the MHL that describes the archived layout:
+Use the MHL that describes the files as archived:
 
-- for an unsorted delivery, this is normally the destination copy-time MHL;
-- for a sorted delivery, use the delivery MHL for the post-sort layout and keep
-  the source-layout MHL as provenance.
+- **Unsorted delivery:** normally the copy-time MHL associated with the
+  destination.
+- **Sorted delivery:** use the delivery MHL written for the post-sort layout;
+  the original source-layout MHL remains supporting provenance.
 
-The MHL paths must resolve relative to the restored landing root.
+Confirm that the MHL paths are relative to the restored delivery root. Do not
+verify a changed layout against an MHL for the pre-sort layout.
 
-### 5. Recalculate and compare hashes
+### 6. Recalculate hashes
 
-Use CopyTrust **Verify Using MHL**, the MHL Verify app, or `mhl-tool verify`.
-Select the restored landing root and delivery MHL. The verifier finds each
-listed file, recalculates xxHash64, and compares it with the ingest-time value.
+Choose one compatible verifier:
 
-| Result | Meaning | Action |
+- CopyTrust → **Verify Using MHL**;
+- the MHL Verify app;
+- `mhl-tool verify`.
+
+Select the restored landing root and the delivery MHL. The verifier reads each
+MHL entry, finds the corresponding restored file, recalculates xxHash64, and
+compares it with the ingest-time value.
+
+Interpret the result as:
+
+| Result | Meaning | Required action |
 | --- | --- | --- |
-| Matched | Restored bytes equal the ingest record | Accept that file |
-| Hash mismatch | File exists but its bytes differ | Hold and investigate |
-| Missing | MHL entry has no restored file | Check selection, P5 report, and path mapping |
-| Unreadable/error | The file could not be proved | Fix the access/storage problem and rerun |
-| Extra file | Present but absent from this MHL | Classify as expected artifact or investigate |
+| Matched | Restored bytes equal the ingest record | Accept this file |
+| Hash mismatch | File exists but its bytes differ | Hold the restore; preserve evidence and investigate |
+| Missing | MHL entry has no restored file | Check selection, P5 report, path mapping, and media |
+| Unreadable/error | Verification could not prove the file | Fix access/storage error and rerun |
+| Extra file | Present but not represented by this MHL | Classify as an expected artifact or investigate |
 
-An MHL may intentionally cover the captured originals rather than every
-generated PDF, CSV, HTML, proxy, receipt, or provenance artifact. That is why
-whole-tree path/count/byte reconciliation remains a separate gate.
+The MHL may intentionally describe the captured originals rather than every
+generated PDF, CSV, HTML, proxy, receipt, or provenance artifact. Reconciliation
+of the complete restored tree therefore remains useful even after all MHL
+entries match.
 
-### 6. Accept or hold
+### 7. Accept or hold
 
-Accept only when the correct folder/version was restored, P5 completed, actual
-paths/count/bytes match the preview, every required MHL file was found and
-matched, and all extra supporting artifacts are accounted for.
+Accept the restored copy only when:
 
-Keep the P5 restore job ID/report and exported MHL verification result with the
-restored delivery. Never modify the capture-time MHL to make a mismatch pass.
+- the intended archive version and folder were selected;
+- P5 completed the restore;
+- actual paths, file count, and bytes match the approved preview;
+- every required MHL entry was found and its recalculated hash matched;
+- any extra supporting artifacts were expected and accounted for.
 
-## Planned: coordinated Restore & Verify
+Retain the P5 restore job ID/report and exported MHL verification result with the
+restored delivery. A failure in any gate should produce a hold, not a partially
+trusted success.
 
-This is a future improvement, not a CopyTrust 2.7.0 feature.
+## Safety and recovery notes
 
-The proposed workflow would coordinate P5 Archive Browser with a shared MHL
-verifier or explicit CopyTrust/MHL Verify handoff:
+- Restore to a clean staging destination by default. Restoring over an existing
+  tree can hide missing files or overwrite evidence.
+- Confirm all required P5 media are available before starting a multi-tape
+  restore.
+- Keep the exact archive version in the receipt; repeated archives of the same
+  path may represent different content.
+- Do not expose P5 credentials in a receipt, MHL, script argument, or report.
+- Keep the P5 archive job ID and restore job ID distinct.
+- Retry only the failed stage when its inputs remain trustworthy. Never rewrite
+  the capture-time MHL to make a restored mismatch pass.
 
-1. Select one exact archived folder/version.
-2. Preview paths, files, bytes, tapes, client, landing path, and collisions.
-3. Submit and monitor the whole-folder restore.
-4. Reconcile the actual restored tree.
-5. Locate or request the delivery MHL.
-6. Recalculate hashes and show matched, mismatched, missing, unreadable, and
-   extra files.
-7. Write `RESTORE_VERIFICATION_<asset>_<timestamp>.json` and a readable summary.
-8. Enable **Accept Restored Copy** only when all gates pass.
+## Planned improvement: coordinated Restore & Verify
 
-The combined receipt should link the CopyTrust session/asset and archive
-request, P5 server/index and exact archive version, archive and restore job IDs,
-requested and actual landing paths/counts/bytes, MHL identity, verification
-totals, timestamps, app versions, and operator notes.
+This is a planned feature, not part of CopyTrust 2.7.0 Build 10.
 
-### Planned implementation and test gates
+The preferred design is a coordinated workflow in P5 Archive Browser, using a
+shared MHL verification component or an explicit handoff to CopyTrust/MHL
+Verify:
 
-- Define a versioned restore-verification receipt and reusable MHL verifier.
-- Add exact whole-folder preview, restore monitoring, reconciliation, safe path
-  containment, and resumable state to P5 Archive Browser.
-- Add automatic MHL discovery or an explicit CopyTrust/MHL Verify handoff.
-- Test clean and intentionally corrupted restores, missing/unreadable/extra
-  files, multiple archive versions, sorted and unsorted layouts, multi-tape
-  restores, interruption/resume, collisions, and Unicode normalization.
-- Never widen a subset selection without explicit confirmation.
-- Never infer content success from P5 job state alone.
-- Always show the receiving client and computed landing root before submission.
-- Preserve the original MHL and all failure evidence.
+1. Search and select one exact archived folder/version.
+2. Preview descendant paths, files, bytes, tapes, receiving client, relocate
+   path, and output collisions.
+3. Submit and monitor the P5 restore.
+4. Reconcile the actual restored tree against the approved preview.
+5. Locate or ask for the delivery MHL.
+6. Recalculate restored hashes and present matched, mismatched, missing,
+   unreadable, and extra results.
+7. Write a combined receipt such as
+   `RESTORE_VERIFICATION_<asset>_<timestamp>.json` plus a human-readable TXT or
+   PDF summary.
+8. Enable **Accept Restored Copy** only after every required gate passes.
+
+The combined receipt should link:
+
+- CopyTrust asset/session ID and archive-request receipt;
+- P5 server/index, selected archive version, archive job ID, and restore job ID;
+- requested and actual landing roots, paths, file counts, and bytes;
+- MHL identity and hash algorithm;
+- match, mismatch, missing, unreadable, and extra-file totals;
+- verification start/end timestamps and app versions;
+- resumable state and operator notes.
+
+### Implementation phases
+
+1. **Documented manual procedure** — this guide and repeatable fixtures.
+2. **Shared evidence model** — versioned restore-verification JSON/TXT schema
+   and reusable MHL verifier.
+3. **P5 Archive Browser orchestration** — exact preview, whole-folder restore,
+   monitoring, reconciliation, and safe path containment.
+4. **CopyTrust/MHL handoff** — automatic MHL discovery or explicit selection,
+   hash verification, and combined receipt.
+5. **Site acceptance** — single- and multi-tape restores, multiple archive
+   versions, sorted/unsorted deliveries, Unicode filenames, partial restores,
+   interruption/resume, read errors, and intentional hash corruption.
+
+### Acceptance gates for the planned feature
+
+- Never widen a file/subset selection to a containing folder without an
+  explicit new confirmation.
+- Never report success from P5 job state alone.
+- Show the receiving client and computed landing path before submission.
+- Detect collisions and path escape before writing.
+- Preserve the original MHL and all failed-verification evidence.
+- Demonstrate a clean restore, a missing file, a changed byte, an unreadable
+  file, a multi-tape request, and a filename-normalization case in automated or
+  repeatable fixture tests.

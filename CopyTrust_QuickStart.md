@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
-Date: 2026-07-31
-Current testing release: `v2.7.0 (Build 10 public prerelease)`
+Date: 2026-08-01
+Current testing release: `v2.7.0 (Build 11 public prerelease)`
 
 CopyTrust 2.7 adds an optional Archiware P5 archive action for controlled
 testing. Configure Settings → P5 Archive, use Full or Inline verification,
@@ -20,8 +20,9 @@ Use this for `A -> B` and `A -> C`.
 1. Add one source.
 2. Add one or more destinations.
 3. Confirm preflight is clean.
-4. Click `Start This Session` and check the pre-copy summary, including the
-   explicit `Proxy: Off` line or selected proxy codec/scale/Final Cut folder.
+4. Click `Start This Session` and review the top-level flow plus every
+   destination card. Confirm source/step context, verification, sorting,
+   artifacts, and explicit Proxy/P5 choices before continuing.
 5. Use `Review & Verify` during the run if you want to inspect results without ending the session.
 6. When all work is done, click `Review Summary…`, then `End Session`.
 
@@ -50,12 +51,16 @@ Use this for `A -> B -> C`.
 2. Add destinations in order.
 3. Adjust destination order with the up/down controls if needed.
 4. Click `Queue Relay Chain`.
-5. Click `Start Queue`.
+5. Review the generated topology and destination cards, then click `Start Queue`.
 
 Expected result:
 - `A -> B` runs first
 - once verified, the output of `B` becomes the source for `B -> C`
 - background PDF, CSV, and HTML tree work does not block the next relay leg
+- `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json` preserves the ordered legs,
+  dependencies, and destination proxy/P5 selections before execution
+- each leg's session log records its active queue item and plan link; the plan
+  is exported beside that leg's receipts
 
 ### Mixed queued sessions
 Use this when different cards need different destination sets.

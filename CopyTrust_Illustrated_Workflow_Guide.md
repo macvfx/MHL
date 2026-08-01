@@ -5,7 +5,8 @@ workflow scenarios in `scripts/build-copytrust-illustrated-pdf.py`.
 
 This guide combines current UI screenshots with workflow-topology charts
 for direct copying, fan-out, relay chains, post-copy actions, P5 archive,
-offline handoff, restore, and hash re-verification.
+offline handoff, restore, hash re-verification, and the Build 11 pre-copy
+workflow review with durable plan/log evidence.
 Use the [2.7 Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md) for the
 matching proof checks and evidence requirements.
 
@@ -57,7 +58,26 @@ Every arrow into a green verified destination crosses that destination's own
 verification gate. P5 archive submission is later and supplementary: it never
 changes the original CopyTrust copy verdict.
 
-### 6. Direct copy: A to B
+### 6. Pre-copy workflow review and durable evidence
+
+Before a new job starts, the top diagram identifies direct, fan-out, relay, or
+active-plus-queued topology. Each destination card independently shows its
+source/step, verification, sorting, artifacts, proxy choice, and P5 choice.
+
+```mermaid
+flowchart LR
+    S["Source and queued intent"] --> R["Pre-copy workflow review<br/>topology + destination cards"]
+    R --> Q["Queued relay legs<br/>sequence + dependencies"]
+    Q --> P["Immutable workflow plan JSON"]
+    Q --> L["Structured session logs<br/>active item + plan link"]
+    P --> E["Plan exported with each leg's receipts"]
+    L --> E
+```
+
+The plan is password-free and written when a relay is queued. A later chain
+gets a new sequence identity even when it uses the same paths.
+
+### 7. Direct copy: A to B
 
 Use for one source and one destination.
 
@@ -70,7 +90,7 @@ flowchart LR
 - Use Full or Inline when B may later be archived to P5.
 - Quick proves size/existence only and does not create hash-backed MHL evidence.
 
-### 7. Fan-out copy: A to B and A to C
+### 8. Fan-out copy: A to B and A to C
 
 Use when the same card needs two independent verified copies.
 
@@ -85,7 +105,7 @@ flowchart LR
 B and C are separate results. Inspect both destination verdicts and receipts;
 neither destination silently depends on the other.
 
-### 8. Relay chain: A to B, then B to C
+### 9. Relay chain: A to B, then B to C
 
 Use when a fast first destination should feed a slower downstream destination.
 
@@ -101,7 +121,7 @@ Leg 2 waits for B to become trust-complete. A failed Leg 1 blocks downstream
 copying. With Destination Sort enabled, CopyTrust currently sorts only the
 final relay destination.
 
-### 9. Copy A to B, then archive B to P5
+### 10. Copy A to B, then archive B to P5
 
 Use when B is the verified archive-master copy.
 
@@ -116,25 +136,25 @@ flowchart LR
 The selected P5 client must see B at the same absolute path. Confirm the P5 job,
 archived paths, and searchable `CT_*` metadata in P5 Web.
 
-### 10. Fan-out A to B and C, then archive designated B
+### 11. Fan-out A to B and C, then archive designated B
 
 Use when B is the archive master and C is a working or safety copy.
 
 ```mermaid
 flowchart LR
     A["Source A"] --> VB["Copy + verify B"]
-    VB --> B["Destination B<br/>Role: Archive Master"]
+    VB --> B["Destination B<br/>Archive to P5 checked"]
     A --> VC["Copy + verify C"]
     VC --> C["Destination C<br/>Working / safety copy"]
     B --> P["Post-copy actions<br/>+ request JSON"]
     P --> P5["P5 archive"]
 ```
 
-Set a destination role such as `Archive Master` so the intended copy is
-unambiguous. C remains independently verified and is not silently added to B's
-archive request.
+Check `Archive to P5` beside B so the intended copy is unambiguous. The control
+is single-select. C remains independently verified and is not silently added to
+B's archive request.
 
-### 11. Naming, sorting, artifacts, proxies, and archive order
+### 12. Naming, sorting, artifacts, proxies, and archive order
 
 Naming is decided as CopyTrust builds the delivered paths. Sorting and
 derivatives happen only after the trust-critical copy and verification stage.
@@ -155,7 +175,7 @@ flowchart LR
 - Artifact, proxy, or P5 failure never upgrades or downgrades the verified
   original-copy result.
 
-### 12. Offline P5 handoff, restore, and re-verification
+### 13. Offline P5 handoff, restore, and re-verification
 
 The deferred request keeps the archive action reviewable when P5 is unavailable.
 
