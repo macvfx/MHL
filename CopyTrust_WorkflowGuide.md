@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
 Date: 2026-08-01
-Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 11 public prerelease**, adding visual workflow review, immutable relay plans, structured per-destination logs, and relay-sequence isolation to Build 10's relay-aware P5 pre-check and per-destination proxy selection
+Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 12 public prerelease**, adding rotation-aware proxy validation, source-aware color handling, and richer proxy evidence to Build 11's workflow review and relay evidence
 
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
@@ -85,6 +85,12 @@ real automated encode coverage; other formats depend on the packaged ffmpeg's
 decoder support. Use the **Create proxies** checkbox on each destination row to
 choose exactly which destinations receive proxies; several or all may be
 selected.
+
+**Proxy correctness (Build 12):** CopyTrust probes each delivered original
+before encoding. Display rotation is applied before expected proxy dimensions
+are calculated, while reported color range, primaries, transfer, and matrix
+drive the encode. The proxy receipt retains raw/display dimensions, rotation,
+and original/proxy color fields.
 
 **Package-safe artifacts (2.6.0):** If the copied root is a macOS package such
 as `Show Library.fcpbundle`, `CopyTrust_Receipts`, `CopyTrust_Proxies`, and

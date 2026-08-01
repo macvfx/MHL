@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
 Date: 2026-08-01
-Current testing release: `v2.7.0 (Build 11 public prerelease)`
+Current testing release: `v2.7.0 (Build 12 public prerelease)`
 
 CopyTrust 2.7 adds an optional Archiware P5 archive action for controlled
 testing. Configure Settings → P5 Archive, use Full or Inline verification,
@@ -43,6 +43,11 @@ This feature is beta. Real encode tests cover MOV and MXF; other inputs work
 only when CopyTrust's packaged ffmpeg can decode them. Watch per-clip progress
 in the UI and active log, then review the JSON, TXT, and LOG evidence. A proxy
 failure never changes the verified-original copy result.
+
+Build 12 probes the delivered original before encoding. Display rotation is
+used when calculating proxy dimensions, and reported color range, primaries,
+transfer, and matrix are carried into the proxy. The evidence report records
+encoded and displayed dimensions, rotation, and source/proxy color fields.
 
 ### Relay chain
 Use this for `A -> B -> C`.

@@ -1,6 +1,25 @@
-# CopyTrust 2.7.0 (Build 11) — Visual Workflow Review and Relay Evidence Beta
+# CopyTrust 2.7.0 (Build 12) — Proxy Rotation and Color Correctness Beta
 
-Build 11 makes the complete job visible and auditable before files move. The
+Build 12 fixes two proxy-validation problems found during Build 11 acceptance
+testing. CopyTrust now probes the delivered original before constructing its
+FFmpeg filter and encoder options. Display rotation is applied when calculating
+the expected scaled frame, so portrait footage stored as a landscape encoded
+frame plus a 90-degree display matrix no longer receives a false width/height
+failure.
+
+Reported full/limited color range, primaries, transfer, and matrix now drive the
+proxy encode rather than every source being stamped limited-range BT.709. When
+the original does not report a color field, the proxy keeps the documented
+BT.709 default and the comparison remains N/A. JSON/TXT evidence includes the
+encoded frame, displayed frame, rotation, and complete reported color fields.
+
+Build 12 also makes the fallback provenance snapshot for a sorted destination
+use the actual sort operation. Its receipt can no longer say sorting was off
+when the delivered files were sorted.
+
+Build 11's visual workflow review and relay evidence remain included.
+
+Build 11 made the complete job visible and auditable before files move. The
 pre-copy review begins with a visual flow for direct, fan-out, relay-chain, or
 current-plus-queued work. It then shows one card per destination with its source
 or relay stop, path, queue state, verification, sorting, **Create proxies**, and

@@ -1,10 +1,17 @@
-# CopyTrust 2.7.0 (Build 11) — Workflow Review, Relay Evidence, P5, and Proxy Testing Notes
+# CopyTrust 2.7.0 (Build 12) — Workflow, P5, and Proxy Correctness Testing Notes
 
 Date: 2026-08-01
 Status: Public prerelease for controlled testing
 App: CopyTrust
 
 ## Beta focus
+
+Build 12 probes each delivered original before proxy encoding. Test display
+rotation, scaled displayed dimensions, full/limited color range, and receipt
+reporting of encoded/display frames, rotation, primaries, transfer, and matrix.
+Missing source color fields must remain N/A rather than claimed matches.
+For a sorted destination, confirm the provenance JSON reports sorting enabled
+and records the selected folder mode and categories.
 
 This build adds an optional Archiware P5 post-copy action. It carries the
 capture-time xxHash64 and bounded media metadata into GUI-visible/searchable P5

@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-01
-Applies to: CopyTrust 2.7.0 Build 11 beta; includes visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 2.7.0 Build 12 beta; includes rotation-aware proxy validation and source-aware color handling plus Build 11's visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -169,9 +169,11 @@ proxy fails.
 | F12 | Retry status | Selecting Retry immediately changes a terminal failed proxy row to Running; completion then replaces it with a checkmark or a new actionable failure. |
 | F13 | Per-destination selection | Enable proxies for two destinations, uncheck **Create proxies** on one, and run an expendable copy. | Proxies and proxy evidence are created only on the checked destination; originals and other enabled artifacts still reach both. |
 | F14 | Multiple proxy destinations | Check **Create proxies** on both destinations. | Both destinations receive independently validated proxies and evidence. |
+| F15 | Rotated portrait source | Generate a proxy from expendable media whose encoded frame is landscape and whose display matrix is 90 or 270 degrees. | The proxy is portrait; validation uses displayed dimensions and passes. JSON/TXT evidence records encoded frame, displayed frame, and rotation. |
+| F16 | Full-range source color | Generate H.264 from an expendable source reported as full range (`pc`). | Proxy remains full range, validation passes, and receipt color range/space/transfer/primaries accurately distinguish reported values from N/A defaults. |
 
 Visual checkpoint: `05-post-copy-actions.png`; retain proxy progress and
-evidence screenshots as manual QA evidence when executing F1–F14.
+evidence screenshots as manual QA evidence when executing F1–F16.
 
 ## G. Mixed Queue
 

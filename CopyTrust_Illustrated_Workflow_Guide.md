@@ -5,8 +5,8 @@ workflow scenarios in `scripts/build-copytrust-illustrated-pdf.py`.
 
 This guide combines current UI screenshots with workflow-topology charts
 for direct copying, fan-out, relay chains, post-copy actions, P5 archive,
-offline handoff, restore, hash re-verification, and the Build 11 pre-copy
-workflow review with durable plan/log evidence.
+offline handoff, restore, hash re-verification, the Build 11 pre-copy workflow
+review with durable plan/log evidence, and Build 12 proxy correctness.
 Use the [2.7 Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md) for the
 matching proof checks and evidence requirements.
 
@@ -76,6 +76,11 @@ flowchart LR
 
 The plan is password-free and written when a relay is queued. A later chain
 gets a new sequence identity even when it uses the same paths.
+
+Build 12 probes every delivered original before proxy encoding. Display
+rotation drives scaled dimensions, reported color fields drive encoder
+metadata, and the proxy receipt records raw/display frames, rotation, and
+original/proxy color evidence.
 
 ### 7. Direct copy: A to B
 

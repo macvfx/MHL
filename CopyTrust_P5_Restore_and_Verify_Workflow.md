@@ -1,7 +1,7 @@
 # CopyTrust → P5 Restore and Hash Verification Workflow
 
-**Status:** Manual operating procedure for CopyTrust 2.7.0 Build 11 public prerelease
-**Last updated:** 2026-07-31
+**Status:** Manual operating procedure for CopyTrust 2.7.0 Build 12 public prerelease
+**Last updated:** 2026-08-01
 
 This workflow closes the integrity loop after a CopyTrust delivery has been
 archived to Archiware P5:

@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-08-01
-Release status: **2.5.3 stable**; **2.7.0 Build 11 public prerelease** for controlled workflow-review, relay-chain, Archiware P5, proxy, and privacy-safe Sentry integration testing. Build 11 adds a visual pre-copy workflow review, immutable relay plans, structured workflow logging, and stricter relay-queue isolation. It includes Build 10's relay-aware P5 pre-check and independent per-destination proxy selection. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
+Release status: **2.5.3 stable**; **2.7.0 Build 12 public prerelease** for controlled workflow-review, relay-chain, Archiware P5, proxy, and privacy-safe Sentry integration testing. Build 12 adds rotation-aware proxy validation, source-aware color handling, and richer proxy evidence. It includes Build 11's visual review, immutable relay plans, structured workflow logging, and relay-queue isolation. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
 
 ## Purpose
 
@@ -940,7 +940,17 @@ After proxy generation, each destination receives three evidence files beneath:
   percentage/speed/ETA heartbeats, completions, failures, comparison results,
   and the final batch result.
 
-The proxy comparison validates the requested codec and calculated frame size,
+Before encoding, CopyTrust probes the delivered original. For a source whose
+container reports 90- or 270-degree display rotation, frame scaling and
+validation use the displayed orientation rather than the raw encoded width and
+height. The receipt records both encoded and displayed frames plus rotation.
+
+Reported full/limited color range, color primaries, transfer, and matrix are
+passed into scaling and encoding. If the original does not report one of these
+fields, CopyTrust uses the documented BT.709 proxy default but records the
+source comparison as N/A instead of claiming preservation.
+
+The proxy comparison validates the requested codec and calculated displayed frame size,
 then compares frame rate, duration within approximately one frame, starting
 timecode, reported color metadata, audio track count, and each reported audio
 track's sample rate, channels, channel layout, and language. Codec, profile,

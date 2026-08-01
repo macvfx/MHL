@@ -5,8 +5,9 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.3**. **2.7.0 Build 10 is a public prerelease** adding
-controlled post-copy archive to Archiware P5. Use expendable fixtures,
+Stable release: **2.5.3**. **2.7.0 Build 12 is a public prerelease** adding
+rotation-aware proxy validation and source-aware color handling to the
+controlled post-copy Archiware P5 and relay-chain beta. Use expendable fixtures,
 Full/Inline verification, a non-deleting plan, and a path visible identically
 to the selected P5 client. Review the request JSON and P5 Web job/metadata;
 after restore, verify against the preserved capture MHL.
@@ -42,7 +43,7 @@ existence and size verification without hashes.
 | Resumable ingest | Cancelled or partially-failed runs resume without recopying verified files |
 | Destination Sort (optional) | Reorganizes the copy into type folders (JPG / RAW / Video / …) **after** the trust chain is sealed |
 | Receipts & artifacts | JSON + TXT receipts, per-copy log, session manifest, optional contact-sheet PDF, EXIF CSV, HTML directory tree |
-| Proxy media (2.6.0 beta) | Optional H.264/HEVC MOV at 12.5%, 25%, or 50%; live per-clip progress; optional dated Final Cut layout; JSON/TXT/LOG validation evidence |
+| Proxy media (2.7.0 Build 12 beta) | Optional H.264/HEVC MOV at 12.5%, 25%, or 50%; display-rotation-aware scaling; source-aware color handling; live progress; optional dated Final Cut layout; JSON/TXT/LOG validation evidence |
 | Provenance (2.5.2) | `PROVENANCE_*.json` records the settings used and the source→destination file mapping |
 | Safe-to-eject + auto-eject | Eject is gated on the selected copy/verification workflow completing; Full/Inline also require their MHL |
 
