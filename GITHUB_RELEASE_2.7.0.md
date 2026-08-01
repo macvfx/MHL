@@ -1,6 +1,16 @@
-# CopyTrust 2.7.0 (Build 9) — P5 Archive, Queue, Proxy, and Sentry Integration Beta
+# CopyTrust 2.7.0 (Build 10) — Relay P5 and Per-Destination Proxy Beta
 
-CopyTrust can now archive a hash-verified destination directly to Archiware P5
+Build 10 fixes P5 pre-checks for queued relay chains and adds independent proxy
+selection to every destination. If a later relay stop is checked for P5, the
+pre-check now recognizes and names it instead of warning that no P5 destination
+is selected. Operators can check **Create proxies** and **Archive to P5**
+independently, so either destination can receive proxies, P5, both, or neither.
+
+Saved destination presets and queued sessions retain proxy choices. Older saved
+data remains proxy-enabled by default for backward compatibility. P5 selection
+remains single-choice across the complete relay chain.
+
+CopyTrust can archive a hash-verified destination directly to Archiware P5
 after the copy trust chain and enabled post-copy actions finish.
 
 Build 9 corrects a proxy-reporting issue found during a successful real-world
@@ -44,6 +54,10 @@ tests.
   an actionable, password-free deferred request.
 - Queue mixed jobs and confirm copies keep advancing while artifact rows and P5
   status reach independent terminal states.
+- Queue a relay chain, select P5 on its later stop, and confirm pre-check names
+  that destination without a false no-destination warning.
+- Toggle **Create proxies** independently on both destinations and confirm only
+  the checked destinations receive proxies and proxy evidence.
 - Confirm every successfully encoded proxy receives a checkmark; if Retry is
   used, confirm the row changes to Running and then to the new terminal result.
 - In a Debug build, send the Sentry integration event and confirm the received

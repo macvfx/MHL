@@ -1,4 +1,4 @@
-# CopyTrust 2.7.0 (Build 9) — P5 Archive, Queue, Proxy, and Sentry Integration Testing Notes
+# CopyTrust 2.7.0 (Build 10) — Relay P5 and Per-Destination Proxy Testing Notes
 
 Date: 2026-07-31
 Status: Public prerelease for controlled testing
@@ -7,7 +7,13 @@ App: CopyTrust
 Use expendable fixtures and a non-deleting P5 plan. Confirm both CopyTrust's
 request and P5 Web; archive submission alone is not acceptance proof.
 
-Build 9 corrects proxy result reporting found during a successful field test:
+Build 10 recognizes P5 selections across the complete queued relay chain and
+adds an independent **Create proxies** checkbox to each destination. Proxy and
+P5 routing can target the same destination, different destinations, or both
+destinations. Saved presets and queued jobs preserve these choices; older saved
+data defaults to proxy-enabled.
+
+Build 9 corrected proxy result reporting found during a successful field test:
 all 20 proxies encoded, but 14 were falsely failed because `und` and an omitted
 language tag were treated as different. These both mean unspecified. Metadata
 warnings are now separate from encode failures, and Retry visibly resets the
@@ -24,6 +30,9 @@ artifact row to Running before its new result.
 | Metadata keys | `CT_*` fields are visible and searchable in P5 Web |
 | Missing required metadata keys | Submission is blocked; explicit install action provisions the selected index |
 | Destination selection | Only the destination with **Archive to P5** checked is submitted |
+| Relay-chain P5 pre-check | Selecting P5 on any relay stop is recognized and named; no false no-destination warning appears |
+| Per-destination proxies | Only destinations with **Create proxies** checked receive proxy media and proxy evidence |
+| Independent proxy/P5 routing | Proxy and P5 can target the same or different relay destinations |
 | Pre-copy summary | P5 On/Off plus selected index, client, and plan are visible before copying |
 | Mixed queue | Each job retains its artifact/P5 settings and the queue advances while P5 work completes |
 | Artifact status | Each artifact independently reaches completed, skipped, or failed; unrelated rows do not keep spinning |

@@ -1,6 +1,6 @@
 # CopyTrust → P5 Restore and Hash Verification
 
-**Status:** Manual workflow for CopyTrust 2.7.0 Build 9 public prerelease
+**Status:** Manual workflow for CopyTrust 2.7.0 Build 10 public prerelease
 **Last updated:** 2026-07-31
 
 This workflow closes the integrity loop:

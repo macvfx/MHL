@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-07-31
-Release status: **2.5.3 stable**; **2.7.0 Build 9 public prerelease** for controlled Archiware P5 archive, queue, proxy, and privacy-safe Sentry integration testing. Build 9 adds accurate proxy validation and retry status to the Build 8/Build 7 P5 and privacy baseline. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
+Release status: **2.5.3 stable**; **2.7.0 Build 10 public prerelease** for controlled Archiware P5 archive, queue, proxy, and privacy-safe Sentry integration testing. Build 10 adds relay-chain-aware P5 pre-checks and independent per-destination proxy selection to the Build 9 proxy validation and Build 8/Build 7 P5/privacy baseline. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
 
 ## Purpose
 
@@ -587,7 +587,7 @@ All pattern types are case-insensitive. `MISC` matches `misc`, `.MP4` matches `.
 
 CopyTrust can hand one verified destination to an Archiware P5 archive plan
 after the copy trust chain and enabled post-copy work finish. This is opt-in and
-is the CopyTrust 2.7.0 Build 9 public-prerelease feature for controlled testing before
+is the CopyTrust 2.7.0 Build 10 public-prerelease feature for controlled testing before
 production use.
 
 See the [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md)
@@ -681,6 +681,26 @@ folder, use the preserved MHL in CopyTrust, MHL Verify, or another compatible
 tool to calculate xxHash64 again and compare it with the capture-time values.
 The `CT_XXH64` field is searchable context in the P5 web GUI; the MHL remains
 the portable file-by-file verification record.
+
+### Multi-destination output policy
+
+For a normal multi-destination copy, CopyTrust generates each enabled contact
+sheet, EXIF CSV, and HTML tree independently on every eligible destination.
+Proxy output is destination-specific: use **Create proxies** on each destination
+row to send proxies to one destination, several destinations, all destinations,
+or none. The global Post-Copy proxy setting still controls codec, frame size,
+Final Cut folder layout, and whether proxy generation is enabled at all.
+
+P5 is intentionally narrower: it selects exactly one successfully verified
+destination using the **Archive to P5** checkbox on that destination row. The
+selection is retained in destination presets and captured with queued jobs.
+Other destinations remain ordinary verified copies and are not submitted to P5
+by that job.
+
+For a relay chain, the pre-copy confirmation reviews the P5 selection across
+the complete chain. A first leg therefore identifies a P5 destination selected
+on a later relay stop instead of incorrectly warning that no destination was
+selected.
 
 The full manual restore, path/count/byte reconciliation, and hash-verification
 procedure is in
@@ -829,7 +849,8 @@ Example: a 4,391-file card split at 500 produces 9 PDFs of roughly 42 grid pages
 > the original-copy trust result.
 
 Enable **Generate proxy media after verified copy** in **Settings > Post-Copy >
-Proxy Media** for the selected Card or Folder mode. Choose:
+Proxy Media** for the selected Card or Folder mode. Then check **Create
+proxies** beside every destination that should receive proxy output. Choose:
 
 - **HEVC / H.265** — HEVC Main 10 in a MOV container, recommended for current
   Final Cut Pro workflows.

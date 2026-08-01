@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
 Date: 2026-07-31
-Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 9 public prerelease**, including the Build 8 P5/privacy baseline plus accurate proxy validation and retry status
+Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 10 public prerelease**, including relay-chain-aware P5 pre-checks, per-destination proxy selection, and the Build 9 proxy-validation and Build 8 P5/privacy baseline
 
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
@@ -66,7 +66,9 @@ explicitly shows Proxy Off or the selected settings. During encoding, the UI
 and active log show per-clip percentage, speed, and ETA. JSON/TXT/LOG evidence
 records the choice and original/proxy metadata comparison. MOV and MXF have
 real automated encode coverage; other formats depend on the packaged ffmpeg's
-decoder support.
+decoder support. Use the **Create proxies** checkbox on each destination row to
+choose exactly which destinations receive proxies; several or all may be
+selected.
 
 **Package-safe artifacts (2.6.0):** If the copied root is a macOS package such
 as `Show Library.fcpbundle`, `CopyTrust_Receipts`, `CopyTrust_Proxies`, and
@@ -125,7 +127,10 @@ beta passes your site acceptance tests.
    archived paths, and `CT_*` fields in P5 Web.
 
 Pipeline: `copy → verify → MHL → post-copy actions → P5 archive request`.
-Restore through P5 and verify every restored file against the capture MHL.
+Restore through P5 and verify every restored file against the capture MHL. For
+relay chains, the pre-copy check evaluates the P5 choice across all legs, so a
+P5 destination on a later stop is reported without a false no-destination
+warning.
 Follow
 [CopyTrust → P5 Restore and Hash Verification](CopyTrust_P5_Restore_and_Verify_Workflow.md)
 for the complete current procedure and planned coordinated Restore & Verify

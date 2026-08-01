@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-07-31
-Applies to: CopyTrust 2.7.0 Build 9 public prerelease; includes the Build 8 P5/privacy baseline plus proxy validation and retry-state corrections; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 2.7.0 Build 10 public prerelease; includes relay-chain-aware P5 pre-checks and per-destination proxy routing plus the Build 9 proxy-validation and Build 8 P5/privacy baseline; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -163,9 +163,11 @@ proxy fails.
 | F10 | Package placement | Proxy folders created for an `.fcpbundle` are siblings, not package contents. |
 | F11 | Unspecified audio language | An original reporting audio language `und` and a proxy omitting that tag both normalize to unspecified; a successful encode completes instead of becoming a false failure. |
 | F12 | Retry status | Selecting Retry immediately changes a terminal failed proxy row to Running; completion then replaces it with a checkmark or a new actionable failure. |
+| F13 | Per-destination selection | Enable proxies for two destinations, uncheck **Create proxies** on one, and run an expendable copy. | Proxies and proxy evidence are created only on the checked destination; originals and other enabled artifacts still reach both. |
+| F14 | Multiple proxy destinations | Check **Create proxies** on both destinations. | Both destinations receive independently validated proxies and evidence. |
 
 Visual checkpoint: `05-post-copy-actions.png`; retain proxy progress and
-evidence screenshots as manual QA evidence when executing F1–F12.
+evidence screenshots as manual QA evidence when executing F1–F14.
 
 ## G. Mixed Queue
 
@@ -216,6 +218,9 @@ Use expendable fixtures and a non-deleting archive plan.
 | P7 | Supporting evidence | Inspect the selection/request. | MHL, provenance, receipts, contact sheet, EXIF CSV, and proxy evidence that exist are marked as supporting evidence. |
 | P8 | Offline P5 | Stop or misconfigure the test server and run an eligible copy. | Copy remains successful; password-free deferred request records the actionable error and can be dry-run by the helper. |
 | P9 | Restore verification | Restore the fixture through P5 and verify it against the archived MHL. | Restored file count/path are reviewed and every file xxHash64 matches before acceptance. |
+| P10 | Multi-destination selection | Copy to two expendable destinations and check **Archive to P5** beside one. Then check the other destination. | The P5 checkbox is single-select; ordinary enabled artifacts reach both, proxies follow each destination's **Create proxies** checkbox, and only the currently checked P5 destination is submitted. |
+| P11 | Queue overlap | Run two queued copies while the first P5 job is deliberately slow. | The second copy starts after the first trust gate; first-job P5 progress stays on its own row and does not overwrite live copy status. |
+| P12 | Relay-chain P5 pre-check | Build a two-stop relay chain and select **Archive to P5** only on the second stop, then start the first leg. | Confirmation names the selected relay destination and does not warn that no P5 destination is selected. |
 
 Known tested baseline (private fixture identifiers anonymized): P5 8.0.4
 archived a CopyCore Inline-verified PNG, text sidecar, and MHL to a non-deleting
