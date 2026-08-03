@@ -178,6 +178,14 @@ Use **Recover Symlinks...** in the results toolbar when the current comparison c
 6. Click **Relink** on one row, or review several rows and use **Apply Selected**.
 7. FCC rewrites only the broken symlink entry itself, then refreshes the active comparison so you can confirm the row clears.
 
+> **Where this came from.** The recovery workflow started life as a standalone bash
+> script that catalogued a folder, listed broken links, and suggested replacements by
+> filename. Those scripts are published separately at
+> [macvfx/SymlinkCheck](https://github.com/macvfx/SymlinkCheck) and remain useful when
+> you want a quick, dependency-free check on a machine without FCC installed, or CSVs to
+> work through by hand. FCC adds the part the script could not: confidence ranking and a
+> reviewed relink.
+
 ### Recovery guardrails
 
 - FCC does **not** mass-relink silently.
