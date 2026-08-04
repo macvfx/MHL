@@ -2,15 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable: CopyTrust 2.5.3 / Drop Verify 2.5.3.** **CopyTrust 2.7.0 Build 12 is
-a public prerelease for controlled proxy-correctness, workflow-review, relay evidence, Archiware P5, queue, and privacy-safe Sentry testing.** Drop
-Verify remains at 2.6.0 Build 1. CopyTrust 2.6 adds
-optional post-copy H.264 or HEVC MOV proxies at 12.5%, 25%, or 50%, with live
-per-clip progress and JSON/TXT/LOG evidence. The pre-copy confirmation now
-explicitly shows Proxy Off or the selected codec, scale, and Final Cut folder
-choice. CopyTrust and Drop Verify also keep receipts and proxies beside
-`.fcpbundle` and other macOS package roots instead of placing them inside the
-package. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
+**CopyTrust 2.7.0 Build 12 is a public beta for controlled proxy-correctness, workflow-review, relay evidence, Archiware P5, queue, and privacy-safe Sentry testing.** Drop Verify remains at 2.6.0 Build 1. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
 in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes are in each app's
 docs.
 
