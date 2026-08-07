@@ -62,7 +62,7 @@ later relay stop is included; it is not mistaken for an unselected workflow.
 
 ## Copy Modes (Card / Folder)
 
-CopyTrust offers two copy modes accessible via a segmented control in the toolbar (orange tint to contrast with blue action buttons). These were previously called *copy type presets*; from 2.7.0 Build 14 they are the copy **mode**, and **Preset** means a saved settings bundle (see [Presets](#presets)).
+CopyTrust offers two copy modes accessible via a segmented control in the toolbar (orange tint to contrast with blue action buttons). These were previously called *copy type presets*; from 2.7.1 Build 14 they are the copy **mode**, and **Preset** means a saved settings bundle (see [Presets](#presets)).
 
 | Mode | Best for | Key defaults |
 |--------|----------|-------------|
@@ -75,7 +75,7 @@ Switch modes before setting up a session. The mode picker is hidden during an ac
 
 ## Presets
 
-*New in 2.7.0 Build 14.* The **Preset** menu beside the mode picker saves your Card **and** Folder settings under one name and loads them back in a single action.
+*New in 2.7.1 Build 14.* The **Preset** menu beside the mode picker saves your Card **and** Folder settings under one name and loads them back in a single action.
 
 | Action | Effect |
 |--------|--------|

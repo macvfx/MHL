@@ -1134,7 +1134,7 @@ Since 2.5.2 (stable as of 2.5.3), CopyTrust handles this automatically:
 
 Copy modes let operators switch between camera-card and folder-copy configurations with one click. Each mode maintains its own independent settings profile — changes to Card settings never affect Folder settings and vice versa.
 
-> **Naming note (2.7.0 Build 14):** the Card / Folder control was previously described as a *copy type preset*. It is now called the copy **mode**, so that **Preset** refers only to the saved settings bundles described in [Presets](#presets) below.
+> **Naming note (2.7.1 Build 14):** the Card / Folder control was previously described as a *copy type preset*. It is now called the copy **mode**, so that **Preset** refers only to the saved settings bundles described in [Presets](#presets) below.
 
 ### Mode picker
 
@@ -1189,7 +1189,7 @@ Both profiles are saved to disk and survive app restarts. On first launch after 
 
 ## Presets
 
-*New in 2.7.0 Build 14.*
+*New in 2.7.1 Build 14.*
 
 A **preset** saves your Card **and** Folder settings under one name, so a whole
 configuration can be restored in a single action. Where the mode picker chooses *which*

@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**CopyTrust 2.7.0 Build 14 is a public beta for controlled preset, proxy-correctness, workflow-review, relay evidence, Archiware P5, queue, and privacy-safe Sentry testing.** Drop Verify remains at 2.6.0 Build 1. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
+**CopyTrust 2.7.1 Build 14 is a public beta for controlled preset, proxy-correctness, workflow-review, relay evidence, Archiware P5, queue, and privacy-safe Sentry testing.** Drop Verify remains at 2.6.0 Build 1. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
 in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes are in each app's
 docs.
 
