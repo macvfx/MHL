@@ -51,7 +51,8 @@ later relay stop is included; it is not mistaken for an unselected workflow.
 | `Resume` | Post-cancel action bar (retry the copy). Also in progress sheet after cancel. |
 | `Resume Queue` | Post-cancel action bar when queued batches remain |
 | `Reset Session` | Visible when session has content and no copy is running; wipes everything. Hidden in cancel state. |
-| `Card / Folder` | Segmented preset picker (orange tint); hidden during active copy and in cancel state |
+| `Card / Folder` | Segmented copy-mode picker (orange tint); hidden during active copy and in cancel state |
+| `Preset` | Preset menu, beside the mode picker; save / load / update saved settings bundles |
 | `Done` | Progress sheet after cancel, alongside Resume |
 | `+ Add` (queue header) | Queue manager mode — during active copy |
 | `Clear Done` | Queue manager mode — completed/failed items exist |
@@ -59,18 +60,33 @@ later relay stop is included; it is not mistaken for an unselected workflow.
 | `Cancel Copy` | Bottom bar during active copy |
 | `Hide` | Progress sheet during active copy (prominent filled button) |
 
-## Copy Type Presets
+## Copy Modes (Card / Folder)
 
-CopyTrust offers two copy type presets accessible via a segmented control in the toolbar (orange tint to contrast with blue action buttons):
+CopyTrust offers two copy modes accessible via a segmented control in the toolbar (orange tint to contrast with blue action buttons). These were previously called *copy type presets*; from 2.7.0 Build 14 they are the copy **mode**, and **Preset** means a saved settings bundle (see [Presets](#presets)).
 
-| Preset | Best for | Key defaults |
+| Mode | Best for | Key defaults |
 |--------|----------|-------------|
 | **Card** | Camera card ingest | `{alias}_{date}` naming, inline verification, contact sheet on, sort on, auto-advance on, camera card exclusions active, preserve original names on |
 | **Folder** | Folder backup / archive | `{alias}` naming, quick verification, contact sheet off, sort off, auto-advance off, preserve original names on, File Storage / System / Camera Card exclusion groups |
 
 Each mode maintains its own **independent settings profile**. Changes to Card settings never affect Folder settings and vice versa. Configure each mode's defaults in **Settings > Card Copy** and **Settings > Folder Copy**.
 
-Switch presets before setting up a session. The preset picker is hidden during an active copy to keep the action bar clean. Individual settings remain overridable within the active mode.
+Switch modes before setting up a session. The mode picker is hidden during an active copy to keep the action bar clean. Individual settings remain overridable within the active mode.
+
+## Presets
+
+*New in 2.7.0 Build 14.* The **Preset** menu beside the mode picker saves your Card **and** Folder settings under one name and loads them back in a single action.
+
+| Action | Effect |
+|--------|--------|
+| Save Current Settings as Preset… | Captures both mode profiles plus shared settings (confirm-before-copy, external codecs, ExifTool, codec extension lists, receipt export, notifications) |
+| Load | Restores all of the above; a dot (•) on the menu label means settings have drifted since loading |
+| Update … from Current Settings | Re-captures in place, keeping the preset's name and identity |
+| Duplicate as My Preset… | Makes an editable copy of a read-only shared preset |
+
+**Presets never change destinations.** Loading one names the destination set it expects and says whether that set exists on this Mac; you confirm the destination list yourself before copying.
+
+Shared presets live in `/Users/Shared/CopyTrust/Presets` (read-only to the app, deployable by script or MDM before an operator's first launch); your own are saved in `~/Library/Application Support/CopyTrust/Presets`. Tool *paths*, P5 credentials, operator name and appearance are deliberately excluded so a preset stays portable between machines.
 
 **Contact sheets on proxy/MXF cards:** the contact sheet is a background artifact (never blocks copy/verify/MHL). For cards heavy in camera proxies (`.LRF`) or professional formats (MXF/R3D), enabling **external thumbnail codecs** (Settings > External Codecs, shared) makes CopyTrust run ffmpeg/REDline per file for real thumbnails — worth it for a visual sheet, but expect noticeably longer generation. Leave **external codecs off** for a fast sheet where those files appear as "No Preview" placeholders, and leave **hide placeholders off** unless you specifically want them omitted. See the "Unsupported media, external codecs, and placeholders" section of the User Guide.
 
@@ -114,7 +130,7 @@ information before a crash or app-hang report can be uploaded.
 
 Each queued session captures a **full snapshot** of the active mode's settings at the moment it is queued. This means:
 - You can queue a card copy with inline verification and contact sheet on, then switch to Folder mode, queue a folder backup with quick verification and contact sheet off — each batch runs with its own settings.
-- Queue rows show a coloured preset badge (blue Card / green Folder) indicating which mode was active when the batch was staged.
+- Queue rows show a coloured mode badge (blue Card / green Folder) indicating which mode was active when the batch was staged.
 - Editing mode settings after queuing does not affect already-queued items.
 
 ## Recommended Workflows
@@ -220,14 +236,14 @@ Expected result:
 - each queued row runs in visible queue order
 - a standalone queued row can be moved ahead of or between relay-chain rows if you intentionally reorder it
 - trust-critical copy work finishes before the next queued session starts
-- queue rows show a coloured preset badge (blue Card / green Folder) — each session uses its own preset
+- queue rows show a coloured mode badge (blue Card / green Folder) — each session uses its own mode
 
 ### Queue manager — staging during active copy
 Use this when you want to set up the next batch while a copy is already running. The UI transforms into a compact queue manager when a copy starts (v2.4.6).
 
 1. Start a copy. The source/destination panels transform into the **Copy Queue** manager.
 2. Click **[+ Add]** in the queue header. A sheet opens with available source volumes (shown as wrapping chips, read-only volumes first) and pre-populated destinations from the running copy.
-3. Select a source volume chip, adjust destinations if needed, choose a preset (Card/Folder), and click **Add to Queue**.
+3. Select a source volume chip, adjust destinations if needed, choose a mode (Card/Folder), and click **Add to Queue**.
 4. Alternatively, drag a volume from Available Volumes onto the drop target strip at the bottom of the queue.
 5. Repeat to stage more batches if needed.
 6. Click the running row to expand inline progress (per-destination bars, speed, ETA, recent files).

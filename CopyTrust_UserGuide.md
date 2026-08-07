@@ -689,7 +689,7 @@ Final Cut folder layout, and whether proxy generation is enabled at all.
 
 P5 is intentionally narrower: it selects exactly one successfully verified
 destination using the **Archive to P5** checkbox on that destination row. The
-selection is retained in destination presets and captured with queued jobs.
+selection is retained in destination sets and captured with queued jobs.
 Other destinations remain ordinary verified copies and are not submitted to P5
 by that job.
 
@@ -1130,15 +1130,17 @@ Since 2.5.2 (stable as of 2.5.3), CopyTrust handles this automatically:
 
 > Sorted-copy MHL handling shipped in the 2.5.3 stable release. Plain (unsorted) copies are unchanged: the single copy-time MHL at the destination root is the one you verify against.
 
-## Copy Type Presets
+## Copy Modes (Card / Folder)
 
-Copy type presets let operators switch between camera-card and folder-copy configurations with one click. Each mode maintains its own independent settings profile — changes to Card settings never affect Folder settings and vice versa.
+Copy modes let operators switch between camera-card and folder-copy configurations with one click. Each mode maintains its own independent settings profile — changes to Card settings never affect Folder settings and vice versa.
 
-### Preset picker
+> **Naming note (2.7.0 Build 14):** the Card / Folder control was previously described as a *copy type preset*. It is now called the copy **mode**, so that **Preset** refers only to the saved settings bundles described in [Presets](#presets) below.
 
-A segmented control in the toolbar shows the active preset: **Card** or **Folder** (orange tint). Switching modes saves the current settings to the outgoing profile and loads the incoming profile. The picker is hidden during an active copy.
+### Mode picker
 
-### Preset defaults
+A segmented control in the toolbar shows the active mode: **Card** or **Folder** (orange tint). Switching modes saves the current settings to the outgoing profile and loads the incoming profile. The picker is hidden during an active copy.
+
+### Mode defaults
 
 | Setting | Card | Folder |
 |---------|------|--------|
@@ -1166,7 +1168,7 @@ Configure each mode independently:
 - **Settings > Post-Copy** — all artifact settings (contact sheet, EXIF CSV, HTML tree, destination sort) per mode via the Card/Folder picker at the top (v2.5.0 Build 2)
 - **Settings > Test** — built-in test harness to validate settings for either mode (see [Test Harness](#test-harness) below)
 
-Shared settings (not per-mode): operator name, external codecs, notifications, appearance, destination presets, receipt export.
+Shared settings (not per-mode): operator name, external codecs, notifications, appearance, destination sets, receipt export.
 
 ### Per-queue-item snapshots
 
@@ -1182,6 +1184,87 @@ changes.
 ### Persistence
 
 Both profiles are saved to disk and survive app restarts. On first launch after upgrading, existing settings are migrated into the Card profile. The Folder profile starts with factory defaults.
+
+---
+
+## Presets
+
+*New in 2.7.0 Build 14.*
+
+A **preset** saves your Card **and** Folder settings under one name, so a whole
+configuration can be restored in a single action. Where the mode picker chooses *which*
+profile is active, a preset sets *what is in both of them*.
+
+Presets are for the case where someone sets the app up once — for a camera, a show, or a
+house standard — and operators load it and start work.
+
+### The Preset menu
+
+The **Preset** menu sits next to the Card / Folder picker in the bottom action bar.
+
+| Action | What it does |
+|---|---|
+| Save Current Settings as Preset… | Captures the current Card and Folder settings under a new name |
+| Load | Replaces both mode profiles and the shared settings with the preset's |
+| Update … from Current Settings | Re-captures the loaded preset in place, keeping its name and identity |
+| Rename… / Delete | Your own presets only |
+| Duplicate as My Preset… | Makes your own editable copy of a shared preset |
+
+The menu label shows the loaded preset's name. A **dot (•)** after the name means settings
+have changed since it was loaded — choose *Update…* to keep those changes, or *Load* again
+to discard them.
+
+### What a preset contains
+
+Everything that describes *how* a copy is made:
+
+- **Per mode, for both Card and Folder** — naming template, subfolder and file prefix,
+  preserve original names, verification level, post-copy re-verify, auto-advance,
+  auto-eject, hidden files and exclusion patterns, contact sheet (on/off, style, open after
+  creation, hide placeholders, split limit), EXIF CSV, HTML tree (on/off, mode), proxies
+  (on/off, codec, frame scale, Final Cut proxy folder), destination sort (on/off,
+  categories, folder mode).
+- **Shared** — confirm before copy, external codecs on/off, ExifTool metadata, the ffmpeg /
+  REDline / BRAW extension lists, receipt export, and the four notification settings.
+
+### What a preset deliberately does not contain
+
+| Not included | Why |
+|---|---|
+| Destinations | A preset never changes your destination list. Loading one names the destination set it expects and tells you whether that set exists on this Mac — you then check the destinations yourself before copying. |
+| External tool paths | ffmpeg, REDline, BRAW Decode, ExifTool and tree live in different places on each Mac and are detected locally. The *extensions* that route to each tool do travel. |
+| P5 server and credentials | Per-site, and the password is held in Keychain. |
+| Operator name | It is stamped on receipts as who performed the copy. A shared preset must never put someone else's name on your receipts. |
+| Appearance mode | A personal preference, not a copy setting. |
+| Drop Verify settings | A separate part of the app. |
+
+### Shared presets
+
+Presets appear in two groups:
+
+- **Shared** — set up for everyone on this Mac, in
+  `/Users/Shared/CopyTrust/Presets`. CopyTrust only ever *reads* this folder. These cannot
+  be renamed, edited or deleted from the app; use **Duplicate as My Preset…** to make your
+  own copy.
+- **My Presets** — your own, saved in
+  `~/Library/Application Support/CopyTrust/Presets`.
+
+Because the app never writes to the shared folder, re-deploying house presets cannot
+overwrite your own, and two operators on the same Mac cannot overwrite each other's.
+
+### Deploying presets to a team
+
+Presets are plain, readable JSON files. To put a preset on other machines, copy its `.json`
+file into `/Users/Shared/CopyTrust/Presets` — by hand, from a script, or as part of an
+imaging or MDM step. That folder exists on every Mac from the moment macOS is installed and
+does not require the user to have launched CopyTrust first, so presets can be placed before
+anyone's first run.
+
+CopyTrust reads the folder at launch. A preset added while the app is running appears after
+a relaunch.
+
+If a preset file cannot be read, the Preset menu says so and names the file; every other
+preset still loads.
 
 ## Preserve Original Folder Names
 
@@ -1397,8 +1480,8 @@ These sample exclusions do not change saved Card or Folder settings.
 
 - **Source root** — where the synthetic source tree is created. Defaults to the system temp directory. Click Browse to choose a different location.
 - **Destination roots** — one or more destination folders where files are copied. Click **Add Destination Root…** to add destinations and the remove button to delete them from the test run.
-- **Use Preset** — loads destination presets saved from the main CopyTrust window and replaces the current test destination roots with that preset's destinations.
-- **Save as Preset…** — saves the current test destination roots back to the shared CopyTrust destination preset list.
+- **Use Destination Set** — loads destination sets saved from the main CopyTrust window and replaces the current test destination roots with that set's destinations.
+- **Save as Destination Set…** — saves the current test destination roots back to the shared CopyTrust destination set list.
 
 ### Fixture options
 

@@ -11,7 +11,8 @@ docs.
 Multi-source, multi-destination copy tool designed for camera card ingest but capable of copying any folders and files. Queue multiple cards, walk away, come back to verified results.
 
 - Volume browser and **Volume Pool** for fast source/destination setup
-- Destination preset groups for one-click restore of saved destination sets
+- Destination sets for one-click restore of saved destination groups
+- **Presets** — save every Card and Folder setting under one name and load it back in one action; shared, read-only presets can be deployed to a whole facility via `/Users/Shared/CopyTrust/Presets`
 - Per-destination preflight checks (free space, write permissions, reachability)
 - Verification levels: **Quick** existence/size checking, **Full** post-copy xxHash64, or **Inline** hash verification during copy
 - **MHL v1.1** hash list generation for Full/Inline verification — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta
@@ -35,7 +36,7 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - **Build 10 relay and proxy routing** — P5 pre-check evaluates the complete
   relay chain, including a selection on a later stop. Each destination also has
   its own **Create proxies** checkbox, independent of its single-select
-  **Archive to P5** choice; presets and queued sessions retain both choices.
+  **Archive to P5** choice; destination sets and queued sessions retain both choices.
 - **Build 9 proxy status correction** — successful encodes are no longer reported as failed when an original uses `und` for an unspecified audio language and the proxy omits that tag; metadata warnings are separate from encoding failures, and Retry visibly transitions through Running to its new result
 - **Build 8 P5 hardening** — each destination has an explicit **Archive to P5**
   checkbox; preflight names the selected index/client/plan and requires the
