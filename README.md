@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**CopyTrust 2.7.1 Build 14 is a public beta for controlled preset, proxy-correctness, workflow-review, relay evidence, Archiware P5, queue, and privacy-safe Sentry testing.** Drop Verify remains at 2.6.0 Build 1. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
+**CopyTrust 2.7.2 Build 19 and Drop Verify 2.7.2 Build 8 are a public beta** for controlled preset, Drop Verify proxy, proxy-correctness, workflow-review, relay evidence, Archiware P5, queue, and privacy-safe Sentry testing. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
 in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes are in each app's
 docs.
 
@@ -13,6 +13,8 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - Volume browser and **Volume Pool** for fast source/destination setup
 - Destination sets for one-click restore of saved destination groups
 - **Presets** — save every Card and Folder setting under one name and load it back in one action; shared, read-only presets can be deployed to a whole facility via `/Users/Shared/CopyTrust/Presets`
+- **Proxy media in Drop Verify** — edit-friendly HEVC/H.264 copies with per-clip progress and their own evidence; only verified files get a proxy, and proxies stay beside the media
+- **Operator recorded in session manifests**, defaulting to the macOS account
 - Per-destination preflight checks (free space, write permissions, reachability)
 - Verification levels: **Quick** existence/size checking, **Full** post-copy xxHash64, or **Inline** hash verification during copy
 - **MHL v1.1** hash list generation for Full/Inline verification — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta

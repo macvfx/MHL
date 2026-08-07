@@ -38,6 +38,7 @@ You drag a folder into the app, choose the artifacts you want, and Drop Verify d
 - `Contact sheet PDF`
 - `EXIF camera metadata CSV`
 - `HTML directory tree` (optional project index or recursive tree output)
+- `Proxy media` (optional edit-friendly MOV copies of the video files)
 
 The MHL is the hash-producing trust artifact. If MHL is disabled, Drop Verify can still create CSV, contact sheet, or HTML tree/index outputs without hashing files.
 
@@ -61,6 +62,7 @@ Ordinary folders continue to receive `Drop Verify_Receipts` inside the folder.
   - `Contact sheet PDF (thumbnails and camera data)`
   - `EXIF camera metadata CSV (Spreadsheet)`
   - `HTML directory tree` (generated natively; no external `tree` command required)
+  - `Generate proxy media after verify` (optional; off by default)
 - Choose **Contact sheet layout**: Row (detailed metadata) or Grid (3×4 poster, 12 items per page).
 - Optionally enable **Hide unsupported format placeholders** to omit files that cannot generate thumbnails (MXF, R3D, M2V, etc.) from the contact sheet PDF. These files still appear in the EXIF CSV and MHL.
 - Optionally set **Split large contact sheets** (v2.5.4): **Off — single PDF** (default), or every **250 / 500 / 1,000** files. Folders over the limit are written as numbered PDFs (`…_part1of3.pdf`, `…_part2of3.pdf`, …), each with a "Part x of y — files a–b" line in the header.
@@ -155,6 +157,37 @@ file there.
 - Recursive modes use native file enumeration and render collapsible `<details>` elements for directories. No HTML tree mode requires the external `tree` command.
 - For very large project folders or slow network shares, use **Project summary index** or **One HTML per top-level folder** rather than **Entire project** unless a single complete tree file is required.
 - If HTML directory tree is the only enabled output, Drop Verify skips media hashing and metadata analysis entirely. This is the fastest way to create a project folder summary.
+
+### Proxy media
+
+*New in 2.7.2.* Edit-friendly MOV copies of the video files in the dropped folder — for
+cutting, review, or sending on while the originals stay where they are. The same feature,
+codecs and settings as CopyTrust's Proxy Media.
+
+- Enable **Generate proxy media after verify** in Settings, then choose the **Codec**
+  (HEVC / H.264) and **Frame size** (12.5%, 25%, 50%).
+- **Create Final Cut Proxy Media dated folder** writes to
+  `Final Cut Proxy Media/YYYY-MM-DD/…/OriginalFileName.mov`, keeping the original basename
+  that Final Cut Pro requires for relinking. Otherwise output goes to
+  `Drop Verify_Proxies/…/OriginalFileName.mov`.
+- Progress is reported per clip — *"Proxy 3 of 8 — clip.mov — 42% · 1.85× · ~2m 10s
+  remaining"* — so a long encode never looks like a hang.
+- Each run writes evidence to `Drop Verify_Receipts/Proxy Media`: a JSON receipt, a
+  readable summary, and an encode log, recording operator, codec, scale, the ffmpeg and
+  ffprobe used, and per-clip original-vs-proxy validation.
+
+Three things worth knowing:
+
+- **Only files that passed verification get a proxy.** Enabling proxies therefore hashes
+  the media even when MHL is off — otherwise a proxy would imply trust that nothing had
+  established.
+- **Proxies are never copied to the export folder.** They are footage, not evidence, and
+  belong beside the media they were made from. The proxy *receipt* is evidence and does
+  travel.
+- **A clip that fails to encode is reported and skipped.** It never costs the proxies that
+  succeeded and never changes the verified result.
+
+Encoding is much slower than the other artifacts, which is why it is off by default.
 
 ## Exclusions
 
