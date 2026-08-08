@@ -1,7 +1,12 @@
 # Drop Verify
 
-Current app version: **v2.6.0 (Build 1 beta)**. This release keeps receipts
-beside macOS packages instead of writing inside them.
+Current app version: **v2.7.2 (Build 14 beta)**. Build 14 is a suite-alignment
+rebuild released alongside CopyTrust 2.7.2 Build 29; Drop Verify has not changed
+functionally since Build 8. The substantive 2.7.2 change was **proxy media** —
+edit-friendly HEVC/H.264 copies with per-clip progress and their own evidence,
+where only files that passed verification get a proxy. Sessions also record the
+operator, defaulting to the macOS account. Receipts are kept beside macOS
+packages rather than written inside them (2.6.0).
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
@@ -157,7 +162,7 @@ If the app cannot create or write the session log, Drop Verify now shows a non-f
 
 ## External Codec Status
 
-Current 2.6 beta behavior when the optional external tools are enabled:
+Current 2.7.2 beta behavior when the optional external tools are enabled:
 
 - MXF metadata is populated through ExifTool when enabled
 - MXF contact sheets use ffmpeg for real thumbnails when enabled

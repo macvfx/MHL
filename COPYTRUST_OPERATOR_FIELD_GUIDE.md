@@ -5,11 +5,31 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.3**. **2.7.0 Build 12 is a public prerelease** adding
-rotation-aware proxy validation and source-aware color handling to the
-controlled post-copy Archiware P5 and relay-chain beta. Use expendable fixtures,
-Full/Inline verification, a non-deleting plan, and a path visible identically
-to the selected P5 client. Review the request JSON and P5 Web job/metadata;
+Stable release: **2.5.3**. **2.7.2 Build 29 is a public prerelease.**
+
+The multi-destination decision is now one control. With two or more destinations a
+**Copy** switch sits above the destination list: `Simultaneously` copies to every
+destination at once, `In series` copies through them in order so each stop's verified
+output feeds the next. One button — always labelled **Start** — runs whichever you
+chose. This replaces `Queue Relay Chain`, which started nothing and left you to find
+`Start Queue` elsewhere; because the pre-copy review only appears when a copy starts, a
+chain built the old way could run with **no review at all**. Start now builds and starts
+the chain in one action, so the review always appears.
+
+Two reliability fixes matter in the field. **Every relay copy used to crash just after
+its first stop finished** — the files, MHL and receipts were already safely on disk, but
+the queue never moved on, so the run looked like a force quit. And **interrupted jobs
+now recover**: on launch, a job still recorded as running is checked against the
+destination's own manifests, so a copy that had actually finished comes back complete and
+the chain carries on from the next stop instead of reopening stuck.
+
+A new relay chain starts with `Archive to P5` on the first stop and `Create proxies` on
+the last — camera archive first, editing storage last. Change either on any row.
+
+Build 29 carries forward the rotation-aware proxy validation and source-aware color
+handling from 2.7.0 Build 12, and the controlled post-copy Archiware P5 beta. For P5 use
+expendable fixtures, Full/Inline verification, a non-deleting plan, and a path visible
+identically to the selected P5 client. Review the request JSON and P5 Web job/metadata;
 after restore, verify against the preserved capture MHL.
 
 The carried-forward **2.6.0 Build 1 beta** adds
@@ -39,7 +59,9 @@ existence and size verification without hashes.
 | Per-destination preflight | Free space, write permission, and reachability checked before copy |
 | Verification levels | **None / Quick** (size) **/ Full** (xxHash64) / **Inline** (hash during copy) |
 | MHL generation | MHL v1.1 written per destination in Full/Inline modes; Quick has no content hashes and intentionally writes no MHL. Reads classic v1.x **and ASC MHL v2.0** |
-| Relay chain (`A → B → C`) | Fast first copy (card → SSD), then downstream copy (SSD → NAS) from the verified local copy — frees the card sooner |
+| Copy switch (2.7.2 Build 29) | With two or more destinations, `Simultaneously` or `In series` — then one button, always **Start** |
+| Relay chain (`A → B → C`) | Fast first copy (card → SSD), then downstream copy (SSD → NAS) from the verified local copy — frees the card sooner. Set the `Copy` switch to `In series` and press `Start` |
+| Interrupted-job recovery (2.7.2 Build 29) | On launch, a job still marked running is checked against the destination's manifests — one that actually finished is completed and the chain resumes at the next stop |
 | Resumable ingest | Cancelled or partially-failed runs resume without recopying verified files |
 | Destination Sort (optional) | Reorganizes the copy into type folders (JPG / RAW / Video / …) **after** the trust chain is sealed |
 | Receipts & artifacts | JSON + TXT receipts, per-copy log, session manifest, optional contact-sheet PDF, EXIF CSV, HTML directory tree |
@@ -84,7 +106,11 @@ Before relying on a new build or a new machine:
 - Copy one small card to two destinations (one APFS, one exFAT) with **Full** verification.
 - Confirm all five receipt files above appear on **both** destinations (exFAT included).
 - Cancel a copy mid-run, then **Resume** — verified files are reused, not recopied.
-- Queue a relay chain (`card → SSD → NAS`) and confirm both legs copy and verify.
+- Run a relay chain (`card → SSD → NAS`): add the destinations in order, set the `Copy`
+  switch to `In series`, press `Start`, confirm the pre-copy review appears, and confirm
+  both legs copy and verify.
+- Quit CopyTrust mid-chain, relaunch, and confirm a leg that had already finished is
+  recorded complete and the chain resumes at the next stop rather than reopening stuck.
 
 ---
 
