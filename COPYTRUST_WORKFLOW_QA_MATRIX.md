@@ -29,46 +29,25 @@ destination and the receipt/log evidence.
 
 ## Automated Baseline
 
-Run before the operator matrix:
+The CopyCore and CopyTrust test suites are run from the CopyTrust source
+repository before the operator matrix below. This repository holds documentation
+only, so there is nothing to build here.
 
-```bash
-swift test --package-path CopyCore
-xcodebuild \
-  -project FolderCopyCompare.xcodeproj \
-  -scheme CopyTrust \
-  -configuration Debug \
-  -derivedDataPath /tmp/CopyTrust-QA-DerivedData \
-  test
-```
+Confirm before starting the operator matrix:
 
-Expected:
-
-- both commands exit successfully;
+- the automated suites passed on the build under test;
 - no failed or unexpectedly skipped tests;
-- proxy encode tests run when CopyTrust's packaged `ffmpeg` and `ffprobe` are
+- proxy encode tests ran, which needs CopyTrust's packaged `ffmpeg` and `ffprobe`
   installed at `/usr/local/bin`;
-- test results are retained with the QA evidence.
+- the test results are retained with the QA evidence.
 
 ## Fixture Setup
 
-Fast fixture:
+Fixture generation and the ffmpeg proxy-comparison harness are scripts in the
+CopyTrust source repository and are run there, not from this documentation repo.
 
-```bash
-scripts/generate_test_fixtures.sh /tmp/copytrust-fixtures
-```
-
-Use separate writable destination roots. Never point automated tests at
-production media or an irreplaceable camera card.
-
-For real proxy comparison against an optional Final Cut-generated reference:
-
-```bash
-scripts/test_ffmpeg_proxies.sh \
-  /path/to/original.mxf \
-  /path/to/final-cut-reference.mov \
-  /tmp/copytrust-ffmpeg-proxy-test \
-  50
-```
+Whichever fixtures you use, use separate writable destination roots. Never point
+automated tests at production media or an irreplaceable camera card.
 
 ## A. Copy Mode and Pre-Copy Confirmation
 
@@ -245,27 +224,6 @@ archived a CopyCore Inline-verified PNG, text sidecar, and MHL to a non-deleting
 test index; readback returned both complete hashes, `64x36` image dimensions,
 and the expected CopyTrust fields.
 
-## J. Screenshot and Guide Validation
-
-Capture the deterministic documentation set:
-
-```bash
-scripts/capture-copytrust-workflow-screenshots.sh
-scripts/build-copytrust-workflow-guide.sh
-```
-
-Expected:
-
-- only declared screenshots are present;
-- each image has the dimensions declared in the screenshot manifest;
-- images are distinct and ordered;
-- the guide generator rejects missing images or broken manifest rows;
-- `docs/CopyTrust_Illustrated_Workflow_Guide.md` contains every declared screenshot and
-  matching operator caption;
-- `docs/CopyTrust_Illustrated_Workflow_Guide.pdf` contains the same ordered
-  scenarios and embedded images;
-- screenshot/demo code is Debug-only and a Release build still succeeds.
-
 ## Ship Decision
 
 Do not call the workflow ready if:
@@ -277,7 +235,7 @@ Do not call the workflow ready if:
 - P5 accepts a Quick/copy-only job, a source-deleting plan, or an incomplete hash;
 - P5 job/metadata cannot be confirmed in its own web GUI;
 - package artifacts are written inside `.fcpbundle`;
-- the generated guide contains stale controls, missing screenshots, duplicate
+- the published guide contains stale controls, missing screenshots, duplicate
   images, or broken links.
 
 Record the final decision:
@@ -285,7 +243,6 @@ Record the final decision:
 - Build:
 - Automated baseline:
 - Operator matrix:
-- Screenshot/guide validation:
 - Known beta exceptions:
 - Decision: `SHIP BETA / HOLD`
 - Reviewer:

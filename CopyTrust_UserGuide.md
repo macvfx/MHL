@@ -741,17 +741,18 @@ hints, archive job ID, and state. It never contains the P5 password. If P5 is
 offline or incomplete, the verified copy remains successful and the JSON
 explains what is required next.
 
-Validate the request without changing P5:
+The `copytrust-p5-archive.py` helper below is distributed with the CopyTrust
+source, not with these docs. Validate the request without changing P5:
 
 ```bash
-scripts/copytrust-p5-archive.py \
+copytrust-p5-archive.py \
   "/path/to/COPYTRUST_P5_ARCHIVE_REQUEST_A001_20260729_120000.json"
 ```
 
 Submit only after reviewing the dry run:
 
 ```bash
-scripts/copytrust-p5-archive.py --submit \
+copytrust-p5-archive.py --submit \
   "/path/to/COPYTRUST_P5_ARCHIVE_REQUEST_A001_20260729_120000.json"
 ```
 
@@ -874,8 +875,8 @@ a partially-sorted folder. In Flatten mode this can create duplicate `…_2` fil
 Preserve Structure mode it logs harmless "file already moved" errors. The integrity
 proof (copy/verify/MHL) is already sealed and is unaffected. Workaround: avoid
 unplugging the destination until the post-copy sort/artifact step reports complete.
-A fix is being scoped without touching the working copy path. See
-`docs/COPYTRUST_WORKFLOW_TRACE.md` §7 for detail and mitigation options.
+A fix is being scoped without touching the working copy path. The full trace and
+mitigation options are in CopyTrust's internal workflow trace, available on request.
 
 ## Contact Sheets (Post-Copy)
 

@@ -1,7 +1,7 @@
 # CopyTrust Illustrated Workflow Guide
 
-Generated from `docs/workflows/copytrust/screenshots.tsv` and the
-workflow scenarios in `scripts/build-copytrust-illustrated-pdf.py`.
+Generated from the screenshot manifest and the
+workflow scenarios in the CopyTrust source repository.
 
 This guide combines current UI screenshots with workflow-topology charts
 for direct copying, fan-out, relay chains, post-copy actions, P5 archive,
