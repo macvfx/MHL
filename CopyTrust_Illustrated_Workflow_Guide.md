@@ -41,7 +41,7 @@ Queue separate Card and Folder jobs when different sources need different destin
 
 ## 04. Build a relay chain
 
-For A to B to C, order destinations fastest first and use Queue Relay Chain so each downstream leg waits for verified upstream output.
+For A to B to C, order destinations fastest first, set the Copy switch to In series, then click Start so each downstream leg waits for verified upstream output.
 
 ![Build a relay chain](assets/copytrust_workflows/04-relay-chain.png)
 

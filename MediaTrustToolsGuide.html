@@ -592,7 +592,7 @@
               <li>Decide whether this session should create a <strong>contact sheet PDF</strong>, <strong>EXIF/media CSV</strong>, or both.</li>
               <li>If you need richer metadata, confirm <strong>ExifTool</strong> is enabled.</li>
               <li>If PDF is on, confirm <strong>ffmpeg</strong> for MXF and <strong>REDline</strong> for R3D when needed.</li>
-              <li>Click <strong>Start This Session</strong> and confirm
+              <li>Click <strong>Start</strong> and confirm
                 <strong>Proxy: Off</strong> or the intended codec and scale.</li>
             </ol>
             <div class="callout">During the run, <strong>Review &amp; Verify</strong> lets you inspect the session without ending it. The 2.6 proxy beta shows per-clip progress and writes JSON/TXT/LOG evidence.</div>
@@ -629,7 +629,7 @@
               <text x="282" y="318" text-anchor="middle" fill="#63362c" font-size="16" font-family="Avenir Next, Segoe UI, sans-serif">PDF, CSV, or both</text>
 
               <rect x="508" y="252" width="220" height="98" rx="22" fill="#f1eadc" stroke="#9c8459" stroke-width="2"></rect>
-              <text x="618" y="290" text-anchor="middle" fill="#67563a" font-size="28" font-family="Iowan Old Style, Palatino Linotype, serif" font-weight="700">5. Start This Session</text>
+              <text x="618" y="290" text-anchor="middle" fill="#67563a" font-size="28" font-family="Iowan Old Style, Palatino Linotype, serif" font-weight="700">5. Start</text>
               <text x="618" y="318" text-anchor="middle" fill="#67563a" font-size="16" font-family="Avenir Next, Segoe UI, sans-serif">Begin copy + verify + MHL</text>
 
               <path d="M739 162 L739 218 L618 218 L618 252" stroke="#11607c" stroke-width="4" marker-end="url(#arrow2)"></path>
@@ -659,7 +659,8 @@
             <ul class="mini-list">
               <li>Add one source.</li>
               <li>Add one or more destinations.</li>
-              <li>Click <strong>Start This Session</strong>.</li>
+              <li>With two or more, leave the <strong>Copy</strong> switch on <strong>Simultaneously</strong>.</li>
+              <li>Click <strong>Start</strong>.</li>
               <li>Review with <strong>Review &amp; Verify</strong>, then end with <strong>Review Summary…</strong>.</li>
             </ul>
           </div>
@@ -668,9 +669,9 @@
             <h4>Relay Chain</h4>
             <p class="small">Use for <code>A -&gt; B -&gt; C</code> when the first destination is the fast landing point.</p>
             <ul class="mini-list">
-              <li>Add one source and ordered destinations.</li>
-              <li>Click <strong>Queue Relay Chain</strong>.</li>
-              <li>Click <strong>Start Queue</strong>.</li>
+              <li>Add one source and ordered destinations, fastest first.</li>
+              <li>Set the <strong>Copy</strong> switch to <strong>In series</strong>.</li>
+              <li>Click <strong>Start</strong> and confirm the pre-copy review.</li>
               <li>Each verified stop becomes the source for the next stop.</li>
             </ul>
           </div>
@@ -728,9 +729,9 @@
               <li>Destination <strong>B</strong> is your fastest safe landing point.</li>
               <li>Destination <strong>C</strong> is slower, remote, or network-based.</li>
               <li>You want the original card free sooner.</li>
-              <li>You want CopyTrust to stage the legs in a clear order with <strong>Queue Relay Chain</strong>.</li>
+              <li>You want CopyTrust to stage the legs in a clear order.</li>
             </ol>
-            <div class="callout">Current guidance is to build relay copy from <strong>one source + ordered destinations</strong>, then queue it as one visible chain.</div>
+            <div class="callout">Current guidance is to build relay copy from <strong>one source + ordered destinations</strong>, set <strong>Copy: In series</strong>, and click <strong>Start</strong>. One switch decides the topology, one button runs it, and the pre-copy review always appears first.</div>
           </div>
         </div>
       </section>

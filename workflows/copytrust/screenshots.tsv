@@ -2,5 +2,5 @@ order	filename	title	scenario	width	height	caption
 01	01-copy-mode.png	Choose a copy mode	setup-card	1440	900	Select Card for camera-card ingest or Folder for general folder copies; each mode keeps an independent settings profile.
 02	02-direct-session.png	Prepare a direct session	direct-session	1440	900	Add one source and one or more destinations, confirm the naming preview, and check preflight before starting.
 03	03-mixed-queue.png	Stage mixed queued jobs	mixed-queue	1440	900	Queue separate Card and Folder jobs when different sources need different destinations or post-copy settings.
-04	04-relay-chain.png	Build a relay chain	relay-chain	1440	900	For A to B to C, order destinations fastest first and use Queue Relay Chain so each downstream leg waits for verified upstream output.
+04	04-relay-chain.png	Build a relay chain	relay-chain	1440	900	For A to B to C, order destinations fastest first, set the Copy switch to In series, then click Start so each downstream leg waits for verified upstream output.
 05	05-post-copy-actions.png	Set post-copy actions	post-copy-actions	700	680	Use the Post-Copy tab to configure confirmation, contact sheets, metadata, HTML trees, proxy media, and destination sorting for Card or Folder mode.

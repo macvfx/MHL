@@ -1,7 +1,9 @@
 # CopyTrust Workflow Guide
 
-Date: 2026-08-01
-Release status: **2.5.3 stable**; **CopyTrust 2.7.0 Build 12 public prerelease**, adding rotation-aware proxy validation, source-aware color handling, and richer proxy evidence to Build 11's workflow review and relay evidence
+Date: 2026-08-07
+Release status: **2.5.3 stable**; **CopyTrust 2.7.2 Build 29** in testing. Builds 25 and 29 replaced
+the several relay-chain and start buttons with one **Copy** switch (Simultaneously / In series)
+and one button always labelled **Start**.
 
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
@@ -37,13 +39,13 @@ later relay stop is included; it is not mistaken for an unselected workflow.
 
 ## Current Button Names and When Each Appears
 
-| Button | When it appears |
+| Control | When it appears |
 |--------|----------------|
-| `Start This Session` | Source and destination loaded, no copy running (always the primary blue button for direct start) |
+| `Start` | Source and destination loaded, no copy running — always the primary blue button, and always this label. Runs whatever the `Copy` switch says. |
+| `Copy: Simultaneously \| In series` | Segmented switch above the destination list, whenever two or more destinations are loaded. Disabled during a copy. |
 | `Start Queue` | Queue section header: when workspace is empty and queue has items. Bottom bar: when workspace has content and queue has items (secondary style) |
 | `Queue Current Session` | Source and destination loaded, not in queue manager mode |
 | `Queue This Batch` | Source and destination loaded while a copy is running, not in queue manager mode |
-| `Queue Relay Chain` | One source and two or more destinations loaded |
 | `Return to Queue` | A queued session is loaded but copy has not started |
 | `Review & Verify` | A copy has run (use mid-session to inspect without ending) |
 | `Review Summary…` | All sources are done and no copy is running |
@@ -140,13 +142,14 @@ Use this for `A -> B` and `A -> C`.
 
 1. Add one source.
 2. Add one or more destinations.
-3. Confirm preflight is clean.
-4. Click `Start This Session`.
-5. Use `Review & Verify` during the run if you want to inspect results without ending the session.
-6. When all work is done, click `Review Summary…`, then `End Session`.
+3. With two or more destinations, leave the `Copy` switch on `Simultaneously` (the default).
+4. Confirm preflight is clean.
+5. Click `Start` and confirm the pre-copy review.
+6. Use `Review & Verify` during the run if you want to inspect results without ending the session.
+7. When all work is done, click `Review Summary…`, then `End Session`.
 
 Expected result:
-- the source copies directly to each loaded destination
+- the source copies directly to each loaded destination, all at the same time, reading the source once per destination
 - copy, selected verification, receipts, and logs finish before the session is considered complete; Full/Inline also write a hash-backed MHL, while Quick does not
 - PDF, CSV, and HTML tree artifacts can continue afterward in the background
 
@@ -187,21 +190,27 @@ Use this for `A -> B -> C` — camera card to drive to NAS.
 
 1. Add one source (camera card).
 2. Add destinations in order — **fastest drive first** (SSD before NAS).
-3. A blue callout appears in the destination panel showing the chain path and the `Queue Relay Chain` button.
+3. Set the `Copy` switch above the destination list to `In series`. It shows the chain path and
+   the reminder to put the fastest drive first.
 4. Check the `Stop 1` / `Stop 2` labels. Reorder with the up/down arrows if needed.
-5. Click `Queue Relay Chain` in the callout, or right-click any destination row → **Queue Relay Chain**.
-6. Review the queued sessions panel before clicking Start Queue. Each leg shows:
-   ```
-   ⦿ A001 → Example SSD
-   A001 · Camera Card  →  Example SSD · Drive
-   Step 1 of 2 — copies from A001 (camera card).
+5. Set `Archive to P5` and `Create proxies` on the rows you want them on. A new chain starts with
+   P5 on the first stop and proxies on the last.
+6. Click `Start`. CopyTrust builds the chain and runs it in one action, so the pre-copy review
+   always appears.
+7. Confirm the pre-copy review, which shows the whole chain plus one card per stop.
 
-   ⦿ Example SSD → Example NAS
-   Example SSD · Drive  →  Example NAS · Network
-   Step 2 of 2 — waits for Example SSD (drive) to be verified, then copies from it.
-   ```
-   Hover any row to see exact folder paths. Right-click for `Reveal Source in Finder` or `Reveal Destination in Finder`.
-7. Click `Start Queue`.
+Once running, each leg appears in the queue panel:
+```
+⦿ A001 → Example SSD
+A001 · Camera Card  →  Example SSD · Drive
+Step 1 of 2 — copies from A001 (camera card).
+
+⦿ Example SSD → Example NAS
+Example SSD · Drive  →  Example NAS · Network
+Step 2 of 2 — waits for Example SSD (drive) to be verified, then copies from it.
+```
+Hover any row to see exact folder paths. Right-click for `Reveal Source in Finder` or
+`Reveal Destination in Finder`.
 
 Expected result:
 - `A -> B` runs first — camera card copies to the local drive and is verified
@@ -210,7 +219,7 @@ Expected result:
 - automatic contact-sheet PDF opening does not block receipt or artifact completion
 - the camera card can be ejected as soon as Step 1 is trust-complete
 - **contact sheet PDF is faster for Step 2 and later:** thumbnails from Step 1 are cached and reused — no redundant preview generation for the same card content
-- queueing writes an immutable `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json` with ordered legs, queue/sequence/step IDs, dependencies, and each destination's proxy/P5 choices
+- building the chain writes an immutable `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json` with ordered legs, queue/sequence/step IDs, dependencies, and each destination's proxy/P5 choices
 - each session log identifies its active queue item and plan; the same plan is exported into every leg's `CopyTrust_Receipts` folder
 
 ### Relay workflow evidence
@@ -296,9 +305,15 @@ The `Load` button is for running a specific leg out of queue order. For editing 
 
 | Situation | Button |
 |-----------|--------|
-| Source and destination in workspace | `Start This Session` |
+| Source and one destination in workspace | `Start` |
+| Source and 2+ destinations, `Copy: Simultaneously` | `Start` (all at once) |
+| Source and 2+ destinations, `Copy: In series` | `Start` (builds the chain and runs it) |
 | Sessions staged in the queue | `Start Queue` |
-| Specific queued leg loaded via Load | `Start This Session` (runs that leg only) |
+| Specific queued leg loaded via Load | `Start` (runs that leg only) |
+
+The primary button is always `Start`. Before Build 29 the label changed with the job
+(`Start This Session`, `Copy to Both Now`, `Start Relay Chain`, `Start Loaded Session`); the
+`Copy` switch and the pre-copy review now carry that information instead.
 
 ### During a running copy
 
@@ -352,7 +367,7 @@ When a queued session is loaded via `Load`:
 
 | Button | What it does |
 |--------|-------------|
-| `Start This Session` | Run this leg now |
+| `Start` | Run this leg now |
 | `Return to Queue` | Put the leg back in the queue, clear the workspace, queue intact |
 | `Reset Session` | Wipe the workspace AND the entire queue |
 
@@ -360,7 +375,7 @@ When a queued session is loaded via `Load`:
 
 ## Fixing a Wrong-Order Relay Chain
 
-If you queued a relay chain with destinations in the wrong order (e.g. NAS before SSD), click `Edit` on any leg in the queue panel. This removes all legs of that chain and returns the source and destinations to the workspace in their original order. Reorder the destinations using the up/down arrows in the destination panel, then click `Queue Relay Chain` again.
+If you built a relay chain with destinations in the wrong order (e.g. NAS before SSD), click `Edit` on any leg in the queue panel. This removes all legs of that chain and returns the source and destinations to the workspace in their original order. Reorder the destinations using the up/down arrows in the destination panel, confirm the `Copy` switch still reads `In series`, then click `Start` again.
 
 `Edit` is only available while all legs are still pending — it is disabled once the chain has started running.
 
@@ -402,7 +417,7 @@ CopyTrust now monitors destination volumes in real time. If a destination drive 
 3. When the volume remounts, the copy resumes automatically — verified files are skipped.
 4. Failed artifacts (contact sheet, CSV, HTML tree) are retried.
 
-If auto-resume does not trigger, use `Start This Session` manually — the resume infrastructure will detect partial progress and skip verified files.
+If auto-resume does not trigger, use `Start` manually — the resume infrastructure will detect partial progress and skip verified files.
 
 ### Pre-copy check
 

@@ -1,7 +1,11 @@
 # CopyTrust Quick Start
 
-Date: 2026-08-01
-Current testing release: `v2.7.0 (Build 12 public prerelease)`
+Date: 2026-08-07
+Current testing release: `v2.7.2 (Build 29 public prerelease)`
+
+With two or more destinations, one **Copy** switch chooses `Simultaneously` or
+`In series`, and one button — always labelled **Start** — runs it. That is the
+whole multi-destination decision.
 
 CopyTrust 2.7 adds an optional Archiware P5 archive action for controlled
 testing. Configure Settings → P5 Archive, use Full or Inline verification,
@@ -19,12 +23,15 @@ Use this for `A -> B` and `A -> C`.
 
 1. Add one source.
 2. Add one or more destinations.
-3. Confirm preflight is clean.
-4. Click `Start This Session` and review the top-level flow plus every
+3. With two or more destinations, leave the `Copy` switch on `Simultaneously`
+   (the default). Every destination is copied at once, reading the source once
+   per destination.
+4. Confirm preflight is clean.
+5. Click `Start` and review the top-level flow plus every
    destination card. Confirm source/step context, verification, sorting,
    artifacts, and explicit Proxy/P5 choices before continuing.
-5. Use `Review & Verify` during the run if you want to inspect results without ending the session.
-6. When all work is done, click `Review Summary…`, then `End Session`.
+6. Use `Review & Verify` during the run if you want to inspect results without ending the session.
+7. When all work is done, click `Review Summary…`, then `End Session`.
 
 Expected result:
 - the source copies directly to each loaded destination
@@ -53,10 +60,16 @@ encoded and displayed dimensions, rotation, and source/proxy color fields.
 Use this for `A -> B -> C`.
 
 1. Add one source.
-2. Add destinations in order.
-3. Adjust destination order with the up/down controls if needed.
-4. Click `Queue Relay Chain`.
-5. Review the generated topology and destination cards, then click `Start Queue`.
+2. Add destinations in order — **fastest drive first**.
+3. Set the `Copy` switch to `In series`. It shows the chain path and confirms the
+   source is read once for the whole chain.
+4. Adjust destination order with the up/down controls if needed; check the
+   `Stop 1` / `Stop 2` labels.
+5. Set `Archive to P5` and `Create proxies` on the intended rows. A new chain
+   starts with P5 on the first stop and proxies on the last.
+6. Click `Start`. CopyTrust builds the chain and runs it in one action, so the
+   pre-copy review always appears.
+7. Review the generated topology and destination cards, then continue.
 
 Expected result:
 - `A -> B` runs first

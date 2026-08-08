@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
-Date: 2026-08-01
-Applies to: CopyTrust 2.7.0 Build 12 beta; includes rotation-aware proxy validation and source-aware color handling plus Build 11's visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
+Date: 2026-08-07
+Applies to: CopyTrust 2.7.2 Build 29; includes the single `Copy` switch and single `Start` button (Builds 25/29), relay-chain per-stop defaults (Build 23), interrupted-job recovery (Builds 26/27), the relay-export crash fix (Build 29), plus Build 11's visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -200,18 +200,24 @@ Use one source and at least two ordered destinations.
 
 | ID | Check | Procedure | Expected evidence |
 |---|---|---|---|
-| H1 | Create chain | Load A, then B and C in order; choose Queue Relay Chain. | Queue shows Step 1 and Step 2 with one sequence identity and dependency. |
-| H2 | Correct source binding | Start Queue. | Step 1 copies A → B; Step 2 reads the verified B output and copies B → C. |
+| H1 | Create chain | Load A, then B and C in order; set `Copy` to `In series`; click `Start`. | The pre-copy review appears showing the full chain, then the queue shows Step 1 and Step 2 with one sequence identity and dependency. |
+| H2 | Correct source binding | Continue past the review. | Step 1 copies A → B; Step 2 reads the verified B output and copies B → C. |
+| H2a | One button, one label | Check the primary button with one destination, with `Simultaneously`, with `In series`, and with a queued session loaded. | It reads exactly `Start` in every state. No `Queue Relay Chain` button exists above the destinations, in the queue panel, or in a destination row's context menu. |
+| H2b | Review is unskippable | Build a chain and start it. | The pre-copy review fires every time — the Build 25 fix for chains that previously ran with no review at all. |
+| H2c | Chain survives its first stop | Run a two-stop chain to the end of stop 1. | The app stays up (Build 29 crash), each destination's `CopyTrust_Receipts` gains exactly one workflow plan with no `.tmp` beside it, and stop 2 starts on its own. |
+| H2d | Per-stop defaults | Build a fresh chain with P5 archiving enabled. | `Archive to P5` lands on the first stop and `Create proxies` on the last; a deliberate per-row choice already made is not relocated. |
 | H3 | Trust gate | Introduce an expendable Step 1 failure. | Step 2 stays blocked and never starts from an untrusted intermediate. |
-| H4 | Edit before start | Use Edit on an untouched chain and reorder destinations. | All legs return to the workspace in order, then re-queue without duplicates. |
+| H4 | Edit before start | Use Edit on an untouched chain and reorder destinations. | All legs return to the workspace in order, the `Copy` switch still reads `In series`, and `Start` rebuilds the chain without duplicates. |
 | H5 | Edit after start | Start one leg and attempt Edit. | Edit is unavailable once the chain has begun. |
 | H6 | Final-only sort | Enable Destination Sort. | Intermediate B remains stable/unsorted; final C is sorted and verifiable. |
 | H7 | Artifacts | Enable background artifacts. | Later relay leg does not wait for PDF/CSV/tree/proxy work after upstream trust completes. |
 | H8 | Speed receipt | End session. | Receipt identifies every leg and gives per-leg copy/verify speeds. |
 | H9 | Card release | After Step 1 becomes trust-complete, inspect safe-to-eject state. | Original card can be released while downstream work continues from B. |
-| H10 | Immutable workflow plan | Queue a relay, inspect `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json`, then run it. | Plan exists before execution, contains ordered step/dependency IDs and explicit destination choices, contains no password, and its bytes do not change. |
+| H10 | Immutable workflow plan | Build a relay, inspect `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json`, then run it. | Plan exists before execution, contains ordered step/dependency IDs and explicit destination choices, contains no password, and its bytes do not change. |
 | H11 | Receipt export linkage | Inspect every relay leg's receipts. | The same workflow plan is exported into each `CopyTrust_Receipts` folder and logs link the active queue item back to it. |
-| H12 | Sequence isolation | Queue and complete a relay, then queue another relay with matching paths. | The second chain has a new sequence ID and does not reuse the first chain's completed rows or dependencies. |
+| H12 | Sequence isolation | Run a relay to completion, then build another relay with matching paths. | The second chain has a new sequence ID and does not reuse the first chain's completed rows or dependencies. |
+| H13 | Interrupted chain recovery | Force quit during stop 1, after its files and `completed` manifest are on the destination. Relaunch. | The finished stop is restored as **completed**, stop 2's upstream path resolves to where the files actually landed, and the chain carries on — it does not come back stuck or ask you to redo a finished copy. |
+| H14 | Interrupted chain, nothing finished | Force quit early in stop 1, before any completion manifest exists. Relaunch. | The stop is restored as **queued**, never failed, with no stale block reason on the stop behind it. |
 
 Visual checkpoint: `04-relay-chain.png`.
 

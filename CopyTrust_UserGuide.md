@@ -1,7 +1,10 @@
 # CopyTrust User Guide
 
-Date: 2026-08-01
-Release status: **2.5.3 stable**; **2.7.0 Build 12 public prerelease** for controlled workflow-review, relay-chain, Archiware P5, proxy, and privacy-safe Sentry integration testing. Build 12 adds rotation-aware proxy validation, source-aware color handling, and richer proxy evidence. It includes Build 11's visual review, immutable relay plans, structured workflow logging, and relay-queue isolation. Drop Verify and Folder Copy Compare remain at 2.6.0 Build 1.
+Date: 2026-08-07
+Release status: **2.5.3 stable**; **2.7.2 Build 29** in testing. Build 25 replaced the multiple
+relay-chain buttons with a single **Copy** switch (Simultaneously / In series) and Build 29 made
+the primary action always read **Start**, so a multi-destination job is now one decision and one
+button. Build 29 also fixes a crash that ended every relay copy just after the first stop.
 
 ## Purpose
 
@@ -14,9 +17,17 @@ This guide describes the main ways to use the app today and when each method mak
 - A **source** is a camera card or upstream verified copy.
 - A **destination** is where CopyTrust writes the copy.
 - In a normal session, **every loaded source copies to every loaded destination**.
+- With **two or more destinations**, a **Copy** switch appears above the destination list with
+  one decision on it: **Simultaneously** or **In series**. That switch is the only thing that
+  chooses between a fan-out and a relay chain.
+- There is **one Start button**, always labelled `Start`. It runs whatever the Copy switch says,
+  and always shows the pre-copy review first.
+- A **relay chain** (`In series`) means the verified output from one destination becomes the
+  source for the next step. The source is read **once**.
+- A **fan-out** (`Simultaneously`) copies to every destination at the same time. The source is
+  read **once per destination**.
 - `Queue Current Session` saves the current setup and clears the workspace so another setup can be staged.
 - `Start Queue` runs queued sessions in order.
-- A **relay chain** means the verified output from one destination becomes the source for the next step.
 - Before a new run begins, the **workflow review** shows the overall topology and one card per destination, including that destination's proxy and P5 choices.
 - A queued relay chain writes an immutable, password-free `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json` that binds its ordered legs, dependencies, and destination choices.
 
@@ -42,17 +53,21 @@ What `Quick Start` focuses on:
 - if contact sheet PDF is enabled, confirm `ffmpeg` for `MXF` and `REDCINE-X / REDline` for `R3D`
 
 What `Advanced Start` focuses on:
-- add one source and two destinations
-- use `Queue Relay Chain` to stage an ordered `A -> B -> C` path
+- add one source and two destinations, in the order you want them copied
+- set the `Copy` switch to `In series` for an ordered `A -> B -> C` path
+- set `Archive to P5` and `Create proxies` on the intended destination rows
 - leave this out of the way unless the session actually calls for relay copy
 
 ## Workflow Summary
 
 | Method | Best for | Current status | Recommended setup |
 | --- | --- | --- | --- |
-| Method 1: One card to multiple destinations | Safe dual-copy ingest such as `A -> B` and `A -> C` | Implemented | One live session with one or more sources and two or more destinations |
-| Method 2: Relay chain | Fast first copy, then slower downstream copy such as `A -> B -> C` | Implemented, still being polished | One source plus ordered destinations, then `Queue Relay Chain` |
+| Method 1: One card to multiple destinations | Safe dual-copy ingest such as `A -> B` and `A -> C` | Implemented | One live session, two or more destinations, `Copy: Simultaneously`, then `Start` |
+| Method 2: Relay chain | Fast first copy, then slower downstream copy such as `A -> B -> C` | Implemented | One source plus ordered destinations, `Copy: In series`, then `Start` |
 | Method 3: Mixed queued sessions | Different cards going to different destination sets in walk-away order | Implemented | Separate queued sessions, then `Start Queue` |
+
+Methods 1 and 2 are the same three steps — add the card, add the destinations, press `Start`.
+The only difference is which side of the `Copy` switch is selected.
 
 ## Method 1: One Card To Multiple Destinations
 
@@ -70,11 +85,12 @@ How to do it:
 1. Add camera card `A` to the source side.
 2. Add destination `B`.
 3. Add destination `C`.
-4. Click `Start This Session`.
+4. Leave the `Copy` switch on `Simultaneously` (the default).
+5. Click `Start`, then confirm the pre-copy review.
 
 What CopyTrust does:
 - it treats this as one ingest session
-- source `A` copies to both `B` and `C`
+- source `A` copies to both `B` and `C` at the same time, reading the card once per destination
 - trust-critical work completes before background PDF/CSV artifacts
 - `Review & Verify` lets you inspect the session without ending it
 - once all work is done, `Review Summary…` becomes the main review action
@@ -109,15 +125,22 @@ Use this when:
 How to do it:
 1. Add camera card `A` as the source.
 2. Add destinations in relay order: `B` first (fastest drive — SSD), then `C` (slower — NAS).
-3. A blue callout card appears at the top of the destination list showing the chain path, e.g. `Card A → SSD → NAS`.
-4. Check the `Stop 1` / `Stop 2` labels on each destination row. Reorder with the up/down arrows if needed — **put the fastest drive first**.
-5. Click `Queue Relay Chain` in the callout (or right-click any destination row → **Queue Relay Chain**).
-6. Review the queued sessions panel — each relay leg shows its source type, destination name, and step context.
-7. Click `Start Queue`.
+3. Set the `Copy` switch above the destination list to **In series**. It shows the chain path,
+   e.g. `Card A → SSD → NAS`, and a line explaining that the source is read once.
+4. Check the `Stop 1` / `Stop 2` labels on each destination row. Reorder with the up/down arrows
+   if needed — **put the fastest drive first**.
+5. Check `Archive to P5` and `Create proxies` on the rows you want them on. A new chain starts
+   with P5 on the first stop and proxies on the last — camera archive first, editing storage
+   last. Everything stays adjustable on the destination rows afterwards.
+6. Click `Start`.
+7. Confirm the pre-copy review. It shows the full chain and one card per stop.
+
+CopyTrust builds the queued chain and starts it as a single action, so **a relay chain always
+shows the pre-copy review**. There is no separate queue-then-start step.
 
 Speed ordering tip:
 - Copy to your **fastest destination first** (SSD before NAS). This frees the camera card sooner and lets the slower NAS leg run from a local verified copy, not from the card itself.
-- The callout reminds you of this when you are about to queue.
+- The `In series` side of the Copy switch reminds you of this.
 
 What CopyTrust does:
 - Step 1 copies from the original camera card to the first destination and verifies it.
@@ -126,10 +149,10 @@ What CopyTrust does:
 - PDF/CSV artifact work from Step 1 does not block Step 2.
 - The end-session receipt summarises the full relay run with per-leg speed data.
 - **Contact sheet PDF generation is faster for relay chains:** thumbnails generated for the first destination are cached on disk and reused for every subsequent leg — no redundant preview work for the same card content.
-- when the chain is queued, it writes one immutable workflow plan with the sequence ID, ordered destinations, step IDs, dependencies, verification/artifact settings, and explicit per-destination proxy/P5 choices
+- when the chain is built, it writes one immutable workflow plan with the sequence ID, ordered destinations, step IDs, dependencies, verification/artifact settings, and explicit per-destination proxy/P5 choices
 - every relay session log identifies its active queue item and links back to that plan; the plan is exported beside each leg's receipts
 
-What the queue panel shows after queuing (reviewing before Start Queue):
+What the queue panel shows once the chain is running:
 
 Each relay leg appears as a distinct row with a chain icon prefix and blue tint. For a card-to-SSD-to-NAS relay the operator sees:
 
@@ -157,9 +180,10 @@ Right-clicking a queue row offers:
 - **Reveal Source in Finder** — opens the source volume or folder directly
 - **Reveal Destination in Finder** — opens the destination folder directly
 
-Right-click shortcut on destination rows:
-- Right-clicking any destination row when relay conditions are met shows a **Queue Relay Chain** menu item — same action as the callout button.
-- The context menu also offers **Reveal in Finder** and **Remove Destination** for any destination at any time.
+Right-click on destination rows:
+- The context menu offers **Reveal in Finder** and **Remove Destination** for any destination at
+  any time. It no longer carries a relay-chain action — the `Copy` switch is the one place that
+  choice is made.
 
 Destination Sort and relay chains:
 - If Destination Sort is enabled, sorting is **skipped on intermediate legs** and only runs on the final destination. This prevents the sort from moving files while the next leg is reading from them. The final destination gets the organized type-folder layout.
@@ -258,7 +282,7 @@ Hover over any queued row to see the full source and destination paths as a tool
 
 The `Load` button fills the workspace with a queued session's source and destination. Use it when you want to run a specific leg independently rather than using `Start Queue`.
 
-- After loading, press `Start This Session` to run it.
+- After loading, press `Start` to run it.
 - To put it back without running, click `Return to Queue` — this restores the session to `.queued` status and clears the workspace without touching any other queued items.
 - `Reset Session` wipes the entire queue and workspace. Use it only when you want to start completely fresh.
 - `Queue Current Session` is hidden while a session is loaded — this prevents accidentally enqueuing a duplicate.
@@ -272,9 +296,16 @@ For inspection and alias editing, prefer the `›` expand panel — it does not 
 
 | Situation | Button |
 |-----------|--------|
-| Source and destination in workspace | `Start This Session` |
+| Source and one destination in workspace | `Start` |
+| Source and two or more destinations, `Copy: Simultaneously` | `Start` (all at once) |
+| Source and two or more destinations, `Copy: In series` | `Start` (builds the chain and runs it) |
 | Sessions staged in the queue | `Start Queue` |
-| A specific queued leg loaded via Load | `Start This Session` (runs that leg only) |
+| A specific queued leg loaded via Load | `Start` (runs that leg only) |
+
+The primary button is always labelled `Start`. Before Build 29 it changed with the job
+(`Start This Session`, `Copy to Both Now`, `Start Relay Chain`, `Start Loaded Session`), which
+read as four different buttons. What `Start` will do is stated by the `Copy` switch above it and
+confirmed in the pre-copy review.
 
 **Pre-copy workflow review (expanded in 2.7.0 Build 11).** Because dragging a card in auto-selects
 the copy mode, it is easy to start a card in Folder mode by accident — which
@@ -346,7 +377,7 @@ The `Load` button puts a specific queued session into the workspace for running 
 
 | Button | Effect on queue |
 |--------|----------------|
-| `Start This Session` | Runs the loaded leg; removes it from queue on completion |
+| `Start` | Runs the loaded leg; removes it from queue on completion |
 | `Return to Queue` | Restores the leg to `.queued` status; clears workspace; rest of queue untouched |
 | `Reset Session` | Wipes workspace AND entire queue — all legs gone |
 
@@ -410,7 +441,7 @@ CopyTrust validates the destination before any file transfer begins.
 
 ### Duplicate subfolder names are blocked before copy starts
 
-If two pending sources would render to the same destination subfolder name (e.g. both use the same naming template and resolve to `Example_Project/A001`), `Start This Session` is blocked. The blocked-start message tells the operator which sources conflict and points to the source alias, prefix, or naming template as the fix path.
+If two pending sources would render to the same destination subfolder name (e.g. both use the same naming template and resolve to `Example_Project/A001`), `Start` is blocked. The blocked-start message tells the operator which sources conflict and points to the source alias, prefix, or naming template as the fix path.
 
 ### Fresh ingests cannot merge silently into existing folders
 
@@ -445,7 +476,7 @@ When the destination volume comes back (drive re-plugged, NAS remounted), CopyTr
 4. Resumes the copy automatically — already-verified files are skipped and only remaining files are copied.
 5. Retries any failed artifact tasks (contact sheet, CSV, sort) for the reconnected destination.
 
-If auto-resume does not trigger (e.g. the source was removed or the session was ended), you can still use `Start This Session` to restart manually. The resume infrastructure will detect the partial manifest and skip verified files.
+If auto-resume does not trigger (e.g. the source was removed or the session was ended), you can still use `Start` to restart manually. The resume infrastructure will detect the partial manifest and skip verified files.
 
 ### Pre-Copy Destination Check
 
@@ -1418,8 +1449,8 @@ The preset is saved with the queued session item and persists across app restart
 
 ## Current Practical Guidance
 
-- For `A -> B` and `A -> C`, use one normal session with multiple destinations.
-- For `A -> B -> C`, use `Queue Relay Chain`.
+- For `A -> B` and `A -> C`, use one normal session with multiple destinations and `Copy: Simultaneously`.
+- For `A -> B -> C`, set the `Copy` switch to `In series` and press `Start`.
 - For `A -> B -> C` followed by another card taking the same path, queue each card as its own relay chain.
 - For different cards going to different destinations, use separate queued sessions and `Start Queue`.
 - For camera card ingest, use the **Card** preset. For folder backup or archive, use the **Folder** preset.

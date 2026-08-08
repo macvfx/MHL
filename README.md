@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**CopyTrust 2.7.2 Build 19 and Drop Verify 2.7.2 Build 8 are a public beta** for controlled preset, Drop Verify proxy, proxy-correctness, workflow-review, relay evidence, Archiware P5, queue, and privacy-safe Sentry testing. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
+**CopyTrust 2.7.2 Build 29 and Drop Verify 2.7.2 Build 8 are a public beta** for controlled preset, Drop Verify proxy, proxy-correctness, workflow-review, relay evidence, Archiware P5, queue, and privacy-safe Sentry testing. **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
 in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes are in each app's
 docs.
 
@@ -10,6 +10,7 @@ docs.
 
 Multi-source, multi-destination copy tool designed for camera card ingest but capable of copying any folders and files. Queue multiple cards, walk away, come back to verified results.
 
+- **One Copy switch, one Start button** — with two or more destinations, choose `Simultaneously` or `In series`, then press `Start`; a relay chain always shows the pre-copy review
 - Volume browser and **Volume Pool** for fast source/destination setup
 - Destination sets for one-click restore of saved destination groups
 - **Presets** — save every Card and Folder setting under one name and load it back in one action; shared, read-only presets can be deployed to a whole facility via `/Users/Shared/CopyTrust/Presets`
@@ -50,7 +51,7 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - MHL import verification — drag-and-drop any `.mhl` to re-verify destination files; reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+, OffShoot, YoYotta, ShotPut Pro) as of v2.5.1
 - **Auto-advance** multi-source copy with per-card subfolder naming
 - **Queued sessions** for walk-away ingest staging across different card/destination setups
-- **Relay-chain copy** for `A -> B -> C` workflows using one source plus ordered destinations and `Queue Relay Chain`
+- **Relay-chain copy** for `A -> B -> C` workflows using one source plus ordered destinations — set the `Copy` switch to `In series` and press `Start`
 - Destination relay-order staging with visible `Stop 1`, `Stop 2`; queued relay legs can be pulled back into the workspace with `Edit` for reordering
 - **Resumable CopyTrust ingest** for cancelled same-source/same-destination runs and failed partial runs when the saved manifest still matches the same source, destinations, and rendered subfolder
 - **Contact sheet PDF** (row or grid layout) and **EXIF metadata CSV** after each ingest — professional formats (MXF, R3D, BRAW, ARRIRAW, M2V, VOB) show placeholders in the stable release, while this branch uses ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, and REDline for R3D thumbnails. PDF/CSV run as independent background artifacts after the selected verification completes; Quick mode does not invent hashes or an MHL.
