@@ -11,27 +11,6 @@ paperwork in one pass.
 
 <div class="page-break"></div>
 
-## For the IT admin — deploying it
-
-Everything is signed and notarized, so nothing needs a Gatekeeper exception.
-
-- **The apps** — CopyTrust, Drop Verify, Folder Copy Compare and MHL Verify ship as
-  Developer-ID signed, notarized DMGs. Each checks GitHub for its own updates, so
-  operators are not chasing versions.
-- **ffmpeg and ffprobe are packaged** to `/usr/local/bin/ffmpeg` by the supplied installer.
-  Needed for thumbnails of professional formats and for proxy encoding.
-- **ExifTool is the one external dependency** — install it and point CopyTrust at it, or
-  let Auto-Detect find it. Only needed for richer metadata on pro formats.
-- **REDline** only if the house shoots R3D.
-- **No `tree` binary.** HTML directory trees are generated natively. The setting still
-  exists in External Codecs for diagnostics — leave it unset.
-- **House presets deploy read-only** from `/Users/Shared/CopyTrust/Presets`. That path
-  exists on a fresh Mac and needs no user account, so MDM or a script can place a preset
-  before the operator's first launch. Personal saves go to Application Support, so
-  re-deploying can never clobber them.
-
-<div class="page-break"></div>
-
 ## Copy mode — Card or Folder
 
 One switch that changes what a run is *for*. Everything else follows from it.
@@ -182,3 +161,26 @@ Three small tools that answer questions CopyTrust's own receipts cannot.
   without holding anyone up.
 - **Nothing optional can damage the result.** Proxies, artifacts and P5 all run after the
   trust chain is sealed, and a failure in any of them leaves the verified copy intact.
+
+<div class="page-break"></div>
+
+## For the IT admin — deploying it
+
+Everything is signed and notarized, so nothing needs a Gatekeeper exception.
+
+- **The apps** — CopyTrust, Drop Verify, Folder Copy Compare and MHL Verify ship as
+  Developer-ID signed, notarized DMGs. Each checks GitHub for its own updates, so
+  operators are not chasing versions.
+- **Dependencies deploy like any other managed package**, separately from the apps, via
+  Munki, MDM or whatever you already use:
+  **ffmpeg and ffprobe** to `/usr/local/bin/ffmpeg`, from the supplied installer — needed
+  for professional-format thumbnails and for proxy encoding;
+  **ExifTool** — richer metadata on pro formats;
+  **REDline** — only if the house shoots R3D.
+  CopyTrust auto-detects each one, or you point it at the path.
+- **No `tree` binary.** HTML directory trees are generated natively. The setting still
+  exists in External Codecs for diagnostics — leave it unset.
+- **House presets deploy read-only** from `/Users/Shared/CopyTrust/Presets`. That path
+  exists on a fresh Mac and needs no user account, so MDM or a script can place a preset
+  before the operator's first launch. Personal saves go to Application Support, so
+  re-deploying can never clobber them.
