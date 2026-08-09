@@ -13,7 +13,7 @@ Drop Verify now runs only the work required for the selected outputs:
 5. Optionally export selected artifacts to a separate folder.
 6. Write success or failure log lines.
 
-If MHL, CSV, and PDF exist but the app is still running, the selected media artifacts may be complete while HTML tree output is still running. All current HTML tree modes are generated natively; recursive modes no longer wait on an external `tree` process.
+If MHL, CSV, and PDF exist but the app is still running, the selected media artifacts may be complete while HTML tree output is still running. Every HTML tree mode is generated natively; none waits on an external process.
 
 If only HTML tree/index is enabled, Drop Verify should log:
 
@@ -79,19 +79,11 @@ Useful interpretation:
 
 ## Check For External Child Processes
 
-Drop Verify can launch external tools such as `ffmpeg`, REDline, or ExifTool. Current HTML tree output is native and should not launch `tree`. To see child processes:
+Drop Verify can launch external tools such as `ffmpeg`, REDline or ExifTool. HTML tree output is native and launches nothing. To see child processes:
 
 ```zsh
 pgrep -P <DropVerifyPID> -fl .
 ```
-
-Legacy stuck tree result from older builds:
-
-```text
-38175 /opt/local/bin/tree -J /Volumes/Example_Server/Clients/Example_Client/Example_Project
-```
-
-If the sample shows `-[NSConcreteTask waitUntilExit]` and `pgrep -P` shows `tree -J`, you are likely testing an older build that still waits for the external HTML tree command.
 
 ## Check Open Files
 
@@ -137,28 +129,12 @@ selected output, an HTML file is the only expected artifact.
 
 ## Recover From A Stuck HTML Tree
 
-Current builds do not launch `tree` for HTML output. If a recursive HTML tree appears stuck:
+HTML output launches no external process. If a recursive HTML tree appears stuck:
 
 1. Check the session log for `HTML tree: enumerating ...` and `HTML tree: enumerated ...` lines.
 2. Check CPU and storage activity with `ps` and `lsof`.
 3. If the app is still responsive, cancel from the Drop Verify UI.
 4. If the app is unresponsive for several minutes and no log/file activity changes, sample the app and then quit it normally.
-
-For older builds only, if `pgrep -P <DropVerifyPID> -fl .` shows a long-running `tree -J` child and any non-tree artifacts you selected are already present, terminate only the child process first:
-
-```zsh
-kill <TreePID>
-```
-
-Drop Verify may then report:
-
-```text
-tree command failed with exit code 15
-```
-
-Exit code 15 means the legacy `tree` command received SIGTERM. This means the HTML tree artifact was stopped. It does not mean already written MHL, CSV, or PDF artifacts failed.
-
-If Drop Verify does not recover within 30-60 seconds after killing the child process, quit Drop Verify normally.
 
 ## When To Disable HTML Tree
 

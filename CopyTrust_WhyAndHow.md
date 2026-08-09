@@ -178,8 +178,8 @@ Everything is signed and notarized, so nothing needs a Gatekeeper exception.
   **ExifTool** — richer metadata on pro formats;
   **REDline** — only if the house shoots R3D.
   CopyTrust auto-detects each one, or you point it at the path.
-- **No `tree` binary.** HTML directory trees are generated natively. A leftover `tree` path
-  setting is still visible in External Codecs; nothing reads it. Leave it unset.
+- **No `tree` binary.** HTML directory trees are generated natively — drop it from the
+  manifest if an older deployment still installs it.
 - **House presets deploy read-only** from `/Users/Shared/CopyTrust/Presets`. That path
   exists on a fresh Mac and needs no user account, so MDM or a script can place a preset
   before the operator's first launch. Personal saves go to Application Support, so

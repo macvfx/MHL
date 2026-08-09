@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-08-09
-Release status: **2.5.3 stable**; **2.7.2 Build 32** in testing.
+Release status: **2.5.3 stable**; **2.7.2 Build 33** in testing.
 Version history is in the release notes.
 For a one-page fan-out walkthrough see [CopyTrust_FirstRun.md](CopyTrust_FirstRun.md).
 
