@@ -14,7 +14,12 @@ after its first stop, and recovers interrupted jobs on the next launch.
 **Drop Verify and Folder Copy Compare stay at 2.7.2 Build 14** to keep the suite
 aligned; neither has changed functionally since Drop Verify Build 8 added proxy media, and
 Build 30 touches CopyTrust only.
-**MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
+**MHL Verify 2.6.0 compares two MHL files that live on different volumes**, using a
+side-by-side `Side A` / `Side B` panel — one open panel could only ever reach one
+disk, and a source manifest and its archive copy are almost never on the same one.
+It also reports a **verdict**, so a re-sorted layout or two copies made minutes apart
+no longer read as a failed comparison.
+**mhl-tool remains stable at 2.5.1.** One-line history is
 in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes are in each app's
 docs.
 
@@ -102,6 +107,8 @@ Single-folder drag-and-drop verification. Drop a folder and generate trust artif
 
 Standalone MHL reader and verifier. Load any `.mhl` file, review it, and verify whether the media files still match.
 
+- **Side-by-side compare** (new in 2.6.0): `Side A` and `Side B` are picked separately — choose, drop, or pick from recents on each — so the two MHL files can be on different volumes; each side shows its volume, file count and total size before you compare
+- **A verdict on every comparison** (new in 2.6.0): match, timing-differs-only, different-layout, or differs — a **Destination Sort**ed copy is paired with its pre-sort source by name, size and hash and reported as `Moved`, and hash timestamps no longer count as a content change
 - **Verify** action (new in 2.5.1): re-hashes every file listed in the MHL and reports matched / mismatched / missing with digests
 - Reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+ default, incl. `ascmhl/` folder layouts) — fixes [#1](https://github.com/macvfx/MHL/issues/1)
 - Re-check copies, archive restores, and handoff deliveries

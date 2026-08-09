@@ -29,6 +29,8 @@ One line per release, newest first. Detailed changes live in each app's own docu
 
 | Version | Date | Summary |
 |---|---|---|
+| **2.6.0 (1)** | 2026-08-08 | **Side-by-side compare:** `Compare…` opens `Side A` / `Side B`, each picked separately by choose, drop, or recents, so two MHL files on different volumes can finally be compared — the old single open panel could only return files from one folder. Each side remembers its own last folder and shows its volume, file count, total size and MHL version before comparing; dropping two files fills both sides; `Swap Sides` flips them. **Compare also reports a verdict** and stops calling expected differences failures: timestamps no longer count as content (two copies of one card reported every file as `Changed` because the hash times differed), and a **Destination Sort**ed copy is now paired with its pre-sort source by name, size and hash and reported as `Moved` rather than as every file added *and* removed |
+| 2.5.1 (2) | 2026-08-02 | MHL Verify moved to its own release home at [macvfx/MHL-Verify](https://github.com/macvfx/MHL-Verify), so update checks stop pointing at suite releases that carry no MHL Verify build; update-alert dismissal fix |
 | **2.5.1 (1)** | 2026-06-12 | ASC MHL v2.0 support via the shared CopyCore engine (fixes [#1](https://github.com/macvfx/MHL/issues/1)) + new **Verify** action that re-hashes files against the MHL; requires macOS 14 |
 | 2.4.1 (7) | 2026-05-02 | Check for Updates; version aligned with the suite |
 | 0.7 (2) | 2026-04-30 | Reader scroll fix; Editor-role handler registration for both MHL UTIs |

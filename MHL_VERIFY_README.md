@@ -10,7 +10,7 @@ It started as a default-handler utility, but the current app is primarily an MHL
 - Open files by dragging onto the Dock icon, dragging into the app, or using the Open button
 - Review a single MHL in the reader
 - **Verify** the files listed in an MHL — re-hash them from disk and compare against the recorded digests (new in 2.5.1)
-- Compare two MHL files side by side
+- Compare two MHL files side by side, **including files on two different volumes** — `Side A` and `Side B` are picked separately (new in 2.6.0)
 - Export the active MHL as JSON, Markdown, or RTF
 - Inspect and change the default macOS app for `.mhl`
 
@@ -63,7 +63,9 @@ This is the better path when you want to review several MHL files in one session
 
 Use the `Compare…` button in the `Reader` tab.
 
-- Select exactly two `.mhl` or XML files
+- Fill `Side A` and `Side B` separately — choose, drop, or pick from recents
+- The two files can be on different volumes, which is the normal case
+- Compare reports a verdict: **Manifests Match**, **Match — Timing Differs Only**, **Match — Different Layout** (a Destination Sorted copy against its pre-sort source), or **Manifests Differ**
 - The app opens a comparison sheet
 - The comparison view highlights matching and differing summary values
 - Use `Done` to dismiss the comparison view

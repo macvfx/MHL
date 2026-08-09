@@ -10,7 +10,7 @@
 
 It also includes a secondary `Handlers` tab for checking or changing the default app macOS uses for `.mhl`.
 
-> **Supported formats (2.5.1):** classic MHL v1.0/1.1 and ASC MHL v2.0 — the default output of Silverstack 9+, including manifests in an `ascmhl/` folder. Versions 2.4.1 and earlier showed ASC MHL v2.0 files as "Zero bytes" ([#1](https://github.com/macvfx/MHL/issues/1)); update if you see that. Requires macOS 14 or later.
+> **Supported formats (2.6.0):** classic MHL v1.0/1.1 and ASC MHL v2.0 — the default output of Silverstack 9+, including manifests in an `ascmhl/` folder. Versions 2.4.1 and earlier showed ASC MHL v2.0 files as "Zero bytes" ([#1](https://github.com/macvfx/MHL/issues/1)); update if you see that. Requires macOS 14 or later.
 
 ## Opening MHL Files
 
@@ -80,13 +80,44 @@ Use comparison when you want to check whether two MHL files match or differ.
 1. Open the app.
 2. Go to the `Reader` tab.
 3. Click `Compare…`
-4. Choose two `.mhl` or XML files.
+4. Fill `Side A` and `Side B`.
 
-The compare sheet shows:
+Each side is picked separately, so the two files do not have to be on the same
+disk — the usual case is a manifest on the source volume and its counterpart on
+the archive. For each side you can:
+
+- click `Choose…` to browse that side's volume (each side remembers its own folder)
+- drag a `.mhl` file from a Finder window straight onto that side's drop well
+- use `Recents` to pick a file already open in the reader, or a recent file
+
+Dropping two `.mhl` files at once fills both sides. A filled side shows the volume,
+folder, file count, total size and MHL version, so you can confirm you have the
+right disk before comparing. `Swap Sides` flips A and B; `Compare` becomes
+available once both sides hold a readable file.
+
+The compare sheet opens with a verdict banner:
+
+- **Manifests Match** — same files, same folders, same times
+- **Match — Timing Differs Only** — the files are identical in size and hash; only
+  the times the manifests were written and hashed differ. Two manifests are never
+  written at the same moment, and a relay chain copies in series, so this is the
+  normal result when comparing two destinations from one job
+- **Match — Different Layout** — every file matches by name, size and hash, but some
+  sit in different folders. This is what Destination Sort produces: compare a sorted
+  destination against the pre-sort MHL in the receipts folder and every file is
+  reported as `Moved`, not as added and removed
+- **Manifests Differ** — a real difference: a changed digest or size, or a file on
+  one side only
+
+Below that, the compare sheet shows:
 
 - high-level match or difference indicators
 - summary values for each file
-- highlighted mismatches
+- highlighted mismatches, with timestamp rows marked `Timing` rather than
+  `Different` because they describe when a manifest was written, not what is in it
+- a file-level table filtered by `Differences`, `Changed`, `Moved`, `Added/Removed`
+  or `All`; selecting a row shows both sides' size, hash, date and — for a moved
+  file — both paths
 
 Click `Done` to close the compare view.
 
@@ -136,6 +167,7 @@ Typical reasons to use it:
 
 - Open the app first
 - Click `Compare…`
+- Fill `Side A` and `Side B` separately — they can be on different volumes
 
 ### Export a Report
 
