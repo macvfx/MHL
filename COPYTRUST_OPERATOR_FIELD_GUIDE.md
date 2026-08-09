@@ -5,58 +5,19 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.3**. **2.7.2 Build 31 is a public prerelease.**
+Stable release: **2.5.3**. **2.7.2 Build 31 is a public prerelease.** Version history is
+in [RELEASE_NOTES.md](RELEASE_NOTES.md).
 
-Two or more cards in one run are now all visible. Cards are copied one at a time — the
-`Copy` switch describes the destinations, not the cards — so the queue row lists every
-card with its own bar and status (`Waiting`, `Copying & Verifying`, `Complete`), under a
-`Source 1 of 2` line. The row's bar covers the whole run instead of filling to 100% at the
-end of the first card, and the time remaining is for the card copying now. Counts are
-**file copies**, one per file per destination: a 47-file card to two destinations is 94
-copies, the number the activity log has always reported. Before Build 31 the same run read
-`75 / 47 files` in the menu bar and hid the second card until its turn came.
+> **Check the confirmation before a copy starts.** It shows the active mode
+> (Card / Folder), verification level, artifact settings, and either **Proxy: Off**
+> or the chosen codec, scale and Final Cut folder. If you meant a Card copy, make
+> sure it does not say **Folder** — Folder mode uses Quick verification and skips
+> the contact sheet.
 
-One blue button means one action. `Start` is the only blue control on screen: the **Copy**
-switch is orange because it is a mode — it decides what `Start` will do and starts nothing —
-and the duplicate `Queue Current Session` button is gone from the Queued Sessions panel. The
-one in the bar at the bottom of the window is the only one now.
-
-The multi-destination decision is now one control. With two or more destinations a
-**Copy** switch sits above the destination list: `Simultaneously` copies to every
-destination at once, `In series` copies through them in order so each stop's verified
-output feeds the next. One button — always labelled **Start** — runs whichever you
-chose. This replaces `Queue Relay Chain`, which started nothing and left you to find
-`Start Queue` elsewhere; because the pre-copy review only appears when a copy starts, a
-chain built the old way could run with **no review at all**. Start now builds and starts
-the chain in one action, so the review always appears.
-
-Two reliability fixes matter in the field. **Every relay copy used to crash just after
-its first stop finished** — the files, MHL and receipts were already safely on disk, but
-the queue never moved on, so the run looked like a force quit. And **interrupted jobs
-now recover**: on launch, a job still recorded as running is checked against the
-destination's own manifests, so a copy that had actually finished comes back complete and
-the chain carries on from the next stop instead of reopening stuck.
-
-A new relay chain starts with `Archive to P5` on the first stop and `Create proxies` on
-the last — camera archive first, editing storage last. Change either on any row.
-
-Build 31 carries forward the rotation-aware proxy validation and source-aware color
-handling from 2.7.0 Build 12, and the controlled post-copy Archiware P5 beta. For P5 use
-expendable fixtures, Full/Inline verification, a non-deleting plan, and a path visible
-identically to the selected P5 client. Review the request JSON and P5 Web job/metadata;
-after restore, verify against the preserved capture MHL.
-
-The carried-forward **2.6.0 Build 1 beta** adds
-optional H.264/HEVC proxy media with live progress and evidence, explicit proxy
-state in the pre-copy confirmation, and package-safe receipt placement for
-Final Cut libraries. See [RELEASE_NOTES.md](RELEASE_NOTES.md).
-
-> **Before a copy starts, check the confirmation.** CopyTrust now shows the
-> active mode (Card / Folder), verification level, and artifact settings before
-> it begins. If you meant a Card copy, make sure it does not say **Folder** —
-> Folder mode uses Quick verification and skips the contact sheet. The same
-> sheet now explicitly says **Proxy: Off** or shows the codec, scale, and Final
-> Cut folder choice.
+> **Archiware P5 archive is a controlled beta.** Use expendable fixtures, Full or
+> Inline verification, a non-deleting plan, and a path the selected P5 client sees
+> at the same absolute location. Review the request JSON and the P5 Web job; after
+> a restore, verify against the preserved capture MHL.
 
 ---
 
@@ -69,18 +30,19 @@ existence and size verification without hashes.
 | Capability | What it gives the operator |
 |---|---|
 | Multi-source, multi-destination copy | Offload several cards to several drives in one pass |
+| Several cards in one run | Cards copy one at a time; the queue row lists every card with its own bar and status. The `Copy` switch describes the destinations, not the cards |
 | Queued / walk-away sessions | Stage cards and destinations, start, walk away, return to verified results |
 | Per-destination preflight | Free space, write permission, and reachability checked before copy |
 | Verification levels | **None / Quick** (size) **/ Full** (xxHash64) / **Inline** (hash during copy) |
 | MHL generation | MHL v1.1 written per destination in Full/Inline modes; Quick has no content hashes and intentionally writes no MHL. Reads classic v1.x **and ASC MHL v2.0** |
-| Copy switch (2.7.2 Build 29) | With two or more destinations, `Simultaneously` or `In series` — then one button, always **Start** |
+| Copy switch | With two or more destinations, `Simultaneously` or `In series` — then one button, always **Start** |
 | Relay chain (`A → B → C`) | Fast first copy (card → SSD), then downstream copy (SSD → NAS) from the verified local copy — frees the card sooner. Set the `Copy` switch to `In series` and press `Start` |
-| Interrupted-job recovery (2.7.2 Build 29) | On launch, a job still marked running is checked against the destination's manifests — one that actually finished is completed and the chain resumes at the next stop |
+| Interrupted-job recovery | On launch, a job still marked running is checked against the destination's manifests — one that actually finished is completed and the chain resumes at the next stop |
 | Resumable ingest | Cancelled or partially-failed runs resume without recopying verified files |
 | Destination Sort (optional) | Reorganizes the copy into type folders (JPG / RAW / Video / …) **after** the trust chain is sealed |
 | Receipts & artifacts | JSON + TXT receipts, per-copy log, session manifest, optional contact-sheet PDF, EXIF CSV, HTML directory tree |
-| Proxy media (2.7.0 Build 12 beta) | Optional H.264/HEVC MOV at 12.5%, 25%, or 50%; display-rotation-aware scaling; source-aware color handling; live progress; optional dated Final Cut layout; JSON/TXT/LOG validation evidence |
-| Provenance (2.5.2) | `PROVENANCE_*.json` records the settings used and the source→destination file mapping |
+| Proxy media (beta) | Optional H.264/HEVC MOV at 12.5%, 25%, or 50%; display-rotation-aware scaling; source-aware color handling; live progress; optional dated Final Cut layout; JSON/TXT/LOG validation evidence |
+| Provenance | `PROVENANCE_*.json` records the settings used and the source→destination file mapping |
 | Safe-to-eject + auto-eject | Eject is gated on the selected copy/verification workflow completing; Full/Inline also require their MHL |
 
 ---
@@ -95,13 +57,12 @@ After a **Full or Inline** copy completes, on the destination drive:
    - `ingest_*.log` (per-copy log with a header: app/build, macOS, host, session tag, source)
    - `ingest_*.json` + `ingest_*.txt` (receipt)
    - `SESSION_MANIFEST_*.json`
-   - `PROVENANCE_*.json` (2.5.2)
+   - `PROVENANCE_*.json`
 4. **Verify it** — drag the `.mhl` back into CopyTrust (or verify with **MHL Verify**); it should report **all files matched**, 0 missing.
 5. **Health verdict** — the Session Summary shows a green/clean health verdict (or clearly-labelled warnings).
 
 If verification reports files missing on a copy you believe is good, and **Destination
-Sort was on**, you are on a build older than 2.5.2 — update. 2.5.2 verifies against the
-delivered (sorted) layout.
+Sort was on**, update — the current release verifies against the delivered (sorted) layout.
 
 For a Quick copy, confirm the files, clean Session Health result, receipt/log, and
 enabled descriptive artifacts. No MHL is expected because Quick does not calculate
@@ -158,10 +119,10 @@ generate before relying on them on a job.
    is also present.
 
 Artifacts run as background work after the selected verification is sealed, so a
-missing or failed descriptive artifact never invalidates the copy. Build 6 uses a
-delivered-file inventory for these artifacts; Quick mode still does not invent hashes.
+missing or failed descriptive artifact never invalidates the copy. These artifacts are
+built from a delivered-file inventory; Quick mode does not invent hashes.
 
-For the 2.6.0 proxy beta, test both codecs with expendable media first. Real
+For the proxy beta, test both codecs with expendable media first. Real
 automated encodes cover MOV and MXF; broader input support depends on the
 packaged ffmpeg decoder. Confirm the pre-copy choice, live progress, exact
 original basename with `.mov`, and matching proxy JSON/TXT/LOG evidence.

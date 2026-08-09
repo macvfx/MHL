@@ -1,7 +1,7 @@
 # CopyTrust Sentry Observability
 
 Date reviewed: 2026-07-31
-Applies to: CopyTrust 2.7.0 Build 8 and later, including the Build 10 prerelease
+Applies to: CopyTrust 2.7.0 and later
 
 ## Scope
 
@@ -61,7 +61,7 @@ This verifies DSN delivery and filtering. A separate controlled crash and
 debug-file check is still required to prove crash persistence and dSYM
 symbolication.
 
-**Build 8 live result:** the synthetic event was received in the recreated
+**Live result:** the synthetic event was received in the recreated
 `apple-macos` project, and its exception value was `Redacted by CopyTrust
 privacy filter`. This confirms that the filter ran before the event reached
 Sentry; it does not yet confirm release dSYM symbolication.

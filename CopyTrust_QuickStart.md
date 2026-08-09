@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
-Date: 2026-08-07
-Current testing release: `v2.7.2 (Build 30 public prerelease)`
+Date: 2026-08-09
+Current testing release: `v2.7.2 (Build 31 public prerelease)`
 
 With two or more destinations, one **Copy** switch chooses `Simultaneously` or
 `In series`, and one button — always labelled **Start** — runs it. That is the
@@ -51,7 +51,7 @@ only when CopyTrust's packaged ffmpeg can decode them. Watch per-clip progress
 in the UI and active log, then review the JSON, TXT, and LOG evidence. A proxy
 failure never changes the verified-original copy result.
 
-Build 12 probes the delivered original before encoding. Display rotation is
+The delivered original is probed before encoding. Display rotation is
 used when calculating proxy dimensions, and reported color range, primaries,
 transfer, and matrix are carried into the proxy. The evidence report records
 encoded and displayed dimensions, rotation, and source/proxy color fields.

@@ -1,10 +1,8 @@
 # CopyTrust User Guide
 
-Date: 2026-08-07
-Release status: **2.5.3 stable**; **2.7.2 Build 31** in testing. Build 31 makes a run with more than one card legible: the queue row lists one line per source instead of naming only the card copying right now, its progress bar covers the whole run, and the file counts in the menu bar and the queue row are **file copies** — one per file per destination — so a 47-file card to two destinations no longer reports `75 / 47 files`. Build 30 makes `Start` the only blue button on screen — the **Copy** switch is orange, like the Card/Folder switch, because it is a mode; the duplicate `Queue Current Session` button has gone from the Queued Sessions panel, leaving the one in the bar at the bottom of the window. Build 25 replaced the multiple
-relay-chain buttons with a single **Copy** switch (Simultaneously / In series) and Build 29 made
-the primary action always read **Start**, so a multi-destination job is now one decision and one
-button. Build 29 also fixes a crash that ended every relay copy just after the first stop.
+Date: 2026-08-09
+Release status: **2.5.3 stable**; **2.7.2 Build 31** in testing.
+Version history is in the release notes.
 
 ## Purpose
 
@@ -261,7 +259,7 @@ Use Method 3 when:
 
 ## Reviewing a Queued Session Before Running It
 
-### Inline expand (Build 9+) — recommended
+### Inline expand — recommended
 
 Click the `›` chevron at the left edge of any queued row to expand a detail panel inline. No workspace change, no reset needed. Multiple rows can be expanded at once — useful for reviewing both legs of a relay chain side by side.
 
@@ -302,12 +300,12 @@ For inspection and alias editing, prefer the `›` expand panel — it does not 
 | Sessions staged in the queue | `Start Queue` |
 | A specific queued leg loaded via Load | `Start` (runs that leg only) |
 
-The primary button is always labelled `Start`. Before Build 29 it changed with the job
+The primary button is always labelled `Start`. It previously changed with the job
 (`Start This Session`, `Copy to Both Now`, `Start Relay Chain`, `Start Loaded Session`), which
 read as four different buttons. What `Start` will do is stated by the `Copy` switch above it and
 confirmed in the pre-copy review.
 
-**Pre-copy workflow review (expanded in 2.7.0 Build 11).** Because dragging a card in auto-selects
+**Pre-copy workflow review.** Because dragging a card in auto-selects
 the copy mode, it is easy to start a card in Folder mode by accident — which
 uses Quick verification and skips the contact sheet. To catch this, a
 review appears when you start a copy. Its top-level diagram distinguishes a
@@ -520,7 +518,7 @@ On first launch, macOS will prompt you to allow notifications from CopyTrust. If
 
 Prior to v2.4.4, macOS would report "permission denied" errors when a volume mount point disappeared, which was misleading. In v2.4.4 and later, CopyTrust detects the real cause — volume unavailability — and reports it accurately. If you see this on an older version, check whether the destination drive or NAS is still connected.
 
-### Where to see the Session Health verdict (v2.5.0 Build 4)
+### Where to see the Session Health verdict
 
 After every copy, CopyTrust classifies the results into a plain-language **Session Health** report:
 
@@ -616,7 +614,7 @@ Settings → Card Copy (or Folder Copy) → Hidden Files → **Skip hidden files
 
 ## Exclusions (Card and Folder)
 
-As of v2.5.0 Build 2, both Settings → Card Copy → Exclusions and Settings → Folder Copy → Exclusions use the **same grouped editor**: pattern groups (**File Storage**, **System**, **Camera Card**, **Custom**) with per-pattern checkboxes, an All/None toggle per group, and an active count. Card and Folder modes store their checkbox states independently.
+Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Exclusions use the **same grouped editor**: pattern groups (**File Storage**, **System**, **Camera Card**, **Custom**) with per-pattern checkboxes, an All/None toggle per group, and an active count. Card and Folder modes store their checkbox states independently.
 
 System group patterns: `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (Example NAS), `System Volume Information` (Windows). File Storage covers `.DS_Store`, `Thumbs.db`, and the generated CopyTrust / Drop Verify artifacts (`CopyTrust_Receipts`, `Drop Verify_Receipts`, `receipt_` files, `.mhl` manifests). Camera Card covers `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db`.
 
@@ -652,9 +650,8 @@ All pattern types are case-insensitive. `MISC` matches `misc`, `.MP4` matches `.
 ## Archiware P5 Archive (Testing)
 
 CopyTrust can hand one verified destination to an Archiware P5 archive plan
-after the copy trust chain and enabled post-copy work finish. This is opt-in and
-was introduced in CopyTrust 2.7.0 Build 7 and remains in Build 11 for controlled testing before
-production use.
+after the copy trust chain and enabled post-copy work finish. This is opt-in, and
+remains in controlled testing before production use.
 
 See the [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md)
 for direct, fan-out, relay, Archive Master, offline handoff, and restore
@@ -781,7 +778,7 @@ CopyTrust can optionally reorganize files on the destination into type-based sub
 ### Enabling
 
 1. Open `Settings > Post-Copy`.
-2. Pick **Card Copy** or **Folder Copy** in the mode picker at the top — all Post-Copy artifact settings are stored per mode (v2.5.0 Build 2).
+2. Pick **Card Copy** or **Folder Copy** in the mode picker at the top — all Post-Copy artifact settings are stored per mode.
 3. Toggle **Sort files into type folders on destination**.
 4. Choose a folder mode and review the category list.
 
@@ -897,7 +894,7 @@ CopyTrust makes thumbnails natively for photos and common video, but it can't de
 
 **Practical guidance for proxy/MXF-heavy cards:** decide whether you actually need real thumbnails for those formats. If yes, enable external codecs and expect longer generation. If placeholders are fine, leave external codecs off for a fast sheet. Either way, leave **hide placeholders off** unless you specifically need the no-placeholder look — it's the lighter path. (Contact sheet generation is a background artifact and never blocks copy, verify, MHL, or receipts; if it fails you can retry just that artifact — see below.)
 
-### Split large contact sheets (v2.5.4)
+### Split large contact sheets
 
 A 4,000+-file card in Grid layout produces a single PDF with hundreds of pages. **Split large contact sheets** caps how many files go into each PDF:
 
@@ -1029,7 +1026,7 @@ When **Open contact sheet automatically after creation** is on:
 - a single PDF opens in Preview as before;
 - a split run **reveals the parts selected in Finder** (in `CopyTrust_Receipts/`) instead of opening a stack of Preview windows.
 
-### Per-artifact status and retry (v2.5.4 Build 4)
+### Per-artifact status and retry
 
 Contact Sheet, EXIF CSV, HTML Tree, and Proxy Media each show their own status
 line (working / done / failed). Each spinner changes to a checkmark or result as
@@ -1037,11 +1034,11 @@ soon as that artifact generator finishes, so a slower proxy does not leave an
 already-created PDF, CSV, or tree spinning. Failed rows have their own **Retry**
 button, and **Rebuild All** regenerates the whole set.
 
-### Quick verification and descriptive artifacts (fixed in v2.5.4 Build 6)
+### Quick verification and descriptive artifacts
 
 Quick verification checks that every delivered file exists and has the expected size; it does not calculate the content hashes required for an MHL. Contact sheet PDF, EXIF CSV, HTML tree, and destination sorting do not require those hashes and are generated from CopyTrust's delivered-file inventory.
 
-Build 5 incorrectly used the hash-backed file list as the input to every post-copy artifact. A successful Quick copy therefore produced no PDF/CSV/tree and could leave the enabled artifact rows spinning. Build 6 separates delivered files from hash evidence:
+Delivered files and hash evidence are tracked separately:
 
 - Quick mode creates enabled contact sheet, EXIF CSV, and HTML tree artifacts after the size check succeeds.
 - Quick-mode destination sorting works and the descriptive artifacts use the sorted paths.
@@ -1049,15 +1046,11 @@ Build 5 incorrectly used the hash-backed file list as the input to every post-co
 - Full and Inline modes retain their hash-backed MHL behavior.
 - Every enabled artifact status row reaches a terminal done, failed, skipped, or **Nothing to do** state.
 
-### Proxy / MXF cards: contact sheet hang (fixed in v2.5.4 Build 4)
+### If no contact sheet appears: check the active mode
 
-Historical note for anyone on an older build: contact sheets on cards with camera proxies (`.LRF`) or professional formats (MXF/R3D) could hang forever — ffmpeg logged thumbnails, then generation went silent with no PDF and no failure, and stop/restart re-hung. It was a subprocess deadlock that also defeated the timeout. **Fixed in v2.5.4 Build 4**: external-tool subprocesses are now reliably killable and the redundant up-front preview pass is skipped when placeholders are shown, so generation completes — or fails cleanly and is retryable — instead of wedging. If you are on an older build and see this, update; as a stopgap, turning **external codecs off** avoids it (unsupported files render as placeholders with no external tools). See *"Unsupported media, external codecs, and placeholders"* above for how to configure these cards.
+Artifact settings are per mode, and drag-dropping a source can auto-select the copy mode — a card copied in Folder mode uses the Folder profile, where the contact sheet is **off** by default. The activity log states this explicitly (`contactSheet: disabled in Folder mode settings — skipped`), and the `contactSheet: generating` line shows the style, split setting, and timeout in effect. The metadata pass — which runs before the first preview and can take a while on RAW-heavy cards — logs its start and progress every 500 files, and split runs log each part as it is written.
 
-### If no contact sheet appears: check the active mode (v2.5.4 Build 2)
-
-Artifact settings are per mode, and drag-dropping a source can auto-select the copy mode — a card copied in Folder mode uses the Folder profile, where the contact sheet is **off** by default. From Build 2 the activity log states this explicitly (`contactSheet: disabled in Folder mode settings — skipped`), and the `contactSheet: generating` line shows the style, split setting, and timeout in effect. Build 2 also adds heartbeat logging: the metadata pass (which runs before the first preview and can take a while on RAW-heavy cards) logs its start and progress every 500 files, and split runs log each part as it is written.
-
-### Large-card generation time and timeout (fixed in v2.5.4)
+### Large-card generation time and timeout
 
 Contact sheet generation for RAW-heavy cards is preview-bound (roughly 0.25 s per file — a 4,391-file JPG+RAW card takes ~17 minutes). Before v2.5.4 a fixed 180-second timeout raced this work but could not stop it: the session reported *"Contact sheet timed out after 180s"* and *"1 failed"* while the full PDF was silently written to `CopyTrust_Receipts/` anyway — never acknowledged, never auto-opened.
 
@@ -1106,7 +1099,7 @@ exception value is replaced with `Redacted by CopyTrust privacy filter`.
 
 ## Inline Verification
 
-Inline verification is the new default verification mode (v2.4.5). It replaces the batch verification pass with per-file verification during the copy phase.
+Inline verification is the new default verification mode. It replaces the batch verification pass with per-file verification during the copy phase.
 
 ### How it works
 
@@ -1166,7 +1159,7 @@ Since 2.5.2 (stable as of 2.5.3), CopyTrust handles this automatically:
 
 Copy modes let operators switch between camera-card and folder-copy configurations with one click. Each mode maintains its own independent settings profile — changes to Card settings never affect Folder settings and vice versa.
 
-> **Naming note (2.7.1 Build 14):** the Card / Folder control was previously described as a *copy type preset*. It is now called the copy **mode**, so that **Preset** refers only to the saved settings bundles described in [Presets](#presets) below.
+> **Naming note:** the Card / Folder control is the copy **mode**. **Preset** refers only to the saved settings bundles described in [Presets](#presets) below.
 
 ### Mode picker
 
@@ -1197,7 +1190,7 @@ Each mode stores its own complete settings profile including: naming template, s
 Configure each mode independently:
 - **Settings > Card Copy** — card-specific settings plus the grouped Exclusions editor and Hidden Files toggle
 - **Settings > Folder Copy** — folder-specific settings plus the grouped Exclusions editor and Hidden Files toggle
-- **Settings > Post-Copy** — all artifact settings (contact sheet, EXIF CSV, HTML tree, destination sort) per mode via the Card/Folder picker at the top (v2.5.0 Build 2)
+- **Settings > Post-Copy** — all artifact settings (contact sheet, EXIF CSV, HTML tree, destination sort) per mode via the Card/Folder picker at the top
 - **Settings > Test** — built-in test harness to validate settings for either mode (see [Test Harness](#test-harness) below)
 
 Shared settings (not per-mode): operator name, external codecs, notifications, appearance, destination sets, receipt export.
@@ -1220,8 +1213,6 @@ Both profiles are saved to disk and survive app restarts. On first launch after 
 ---
 
 ## Presets
-
-*New in 2.7.1 Build 14.*
 
 A **preset** saves your Card **and** Folder settings under one name, so a whole
 configuration can be restored in a single action. Where the mode picker chooses *which*
@@ -1321,7 +1312,7 @@ MHL filenames, receipt filenames, and manifest filenames always use the safe san
 
 ## Name Length Guard
 
-CopyTrust checks subfolder name length before copy begins (v2.4.5).
+CopyTrust checks subfolder name length before copy begins.
 
 ### APFS limit
 
@@ -1339,7 +1330,7 @@ Name length issues are more likely with the Folder preset and Preserve Original 
 
 ## Dark Mode
 
-CopyTrust defaults to dark appearance (v2.4.5).
+CopyTrust defaults to dark appearance.
 
 ### Settings
 
@@ -1352,11 +1343,11 @@ Open `Settings > Appearance` to choose:
 
 ## Menu Bar Progress
 
-CopyTrust shows copy progress in the macOS menu bar (v2.4.5).
+CopyTrust shows copy progress in the macOS menu bar.
 
-As of v2.5.4 Build 3, the post-copy verification phase gets its own presentation: the blue copy bar is replaced by an **orange verification bar** with its own percentage (averaged across destinations, matching the activity log's `verify NN%` lines) and a "Copy complete — verifying" label, instead of a full copy bar that looked stuck. The live activity log also gains a copy-phase heartbeat — a line every ~5 seconds with percent, file-copy count, bytes copied, and current speed — so the log is no longer silent between "starting copy" and the verify lines.
+During the post-copy verification phase the blue copy bar is replaced by an **orange verification bar** with its own percentage, averaged across destinations and matching the activity log's `verify NN%` lines, under a "Copy complete — verifying" label. The live activity log carries a copy-phase heartbeat — a line every ~5 seconds with percent, file-copy count, bytes copied, and current speed.
 
-As of v2.5.5, the expanded activity log pane is **resizable**: drag the handle at its bottom edge to grow it toward filling the window, and the chosen height is remembered across launches. Each copy also logs a one-line mode summary at the start. In 2.6.0 that line explicitly includes `proxy=off` or the selected codec/scale/Final Cut folder (`copy mode=Card verify=inline artifacts=[…] proxy=hevc-25%-fcpFolder=on sort=on contactSheetSplit=500 exclusionsEnabled=3 destinations=2`) so a saved log shows exactly how the session was configured.
+The expanded activity log pane is **resizable**: drag the handle at its bottom edge to grow it toward filling the window, and the chosen height is remembered across launches. Each copy logs a one-line mode summary at the start, including `proxy=off` or the selected codec/scale/Final Cut folder (`copy mode=Card verify=inline artifacts=[…] proxy=hevc-25%-fcpFolder=on sort=on contactSheetSplit=500 exclusionsEnabled=3 destinations=2`), so a saved log shows exactly how the session was configured.
 
 ### Menu bar icon
 
@@ -1374,17 +1365,15 @@ A `doc.on.doc` icon appears in the menu bar. During an active copy the icon fill
 | All sources | Second bar with percentage — only when the run has more than one source |
 | Show CopyTrust | Button to bring the main window forward |
 
-As of v2.7.2 Build 31 the counts are **file copies**, not files: every file is written once
-per destination, so a 47-file card going to two destinations is 94 copies. Both halves of
-the ratio — and the byte totals beside them — count the same thing, and they match the
-activity log's `75/94 file copies` heartbeat. Before this build the popover counted
-per-destination completions against the card's unique file count and could report
-`75 / 47 files`.
+The counts are **file copies**, not files: every file is written once per destination, so a
+47-file card going to two destinations is 94 copies. Both halves of the ratio — and the byte
+totals beside them — count the same thing, and they match the activity log's
+`75/94 file copies` heartbeat.
 
-The same build added the `Source N of M` label and the second, quieter **All sources** bar.
 Sources copy one after another, so the main bar reaching 100% means the current card is
-done, not the run; the second bar tracks the whole run, weighting each source by its scanned
-size. Both appear only when more than one source is staged.
+done, not the run. The `Source N of M` label and the second, quieter **All sources** bar —
+which weights each source by its scanned size — appear only when more than one source is
+staged.
 
 ### Idle state
 
@@ -1396,14 +1385,14 @@ The menu bar progress lets operators monitor copies without keeping the main Cop
 
 ## Queue Manager — Staging During Active Copy
 
-When a copy starts, the UI transforms from the source/destination setup panels into a compact **Copy Queue** manager (v2.4.6). This provides a clear visual mode shift and makes it obvious that the app is in a running-copy state.
+When a copy starts, the UI transforms from the source/destination setup panels into a compact **Copy Queue** manager. This provides a clear visual mode shift and makes it obvious that the app is in a running-copy state.
 
 ### Queue Manager layout
 
 The queue manager replaces the two side-by-side panels with a single full-width panel showing:
 - A **running row** for the active copy — status icon, source name, arrow, destination names, preset badge, and live progress bar
 - **Queued rows** for staged batches — each showing source, destinations, preset, and status
-- **One line per source** under the running row when the run has more than one source (v2.7.2 Build 31)
+- **One line per source** under the running row when the run has more than one source
 - **Completed/failed rows** that remain until manually cleared or auto-pruned after 24 hours
 - A **drop target strip** at the bottom for dragging volumes from the Available Volumes pool
 
@@ -1418,7 +1407,7 @@ Click the running row to expand it. The expanded view shows:
 
 An icon-only **Progress** button in the bottom action bar opens the full progress sheet on demand. The progress sheet no longer auto-opens when a copy starts — inline progress in the queue manager is the primary view.
 
-### Runs with more than one source (v2.7.2 Build 31)
+### Runs with more than one source
 
 Sources are copied one after another, not simultaneously — "simultaneous" describes the
 destinations, which are written in parallel. A run staged with two cards therefore has a
@@ -1467,7 +1456,7 @@ Completed, cancelled, and failed queue items older than 24 hours are automatical
 
 ## Mixed Presets in Queue
 
-Each queued session stores the active copy preset at the time it was created (v2.4.5).
+Each queued session stores the active copy preset at the time it was created.
 
 ### Visual indicator
 

@@ -1,10 +1,8 @@
 # CopyTrust Workflow Guide
 
-Date: 2026-08-07
-Release status: **2.5.3 stable**; **CopyTrust 2.7.2 Build 31** in testing. Build 31 shows every source in a multi-card run — one line per card under the queue row, a whole-run progress bar, and file counts in **file copies** (one per file per destination) so the menu bar and the activity log agree. Build 30 makes `Start` the only blue button on screen: the **Copy** switch is orange because it is a mode, and the duplicate `Queue Current Session` button has gone from the Queued Sessions panel. Builds 25 and 29 replaced
-the several relay-chain and start buttons with one **Copy** switch (Simultaneously / In series)
-and one button always labelled **Start**.
-
+Date: 2026-08-09
+Release status: **2.5.3 stable**; **CopyTrust 2.7.2 Build 31** in testing.
+Version history is in the release notes.
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
 [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md). Use it
@@ -20,9 +18,9 @@ The illustrated guide now includes a workflow atlas for:
 - fan-out to B/C with only the designated Archive Master sent to P5;
 - naming, verification, sorting, artifacts, proxies, and P5 stage order;
 - offline P5 request, later submission, restore, and MHL/xxHash64 verification.
-- the Build 11 pre-copy topology review and durable workflow-plan/log evidence.
+- the pre-copy topology review and durable workflow-plan/log evidence.
 
-## Pre-Copy Workflow Review (Build 11)
+## Pre-Copy Workflow Review
 
 Before a new session starts, CopyTrust presents the whole job rather than only
 the current destination row. The top diagram distinguishes:
@@ -64,7 +62,7 @@ later relay stop is included; it is not mistaken for an unselected workflow.
 
 ## Copy Modes (Card / Folder)
 
-CopyTrust offers two copy modes accessible via a segmented control in the toolbar (orange tint to contrast with blue action buttons). These were previously called *copy type presets*; from 2.7.1 Build 14 they are the copy **mode**, and **Preset** means a saved settings bundle (see [Presets](#presets)).
+CopyTrust offers two copy modes accessible via a segmented control in the toolbar (orange tint to contrast with blue action buttons). The mode is Card or Folder; **Preset** means a saved settings bundle (see [Presets](#presets)).
 
 | Mode | Best for | Key defaults |
 |--------|----------|-------------|
@@ -77,7 +75,7 @@ Switch modes before setting up a session. The mode picker is hidden during an ac
 
 ## Presets
 
-*New in 2.7.1 Build 14.* The **Preset** menu beside the mode picker saves your Card **and** Folder settings under one name and loads them back in a single action.
+The **Preset** menu beside the mode picker saves your Card **and** Folder settings under one name and loads them back in a single action.
 
 | Action | Effect |
 |--------|--------|
@@ -92,9 +90,9 @@ Shared presets live in `/Users/Shared/CopyTrust/Presets` (read-only to the app, 
 
 **Contact sheets on proxy/MXF cards:** the contact sheet is a background artifact (never blocks copy/verify/MHL). For cards heavy in camera proxies (`.LRF`) or professional formats (MXF/R3D), enabling **external thumbnail codecs** (Settings > External Codecs, shared) makes CopyTrust run ffmpeg/REDline per file for real thumbnails — worth it for a visual sheet, but expect noticeably longer generation. Leave **external codecs off** for a fast sheet where those files appear as "No Preview" placeholders, and leave **hide placeholders off** unless you specifically want them omitted. See the "Unsupported media, external codecs, and placeholders" section of the User Guide.
 
-**Quick verification and artifacts (fixed in Build 6):** Quick verifies destination existence and size without creating content hashes. Contact sheet PDF, EXIF CSV, HTML tree, and destination sorting now use the separate delivered-file inventory and work normally in Quick mode. MHL remains hash-backed and is not produced by Quick mode. Artifact rows always stop at a terminal status rather than spinning after a zero-work result.
+**Quick verification and artifacts:** Quick verifies destination existence and size without creating content hashes. Contact sheet PDF, EXIF CSV, HTML tree, and destination sorting use a separate delivered-file inventory and work normally in Quick mode. MHL remains hash-backed and is not produced by Quick mode. Artifact rows always stop at a terminal status rather than spinning after a zero-work result.
 
-**Proxy media beta (2.6.0):** In Settings → Post-Copy → Proxy Media, optionally
+**Proxy media beta:** In Settings → Post-Copy → Proxy Media, optionally
 choose H.264 or HEVC / H.265 and 12.5%, 25%, or 50%. The pre-copy confirmation
 explicitly shows Proxy Off or the selected settings. During encoding, the UI
 and active log show per-clip percentage, speed, and ETA. JSON/TXT/LOG evidence
@@ -104,24 +102,24 @@ decoder support. Use the **Create proxies** checkbox on each destination row to
 choose exactly which destinations receive proxies; several or all may be
 selected.
 
-**Proxy correctness (Build 12):** CopyTrust probes each delivered original
+**Proxy correctness:** CopyTrust probes each delivered original
 before encoding. Display rotation is applied before expected proxy dimensions
 are calculated, while reported color range, primaries, transfer, and matrix
 drive the encode. The proxy receipt retains raw/display dimensions, rotation,
 and original/proxy color fields.
 
-**Package-safe artifacts (2.6.0):** If the copied root is a macOS package such
+**Package-safe artifacts:** If the copied root is a macOS package such
 as `Show Library.fcpbundle`, `CopyTrust_Receipts`, `CopyTrust_Proxies`, and
 `Final Cut Proxy Media` are written beside the package. CopyTrust never adds
 them to the package contents. Ordinary folder placement is unchanged.
 
-**P5 archive post-copy action (2.7.0 testing):** Configure the P5 server,
+**P5 archive post-copy action (testing):** Configure the P5 server,
 archive index, client, and a non-deleting archive plan in Settings → P5
 Archive. Full or Inline verification can submit one verified destination after
 sorting and enabled artifacts finish. Quick or copy-only work writes a deferred
 request with `needs_hash_verification` and is never automatically submitted.
 
-**Crash-report privacy (2.7.0):** CopyTrust is configured not to capture or
+**Crash-report privacy:** CopyTrust is configured not to capture or
 transmit media paths or private information through Sentry. File/network
 tracing, requests, logs, breadcrumbs, sessions, and performance telemetry are
 disabled. A final on-device filter removes source/destination paths, media
@@ -177,10 +175,10 @@ Expected result:
   `94` copies, the same number the activity log reports
 - the menu bar popover shows `CARD_NAME · Source 1 of 2` and a second "All sources" bar
 
-Per-source lines, the `Source N of M` label and the All-sources bar appear only when a run has more
-than one source; a single-card run looks exactly as it always has. (2.7.2 Build 31)
+Per-source lines, the `Source N of M` label and the All-sources bar appear only when a run has
+more than one source; a single-card run shows none of them.
 
-### Verified destination to Archiware P5 (2.7.0 testing)
+### Verified destination to Archiware P5 (testing)
 
 Use this only with expendable media and a non-deleting P5 archive plan until the
 beta has passed your site acceptance tests.
@@ -275,7 +273,7 @@ Expected result:
 - queue rows show a coloured mode badge (blue Card / green Folder) — each session uses its own mode
 
 ### Queue manager — staging during active copy
-Use this when you want to set up the next batch while a copy is already running. The UI transforms into a compact queue manager when a copy starts (v2.4.6).
+Use this when you want to set up the next batch while a copy is already running. The UI transforms into a compact queue manager when a copy starts.
 
 1. Start a copy. The source/destination panels transform into the **Copy Queue** manager.
 2. Click **[+ Add]** in the queue header. A sheet opens with available source volumes (shown as wrapping chips, read-only volumes first) and pre-populated destinations from the running copy.
@@ -339,9 +337,8 @@ The `Load` button is for running a specific leg out of queue order. For editing 
 | Sessions staged in the queue | `Start Queue` |
 | Specific queued leg loaded via Load | `Start` (runs that leg only) |
 
-The primary button is always `Start`. Before Build 29 the label changed with the job
-(`Start This Session`, `Copy to Both Now`, `Start Relay Chain`, `Start Loaded Session`); the
-`Copy` switch and the pre-copy review now carry that information instead.
+The primary button is always `Start`. The `Copy` switch and the pre-copy review carry the
+detail of what it will run.
 
 ### During a running copy
 
@@ -436,7 +433,7 @@ After `End Session`, use the main UI for:
 
 The main workspace is cleared at session end, so use those review buttons instead of expecting the previous sources or destinations to remain loaded.
 
-## Volume Disconnect Recovery (v2.4.4)
+## Volume Disconnect Recovery
 
 CopyTrust now monitors destination volumes in real time. If a destination drive or NAS disconnects:
 
@@ -451,7 +448,7 @@ If auto-resume does not trigger, use `Start` manually — the resume infrastruct
 
 Before scanning begins, all destination volumes are verified as reachable. If a destination disappeared between setup and start, the copy is blocked upfront.
 
-## macOS Notifications (v2.4.4)
+## macOS Notifications
 
 CopyTrust posts native macOS notifications for: copy complete, copy failed, volume disconnect/reconnect, auto-resume, verification, and artifact completion/failure.
 
@@ -459,7 +456,7 @@ Open **Settings > Notifications** to toggle each event. Use **Send Test Notifica
 
 If notifications do not appear, check **System Settings > Notifications > CopyTrust**.
 
-## Built-in Test Harness (v2.4.7)
+## Built-in Test Harness
 
 Open **Settings > Test** to validate that your Card or Folder settings produce the expected copy results without needing a real camera card. The harness generates synthetic fixture files and runs the real copy engine, then compares expected vs actual outcomes.
 

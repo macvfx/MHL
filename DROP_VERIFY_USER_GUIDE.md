@@ -1,11 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.7.2 (Build 15 beta)**. Build 15 is a suite-alignment
-rebuild released alongside CopyTrust 2.7.2 Build 31; Drop Verify has not changed
-functionally since Build 8. The substantive 2.7.2 change was **proxy media**
-(see *Proxy Media* below), plus the operator name now recorded in session
-manifests. Receipts are kept beside macOS packages rather than written inside
-them (2.6.0).
+Current app version: **v2.7.2 (Build 15 beta)**. Version history is in the release notes.
 
 ## External Codec Setup
 
@@ -140,7 +135,7 @@ file there.
 - Two layout styles: **Row** (one clip per row with detailed metadata) or **Grid** (3×4 poster, 12 items per page with single thumbnail + caption per item)
 - In the stable release, professional and legacy formats (MXF, R3D, BRAW, ARRIRAW, CinemaDNG, M2V, M2T, M2TS, VOB) appear with "No Preview" placeholders and the file type name unless hidden.
 - When external codecs are configured, MXF can show real ffmpeg thumbnails and R3D can show real REDline thumbnails while still using ExifTool-backed metadata.
-- Recent Build 2 polish: REDline validation now better recognizes working installs, R3D contact-sheet thumbnails render at a more practical size, and crowded unsupported-format metadata blocks are trimmed back in the PDF.
+- REDline validation recognizes working installs, R3D contact-sheet thumbnails render at a practical size, and crowded unsupported-format metadata blocks are trimmed in the PDF.
 - Header shows a summary when files could not be previewed (e.g. "2 files without preview (MXF: 1, R3D: 1)")
 - Footer shows "Drop Verify" branding (CopyTrust contact sheets show "CopyTrust")
 - **Split large contact sheets** (v2.5.4): when a split limit is set and the folder exceeds it, output is multiple numbered PDFs instead of one very large one. Each part's header identifies its part number and file range; the extra export folder receives every part. The header's total-size figure is the size of the scanned media, not of the PDF itself.

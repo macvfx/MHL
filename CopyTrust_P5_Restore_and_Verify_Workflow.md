@@ -1,6 +1,6 @@
 # CopyTrust → P5 Restore and Hash Verification Workflow
 
-**Status:** Manual operating procedure for CopyTrust 2.7.0 Build 12 public prerelease
+**Status:** Manual operating procedure for the CopyTrust public prerelease
 **Last updated:** 2026-08-01
 
 This workflow closes the integrity loop after a CopyTrust delivery has been
@@ -204,7 +204,7 @@ trusted success.
 
 ## Planned improvement: coordinated Restore & Verify
 
-This is a planned feature, not part of CopyTrust 2.7.0 Build 10.
+This is a planned feature, not part of the current release.
 
 The preferred design is a coordinated workflow in P5 Archive Browser, using a
 shared MHL verification component or an explicit handoff to CopyTrust/MHL

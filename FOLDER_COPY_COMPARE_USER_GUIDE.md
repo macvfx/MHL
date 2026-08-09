@@ -1,9 +1,7 @@
 # Folder Copy Compare User Guide
 
-Current version: **v2.7.2 (Build 14 beta)**. The build number is aligned with
-CopyTrust and Drop Verify; Folder Copy Compare's core comparison behavior is
-unchanged in this prerelease — Build 14 is a suite-alignment rebuild released
-alongside CopyTrust 2.7.2 Build 31.
+Current version: **v2.7.2 (Build 14 beta)**, aligned with CopyTrust and Drop Verify.
+Version history is in the release notes.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
 
@@ -29,58 +27,6 @@ Folder Copy Compare has two modes, selectable from the **Compare | Subfolder Che
 Use Compare when you want a complete answer. Use Subfolder Check when you want a quick overview first — especially useful after Archiware P5 restores or any operation that works folder-by-folder.
 
 **Switching modes does not clear your drop zones.** Folders loaded in Compare mode are carried over when you switch to Subfolder Check, and vice versa. You can switch freely without re-dropping.
-
-## What’s New in v2.4.9 (Build 1)
-
-### Reference folder compare
-
-- Compare mode now supports an optional **Reference** folder for comparing the same content across three locations.
-- Click **Compare against a reference location** below the drop zones. A third purple drop zone appears alongside Source (green) and Target (blue).
-- Click **Compare All** to run the comparison. Results merge into a single table showing per-file status across all three locations.
-- Statuses include: all identical, all present but different, missing in source/target/reference, only in one location, and two-match-one-differs.
-- Filter by status, search by filename, and right-click any row to reveal the file in Finder at any of the three locations.
-- Click **Remove Reference** to return to standard two-folder comparison.
-
-### Saved profiles
-
-- Click the **Save as Profile** button (bookmark with plus icon) next to the mode picker to save the current comparison setup (source, target, optional reference, scan mode) as a named profile.
-- Open the **profile drawer** using the bookmark toggle button next to the mode picker.
-- Click **Load** on any profile to instantly populate the drop zones. Profiles with a reference folder automatically enable the reference drop zone.
-- Edit a profile’s name, paths, scan mode, or watch interval via the ⋯ menu.
-
-### Two-phase scan progress
-
-- Scanning now shows two clearly distinct phases: first **"Discovering files… N found"** while file enumeration runs, then **"Scanning/Hashing X% — N of M files"** with exact progress against the known total. No more approximate file counts.
-
-### Folder watch with drift detection
-
-- Toggle the **eye icon** on any saved profile to start watching its folders for changes.
-- The watch uses macOS FSEvents (`DispatchSource`) to detect file writes, renames, deletions, and attribute changes.
-- When drift is detected, a **macOS notification** is posted and a **red dot** appears on the profile row.
-- Watch interval is configurable per profile: 1 min, 5 min, 15 min, 30 min, or 1 hour.
-- Clear the drift alert with the **×** button. The bottom bar shows how many profiles are actively watched.
-
-## What’s New in v2.4.1 (Build 7)
-
-### Copy reliability and progress
-
-- **Copy All Missing sorts files smallest-first.** Files are copied smallest-to-largest so the file counter starts moving immediately — even when the batch contains very large files. Applies to both Compare mode and Subfolder Check drill-down.
-- **Within-file byte progress.** The Data progress bar and byte counter now update continuously as each file is being written, throttled to 100 ms. A 127 GB file shows real progress from the first buffer flush rather than sitting at 0% until the whole file finishes.
-- **NAS / network volume copy fixed.** `Copy All Missing` and per-file `Copy` no longer hang on SMB/NFS destinations. Network volumes now use `fsync` instead of `F_FULLFSYNC`, which blocks indefinitely waiting for a physical media flush the NAS may never promptly acknowledge. Local volumes (APFS, HFS+, exFAT on directly attached drives) still use `F_FULLFSYNC` for stronger durability.
-- **Subfolder Check drill-down Refresh fixed.** After copying missing files in a drill-down, clicking **Refresh** (or the automatic recompute that runs after a batch copy) now re-enumerates the target folder from disk. Newly copied files appear immediately rather than still showing as missing.
-
-### UI enhancements
-
-- **"Date Only Difference" label.** The Quick Scan status for same-size, different-date pairs is now labelled **Date Only Difference** throughout the UI for clarity.
-- **Check All Hashes.** A **Check All (N)** link appears in the Date Only Difference sidebar group whenever there are unchecked pairs. Hashing runs sequentially — one pair at a time — with a live "N of M" counter and a **Cancel** button. Partial results are preserved if you cancel.
-- **Clean Windows Files.** A **Clean Windows Files (N)** toolbar button appears when the comparison contains Windows system artifacts: `$RECYCLE.BIN` entries, `Desktop.ini`, `Thumbs.db`, `ehthumbs.db`, or `AUTORUN.INF`. A confirmation dialog is shown before anything moves; files go to the macOS Trash and are fully recoverable.
-
-### App-level — Check for Updates (v2.4 Build 1)
-
-- All three apps (FolderCopyCompare, CopyTrust, Drop Verify) now check GitHub Releases automatically at launch, at most once every 24 hours, silently. No alert unless an update is found.
-- A **Check for Updates…** menu item appears under the app name after About. Clicking it always checks immediately and reports the result.
-- When a newer release is available, an alert shows current and latest version numbers, release notes, and a **Download** button that opens the GitHub release page.
-- No analytics, no file download — only the version tag is fetched from GitHub.
 
 ## Getting Started
 
