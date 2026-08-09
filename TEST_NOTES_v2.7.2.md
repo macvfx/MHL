@@ -1,10 +1,17 @@
-# CopyTrust 2.7.2 (Build 29) — Multi-Destination Copy, Relay Recovery, and Suite Alignment Testing Notes
+# CopyTrust 2.7.2 (Build 30) — Multi-Destination Copy, Relay Recovery, and Suite Alignment Testing Notes
 
 Date: 2026-08-08
 Status: Public prerelease for controlled testing
-Apps: CopyTrust 2.7.2 Build 29; Drop Verify and Folder Copy Compare 2.7.2 Build 14
+Apps: CopyTrust 2.7.2 Build 30; Drop Verify and Folder Copy Compare 2.7.2 Build 14
 
 ## Beta focus
+
+Build 30 is a presentation change only: `Start` is now the only blue control on screen.
+The `Simultaneously` / `In series` switch is orange, matching Card/Folder, because it is a
+mode; and the Queued Sessions panel's duplicate `Queue Current Session` button is gone,
+leaving the one in the action bar. Nothing about what a copy *does* changed, so the matrices
+below still apply as written — add one check that exactly one blue control is visible with a
+relay chain staged, and that `Queue Current Session` still works from the action bar.
 
 Build 29 changes how a multi-destination copy is started, and fixes two failures that
 only appear on relay chains. Test the starting decision and the recovery behaviour

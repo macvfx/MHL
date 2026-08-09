@@ -2,14 +2,18 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**CopyTrust 2.7.2 Build 29 is a public beta** for controlled multi-destination copy,
+**CopyTrust 2.7.2 Build 30 is a public beta** for controlled multi-destination copy,
 relay-chain, preset, Drop Verify proxy, proxy-correctness, workflow-review, relay
-evidence, Archiware P5, queue, and privacy-safe Sentry testing. Build 29 replaces the
+evidence, Archiware P5, queue, and privacy-safe Sentry testing. Build 30 makes **`Start`
+the only blue button on screen** — the `Copy` switch is now orange like the Card/Folder
+switch because it is a mode, and the duplicate `Queue Current Session` button has gone
+from the Queued Sessions panel, leaving the one in the action bar. Build 29 replaced the
 old `Queue Relay Chain` control with one **Copy** switch (`Simultaneously` / `In series`)
-and one button always labelled **Start**, fixes a crash that ended every relay copy just
+and one button always labelled **Start**, fixed a crash that ended every relay copy just
 after its first stop, and recovers interrupted jobs on the next launch.
-**Drop Verify and Folder Copy Compare are rebuilt at 2.7.2 Build 14** to keep the suite
-aligned; neither has changed functionally since Drop Verify Build 8 added proxy media.
+**Drop Verify and Folder Copy Compare stay at 2.7.2 Build 14** to keep the suite
+aligned; neither has changed functionally since Drop Verify Build 8 added proxy media, and
+Build 30 touches CopyTrust only.
 **MHL Verify and mhl-tool remain stable at 2.5.1.** One-line history is
 in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes are in each app's
 docs.

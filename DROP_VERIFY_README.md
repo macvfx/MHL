@@ -1,7 +1,7 @@
 # Drop Verify
 
 Current app version: **v2.7.2 (Build 14 beta)**. Build 14 is a suite-alignment
-rebuild released alongside CopyTrust 2.7.2 Build 29; Drop Verify has not changed
+rebuild released alongside CopyTrust 2.7.2 Build 30; Drop Verify has not changed
 functionally since Build 8. The substantive 2.7.2 change was **proxy media** —
 edit-friendly HEVC/H.264 copies with per-clip progress and their own evidence,
 where only files that passed verification get a proxy. Sessions also record the

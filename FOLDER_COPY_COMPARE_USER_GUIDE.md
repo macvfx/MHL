@@ -3,7 +3,7 @@
 Current version: **v2.7.2 (Build 14 beta)**. The build number is aligned with
 CopyTrust and Drop Verify; Folder Copy Compare's core comparison behavior is
 unchanged in this prerelease — Build 14 is a suite-alignment rebuild released
-alongside CopyTrust 2.7.2 Build 29.
+alongside CopyTrust 2.7.2 Build 30.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
 

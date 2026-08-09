@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
 Date: 2026-08-07
-Release status: **2.5.3 stable**; **CopyTrust 2.7.2 Build 29** in testing. Builds 25 and 29 replaced
+Release status: **2.5.3 stable**; **CopyTrust 2.7.2 Build 30** in testing. Build 30 makes `Start` the only blue button on screen: the **Copy** switch is orange because it is a mode, and the duplicate `Queue Current Session` button has gone from the Queued Sessions panel. Builds 25 and 29 replaced
 the several relay-chain and start buttons with one **Copy** switch (Simultaneously / In series)
 and one button always labelled **Start**.
 

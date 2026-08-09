@@ -5,7 +5,12 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.3**. **2.7.2 Build 29 is a public prerelease.**
+Stable release: **2.5.3**. **2.7.2 Build 30 is a public prerelease.**
+
+One blue button means one action. `Start` is the only blue control on screen: the **Copy**
+switch is orange because it is a mode — it decides what `Start` will do and starts nothing —
+and the duplicate `Queue Current Session` button is gone from the Queued Sessions panel. The
+one in the bar at the bottom of the window is the only one now.
 
 The multi-destination decision is now one control. With two or more destinations a
 **Copy** switch sits above the destination list: `Simultaneously` copies to every
@@ -26,7 +31,7 @@ the chain carries on from the next stop instead of reopening stuck.
 A new relay chain starts with `Archive to P5` on the first stop and `Create proxies` on
 the last — camera archive first, editing storage last. Change either on any row.
 
-Build 29 carries forward the rotation-aware proxy validation and source-aware color
+Build 30 carries forward the rotation-aware proxy validation and source-aware color
 handling from 2.7.0 Build 12, and the controlled post-copy Archiware P5 beta. For P5 use
 expendable fixtures, Full/Inline verification, a non-deleting plan, and a path visible
 identically to the selected P5 client. Review the request JSON and P5 Web job/metadata;

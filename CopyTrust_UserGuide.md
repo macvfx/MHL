@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-08-07
-Release status: **2.5.3 stable**; **2.7.2 Build 29** in testing. Build 25 replaced the multiple
+Release status: **2.5.3 stable**; **2.7.2 Build 30** in testing. Build 30 makes `Start` the only blue button on screen — the **Copy** switch is orange, like the Card/Folder switch, because it is a mode; the duplicate `Queue Current Session` button has gone from the Queued Sessions panel, leaving the one in the bar at the bottom of the window. Build 25 replaced the multiple
 relay-chain buttons with a single **Copy** switch (Simultaneously / In series) and Build 29 made
 the primary action always read **Start**, so a multi-destination job is now one decision and one
 button. Build 29 also fixes a crash that ended every relay copy just after the first stop.

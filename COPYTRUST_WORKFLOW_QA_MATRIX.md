@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-07
-Applies to: CopyTrust 2.7.2 Build 29; includes the single `Copy` switch and single `Start` button (Builds 25/29), relay-chain per-stop defaults (Build 23), interrupted-job recovery (Builds 26/27), the relay-export crash fix (Build 29), plus Build 11's visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 2.7.2 Build 30; includes the one-blue-action-button colour rule (Build 30), the single `Copy` switch and single `Start` button (Builds 25/29), relay-chain per-stop defaults (Build 23), interrupted-job recovery (Builds 26/27), the relay-export crash fix (Build 29), plus Build 11's visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
