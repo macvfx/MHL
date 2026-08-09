@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-07
-Applies to: CopyTrust 2.7.2 Build 30; includes the one-blue-action-button colour rule (Build 30), the single `Copy` switch and single `Start` button (Builds 25/29), relay-chain per-stop defaults (Build 23), interrupted-job recovery (Builds 26/27), the relay-export crash fix (Build 29), plus Build 11's visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 2.7.2 Build 31; includes per-source progress lines and corrected file-copy counts (Build 31), the one-blue-action-button colour rule (Build 30), the single `Copy` switch and single `Start` button (Builds 25/29), relay-chain per-stop defaults (Build 23), interrupted-job recovery (Builds 26/27), the relay-export crash fix (Build 29), plus Build 11's visual workflow review, immutable relay plans, structured workflow logs, relay-sequence isolation, relay-aware P5 pre-checks, and per-destination proxy routing; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -170,8 +170,16 @@ evidence screenshots as manual QA evidence when executing F1–F16.
 | G10 | Per-job artifact snapshot | Queue jobs with different artifact/proxy settings and start the queue. | Each job's background outputs match its captured settings even after the next profile activates. |
 | G11 | Completion states | Observe a job after copy while artifacts/P5 remain active. | Row distinguishes Copy complete, Artifacts running, P5 archive running, needs attention, and Fully complete. |
 | G12 | Structured workflow log | Inspect each job's session log. | `workflow setup`, source, and per-destination entries record topology, queue item, verification, artifacts, proxy and P5 choices. |
+| G13 | Every source is visible (b31) | Stage **two** cards against the **same two** destinations and start. | Queue row is titled `2 sources`, status line reads `Source 1 of 2`, and one line per source appears below with its own bar: the running card `Copying & Verifying NN%`, the waiting card `Waiting`. Neither card is hidden at any point in the run. |
+| G14 | Counts are in one unit (b31) | During G13, compare the menu bar popover, the queue row status line, and the activity log heartbeat. | All three agree and all read **file copies**: a 47-file card to two destinations counts toward `94`, never `47`. Bytes copied never exceeds the byte total shown beside it. |
+| G15 | Whole-run bar (b31) | During G13, watch the row's main bar as the first card finishes and the second starts. | The bar advances continuously across both cards. It does **not** reach 100% at the end of card one and restart from zero. ETA is labelled `left on this source`. |
+| G16 | Single source unchanged (b31) | Run one card to two destinations. | No per-source lines, no `Source N of M`, no All-sources bar. Row title is the card's name. |
 
 Visual checkpoint: `03-mixed-queue.png`.
+
+G13–G16 exist because the pre-b31 UI named only the active source and mixed units in its
+counts — a 47-file card to two destinations reported `75 / 47 files` in the menu bar, and the
+second staged card was invisible until its turn came.
 
 ## H. Relay Chain
 

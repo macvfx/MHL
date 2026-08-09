@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
 Date: 2026-08-07
-Release status: **2.5.3 stable**; **CopyTrust 2.7.2 Build 30** in testing. Build 30 makes `Start` the only blue button on screen: the **Copy** switch is orange because it is a mode, and the duplicate `Queue Current Session` button has gone from the Queued Sessions panel. Builds 25 and 29 replaced
+Release status: **2.5.3 stable**; **CopyTrust 2.7.2 Build 31** in testing. Build 31 shows every source in a multi-card run — one line per card under the queue row, a whole-run progress bar, and file counts in **file copies** (one per file per destination) so the menu bar and the activity log agree. Build 30 makes `Start` the only blue button on screen: the **Copy** switch is orange because it is a mode, and the duplicate `Queue Current Session` button has gone from the Queued Sessions panel. Builds 25 and 29 replaced
 the several relay-chain and start buttons with one **Copy** switch (Simultaneously / In series)
 and one button always labelled **Start**.
 
@@ -153,6 +153,33 @@ Expected result:
 - copy, selected verification, receipts, and logs finish before the session is considered complete; Full/Inline also write a hash-backed MHL, while Quick does not
 - PDF, CSV, and HTML tree artifacts can continue afterward in the background
 
+### Several cards to the same destinations
+
+Use this for two or more camera cards going to the same set of drives.
+
+1. Add every source card.
+2. Add the destinations they all share.
+3. Leave the `Copy` switch on `Simultaneously` — this describes the **destinations**, which are
+   written in parallel. **Sources are always copied one after another.**
+4. Turn `Auto` on in the action bar so the next card starts by itself when the current one finishes.
+5. Click `Start` and confirm the pre-copy review.
+
+Expected result:
+- one card copies at a time, to all its destinations at once; the next card starts on auto-advance
+- the queue row is titled `2 sources` (not the name of one card) with a `Source 1 of 2` status line,
+  and lists **one line per source** below it — each with its own bar and its own status:
+  `Waiting`, `Copying & Verifying NN%`, `Verifying`, `Complete`, `Cancelled`, `Failed`
+- the row's main bar covers the **whole run**, each card weighted by its scanned size. It does not
+  reach 100% at the end of the first card and start again
+- the estimated time remaining is for the card copying now, and says so
+  (`~4m 20s left on this source`) — the clock restarts with each card
+- counts are **file copies**, one per file per destination: a 47-file card to two destinations is
+  `94` copies, the same number the activity log reports
+- the menu bar popover shows `CARD_NAME · Source 1 of 2` and a second "All sources" bar
+
+Per-source lines, the `Source N of M` label and the All-sources bar appear only when a run has more
+than one source; a single-card run looks exactly as it always has. (2.7.2 Build 31)
+
 ### Verified destination to Archiware P5 (2.7.0 testing)
 
 Use this only with expendable media and a non-deleting P5 archive plan until the
@@ -256,6 +283,7 @@ Use this when you want to set up the next batch while a copy is already running.
 4. Alternatively, drag a volume from Available Volumes onto the drop target strip at the bottom of the queue.
 5. Repeat to stage more batches if needed.
 6. Click the running row to expand inline progress (per-destination bars, speed, ETA, recent files).
+   The row itself already lists one line per source when the run has more than one.
 
 Expected result:
 - the currently-running copy is not interrupted

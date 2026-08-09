@@ -5,7 +5,16 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.3**. **2.7.2 Build 30 is a public prerelease.**
+Stable release: **2.5.3**. **2.7.2 Build 31 is a public prerelease.**
+
+Two or more cards in one run are now all visible. Cards are copied one at a time — the
+`Copy` switch describes the destinations, not the cards — so the queue row lists every
+card with its own bar and status (`Waiting`, `Copying & Verifying`, `Complete`), under a
+`Source 1 of 2` line. The row's bar covers the whole run instead of filling to 100% at the
+end of the first card, and the time remaining is for the card copying now. Counts are
+**file copies**, one per file per destination: a 47-file card to two destinations is 94
+copies, the number the activity log has always reported. Before Build 31 the same run read
+`75 / 47 files` in the menu bar and hid the second card until its turn came.
 
 One blue button means one action. `Start` is the only blue control on screen: the **Copy**
 switch is orange because it is a mode — it decides what `Start` will do and starts nothing —
@@ -31,7 +40,7 @@ the chain carries on from the next stop instead of reopening stuck.
 A new relay chain starts with `Archive to P5` on the first stop and `Create proxies` on
 the last — camera archive first, editing storage last. Change either on any row.
 
-Build 30 carries forward the rotation-aware proxy validation and source-aware color
+Build 31 carries forward the rotation-aware proxy validation and source-aware color
 handling from 2.7.0 Build 12, and the controlled post-copy Archiware P5 beta. For P5 use
 expendable fixtures, Full/Inline verification, a non-deleting plan, and a path visible
 identically to the selected P5 client. Review the request JSON and P5 Web job/metadata;

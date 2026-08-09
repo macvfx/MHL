@@ -2,9 +2,14 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**CopyTrust 2.7.2 Build 30 is a public beta** for controlled multi-destination copy,
+**CopyTrust 2.7.2 Build 31 is a public beta** for controlled multi-destination copy,
 relay-chain, preset, Drop Verify proxy, proxy-correctness, workflow-review, relay
-evidence, Archiware P5, queue, and privacy-safe Sentry testing. Build 30 makes **`Start`
+evidence, Archiware P5, queue, and privacy-safe Sentry testing. Build 31 makes a run with
+**more than one card** legible: the queue row lists every card, each with its own bar and
+status, instead of naming only the one copying right now; its progress bar covers the whole
+run rather than filling up and resetting at each card; and file counts are **file copies**,
+one per file per destination, so a 47-file card going to two destinations counts toward 94
+and the menu bar agrees with the activity log. Build 30 makes **`Start`
 the only blue button on screen** — the `Copy` switch is now orange like the Card/Folder
 switch because it is a mode, and the duplicate `Queue Current Session` button has gone
 from the Queued Sessions panel, leaving the one in the action bar. Build 29 replaced the

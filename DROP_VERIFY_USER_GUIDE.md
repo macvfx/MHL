@@ -1,7 +1,7 @@
 # Drop Verify User Guide
 
-Current app version: **v2.7.2 (Build 14 beta)**. Build 14 is a suite-alignment
-rebuild released alongside CopyTrust 2.7.2 Build 30; Drop Verify has not changed
+Current app version: **v2.7.2 (Build 15 beta)**. Build 15 is a suite-alignment
+rebuild released alongside CopyTrust 2.7.2 Build 31; Drop Verify has not changed
 functionally since Build 8. The substantive 2.7.2 change was **proxy media**
 (see *Proxy Media* below), plus the operator name now recorded in session
 manifests. Receipts are kept beside macOS packages rather than written inside

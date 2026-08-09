@@ -5,7 +5,7 @@ The original tool that started it all.
 Current version: **v2.7.2 (Build 14 beta)**. The version is aligned with
 CopyTrust and Drop Verify; Folder Copy Compare behavior is unchanged in this
 prerelease — Build 14 is a suite-alignment rebuild released alongside CopyTrust
-2.7.2 Build 30 (see [RELEASE_NOTES.md](RELEASE_NOTES.md)).
+2.7.2 Build 31 (see [RELEASE_NOTES.md](RELEASE_NOTES.md)).
 
 **Folder Copy Compare** began as a simple idea: after copying a folder, prove that the copy worked. Drop a source folder, drop a target folder, and get a clear answer — do they match?
 

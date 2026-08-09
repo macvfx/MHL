@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-08-07
-Release status: **2.5.3 stable**; **2.7.2 Build 30** in testing. Build 30 makes `Start` the only blue button on screen — the **Copy** switch is orange, like the Card/Folder switch, because it is a mode; the duplicate `Queue Current Session` button has gone from the Queued Sessions panel, leaving the one in the bar at the bottom of the window. Build 25 replaced the multiple
+Release status: **2.5.3 stable**; **2.7.2 Build 31** in testing. Build 31 makes a run with more than one card legible: the queue row lists one line per source instead of naming only the card copying right now, its progress bar covers the whole run, and the file counts in the menu bar and the queue row are **file copies** — one per file per destination — so a 47-file card to two destinations no longer reports `75 / 47 files`. Build 30 makes `Start` the only blue button on screen — the **Copy** switch is orange, like the Card/Folder switch, because it is a mode; the duplicate `Queue Current Session` button has gone from the Queued Sessions panel, leaving the one in the bar at the bottom of the window. Build 25 replaced the multiple
 relay-chain buttons with a single **Copy** switch (Simultaneously / In series) and Build 29 made
 the primary action always read **Start**, so a multi-destination job is now one decision and one
 button. Build 29 also fixes a crash that ended every relay copy just after the first stop.
@@ -1366,12 +1366,25 @@ A `doc.on.doc` icon appears in the menu bar. During an active copy the icon fill
 
 | Field | Example |
 |-------|---------|
-| Source name | `A001` |
+| Source name | `A001 · Source 1 of 2` |
 | Destination count | `2 destinations · Copying` |
-| Progress bar | Visual bar with percentage |
-| File count | `142 / 380 files` |
+| Progress bar | Visual bar with percentage, for the source copying now |
+| File copies | `142 / 380 file copies` |
 | Bytes | `48.2 GB / 128.7 GB` |
+| All sources | Second bar with percentage — only when the run has more than one source |
 | Show CopyTrust | Button to bring the main window forward |
+
+As of v2.7.2 Build 31 the counts are **file copies**, not files: every file is written once
+per destination, so a 47-file card going to two destinations is 94 copies. Both halves of
+the ratio — and the byte totals beside them — count the same thing, and they match the
+activity log's `75/94 file copies` heartbeat. Before this build the popover counted
+per-destination completions against the card's unique file count and could report
+`75 / 47 files`.
+
+The same build added the `Source N of M` label and the second, quieter **All sources** bar.
+Sources copy one after another, so the main bar reaching 100% means the current card is
+done, not the run; the second bar tracks the whole run, weighting each source by its scanned
+size. Both appear only when more than one source is staged.
 
 ### Idle state
 
@@ -1390,6 +1403,7 @@ When a copy starts, the UI transforms from the source/destination setup panels i
 The queue manager replaces the two side-by-side panels with a single full-width panel showing:
 - A **running row** for the active copy — status icon, source name, arrow, destination names, preset badge, and live progress bar
 - **Queued rows** for staged batches — each showing source, destinations, preset, and status
+- **One line per source** under the running row when the run has more than one source (v2.7.2 Build 31)
 - **Completed/failed rows** that remain until manually cleared or auto-pruned after 24 hours
 - A **drop target strip** at the bottom for dragging volumes from the Available Volumes pool
 
@@ -1403,6 +1417,27 @@ Click the running row to expand it. The expanded view shows:
 - "Cancel" button
 
 An icon-only **Progress** button in the bottom action bar opens the full progress sheet on demand. The progress sheet no longer auto-opens when a copy starts — inline progress in the queue manager is the primary view.
+
+### Runs with more than one source (v2.7.2 Build 31)
+
+Sources are copied one after another, not simultaneously — "simultaneous" describes the
+destinations, which are written in parallel. A run staged with two cards therefore has a
+first card and a second card, and the queue row now shows both:
+
+- The row title reads **`2 sources`** instead of naming only the card copying right now, and
+  the status line adds **`Source 1 of 2`**.
+- Below the row, **one line per source** gives that source's own bar and status —
+  `Waiting`, `Copying & Verifying 81%`, `Verifying`, `Complete`, `Cancelled` or `Failed`.
+  The active source's name is bold.
+- The row's main progress bar covers the **whole run**, each source weighted by its scanned
+  size. It no longer fills to 100% at the end of the first card and start again from zero.
+- The **estimated time remaining** is still for the source copying now, and says so:
+  `~4m 20s left on this source`. The clock restarts with each source.
+- The **file copies** count in the status line is per file per destination — the same unit
+  as the activity log.
+
+A run with a single source looks exactly as it did: no extra lines, and the row title is the
+card's name.
 
 ### How to stage the next batch
 
