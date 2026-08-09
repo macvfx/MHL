@@ -2,92 +2,51 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**CopyTrust 2.7.2 Build 31 is a public beta** for controlled multi-destination copy,
-relay-chain, preset, Drop Verify proxy, proxy-correctness, workflow-review, relay
-evidence, Archiware P5, queue, and privacy-safe Sentry testing. Build 31 makes a run with
-**more than one card** legible: the queue row lists every card, each with its own bar and
-status, instead of naming only the one copying right now; its progress bar covers the whole
-run rather than filling up and resetting at each card; and file counts are **file copies**,
-one per file per destination, so a 47-file card going to two destinations counts toward 94
-and the menu bar agrees with the activity log. Build 30 makes **`Start`
-the only blue button on screen** — the `Copy` switch is now orange like the Card/Folder
-switch because it is a mode, and the duplicate `Queue Current Session` button has gone
-from the Queued Sessions panel, leaving the one in the action bar. Build 29 replaced the
-old `Queue Relay Chain` control with one **Copy** switch (`Simultaneously` / `In series`)
-and one button always labelled **Start**, fixed a crash that ended every relay copy just
-after its first stop, and recovers interrupted jobs on the next launch.
-**Drop Verify 2.7.2 Build 15** fixes the progress bar that swept back and forth while
-proxies encoded — it now fills left to right, one slice per clip, from the encode percent
-ffmpeg already reports. **Folder Copy Compare stays at 2.7.2 Build 14.**
-**MHL Verify 2.6.0 compares two MHL files that live on different volumes**, using a
-side-by-side `Side A` / `Side B` panel — one open panel could only ever reach one
-disk, and a source manifest and its archive copy are almost never on the same one.
-It also reports a **verdict**, so a re-sorted layout or two copies made minutes apart
-no longer read as a failed comparison.
-**mhl-tool remains stable at 2.5.1.** One-line history is
-in [RELEASE_NOTES.md](RELEASE_NOTES.md); detailed changes are in each app's
-docs.
+**Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.5.1.
+**Public beta:** CopyTrust 2.7.2 Build 31, Drop Verify 2.7.2 Build 15,
+MHL Verify 2.6.0, Folder Copy Compare 2.7.2 Build 14.
+
+What each app does is below. What changed in each version is in
+[RELEASE_NOTES.md](RELEASE_NOTES.md).
 
 ## CopyTrust
 
 Multi-source, multi-destination copy tool designed for camera card ingest but capable of copying any folders and files. Queue multiple cards, walk away, come back to verified results.
 
-- **One Copy switch, one Start button** — with two or more destinations, choose `Simultaneously` or `In series`, then press `Start`; a relay chain always shows the pre-copy review
-- Volume browser and **Volume Pool** for fast source/destination setup
-- Destination sets for one-click restore of saved destination groups
-- **Presets** — save every Card and Folder setting under one name and load it back in one action; shared, read-only presets can be deployed to a whole facility via `/Users/Shared/CopyTrust/Presets`
-- **Proxy media in Drop Verify** — edit-friendly HEVC/H.264 copies with per-clip progress and their own evidence; only verified files get a proxy, and proxies stay beside the media
-- **Operator recorded in session manifests**, defaulting to the macOS account
-- Per-destination preflight checks (free space, write permissions, reachability)
-- Verification levels: **Quick** existence/size checking, **Full** post-copy xxHash64, or **Inline** hash verification during copy
-- **MHL v1.1** hash list generation for Full/Inline verification — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta
-- **Archiware P5 archive integration (2.7.0 testing)** — configure a P5 server,
-  archive index, client, and non-deleting plan; after Full/Inline verification
-  and post-copy work, submit one verified destination with GUI-visible,
-  searchable xxHash64, frame/image size, and other bounded media metadata
-- **Auditable deferred P5 handoff** — password-free request JSON preserves
-  paths, hashes, metadata, supporting evidence, target hints, job ID/state, and
-  retry diagnostics when P5 is offline or automatic archive is disabled
-- **Build 12 proxy correctness** — each delivered original is probed before
-  encoding; display rotation drives scaled dimensions, reported color range and
-  color characteristics drive the encode, and receipts retain encoded/display
-  frames, rotation, and source/proxy color evidence.
-- **Build 11 workflow review and relay evidence** — the pre-copy window shows
-  direct, fan-out, relay, or active-plus-queued topology and one card per
-  destination. Relay authoring writes an immutable password-free workflow plan
-  with ordered step/dependency IDs and proxy/P5 choices; structured logs link
-  each active queue item to that plan, which is exported with every leg's
-  receipts. Fresh sequence IDs prevent stale matching queue rows from being reused.
-- **Build 10 relay and proxy routing** — P5 pre-check evaluates the complete
-  relay chain, including a selection on a later stop. Each destination also has
-  its own **Create proxies** checkbox, independent of its single-select
-  **Archive to P5** choice; destination sets and queued sessions retain both choices.
-- **Build 9 proxy status correction** — successful encodes are no longer reported as failed when an original uses `und` for an unspecified audio language and the proxy omits that tag; metadata warnings are separate from encoding failures, and Retry visibly transitions through Running to its new result
-- **Build 8 P5 hardening** — each destination has an explicit **Archive to P5**
-  checkbox; preflight names the selected index/client/plan and requires the
-  `CT_*` metadata keys; queued copies continue while P5 submission and bounded
-  job polling complete asynchronously; artifact rows finish independently
-- **Privacy-safe Sentry diagnostics** — paths and private values are filtered
-  on device before transmission; a live synthetic event reached the recreated
-  project with its exception value already redacted
-- MHL import verification — drag-and-drop any `.mhl` to re-verify destination files; reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+, OffShoot, YoYotta, ShotPut Pro) as of v2.5.1
-- **Auto-advance** multi-source copy with per-card subfolder naming
-- **Queued sessions** for walk-away ingest staging across different card/destination setups
-- **Relay-chain copy** for `A -> B -> C` workflows using one source plus ordered destinations — set the `Copy` switch to `In series` and press `Start`
-- Destination relay-order staging with visible `Stop 1`, `Stop 2`; queued relay legs can be pulled back into the workspace with `Edit` for reordering
-- **Resumable CopyTrust ingest** for cancelled same-source/same-destination runs and failed partial runs when the saved manifest still matches the same source, destinations, and rendered subfolder
-- **Contact sheet PDF** (row or grid layout) and **EXIF metadata CSV** after each ingest — professional formats (MXF, R3D, BRAW, ARRIRAW, M2V, VOB) show placeholders in the stable release, while this branch uses ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, and REDline for R3D thumbnails. PDF/CSV run as independent background artifacts after the selected verification completes; Quick mode does not invent hashes or an MHL.
-- **Proxy media beta (2.6.0)** — optional H.264 High or HEVC Main 10 MOV
-  derivatives at 12.5%, 25%, or 50%, with an optional
-  `Final Cut Proxy Media/YYYY-MM-DD` layout, exact-basename relinking, live
-  progress, and JSON/TXT/LOG evidence. Real encode tests cover MOV and MXF;
-  broader formats depend on the packaged ffmpeg decoder.
-- Optional **HTML directory tree** artifact after copy + verify; enable in Settings > Post-Copy with `Project summary index`, `One HTML per top-level folder`, or `Entire project`, all generated natively
-- Session receipts (JSON + TXT), per-ingest logs, and optional export to a separate folder, including overall relay-chain summaries at session close
+**Copying**
+
+- **One Copy switch, one Start button** — with two or more destinations choose `Simultaneously` (every destination at once) or `In series` (an ordered `A -> B -> C` relay chain), then press `Start`
+- **Several cards in one run** — cards copy one at a time with **auto-advance** and per-card subfolder naming; every card in the run is listed with its own progress and status
+- **Queued sessions** for walk-away staging across different card and destination setups
+- **Relay chains** show `Stop 1`, `Stop 2` in order; a queued leg can be pulled back into the workspace with `Edit` to reorder it
+- **Resumable ingest** for cancelled or partial runs, when the saved manifest still matches the same source, destinations, and rendered subfolder
+- **Pre-copy review** of the whole job — direct, fan-out, relay, or active-plus-queued — with one card per destination showing its verification, sorting, proxy and P5 choices
+- Per-destination preflight (free space, write permissions, reachability), and a safe-to-eject flow after transfer
+
+**Verification and evidence**
+
+- Verification levels: **Quick** existence and size, **Full** post-copy xxHash64, or **Inline** hashing during the copy
+- **MHL v1.1** hash lists for Full and Inline — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta
+- MHL import verification — drop any `.mhl` to re-verify destination files; reads classic MHL v1.x **and ASC MHL v2.0**
+- Session receipts (JSON + TXT), per-ingest logs, optional export to a separate folder, and relay-chain summaries at session close
+- Relay chains write an immutable, password-free workflow plan with ordered step and dependency IDs, exported beside every leg's receipts
+- The operator is recorded in every session manifest, defaulting to the macOS account
 - Verify panel: Deep Compare Files, Compare Browser, Copy Missing, Retry MHL Export
-- Safe-to-eject flow after successful transfer
-- Built-in Help flow with `Quick Start`, `Advanced Start`, and a Help menu entry to reopen CopyTrust guidance
-- Asynchronous contact-sheet auto-open and richer verify-start / verify-abort diagnostics for easier troubleshooting
+
+**Setup**
+
+- Volume browser and **Volume Pool** for fast source and destination setup
+- **Destination sets** for one-click restore of saved destination groups
+- **Presets** — save every Card and Folder setting under one name and load it back in one action; read-only shared presets deploy to a whole facility via `/Users/Shared/CopyTrust/Presets`
+- Built-in Help with `Quick Start`, `Advanced Start`, and `Several Cards at Once`
+
+**After the copy**
+
+- **Contact sheet PDF** (row or grid) and **EXIF metadata CSV**, generated as independent background artifacts — ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, REDline for R3D. Quick mode never invents hashes or an MHL
+- **HTML directory tree** — `Project summary index`, `One HTML per top-level folder`, or `Entire project`, all generated natively
+- **Proxy media** — optional H.264 High or HEVC Main 10 MOV at 12.5%, 25%, or 50%, with an optional `Final Cut Proxy Media/YYYY-MM-DD` layout and exact-basename relinking. Display rotation and the source's own colour characteristics carry into the encode, and each run writes JSON/TXT/LOG evidence. Real encode tests cover MOV and MXF; broader formats depend on the packaged ffmpeg decoder
+- **Archiware P5 archive (testing)** — after Full or Inline verification, submit a verified destination to a P5 server with searchable xxHash64, frame size and other bounded media metadata. `Archive to P5` and `Create proxies` are chosen per destination, and P5 preflight evaluates a whole relay chain
+- **Deferred P5 handoff** — a password-free request JSON preserves paths, hashes, metadata, target hints and job state when P5 is offline or automatic archive is off
 
 Docs: [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — features + 2-minute field test), [User Guide](CopyTrust_UserGuide.md) (full), [Workflow Guide](CopyTrust_WorkflowGuide.md) (relay strategy), [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md) ([PDF](CopyTrust_Illustrated_Workflow_Guide.pdf)), [P5 Restore & Verify](CopyTrust_P5_Restore_and_Verify_Workflow.md), [Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md), and [Quick Start](CopyTrust_QuickStart.md).
 
@@ -103,6 +62,7 @@ Single-folder drag-and-drop verification. Drop a folder and generate trust artif
 - Media-focused recursive scan with configurable exclusion patterns when media artifacts are selected
 - Generates selected outputs only: **MHL**, **contact sheet PDF** (row or grid), **EXIF metadata CSV**, and optional native **HTML directory tree/index**
 - MHL output is what triggers hashing and session manifest creation; CSV/contact-sheet-only modes can run without hashes, and HTML-tree-only mode skips media analysis entirely
+- **Proxy media** — edit-friendly HEVC/H.264 copies with per-clip progress and their own evidence, using the same codecs, sizes and Final Cut layout as CopyTrust. Only verified files get a proxy, and proxies stay beside the media rather than going to the export folder
 - Writes artifacts into the folder and/or mirrors them to an export folder
 - For package roots such as `.fcpbundle`, writes `Drop Verify_Receipts` beside
   the package; ordinary folders retain their existing internal receipt layout
@@ -112,10 +72,10 @@ Single-folder drag-and-drop verification. Drop a folder and generate trust artif
 
 Standalone MHL reader and verifier. Load any `.mhl` file, review it, and verify whether the media files still match.
 
-- **Side-by-side compare** (new in 2.6.0): `Side A` and `Side B` are picked separately — choose, drop, or pick from recents on each — so the two MHL files can be on different volumes; each side shows its volume, file count and total size before you compare
-- **A verdict on every comparison** (new in 2.6.0): match, timing-differs-only, different-layout, or differs — a **Destination Sort**ed copy is paired with its pre-sort source by name, size and hash and reported as `Moved`, and hash timestamps no longer count as a content change
-- **Verify** action (new in 2.5.1): re-hashes every file listed in the MHL and reports matched / mismatched / missing with digests
-- Reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+ default, incl. `ascmhl/` folder layouts) — fixes [#1](https://github.com/macvfx/MHL/issues/1)
+- **Side-by-side compare** — `Side A` and `Side B` are picked separately, so the two MHL files can live on different volumes; each side shows its volume, file count and total size before you compare
+- **A verdict on every comparison** — match, timing-differs-only, different-layout, or differs. A **Destination Sort**ed copy is paired with its pre-sort source by name, size and hash and reported as `Moved`
+- **Verify** — re-hashes every file listed in the MHL and reports matched / mismatched / missing with digests
+- Reads classic MHL v1.x **and ASC MHL v2.0** (Silverstack 9+ default, incl. `ascmhl/` folder layouts)
 - Re-check copies, archive restores, and handoff deliveries
 - Works with MHLs from Drop Verify, CopyTrust, OffShoot, Silverstack, YoYotta, ShotPut Pro, or any MHL-capable tool
 - Requires macOS 14+ as of 2.5.1 (2.4.1 remains for macOS 13, but cannot read ASC MHL v2.0)
@@ -131,7 +91,7 @@ Use after copying with CopyTrust, Archiware P5 Sync, a Finder copy, `rsync`, Hed
 - **Compare mode** — Quick Scan (name, size, date) or Full Scan (xxHash64 / SHA-256 content hashing); per-file comparison: missing, extra, different, identical; **Copy All Missing** to sync differences, then **Refresh** to re-verify; MHL v1.1 generation and verification (reads MHL v1.x and ASC MHL v2.0 as of v2.5.1) from either compared folder
 - **Subfolder Check mode** — fast structural sanity check: aligns immediate subfolders side-by-side with file counts, total sizes, and Archiware P5 stub file detection (`.p5a` / `.p5c`); colour-coded match indicators (exact / close / different / one-side-only); click any matched row to drill down using the active Quick / Full Scan setting
 - **Date Only** quick-scan status plus per-file **Hash Check** for same-size, different-date pairs without forcing a full rescan
-- Folder selections persist across Compare / Subfolder Check mode switches; scan cancel is non-destructive; stub cleanup now shows progress and hides `Clean` on the `_P5 Stub Cleanup` folder
+- Folder selections persist across a mode switch, and cancelling a scan is non-destructive
 - Standalone app — no ingest session, no receipts, no artifacts
 
 ## mhl-tool (CLI)
