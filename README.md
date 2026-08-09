@@ -11,9 +11,9 @@ from the Queued Sessions panel, leaving the one in the action bar. Build 29 repl
 old `Queue Relay Chain` control with one **Copy** switch (`Simultaneously` / `In series`)
 and one button always labelled **Start**, fixed a crash that ended every relay copy just
 after its first stop, and recovers interrupted jobs on the next launch.
-**Drop Verify and Folder Copy Compare stay at 2.7.2 Build 14** to keep the suite
-aligned; neither has changed functionally since Drop Verify Build 8 added proxy media, and
-Build 30 touches CopyTrust only.
+**Drop Verify 2.7.2 Build 15** fixes the progress bar that swept back and forth while
+proxies encoded — it now fills left to right, one slice per clip, from the encode percent
+ffmpeg already reports. **Folder Copy Compare stays at 2.7.2 Build 14.**
 **MHL Verify 2.6.0 compares two MHL files that live on different volumes**, using a
 side-by-side `Side A` / `Side B` panel — one open panel could only ever reach one
 disk, and a source manifest and its archive copy are almost never on the same one.
