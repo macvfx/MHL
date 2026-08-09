@@ -180,6 +180,9 @@ evidence screenshots as manual QA evidence when executing F1–F16.
 | G19 | Stalled artifact recovers (b32) | Let a run complete with artifacts enabled. If any artifact row stops changing, leave it. | Within five minutes the source turns to `Artifacts stalled — retry`, the stuck artifact rows become individually retryable, and the log records `secondaryArtifacts stalled … lastMessage="…"`. No row spins indefinitely and Rebuild All is not required. |
 | G20 | Two cards, both artifact sets finish (b32) | Run two cards to the same two destinations with contact sheet and proxies on, Auto on. | Both sources reach `secondaryArtifacts complete`. Specifically the first card's contact sheet finishes its second destination and its proxies run — they must not stop when the second card's copy begins. |
 
+| G21 | End Session always ends (b32) | With background artifacts running, press `End Session` in the bottom action bar. | It offers **End Now** and **Wait**. End Now closes immediately. Wait closes once artifacts finish — and closes anyway, logging `closeSession abandoning stalled backgroundArtifacts`, if they go silent for a minute. It must never sit on "Finishing background artifacts…" indefinitely. |
+| G22 | Review Summary is readable (b32) | Open Review Summary on a run with warnings, then resize the sheet. | Session Health and the receipt text grow with the window rather than staying in fixed boxes. Default sheet is 680×640. |
+
 Visual checkpoint: `03-mixed-queue.png`.
 
 G13–G16 exist because the pre-b31 UI named only the active source and mixed units in its

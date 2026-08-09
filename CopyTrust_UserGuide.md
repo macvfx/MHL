@@ -1044,6 +1044,12 @@ silence rather than spinning indefinitely: the source shows `Artifacts stalled �
 artifact still mid-flight becomes individually retryable, and the log records the last step
 it reached. Use the artifact's own **Retry** — Rebuild All is not needed to recover.
 
+**End Session always ends the session.** While background artifacts are running it becomes a
+menu: **End Now — skip remaining artifacts**, or **Wait for Artifacts, then End**. Waiting is
+bounded by progress rather than by a clock — artifacts that keep reporting are allowed to
+finish however long they take, but once they have been silent for a minute the session closes
+without them and says so in the log.
+
 ### Quick verification and descriptive artifacts
 
 Quick verification checks that every delivered file exists and has the expected size; it does not calculate the content hashes required for an MHL. Contact sheet PDF, EXIF CSV, HTML tree, and destination sorting do not require those hashes and are generated from CopyTrust's delivered-file inventory.
