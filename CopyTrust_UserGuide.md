@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-08-09
-Release status: **2.5.3 stable**; **2.7.2 Build 31** in testing.
+Release status: **2.5.3 stable**; **2.7.2 Build 32** in testing.
 Version history is in the release notes.
 
 ## Purpose
@@ -1034,6 +1034,16 @@ soon as that artifact generator finishes, so a slower proxy does not leave an
 already-created PDF, CSV, or tree spinning. Failed rows have their own **Retry**
 button, and **Rebuild All** regenerates the whole set.
 
+**Proxy Media** reports the work left across the whole run, not one destination:
+`7 of 10 · A001 → RAID 01 · 15%` — the encode number out of every encode the run will
+perform (five clips to two destinations is ten), the card and drive, and how far into the
+current clip. Codec, scale, speed and ETA stay in the activity log and the proxy receipt.
+
+**If an artifact stops responding**, it is failed automatically after five minutes of
+silence rather than spinning indefinitely: the source shows `Artifacts stalled — retry`, each
+artifact still mid-flight becomes individually retryable, and the log records the last step
+it reached. Use the artifact's own **Retry** — Rebuild All is not needed to recover.
+
 ### Quick verification and descriptive artifacts
 
 Quick verification checks that every delivered file exists and has the expected size; it does not calculate the content hashes required for an MHL. Contact sheet PDF, EXIF CSV, HTML tree, and destination sorting do not require those hashes and are generated from CopyTrust's delivered-file inventory.
@@ -1375,9 +1385,20 @@ done, not the run. The `Source N of M` label and the second, quieter **All sourc
 which weights each source by its scanned size — appear only when more than one source is
 staged.
 
+### After the copy, while background work continues
+
+Copying finishes before proxies and other artifacts do. Rather than going straight to "No
+active copies" — accurate, but it reads as *the whole job is done* — the popover shows:
+
+- **No active copies**
+- which cards are **ready to eject**, so they can be pulled without waiting
+- what is still running, e.g. `Proxies 7 of 10 · A001 → RAID 01`, with a reminder to leave
+  CopyTrust open until it finishes
+
 ### Idle state
 
-When no copy is running, the popover shows a green checkmark and "No active copies" with a Show CopyTrust button.
+Once the background work ends, the popover shows a green checkmark and "No active copies"
+with a Show CopyTrust button.
 
 ### Use case
 

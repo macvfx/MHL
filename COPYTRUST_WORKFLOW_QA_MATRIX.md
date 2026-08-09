@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-09
-Applies to: CopyTrust 2.7.2 Build 31; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 2.7.2 Build 32; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -174,6 +174,11 @@ evidence screenshots as manual QA evidence when executing F1–F16.
 | G14 | Counts are in one unit (b31) | During G13, compare the menu bar popover, the queue row status line, and the activity log heartbeat. | All three agree and all read **file copies**: a 47-file card to two destinations counts toward `94`, never `47`. Bytes copied never exceeds the byte total shown beside it. |
 | G15 | Whole-run bar (b31) | During G13, watch the row's main bar as the first card finishes and the second starts. | The bar advances continuously across both cards. It does **not** reach 100% at the end of card one and restart from zero. ETA is labelled `left on this source`. |
 | G16 | Single source unchanged (b31) | Run one card to two destinations. | No per-source lines, no `Source N of M`, no All-sources bar. Row title is the card's name. |
+
+| G17 | Proxy progress shows the work left (b32) | Run a card with several clips to two destinations, proxies on. Watch the Proxy Media row. | Reads `N of M · <card> → <drive> · NN%` where M counts every encode across both destinations (5 clips × 2 destinations = 10), not a per-destination `2/5`. Codec/speed/ETA appear only in the activity log. |
+| G18 | Menu bar during post-copy work (b32) | When the copy finishes but proxies are still encoding, open the menu bar popover. | Shows "No active copies", the cards ready to eject, and the running proxy progress — not the bare idle view. Reverts to the plain idle view once artifacts finish. |
+| G19 | Stalled artifact recovers (b32) | Let a run complete with artifacts enabled. If any artifact row stops changing, leave it. | Within five minutes the source turns to `Artifacts stalled — retry`, the stuck artifact rows become individually retryable, and the log records `secondaryArtifacts stalled … lastMessage="…"`. No row spins indefinitely and Rebuild All is not required. |
+| G20 | Two cards, both artifact sets finish (b32) | Run two cards to the same two destinations with contact sheet and proxies on, Auto on. | Both sources reach `secondaryArtifacts complete`. Specifically the first card's contact sheet finishes its second destination and its proxies run — they must not stop when the second card's copy begins. |
 
 Visual checkpoint: `03-mixed-queue.png`.
 
