@@ -102,7 +102,7 @@ Drop Verify includes settings for:
 - `EXIF camera metadata CSV (Spreadsheet)`
 - `HTML directory tree` — lightweight project index or collapsible HTML view of folder structure
 - `ExifTool metadata extraction` for unsupported/professional formats and sparse video formats such as MXF, R3D, MPEG-2 family files, and WMV
-- legacy `tree` path setting for diagnostics only; current HTML output does not require it
+- legacy `tree` path setting is inert — nothing reads it; HTML output is generated natively
 - `External thumbnail codecs` (currently branch-tested for MXF and MPEG-2 family via ffmpeg and R3D via REDline)
 - contact sheet layout style (Row or Grid 3×4)
 - hide unsupported format placeholders from contact sheet (MXF, R3D, M2V, etc. omitted from PDF; still in CSV and MHL)
