@@ -144,7 +144,8 @@ Use this for `A -> B` and `A -> C`.
 4. Confirm preflight is clean.
 5. Click `Start` and confirm the pre-copy review.
 6. Use `Review & Verify` during the run if you want to inspect results without ending the session.
-7. When all work is done, click `Review Summary…`, then `End Session`.
+7. When all work is done, click `Review Summary…`, then `End Session`. The window stays on
+   the run until you do, so the artifacts still building and the review stay in front of you.
 
 Expected result:
 - the source copies directly to each loaded destination, all at the same time, reading the source once per destination
@@ -280,8 +281,9 @@ Use this when you want to set up the next batch while a copy is already running.
 3. Select a source volume chip, adjust destinations if needed, choose a mode (Card/Folder), and click **Add to Queue**.
 4. Alternatively, drag a volume from Available Volumes onto the drop target strip at the bottom of the queue.
 5. Repeat to stage more batches if needed.
-6. Click the running row to expand inline progress (per-destination bars, speed, ETA, recent files).
-   The row itself already lists one line per source when the run has more than one.
+6. The running row shows its progress panel already — percentage, speed, time remaining, a
+   bar per destination, and files as they are copied and verified. Click the summary line to
+   collapse it. The row lists one line per source when the run has more than one.
 
 Expected result:
 - the currently-running copy is not interrupted
@@ -350,7 +352,11 @@ detail of what it will run.
 | Stop the copy | `Cancel Copy` (bottom bar or progress sheet) |
 | See live speed | Speed badge in the bottom bar |
 
-The action bar during copy is streamlined: Reset Session, Card/Folder picker, and Preflight badge are hidden. The running row in the queue manager shows inline progress.
+The action bar during copy is streamlined: Reset Session, Card/Folder picker, and Preflight
+badge are hidden. The running row shows its progress panel by default, and the Activity Log
+stays closed unless you open it — turn on *Settings → Post-Copy → During Copy* to have it
+open itself as it used to. The run holds the window until End Session rather than returning
+to the Sources and Destinations panels when the last file lands.
 
 ### After a cancel — progress sheet
 

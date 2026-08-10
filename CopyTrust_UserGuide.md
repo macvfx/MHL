@@ -446,12 +446,20 @@ Resume Queue only appears when queued batches remain.
 - After ending, use `Review Last Summary…`, `Reveal Receipts`, `Reveal Log`, `Reveal Manifest`, or `Reset Session` from the main window
 
 ### Summary-sheet actions (if you open Review Summary first)
-- `Copy` — copies the receipt text to the clipboard
+- `Copy Receipt` — copies the full text receipt to the clipboard
 - `Reveal Summary`
 - `Manifest`
 - `Log`
 - `End Session`
 - `End` / `Wait` when background PDF/CSV artifact work is still running
+
+The sheet no longer shows the receipt as a block of monospaced text (2.7.3). It repeated
+the structured sections above it — destinations, file counts, byte totals, per-source rows,
+session health and the MHL files were each stated twice. The three things only that block
+carried are still here: **copy speed** joins Destinations and Sources as a summary metric,
+and **build, macOS, host, operator, session and close time** are a single line at the foot
+of the sheet. `Copy Receipt` still puts the whole text on the clipboard, and the `.json`
+and the log are where they were.
 
 ## Destination Folder Safety
 
@@ -1454,16 +1462,25 @@ The queue manager replaces the two side-by-side panels with a single full-width 
 - **Completed/failed rows** that remain until manually cleared or auto-pruned after 24 hours
 - A **drop target strip** at the bottom for dragging volumes from the Available Volumes pool
 
-### Inline progress expansion
+### Inline progress panel
 
-Click the running row to expand it. The expanded view shows:
-- Per-destination progress bars with percentage and bytes
-- Copy speed and estimated time remaining
-- Recent verified files (today's session) with pass/fail icons
-- "Open Full Progress" button to access the detailed progress sheet
-- "Cancel" button
+The running row **opens its progress panel by default** (2.7.3). Click the summary line
+to collapse or reopen it; the choice is remembered. The panel shows:
 
-An icon-only **Progress** button in the bottom action bar opens the full progress sheet on demand. The progress sheet no longer auto-opens when a copy starts — inline progress in the queue manager is the primary view.
+- The overall percentage at a glance, with the phase — `Copying` or `Copying & Verifying`
+- Copy speed and estimated time remaining, and beside them bytes transferred and the
+  file-copy count
+- A full-width progress bar for the run
+- **One row per destination**, each with its own progress, speed and verification state
+- **Files** — every file as it lands and again as it passes: a blue arrow for copied, a
+  green check for verified, a red cross for failed, with a running
+  `copied · verified · failed` count. The list fills at every verification level, not only
+  inline
+- `Open Full Progress`, `Reveal Log` and `Cancel`
+
+An icon-only **Progress** button in the bottom action bar opens the full progress sheet on
+demand. The progress sheet does not auto-open when a copy starts — this panel is the
+primary view, and the activity log stays closed unless you ask for it.
 
 ### Runs with more than one source
 

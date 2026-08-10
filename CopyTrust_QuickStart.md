@@ -30,8 +30,11 @@ Use this for `A -> B` and `A -> C`.
 5. Click `Start` and review the top-level flow plus every
    destination card. Confirm source/step context, verification, sorting,
    artifacts, and explicit Proxy/P5 choices before continuing.
-6. Use `Review & Verify` during the run if you want to inspect results without ending the session.
-7. When all work is done, click `Review Summary…`, then `End Session`.
+6. Watch the run in the progress panel on the queue row — percentage, speed, time remaining,
+   a bar per destination, and files as they are copied and verified.
+7. Use `Review & Verify` during the run if you want to inspect results without ending the session.
+8. When all work is done, click `Review Summary…`, then `End Session`. The window stays on the
+   run until then, so artifacts still building stay in view.
 
 Expected result:
 - the source copies directly to each loaded destination
@@ -100,7 +103,7 @@ Expected result:
 When the queue is complete, `Review Summary…` opens the session summary sheet.
 
 Current summary actions:
-- `Copy`
+- `Copy Receipt`
 - `Reveal Summary`
 - `Manifest`
 - `Log`
