@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-08-09
-Release status: **2.5.3 stable**; **2.7.2 Build 33** in testing.
+Release status: **2.5.3 stable**; **2.7.3 Build 1** in testing.
 Version history is in the release notes.
 For a one-page fan-out walkthrough see [CopyTrust_FirstRun.md](CopyTrust_FirstRun.md).
 
@@ -334,7 +334,26 @@ the sheet itself.
 | Inspect results without stopping | `Review & Verify` (main window) |
 | Stop the copy | `Cancel Copy` (bottom bar or progress sheet) |
 
-During copy, the action bar is streamlined: Reset Session, Card/Folder picker, and Preflight badge are hidden. The queue manager shows inline progress on the running row.
+During copy, the action bar is streamlined: Reset Session, Card/Folder picker, and Preflight badge are hidden.
+
+**The running row opens a live progress panel** (2.7.3), which is what a copy shows by
+default: the overall percentage, current speed, time remaining, bytes transferred and
+file-copy count across the top; a full-width bar; one row per destination with its own
+progress and verification state; and a list of files as they are copied and verified —
+a blue arrow for copied, a green check for verified, a red cross for failed. Click the
+summary line to collapse it.
+
+**The Activity Log stays closed.** It is a running text transcript, useful when
+diagnosing rather than operating, and it no longer opens itself when a copy starts.
+Open it from its header at any time, or turn on
+**Settings → Post-Copy → During Copy → "Open the activity log when a copy starts"** to
+have it open automatically. The full log is always written to disk either way.
+
+**The run holds the window until End Session.** It used to return to the Sources and
+Destinations panels the moment the last file landed, which took the screen away from
+the artifacts still being built and the review below them. To add another card without
+ending the session, use the queue's **Add** button, drop a volume on its drop strip, or
+click **Source** on a tile in Available Volumes.
 
 ### After cancelling — progress sheet
 
@@ -721,6 +740,17 @@ destination using the **Archive to P5** checkbox on that destination row. The
 selection is retained in destination sets and captured with queued jobs.
 Other destinations remain ordinary verified copies and are not submitted to P5
 by that job.
+
+The checkbox is **disabled while P5 archiving is off** (2.7.3) — with neither
+*Archive verified copies to P5* nor the deferred request enabled in
+**Settings → P5 Archive**, checking it produced no archive job and no request
+file, so it is no longer offered. Its tooltip names the setting to change.
+
+A missing P5 selection **never blocks a copy** (2.7.3). If P5 archiving is on
+and no destination is routed to it, the pre-copy review says so under *Check
+before continuing* and the notice is written to the session log — Continue
+stays available. Archiving a card afterwards is straightforward; holding up
+the copy on the card in front of you is not.
 
 For a relay chain, the pre-copy confirmation reviews the P5 selection across
 the complete chain. A first leg therefore identifies a P5 destination selected
