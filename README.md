@@ -3,8 +3,8 @@
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.5.1.
-**Public beta:** CopyTrust 2.7.3 Build 1, Drop Verify 2.7.3 Build 1,
-MHL Verify 2.6.0, Folder Copy Compare 2.7.3 Build 1.
+**Public beta:** CopyTrust 2.7.4 Build 27, Drop Verify 2.7.4 Build 27,
+MHL Verify 2.6.0, Folder Copy Compare 2.7.4 Build 27.
 
 What each app does is below. What changed in each version is in
 [RELEASE_NOTES.md](RELEASE_NOTES.md).
@@ -56,6 +56,9 @@ directly on GitHub as well as in a local checkout.
 
 
 ## Drop Verify
+
+- MHL output hashes every included regular file, including camera XML sidecars, databases, support files and thumbnail folders; contact-sheet, metadata CSV and proxy processing remains media-focused
+- Active Camera Card exclusions trigger a mandatory pre-run confirmation naming patterns that can omit files or complete folders from the MHL
 
 Single-folder drag-and-drop verification. Drop a folder and generate trust artifacts — no copy, no session, no setup.
 

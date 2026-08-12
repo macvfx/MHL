@@ -145,7 +145,8 @@ See the [mhl-tool section in the repository README](README.md#mhl-tool-cli) for 
 
 ## Notes
 
-- Drop Verify creates media-focused artifacts and only hashes media files for its MHL output in the current implementation.
+- Drop Verify hashes every included regular file for MHL output, including camera sidecars, databases, support files and thumbnail folders. Contact sheets, metadata CSVs and proxies remain media-focused.
+- Active Camera Card exclusions are named in a mandatory pre-run confirmation because one pattern can omit an entire structural folder; cancelling writes no MHL.
 - MHL Verify is the better tool when the main question is simply: "Do these files still match this manifest?"
 - `mhl-tool` is the best choice when the workflow is scripted, remote, or headless.
 - Using both tools gives you both artifact creation and follow-up validation in separate steps, which can be easier to explain to operators and clients.

@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.7.2 (Build 15 beta)**. Version history is in the release notes.
+Current app version: **v2.7.4 (Build 27 beta)**. Version history is in the release notes.
 
 ## External Codec Setup
 
@@ -74,15 +74,17 @@ Ordinary folders continue to receive `Drop Verify_Receipts` inside the folder.
 - Drag one folder onto the main Drop Verify window.
 - Or click `Choose Folder`.
 
-Drop Verify scans recursively and only includes media files.
+Drop Verify scans recursively. With MHL enabled, it hashes every included regular file,
+including camera XML sidecars, databases, support files and thumbnail folders. Media
+classification remains limited to contact-sheet, metadata CSV and proxy processing.
 
 Exception: if the only enabled output is `HTML directory tree`, Drop Verify skips media scanning, hashing, and metadata extraction, then generates the requested folder tree/index directly.
 
 ### 4. Wait for artifact generation
 The app runs only the stages needed for the selected outputs:
 
-- scan media files when MHL, CSV, or contact sheet output is selected
-- hash files only when MHL output is selected
+- inventory and hash every included regular file when MHL output is selected
+- scan media files when CSV, contact sheet, or proxy output is selected
 - extract image/video metadata when CSV or contact sheet output needs it
 - write CSV when enabled
 - render contact sheet PDF when enabled
@@ -127,7 +129,7 @@ file there.
 ### MHL (Media Hash List)
 - Industry-standard manifest of file hashes
 - Useful for later verification and handoff records
-- Enabling MHL is what makes Drop Verify hash media files and write a session manifest
+- Enabling MHL is what makes Drop Verify hash every included regular file and write a session manifest
 
 ### Contact sheet PDF
 - Quick visual summary of media found in the dropped folder
@@ -198,7 +200,7 @@ Drop Verify excludes:
 
 Use the `Exclusions` tab in Settings to add or remove patterns. Every visible checkbox is respected: checked patterns are skipped, unchecked patterns remain included.
 
-The Camera Card group includes optional patterns for common card-side folders and sidecar/proxy files: `MISC`, `THMBNL`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, and `.Db`. These are disabled by default. For example, if `THMBNL` is unchecked, Drop Verify scans matching media normally; if `THMBNL` is checked, matching folders are skipped.
+The Camera Card group includes optional patterns for common card-side folders and sidecar/proxy files: `MISC`, `THMBNL`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, and `.Db`. These are disabled by default. If `THMBNL` is unchecked, the folder and its files enter the MHL inventory; if it is checked, the complete folder is skipped. Drop Verify therefore shows a mandatory, non-suppressible pre-run warning naming every active Camera Card pattern. Cancelling writes no hashes or MHL.
 
 ## Expected Artifact Filenames
 
@@ -252,8 +254,8 @@ Use the **Help > Drop Verify Help** menu to open a built-in help sheet covering 
 
 ## Notes
 
-- Drop Verify is media-focused and does not generate MHL entries for non-media files.
+- Drop Verify MHLs document every included regular file; contact sheets, metadata CSVs and proxies remain media-focused.
 - Tree-only runs are folder-focused and do not require media files or hashes.
 - Hidden files are excluded by default.
-- Exclusion checkboxes are operator-controlled; Camera Card patterns are not silently forced on.
+- Exclusion checkboxes are operator-controlled; Camera Card patterns are disabled by default and require visible pre-run confirmation when enabled.
 - The app is intended for post-copy verification/reporting, not multi-destination ingest.
