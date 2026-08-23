@@ -1461,6 +1461,11 @@ anyone should discover later.
 With more than one destination, **each resolves independently** — including the case where
 one holds the project and another does not.
 
+**A proxies-only destination is filed the same way.** It resolves its own project folder on its
+own volume rather than receiving proxies at the top of it, and it is scanned for the project list
+alongside the copy destinations, so the picker tells you whether that volume holds the job before
+you copy rather than after.
+
 #### When two destinations disagree about the project's name
 
 A project folder is matched by its **number**. The rest of the name is a label, so
