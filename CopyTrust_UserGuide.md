@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-08-09
-Release status: **2.5.3 stable**; **2.7.3 Build 1** in testing.
+Date: 2026-08-22
+Release status: **2.5.3 stable**; **2.7.5 Build 13** in testing.
 Version history is in the release notes.
 For a one-page fan-out walkthrough see [CopyTrust_FirstRun.md](CopyTrust_FirstRun.md).
 
@@ -1344,6 +1344,224 @@ a relaunch.
 If a preset file cannot be read, the Preset menu says so and names the file; every other
 preset still loads.
 
+## Enforced Naming (Preset-Activated)
+
+**Off unless a preset turns it on.** With no enforcing preset loaded, nothing in this
+section applies and the app behaves exactly as the rest of this guide describes.
+
+A preset can carry a **naming convention**: from the moment it is loaded, CopyTrust will not
+copy a card until that card has a **project**, a **unit** (ACAM, BCAM, SOUND, DRONE…) and a
+**roll**, and it names the delivered folder from them. A convention can go further and decide
+*where* the copy goes, derived from the project rather than picked.
+
+The two gates are separate. A facility can enforce names without enforcing destinations.
+
+**Card ingest only.** A Folder copy has no card, no unit and no roll, so it is never asked
+for them.
+
+### The order you work in
+
+| Step | Scope | Notes |
+|---|---|---|
+| 1. Add card sources | — | One or several |
+| 2. Choose the project | Per card, carried | Pick it once and cards staged afterwards arrive with it filled in and marked *carried from this session*. Change any card without changing the rest |
+| 3. Choose the unit | Per card | From the preset's list; pre-filled where a card rule matches |
+| 4. Confirm the roll | Per project + unit | Proposed automatically; an override is recorded |
+| 5. Confirm the destination | Per destination | Derived and locked when destination enforcement is on |
+| 6. Start | — | Blocked only while a *required* field is unanswered |
+
+Step 3 is usually a confirmation rather than a choice. A recognised DJI card arrives already
+showing `DRONE` with renaming marked, so you only intervene on cards no rule anticipated.
+
+A carried value is worth disagreeing with rather than clicking past. Under destination
+enforcement the project decides which folder the footage lands in and which sequence the roll
+is drawn from, so a card that belongs to a different job has to be corrected on its own row.
+Only a value a person picked ever becomes the session's answer, so one card's inherited mistake
+cannot spread. The location carries the same way; the unit and the roll never do, because they
+are what tells one card from the next.
+
+### Where the roll number comes from
+
+The roll is proposed, and the proposal is a proposal — change it and the change is recorded
+on the session as an override rather than silently accepted.
+
+It continues from the highest of: other cards staged in this session, the last roll used for
+that **project and unit** (so day two of a shoot does not restart at 1 and collide with day
+one), and any folders already present at the destination. **A gap is never filled** — with
+roll 2 and roll 4 present, the proposal is 5, not 3.
+
+Rolls run per project *and* unit: two ACAM cards are roll 1 and roll 2, while an ACAM and a
+BCAM are both roll 1.
+
+### Nothing stops a card
+
+Every gate has a way through. **Enforcement is never the reason a card is not copied** — a
+gate with no exit at 2am, with a card about to be wiped, would cause the loss it exists to
+prevent.
+
+| Situation | What happens |
+|---|---|
+| Nobody knows the project | **Unknown** is a listed choice, written into the name as `UnknownProject` |
+| The unit is not in the preset's list | Accepted as an ad-hoc unit, marked and reported |
+| The roll is not known | `UnknownRoll`, rather than a blank where a number should be |
+| The project folder is missing and may not be created | The card goes to a dated ingest folder on that destination, reported, and re-filable later because the folder *name* is already correct |
+| An expected volume is not mounted | You are told at launch, by name — with Try Again, Open SMB Connect, and Off Site (which asks you for a drive that *is* connected) |
+
+Unknown is written as a **word, not a blank**, on purpose: a blank cannot be searched for
+later, and a card nobody could identify is then findable only by someone remembering it
+exists.
+
+### Required, suggested, or off
+
+Each field is set in the preset to one of three levels.
+
+| Level | Behaviour |
+|---|---|
+| **Required** | Blocks Start until answered |
+| **Suggested** | Shown on the source row, never blocks |
+| **Off** | Not asked for |
+
+**Only make something Required where a truthful answer is always available.** An operator
+with a card, no information and a blocked Start will type `ASDF` and move on — and wrong data
+wearing the authority of a required field is harder to find and correct later than the blank
+it replaced. Project, unit and roll are Required by default because each has a truthful way
+through; file renaming is Suggested, because whether a particular card needs it is a
+judgement you are better placed to make than a preset written weeks ago.
+
+### Destinations, when the convention decides them
+
+With destination enforcement on, the destination picker is **read-only** and shows the
+resolved absolute path together with the reason it resolved that way. Add, Remove and Browse
+are disabled, and the tooltip names the preset imposing it. The Volumes browser stays
+available — you still need to see what is mounted.
+
+The **year folder comes from the project number, not from today's date**: `2026-003` belongs
+in `2026/` whether it is ingested in March or the following January.
+
+**Creating a folder is never silent.** A missing year folder and a missing project folder are
+both listed in the pre-copy confirmation before anything is created, and written to the
+session log afterwards. Creating directories on a client's archive volume is not something
+anyone should discover later.
+
+With more than one destination, **each resolves independently** — including the case where
+one holds the project and another does not.
+
+#### When two destinations disagree about the project's name
+
+A project folder is matched by its **number**. The rest of the name is a label, so
+`2026-014`, `2026-014 Northern Lights` and `2026-014_OLD_DO_NOT_USE` all match `2026-014`.
+
+That is deliberate — folder names are not stable enough to match on — but it means an archive
+NAS and a working drive can hold the same job under different names. When that happens:
+
+- The delivery confirmation **always** appears before the copy, even though nothing is being
+  created and nothing was redirected, and names both folders.
+- **CopyTrust does not choose.** It cannot know which name is the current one. You confirm, or
+  cancel and fix the folders.
+- The divergence and your answer go into the session log.
+
+Case-only differences count too: `2026-014 northern lights` and `2026-014 Northern Lights` are
+reported like any other pair.
+
+To check before you get there, use **Check delivery folder…** on any destination row. It lists
+where every staged card will land on every destination and flags any project with more than one
+name. It reads the destinations, so on a network volume it takes a moment — which is why it is a
+button rather than something that happens when the pointer passes over.
+
+### Seeing the whole list
+
+**Show project list…** on the destinations panel opens what CopyTrust actually found: one row
+per project, one column per destination, each cell showing the folder name found there or a
+dash. A job on two of three destinations is visible at a glance, and one filed under two
+different names shows as two different cells on the same row.
+
+It also states which destinations were read and when, whether you are looking at a last-known
+list, what was skipped as a template and where, and anything that could not be read.
+
+That last part matters because a project missing from the picker has three quite different
+causes — it is not on the storage, it is on a destination that could not be read, or it was
+skipped as a template — and only this view tells them apart.
+
+### Building a convention, and agreeing it
+
+**Preset ▸ Build an Enforced Naming Preset…** walks through every decision.
+
+Set the Mac up the way you work **first**. The wizard captures your current copy settings
+alongside the naming decisions, so one preset carries house naming and house options together
+and an operator loads one thing.
+
+**You point at folders rather than describing them.** *Choose a Project Folder…* and pick a
+project the facility already has. CopyTrust then offers what that one folder could stand for,
+with how many projects each reading would list:
+
+```
+Projects/2026 — 12 projects
+Projects — 47 projects across 2024, 2025, 2026
+```
+
+Choose the one that matches **how they file**, not what is on the drive today: a root inside a
+year folder lists that year alone and stops finding anything when the year turns over.
+
+*Choose the Footage Folder…* and *Choose the Proxy Folder…* work the same way — point at where
+they went inside that project, and the path is written for you with the project's own number
+turned back into `{project}`, so the answer describes every future job rather than one. Pointing
+straight at the folder CopyTrust would itself create is understood: it takes the folder above and
+keeps your name for it.
+
+Typing still works, and is the only option for storage with no projects on it yet.
+
+**No volume is named.** A convention describes how a drive is laid out; which drive it applies
+to is the destination staged for the copy. One convention therefore covers a facility whose
+volumes are named differently on every Mac.
+
+**Locations are optional.** A convention can ask where a card was shot and use `{location}` as a
+folder level. It is off unless a facility turns it on, it never blocks, the list is a starting
+point that operators can type past, and whatever they type is offered again on that Mac next
+time. A card with no location loses that folder level entirely — never a gap, and never a folder
+called `UNKNOWN`, which is right for a project or a roll but not for this.
+
+**Preset ▸ (any preset) ▸ Save Report…** writes those decisions out in prose:
+
+| Format | For |
+|---|---|
+| **RTF** | The copy that gets signed and filed |
+| **CSV** | Comparing one facility's convention with another |
+| **Markdown** | Committing beside the preset, so a change shows in a diff |
+
+A convention only works if the decisions are **known, understood and agreed**, and a preset
+file is none of those to anyone who does not read JSON. The report states the fixed behaviour
+too — a copy is never prevented, a name is only added to, the year comes from the project
+number, nothing is created silently — because anyone bound by the convention is equally bound
+by those.
+
+### What gets recorded
+
+The **session log**, saved with the session receipts, records the convention in force and one
+line per card:
+
+```
+copy mode=Card verify=full … enforced=naming+destination template="{project}_{unit}_roll{roll}"
+  landing="Camera/{unit}" unknownPath="_Unknown Project" fallbackPath="_Ingest/{date}"
+performCopy assignment source=CARD_A01 project=2026-014 unit=ACAM roll=3
+  rollProposed=yes rollSource=memory filePrefix=inherit
+```
+
+`rollProposed` and `rollSource` answer *"why is this roll 7?"* months later, where the number
+alone would only restate the question.
+
+**Receipts and manifests do not yet carry the assignment as structured fields.** The session
+log is where to look for now.
+
+### A name is only ever added to
+
+A delivered folder keeps exactly the characters its source had. Enforcement **appends**
+project, unit and roll; it never introduces, collapses or trims a separator inside a value. A
+card named `A--CAM` is delivered as `A--CAM`.
+
+That is what keeps a delivered folder name traceable back to the card it came from: a name
+the app had quietly tidied could no longer be matched against a camera report, a sound report,
+or your own notes.
+
 ## Preserve Original Folder Names
 
 When **Preserve Original Folder Names** is enabled (default in both Card and Folder presets), the destination subfolder keeps the exact name, case, and spacing from the source volume's mount-point name.
@@ -1360,6 +1578,23 @@ Preserve mode reads the raw volume name directly — dashes, spaces, dots, mixed
 ### What is still sanitized
 
 Only characters that are illegal on macOS/APFS are removed: `/`, `:`, and null bytes. Everything else — spaces, mixed case, Unicode, dashes, dots — is preserved.
+
+**The subfolder prefix follows the same rule.** While preserving, a prefix of `2.1.8_b6` is
+delivered as `2.1.8_b6`; with Preserve off it is underscored to `2_1_8_b6`, matching the name
+beside it. Until 2.7.4 Build 30 the prefix was always underscored, even while preserving — one
+folder name assembled under two rules, with the stricter one applied to the part you typed.
+
+### The two things a dot may not do, in either mode
+
+Neither is about tidiness — both change whether the delivered folder can be found:
+
+- A **leading** dot is removed. A folder whose name starts with `.` is invisible in Finder, and
+  a card delivered somewhere nobody can see is worse than one named awkwardly.
+- A **trailing** dot or space is removed. SMB and Windows drop them silently, so the folder that
+  arrives is not the one that was written — and a later verify looks for a path that is not
+  there.
+
+Dots anywhere else in the name are left exactly as they are.
 
 ### What is not affected
 

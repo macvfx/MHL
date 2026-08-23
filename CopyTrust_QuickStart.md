@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
-Date: 2026-08-09
-Current testing release: `v2.7.2 (Build 33 public prerelease)`
+Date: 2026-08-22
+Current testing release: `v2.7.5 (Build 13 public beta)`
 
 With two or more destinations, one **Copy** switch chooses `Simultaneously` or
 `In series`, and one button — always labelled **Start** — runs it. That is the
