@@ -1430,13 +1430,28 @@ judgement you are better placed to make than a preset written weeks ago.
 
 ### Destinations, when the convention decides them
 
-With destination enforcement on, the destination picker is **read-only** and shows the
-resolved absolute path together with the reason it resolved that way. Add, Remove and Browse
-are disabled, and the tooltip names the preset imposing it. The Volumes browser stays
-available — you still need to see what is mounted.
+**Naming and placement are separate switches.** A convention can name the delivered folder
+without deciding where it goes, and that is how one behaves until told otherwise: the card lands
+in the destination you staged, carrying its enforced name and nothing more. **Put the card inside
+its project folder** is in step 4 of the preset wizard, beside the paths it governs. If a card
+arrives at the top of a drive with exactly the right name, that switch is off.
 
-The **year folder comes from the project number, not from today's date**: `2026-003` belongs
-in `2026/` whether it is ingested in March or the following January.
+The Destinations panel says which you have: a **blue** *the project list is read from these
+destinations* note means naming only; an **orange** *delivery folder set by the naming preset*
+note means placement as well.
+
+With placement on, **what is decided is the folder within a destination, not which volumes take
+part.** You still add each destination — fan-out to a second drive is your decision, not the
+preset's — and each row shows the resolved absolute path, with the project folder found inside
+the volume you picked. *Check delivery folder…* on any row reads the full path back before the
+copy starts.
+
+**Which root holds the project is asked of the disk.** Where a convention has more than one root
+— a root per year, say — every root that exists on a destination is searched, and whichever one
+already holds that project is used. Only when none of them holds it does the **year in the
+project number, not today's date**, choose where it is created: `2026-003` belongs in `2026/`
+whether it is ingested in March or the following January. Two roots holding folders for the same
+project is reported rather than chosen between.
 
 **Creating a folder is never silent.** A missing year folder and a missing project folder are
 both listed in the pre-copy confirmation before anything is created, and written to the
