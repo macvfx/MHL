@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-08-22
-Release status: **2.5.3 stable**; **2.7.5 Build 13** in testing.
+Date: 2026-08-24
+Release status: **2.5.3 stable**; **2.7.5 Build 28** in testing.
 Version history is in the release notes.
 For a one-page fan-out walkthrough see [CopyTrust_FirstRun.md](CopyTrust_FirstRun.md).
 
@@ -1462,9 +1462,14 @@ With more than one destination, **each resolves independently** — including th
 one holds the project and another does not.
 
 **A proxies-only destination is filed the same way.** It resolves its own project folder on its
-own volume rather than receiving proxies at the top of it, and it is scanned for the project list
-alongside the copy destinations, so the picker tells you whether that volume holds the job before
-you copy rather than after.
+own volume — under the convention's *proxy* path, not its footage one — and it is scanned for the
+project list alongside the copy destinations, so the picker tells you whether that volume holds the
+job before you copy rather than after.
+
+**Check delivery folder…** on any destination row lists every staged card against every
+destination: the card, where its proxies are made, and where they are delivered, with the volume in
+bold. Destination rows carry an icon coloured by the kind of storage — network, SAN, removable, or
+this Mac's own disk.
 
 #### When two destinations disagree about the project's name
 
