@@ -1,7 +1,11 @@
 # CopyTrust User Guide
 
 Date: 2026-08-24
-Release status: **2.5.3 stable**; **2.7.6 Build 1** in testing.
+Release status: **2.5.3 stable**; **2.7.7 Build 1** in testing.
+
+**Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
+and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
+convention CopyTrust applies, one for copying where you decide the names and places.
 Version history is in the release notes.
 For a one-page fan-out walkthrough see [CopyTrust_FirstRun.md](CopyTrust_FirstRun.md).
 
@@ -644,7 +648,7 @@ Settings → Card Copy (or Folder Copy) → Hidden Files → **Skip hidden files
 
 Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Exclusions use the **same grouped editor**: pattern groups with per-pattern checkboxes, an All/None toggle per group, and an active count. Card and Folder modes store their checkbox states independently.
 
-**Groups changed in 2.7.6.** *File Storage* had become a drawer — desktop clutter, a copy's evidence, and the proxy folder names all under one heading, so a single All/None toggle carried three unrelated consequences. The groups now are:
+**Groups changed in 2.7.6, and receipts were renamed in 2.7.7.** *File Storage* had become a drawer — desktop clutter, a copy's evidence, and the proxy folder names all under one heading, so a single All/None toggle carried three unrelated consequences. The groups now are:
 
 | Group | Holds | Default |
 |---|---|---|
