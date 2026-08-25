@@ -646,12 +646,19 @@ Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Excl
 
 System group patterns: `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (Example NAS), `System Volume Information` (Windows). File Storage covers `.DS_Store`, `Thumbs.db`, and the generated CopyTrust / Drop Verify artifacts (`CopyTrust_Receipts`, `Drop Verify_Receipts`, `receipt_` files, `.mhl` manifests). Camera Card covers `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db`.
 
-Defaults differ by mode:
-- **Card mode (fresh profiles): every pattern starts unchecked** — card ingests archive everything unless you opt in to exclusions.
-- **Folder mode**: File Storage and System patterns start enabled; Camera Card patterns start disabled.
-- Upgrading from an earlier version keeps your saved checkbox states in both modes.
+Defaults, in **both** modes as of **2.7.5 build 30**:
+- **Nothing that could be evidence is excluded unless you ask.** The two MHL rows, `receipt_`, `CopyTrust_Receipts`, `Drop Verify_Receipts`, `CopyTrust_Proxies` and `Final Cut Proxy Media` all start **unchecked**. They are offered, not imposed.
+- **System patterns start enabled** — macOS's own metadata, not your files.
+- **Camera Card patterns start disabled**, and any you enable are named in a mandatory pre-run warning.
+- Upgrading keeps your saved checkbox states, with one exception described below.
 
-No pattern is silently forced on during copy — what you see checked is exactly what is excluded. Drop Verify exposes the same Camera Card pattern set in its own Exclusions tab, with its own independent checkbox states.
+**Two manifest rows, and they mean opposite things.** *Any MHL manifest — including one another tool wrote* skips every `.mhl`. *MHL manifests written by CopyTrust, Drop Verify or mhl-tool* skips only ours, matched on the filename this suite writes. Use the second if you want a re-copy to leave a stale CopyTrust manifest behind while still carrying the manifest ShotPut, Hedge, OffShoot or the camera wrote — that one is often the only record of what a source held.
+
+Rows that can match files you made, rather than files CopyTrust made, say so beneath the pattern. `Final Cut Proxy Media` is **Final Cut Pro's** own folder name, so it skips proxies whoever transcoded them, and it takes the whole folder. `receipt_` is a plain prefix that also matches production paperwork named `receipt_something`.
+
+> **One-time correction on upgrade.** Before build 30 these seven were switched on for you — not by the card default, which had them off, but by the migration that seeded per-mode profiles. Installing build 30 switches them off once, in both modes, and records that it has. If you deliberately want any of them on, switch it back on and it stays on: nothing re-enables a pattern you have turned off.
+
+No pattern is forced on during copy — what you see checked is exactly what is excluded. Drop Verify exposes the same Camera Card pattern set in its own Exclusions tab, with its own independent checkbox states, and keeps its **Generated Artifacts** group enabled: verifying a folder in place, CopyTrust's post-copy artifacts genuinely are not part of what was copied into it.
 
 ### Custom patterns
 
@@ -719,7 +726,7 @@ they are visible and searchable in the P5 web GUI:
 | `CT_ASSET` | CT Asset | Stable CopyTrust result identifier |
 | `CT_XXH64` | CT xxHash64 | Original verified/MHL xxHash64 |
 | `CT_FRAME` | Frame Size | Video frame or still-image dimensions |
-| `CT_KIND` | Media Kind | image, video, media, or file |
+| `CT_KIND` | Media Kind | image, video, media, or file — `proxy` on proxy media, `evidence` on receipts |
 | `CT_CODEC` | Codec | Reported video codec |
 | `CT_FPS` | Frame Rate | Reported frame rate |
 | `CT_TC` | Start TC | Reported starting timecode |
@@ -733,6 +740,18 @@ Detailed EXIF, contact sheets, MHL, provenance, proxy evidence, and normal
 CopyTrust receipts stay as files beside the originals and are included as
 `supporting_evidence` paths in the same P5 request. The P5 fields on originals
 remain bounded and useful for operator search.
+
+**Proxy media is archived with the originals** (2.7.5 build 30), marked `CT_KIND
+proxy` and `CT_STATE derivative` so it is never mistaken for camera media. Only
+proxies belonging to the destination being archived are included — CopyTrust
+reads that destination's own proxy receipts to find them — so a separate
+proxies-only delivery on another volume is not swept in. Proxies carry no
+`CT_XXH64`: the copy was hashed, and a proxy is made afterwards from the copy.
+That does not put the request into `needs_hash_verification`, which reflects the
+originals only.
+
+Before this, the proxy *receipts* were archived and the proxies were not, so the
+request carried a document naming every proxy by path and none of the files.
 
 ### Multi-destination output policy
 
@@ -987,8 +1006,13 @@ proprietary media such as R3D or BRAW is not claimed as supported by this beta
 unless the packaged ffmpeg can decode it. Failures are logged and remain
 retryable without changing the verified-copy result.
 
-The generated proxy folders are built-in exclusions, so later CopyTrust scans
-do not ingest previously generated derivatives as source media.
+A later CopyTrust run does not transcode proxies again: `Final Cut Proxy Media`,
+`CopyTrust_Proxies` and `Drop Verify_Proxies` are recognised as proxy output
+wherever they sit in a tree, and files under them are not offered as proxy
+inputs. Until 2.7.5 build 30 this was achieved by **excluding those folders from
+the copy**, which also meant a proxy tree could not be archived or handed on —
+pointing CopyTrust at one copied nothing and reported a clean finish. The files
+copy now; only the transcode is skipped.
 
 ### Proxy receipt, summary, and session log
 
@@ -1228,7 +1252,7 @@ A segmented control in the toolbar shows the active mode: **Card** or **Folder**
 | Preserve original folder names | On | On |
 | Skip hidden files | On | On |
 | System exclusions | Off (fresh profiles, v2.5.0 b2) | On |
-| File Storage exclusions | Off (fresh profiles, v2.5.0 b2) | On |
+| File Storage exclusions | Off (fresh profiles, v2.5.0 b2) | `.DS_Store` and `Thumbs.db` on; manifests, receipts and proxy folders off (2.7.5 b30) |
 | Camera card exclusions | Optional, default off | Optional, default off |
 | Exclusion groups | File Storage, System, Camera Card, Custom | File Storage, System, Camera Card, Custom |
 | Destination sort | On | Off |
