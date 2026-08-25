@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
 Date: 2026-08-22
-Release status: **2.5.3 stable**; **CopyTrust 2.7.5 Build 28** in testing.
+Release status: **2.5.3 stable**; **CopyTrust 2.7.6 Build 1** in testing.
 Version history is in the release notes.
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the

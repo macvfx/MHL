@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-08-24
-Release status: **2.5.3 stable**; **2.7.5 Build 28** in testing.
+Release status: **2.5.3 stable**; **2.7.6 Build 1** in testing.
 Version history is in the release notes.
 For a one-page fan-out walkthrough see [CopyTrust_FirstRun.md](CopyTrust_FirstRun.md).
 
@@ -644,7 +644,7 @@ Settings → Card Copy (or Folder Copy) → Hidden Files → **Skip hidden files
 
 Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Exclusions use the **same grouped editor**: pattern groups with per-pattern checkboxes, an All/None toggle per group, and an active count. Card and Folder modes store their checkbox states independently.
 
-**Groups changed in 2.7.5 build 31.** *File Storage* had become a drawer — desktop clutter, a copy's evidence, and the proxy folder names all under one heading, so a single All/None toggle carried three unrelated consequences. The groups now are:
+**Groups changed in 2.7.6.** *File Storage* had become a drawer — desktop clutter, a copy's evidence, and the proxy folder names all under one heading, so a single All/None toggle carried three unrelated consequences. The groups now are:
 
 | Group | Holds | Default |
 |---|---|---|
@@ -656,7 +656,7 @@ Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Excl
 
 `.DS_Store` and `Thumbs.db` moved to **System** because that is what they are — metadata no app copies — and they had been sitting beside a camera card's manifest, which is evidence. Your existing checkbox states are carried across unchanged; only the heading a row appears under has moved. Drop Verify uses the same group names.
 
-Defaults, in **both** modes as of **2.7.5 build 30**:
+Defaults, in **both** modes as of **2.7.6**:
 - **Nothing that could be evidence is excluded unless you ask.** The two MHL rows, `receipt_`, `CopyTrust_Receipts`, `Drop Verify_Receipts`, `CopyTrust_Proxies` and `Final Cut Proxy Media` all start **unchecked**. They are offered, not imposed.
 - **System patterns start enabled** — macOS's own metadata, not your files.
 - **Camera Card patterns start disabled**, and any you enable are named in a mandatory pre-run warning.
@@ -751,7 +751,7 @@ CopyTrust receipts stay as files beside the originals and are included as
 `supporting_evidence` paths in the same P5 request. The P5 fields on originals
 remain bounded and useful for operator search.
 
-**Proxy media is archived with the originals** (2.7.5 build 30), marked `CT_KIND
+**Proxy media is archived with the originals** (2.7.6), marked `CT_KIND
 proxy` and `CT_STATE derivative` so it is never mistaken for camera media. Only
 proxies belonging to the destination being archived are included — CopyTrust
 reads that destination's own proxy receipts to find them — so a separate
@@ -1019,7 +1019,7 @@ retryable without changing the verified-copy result.
 A later CopyTrust run does not transcode proxies again: `Final Cut Proxy Media`,
 `CopyTrust_Proxies` and `Drop Verify_Proxies` are recognised as proxy output
 wherever they sit in a tree, and files under them are not offered as proxy
-inputs. Until 2.7.5 build 30 this was achieved by **excluding those folders from
+inputs. Until 2.7.6 this was achieved by **excluding those folders from
 the copy**, which also meant a proxy tree could not be archived or handed on —
 pointing CopyTrust at one copied nothing and reported a clean finish. The files
 copy now; only the transcode is skipped.
@@ -1262,7 +1262,7 @@ A segmented control in the toolbar shows the active mode: **Card** or **Folder**
 | Preserve original folder names | On | On |
 | Skip hidden files | On | On |
 | System exclusions | Off (fresh profiles, v2.5.0 b2) | On |
-| File Storage exclusions | Off (fresh profiles, v2.5.0 b2) | `.DS_Store` and `Thumbs.db` on; manifests, receipts and proxy folders off (2.7.5 b30) |
+| File Storage exclusions | Off (fresh profiles, v2.5.0 b2) | `.DS_Store` and `Thumbs.db` on; manifests, receipts and proxy folders off (2.7.6) |
 | Camera card exclusions | Optional, default off | Optional, default off |
 | Exclusion groups | File Storage, System, Camera Card, Custom | File Storage, System, Camera Card, Custom |
 | Destination sort | On | Off |
