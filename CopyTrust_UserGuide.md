@@ -642,9 +642,19 @@ Settings → Card Copy (or Folder Copy) → Hidden Files → **Skip hidden files
 
 ## Exclusions (Card and Folder)
 
-Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Exclusions use the **same grouped editor**: pattern groups (**File Storage**, **System**, **Camera Card**, **Custom**) with per-pattern checkboxes, an All/None toggle per group, and an active count. Card and Folder modes store their checkbox states independently.
+Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Exclusions use the **same grouped editor**: pattern groups with per-pattern checkboxes, an All/None toggle per group, and an active count. Card and Folder modes store their checkbox states independently.
 
-System group patterns: `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (Example NAS), `System Volume Information` (Windows). File Storage covers `.DS_Store`, `Thumbs.db`, and the generated CopyTrust / Drop Verify artifacts (`CopyTrust_Receipts`, `Drop Verify_Receipts`, `receipt_` files, `.mhl` manifests). Camera Card covers `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db`.
+**Groups changed in 2.7.5 build 31.** *File Storage* had become a drawer — desktop clutter, a copy's evidence, and the proxy folder names all under one heading, so a single All/None toggle carried three unrelated consequences. The groups now are:
+
+| Group | Holds | Default |
+|---|---|---|
+| **Receipts & Manifests** | `.mhl` manifests (two rows: any, or only ours), `receipt_`, `CopyTrust_Receipts`, `Drop Verify_Receipts` | Off |
+| **Proxies** | `CopyTrust_Proxies`, `Final Cut Proxy Media` | Off |
+| **System** | `.DS_Store`, `Thumbs.db`, `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (NAS), `System Volume Information` (Windows) | On |
+| **Camera Card** | `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db` | Off |
+| **Custom** | Anything you add | As you set it |
+
+`.DS_Store` and `Thumbs.db` moved to **System** because that is what they are — metadata no app copies — and they had been sitting beside a camera card's manifest, which is evidence. Your existing checkbox states are carried across unchanged; only the heading a row appears under has moved. Drop Verify uses the same group names.
 
 Defaults, in **both** modes as of **2.7.5 build 30**:
 - **Nothing that could be evidence is excluded unless you ask.** The two MHL rows, `receipt_`, `CopyTrust_Receipts`, `Drop Verify_Receipts`, `CopyTrust_Proxies` and `Final Cut Proxy Media` all start **unchecked**. They are offered, not imposed.
