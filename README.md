@@ -3,8 +3,8 @@
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.5.1.
-**Public beta:** CopyTrust 2.7.5 Build 29, Drop Verify 2.7.4 Build 27,
-MHL Verify 2.6.0, Folder Copy Compare 2.7.4 Build 27.
+**Public beta:** CopyTrust, Drop Verify and Folder Copy Compare all at **2.7.7 Build 2** —
+they share a version and build from one project. MHL Verify 2.6.0.
 
 What each app does is below. What changed in each version is in
 [RELEASE_NOTES.md](RELEASE_NOTES.md).

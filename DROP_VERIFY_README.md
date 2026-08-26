@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v2.7.2 (Build 15 beta)**. Version history is in the release notes.
+Current app version: **v2.7.7 (Build 2 beta)**, shared with CopyTrust and Folder Copy Compare. Version history is in the release notes.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
