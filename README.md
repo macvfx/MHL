@@ -2,7 +2,7 @@
 
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
-**Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.5.1.
+**Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
 **Public beta:** CopyTrust, Drop Verify and Folder Copy Compare all at **2.7.7 Build 2** —
 they share a version and build from one project. MHL Verify 2.6.0.
 
@@ -101,10 +101,10 @@ Use after copying with CopyTrust, Archiware P5 Sync, a Finder copy, `rsync`, Hed
 
 ## mhl-tool (CLI)
 
-Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL v1.x and ASC MHL v2.0 manifests (v2.5.1). Same MHL engine as CopyTrust and Drop Verify, built for the terminal.
+Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL v1.x and ASC MHL v2.0 manifests (v2.7.7). Same MHL engine as CopyTrust and Drop Verify, built for the terminal.
 
-- `mhl-tool create <folder>` — hash files and write an MHL manifest
-- `mhl-tool verify <folder>` — verify files against MHL(s), auto-discovers `Receipts`, `*_Receipts` and `ascmhl` folders
+- `mhl-tool create <folder>` — hash files and write an MHL manifest **into that folder**, beside the files it describes, where every reader resolves its paths from (`--output` to put it elsewhere)
+- `mhl-tool verify <folder>` — verify files against MHL(s); finds the manifest in the folder, and still in a `Receipts`, `*_Receipts` or `ascmhl` subfolder, so manifests from earlier versions keep verifying
 - Media-only (default) or `--all-files` mode
 - JSON output for scripting, quiet mode for CI
 - Reads MHLs from any tool (OffShoot, Silverstack, ShotPut Pro, YoYotta), including ASC MHL v2.0 hashlists — the Silverstack 9+ default
