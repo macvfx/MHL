@@ -67,8 +67,10 @@ Single-folder drag-and-drop verification. Drop a folder and generate trust artif
 - MHL output is what triggers hashing and session manifest creation; CSV/contact-sheet-only modes can run without hashes, and HTML-tree-only mode skips media analysis entirely
 - **Proxy media** — edit-friendly HEVC/H.264 copies with per-clip progress and their own evidence, using the same codecs, sizes and Final Cut layout as CopyTrust. Only verified files get a proxy, and proxies stay beside the media rather than going to the export folder
 - Writes artifacts into the folder and/or mirrors them to an export folder
-- For package roots such as `.fcpbundle`, writes `Drop Verify_Receipts` beside
-  the package; ordinary folders retain their existing internal receipt layout
+- For package roots such as `.fcpbundle`, writes its `Receipts` folder beside
+  the package; ordinary folders retain their existing internal receipt layout.
+  Since 2.7.7 that folder is shared with CopyTrust rather than a separate
+  `Drop Verify_Receipts`
 - Built-in **Help > Drop Verify Help** with setup guides for external codecs, HTML tree, and output options
 
 ## MHL Verify
@@ -102,7 +104,7 @@ Use after copying with CopyTrust, Archiware P5 Sync, a Finder copy, `rsync`, Hed
 Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL v1.x and ASC MHL v2.0 manifests (v2.5.1). Same MHL engine as CopyTrust and Drop Verify, built for the terminal.
 
 - `mhl-tool create <folder>` — hash files and write an MHL manifest
-- `mhl-tool verify <folder>` — verify files against MHL(s), auto-discovers `_Receipts` and `ascmhl` folders
+- `mhl-tool verify <folder>` — verify files against MHL(s), auto-discovers `Receipts`, `*_Receipts` and `ascmhl` folders
 - Media-only (default) or `--all-files` mode
 - JSON output for scripting, quiet mode for CI
 - Reads MHLs from any tool (OffShoot, Silverstack, ShotPut Pro, YoYotta), including ASC MHL v2.0 hashlists — the Silverstack 9+ default

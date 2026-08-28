@@ -65,7 +65,12 @@ Tree-only exception: if `HTML directory tree` is the only selected output, Drop 
 
 By default, Drop Verify writes artifacts into an ordinary dropped folder inside:
 
-- `Drop Verify_Receipts/`
+- `Receipts/`
+
+This is the same folder CopyTrust writes into, shared since 2.7.7 — a folder both apps had
+touched used to carry `Drop Verify_Receipts` and `CopyTrust_Receipts` side by side, neither name
+saying what was inside. The files are already named by the app that wrote them (`dropverify_…`,
+`receipt_…`, `ingest_…`). A folder that already holds one of the older names keeps using it.
 
 Package exception: when the analyzed root is a macOS package such as
 `Show Library.fcpbundle`, the receipt folder is created beside the package.

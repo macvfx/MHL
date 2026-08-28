@@ -109,7 +109,7 @@ drive the encode. The proxy receipt retains raw/display dimensions, rotation,
 and original/proxy color fields.
 
 **Package-safe artifacts:** If the copied root is a macOS package such
-as `Show Library.fcpbundle`, `CopyTrust_Receipts`, `CopyTrust_Proxies`, and
+as `Show Library.fcpbundle`, `Receipts`, `CopyTrust_Proxies`, and
 `Final Cut Proxy Media` are written beside the package. CopyTrust never adds
 them to the package contents. Ordinary folder placement is unchanged.
 
@@ -193,7 +193,7 @@ beta has passed your site acceptance tests.
    destination that P5 should archive.
 4. Run the copy and wait for copy, verification, MHL, sorting, and enabled
    artifacts to finish.
-5. Inspect `CopyTrust_Receipts/COPYTRUST_P5_ARCHIVE_REQUEST_*.json` for the P5
+5. Inspect `Receipts/COPYTRUST_P5_ARCHIVE_REQUEST_*.json` for the P5
    job ID/state, then confirm the job and `CT_*` fields in the P5 web GUI.
 
 Pipeline order:
@@ -246,7 +246,7 @@ Expected result:
 - the camera card can be ejected as soon as Step 1 is trust-complete
 - **contact sheet PDF is faster for Step 2 and later:** thumbnails from Step 1 are cached and reused — no redundant preview generation for the same card content
 - building the chain writes an immutable `COPYTRUST_WORKFLOW_PLAN_<sequence-id>.json` with ordered legs, queue/sequence/step IDs, dependencies, and each destination's proxy/P5 choices
-- each session log identifies its active queue item and plan; the same plan is exported into every leg's `CopyTrust_Receipts` folder
+- each session log identifies its active queue item and plan; the same plan is exported into every leg's `Receipts` folder
 
 ### Relay workflow evidence
 

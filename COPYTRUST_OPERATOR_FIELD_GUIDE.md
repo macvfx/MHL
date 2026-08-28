@@ -53,7 +53,7 @@ After a **Full or Inline** copy completes, on the destination drive:
 
 1. **Media is there** — the subfolder (e.g. `A001_2026-06-14`) holds your files and they open.
 2. **One MHL at the root** — exactly one `*.mhl` in the destination subfolder root.
-3. **Receipts folder** — `CopyTrust_Receipts/` contains:
+3. **Receipts folder** — `Receipts/` inside the delivery contains:
    - `ingest_*.log` (per-copy log with a header: app/build, macOS, host, session tag, source)
    - `ingest_*.json` + `ingest_*.txt` (receipt)
    - `SESSION_MANIFEST_*.json`
@@ -69,7 +69,7 @@ enabled descriptive artifacts. No MHL is expected because Quick does not calcula
 content hashes.
 
 For an `.fcpbundle` or another macOS package root, confirm
-`CopyTrust_Receipts` and any proxy folder are **beside** the package, not inside
+the `Receipts` folder and any proxy folder are **beside** the package, not inside
 it. Ordinary folder copies retain their existing internal receipt placement.
 
 ---
@@ -106,7 +106,7 @@ generate before relying on them on a job.
    `Settings > External Codecs` enable ExifTool / external thumbnail codecs and
    `Auto-Detect` (or `Browse…`) each tool.
 3. **Run a Folder-mode copy with Quick verification** and let its copy + size check finish.
-4. **Confirm the artifacts appear** in the destination (and `CopyTrust_Receipts/`):
+4. **Confirm the artifacts appear** in the destination (and `Receipts/`):
    - Contact sheet **PDF** — and that it **auto-opens** when configured to
    - EXIF **CSV**
    - **HTML** directory tree

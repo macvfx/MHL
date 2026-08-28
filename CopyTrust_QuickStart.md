@@ -120,5 +120,5 @@ After `End Session`, use the main UI for:
 The main workspace is cleared at session end, so use those review buttons instead of expecting the previous sources or destinations to remain loaded.
 
 When the copied root is an `.fcpbundle` or another macOS package, CopyTrust
-places `CopyTrust_Receipts` and proxy folders beside the package. Ordinary
+places the `Receipts` folder and proxy folders beside the package. Ordinary
 folder copies retain their existing internal receipt layout.

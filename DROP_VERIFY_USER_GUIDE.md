@@ -44,10 +44,14 @@ The MHL is the hash-producing trust artifact. If MHL is disabled, Drop Verify ca
 ### Package-safe receipt placement
 
 If the analyzed root is a macOS package such as a Final Cut Pro
-`Show Library.fcpbundle`, Drop Verify writes `Drop Verify_Receipts` beside the
+`Show Library.fcpbundle`, Drop Verify writes `Receipts` beside the
 package. It does not modify the package contents. MHL, contact sheets, CSV,
 HTML tree, manifests, retries, and Reveal Receipts all use the sibling folder.
-Ordinary folders continue to receive `Drop Verify_Receipts` inside the folder.
+Ordinary folders continue to receive `Receipts` inside the folder.
+
+Since 2.7.7 that folder is shared with CopyTrust rather than a separate
+`Drop Verify_Receipts` beside `CopyTrust_Receipts`; the placement rule above is unchanged, only
+the name. A folder already holding one of the older names keeps using it.
 
 ## Basic Workflow
 
@@ -98,7 +102,7 @@ Use the **Cancel** button in the header bar to stop at any time without quitting
 ### 5. Review artifacts
 If local output is enabled, artifacts are written into:
 
-- `Drop Verify_Receipts/`
+- `Receipts/`
 
 You can open individual artifacts from the app after generation.
 
@@ -173,7 +177,7 @@ codecs and settings as CopyTrust's Proxy Media.
   `Drop Verify_Proxies/…/OriginalFileName.mov`.
 - Progress is reported per clip — *"Proxy 3 of 8 — clip.mov — 42% · 1.85× · ~2m 10s
   remaining"* — so a long encode never looks like a hang.
-- Each run writes evidence to `Drop Verify_Receipts/Proxy Media`: a JSON receipt, a
+- Each run writes evidence to `Receipts/Proxy Media`: a JSON receipt, a
   readable summary, and an encode log, recording operator, codec, scale, the ffmpeg and
   ffprobe used, and per-clip original-vs-proxy validation.
 
@@ -221,7 +225,7 @@ When "One HTML per top-level folder" mode is selected, each immediate subfolder 
 ### Write in dropped folder
 When enabled, Drop Verify writes selected outputs into the dropped folder under:
 
-- `Drop Verify_Receipts/`
+- `Receipts/`
 
 ### Extra export folder
 When enabled, the app also copies generated artifacts to a separate export folder you choose in Settings.
@@ -229,7 +233,7 @@ When enabled, the app also copies generated artifacts to a separate export folde
 ### Session manifest
 When MHL/hash output is enabled, Drop Verify writes a session manifest:
 
-- `Drop Verify_Receipts/SESSION_MANIFEST_{folderName}_{timestamp}.json`
+- `Receipts/SESSION_MANIFEST_{folderName}_{timestamp}.json`
 
 The manifest records every verified file with path, size, and xxHash64 hash. On cancellation during a hashing run, it captures which files were verified before the cancel (`"status": "cancelled"`). The JSON uses `filesVerified` / `bytesVerified` keys (distinct from CopyTrust's `filesCopied` / `bytesCopied`).
 

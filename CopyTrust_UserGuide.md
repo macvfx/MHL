@@ -628,7 +628,7 @@ It contains non-secret P5 configuration only; passwords are never written.
 Each leg's session log records a structured `workflow setup`, `workflow source`,
 and `workflow destination` block. It also identifies the active queue item,
 sequence step, dependency, and workflow-plan path. A copy of the plan is placed
-in that leg's `CopyTrust_Receipts` folder so exported evidence remains linked
+in that leg's `Receipts` folder so exported evidence remains linked
 to the run that consumed it. A later relay with matching paths receives a new
 sequence ID and cannot silently reuse rows from the earlier chain.
 
@@ -652,7 +652,7 @@ Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Excl
 
 | Group | Holds | Default |
 |---|---|---|
-| **Receipts & Manifests** | `.mhl` manifests (two rows: any, or only ours), `receipt_`, `CopyTrust_Receipts`, `Drop Verify_Receipts` | Off |
+| **Receipts & Manifests** | `.mhl` manifests (two rows: any, or only ours), `receipt_`, `Receipts`, `CopyTrust_Receipts`, `Drop Verify_Receipts` | Off |
 | **Proxies** | `CopyTrust_Proxies`, `Final Cut Proxy Media` | Off |
 | **System** | `.DS_Store`, `Thumbs.db`, `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (NAS), `System Volume Information` (Windows) | On |
 | **Camera Card** | `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db` | Off |
@@ -661,7 +661,7 @@ Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Excl
 `.DS_Store` and `Thumbs.db` moved to **System** because that is what they are — metadata no app copies — and they had been sitting beside a camera card's manifest, which is evidence. Your existing checkbox states are carried across unchanged; only the heading a row appears under has moved. Drop Verify uses the same group names.
 
 Defaults, in **both** modes as of **2.7.6**:
-- **Nothing that could be evidence is excluded unless you ask.** The two MHL rows, `receipt_`, `CopyTrust_Receipts`, `Drop Verify_Receipts`, `CopyTrust_Proxies` and `Final Cut Proxy Media` all start **unchecked**. They are offered, not imposed.
+- **Nothing that could be evidence is excluded unless you ask.** All eight rows — the two MHL rows, `receipt_`, `Receipts`, `CopyTrust_Receipts`, `Drop Verify_Receipts`, `CopyTrust_Proxies` and `Final Cut Proxy Media` — start **unchecked**. They are offered, not imposed. `Receipts` is the eighth, added in 2.7.7 with the folder rename, and it arrives switched off on every installation.
 - **System patterns start enabled** — macOS's own metadata, not your files.
 - **Camera Card patterns start disabled**, and any you enable are named in a mandatory pre-run warning.
 - Upgrading keeps your saved checkbox states, with one exception described below.
@@ -803,7 +803,7 @@ selected.
 Keep **Always write a deferred P5 request JSON** enabled. The selected
 **Archive to P5** destination then receives:
 
-`CopyTrust_Receipts/COPYTRUST_P5_ARCHIVE_REQUEST_<source>_<timestamp>.json`
+`Receipts/COPYTRUST_P5_ARCHIVE_REQUEST_<source>_<timestamp>.json`
 
 The file contains exact local paths, sizes, hashes, P5 metadata, server target
 hints, archive job ID, and state. It never contains the P5 password. If P5 is
@@ -900,7 +900,7 @@ For a normal multi-destination session (not relay), every destination is sorted 
 
 ### What is not moved
 
-- The `CopyTrust_Receipts/` folder is never touched by the sort.
+- The `Receipts/` folder is never touched by the sort.
 - Files with extensions that do not match any enabled category remain in place.
 - Empty source directories are cleaned up after sorting.
 
@@ -1032,7 +1032,7 @@ copy now; only the transcode is skipped.
 
 After proxy generation, each destination receives three evidence files beneath:
 
-`CopyTrust_Receipts/Proxy Media/`
+`Receipts/Proxy Media/`
 
 - `proxy_receipt_<source>_<stamp>.json` is the structured receipt. It records
   the operator, session, selected codec and percentage, packaged tool paths,
@@ -1089,19 +1089,19 @@ the package contents. It writes these as siblings instead:
 ```text
 Destination/
 ├── Show Library.fcpbundle
-├── CopyTrust_Receipts/
+├── Receipts/
 └── Final Cut Proxy Media/        (when enabled)
 ```
 
 This applies to contact sheets, CSV, HTML, provenance, archived source MHL,
 proxy evidence, and proxy media. Ordinary folders retain the existing layout,
-with `CopyTrust_Receipts` inside the copied folder.
+with `Receipts` inside the copied folder.
 
 ### Open automatically with multiple parts
 
 When **Open contact sheet automatically after creation** is on:
 - a single PDF opens in Preview as before;
-- a split run **reveals the parts selected in Finder** (in `CopyTrust_Receipts/`) instead of opening a stack of Preview windows.
+- a split run **reveals the parts selected in Finder** (in `Receipts/`) instead of opening a stack of Preview windows.
 
 ### Per-artifact status and retry
 
@@ -1242,8 +1242,8 @@ When **Destination Sort** is on, files are moved into type folders (`Video/`, `P
 Since 2.5.2 (stable as of 2.5.3), CopyTrust handles this automatically:
 
 - A **delivery MHL** describing the sorted layout is written to the destination root, and every verify action — **Verify Using MHL**, **Re-Verify Destinations**, **Retry MHL Export** — targets it.
-- The original **source MHL** is preserved as provenance under `CopyTrust_Receipts/… - Source.mhl`, so the destination root holds exactly one verifiable MHL.
-- A **`PROVENANCE_<source>_<timestamp>.json`** record is written to `CopyTrust_Receipts/` for every copy: the settings used (naming, sort categories, folder mode) plus the per-file source→destination mapping (identity for a plain copy).
+- The original **source MHL** is preserved as provenance under `Receipts/… - Source.mhl`, so the destination root holds exactly one verifiable MHL.
+- A **`PROVENANCE_<source>_<timestamp>.json`** record is written to `Receipts/` for every copy: the settings used (naming, sort categories, folder mode) plus the per-file source→destination mapping (identity for a plain copy).
 - If a network destination drops and reconnects mid-pipeline, the sort is **not** re-run (it is one-shot) — only unfinished artifacts are retried.
 
 > Sorted-copy MHL handling shipped in the 2.5.3 stable release. Plain (unsorted) copies are unchanged: the single copy-time MHL at the destination root is the one you verify against.
@@ -1266,9 +1266,9 @@ A segmented control in the toolbar shows the active mode: **Card** or **Folder**
 | Preserve original folder names | On | On |
 | Skip hidden files | On | On |
 | System exclusions | Off (fresh profiles, v2.5.0 b2) | On |
-| File Storage exclusions | Off (fresh profiles, v2.5.0 b2) | `.DS_Store` and `Thumbs.db` on; manifests, receipts and proxy folders off (2.7.6) |
+| Receipts, manifest and proxy exclusions | Off | Off — all eight rows offered and unticked (2.7.6) |
 | Camera card exclusions | Optional, default off | Optional, default off |
-| Exclusion groups | File Storage, System, Camera Card, Custom | File Storage, System, Camera Card, Custom |
+| Exclusion groups | Receipts & Manifests, Proxies, System, Camera Card, Custom | Receipts & Manifests, Proxies, System, Camera Card, Custom |
 | Destination sort | On | Off |
 | Verification level | Inline | Quick |
 | Auto-advance | On | Off |

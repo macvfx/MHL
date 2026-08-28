@@ -29,9 +29,9 @@ A successful session log should end with lines like:
 
 ```text
 Artifacts complete - MHL * contact sheet * CSV
-  MHL: /path/to/Drop Verify_Receipts/...
-  Contact sheet: /path/to/Drop Verify_Receipts/...
-  CSV: /path/to/Drop Verify_Receipts/...
+  MHL: /path/to/Receipts/...
+  Contact sheet: /path/to/Receipts/...
+  CSV: /path/to/Receipts/...
 Session finished successfully.
 ```
 
@@ -90,7 +90,7 @@ pgrep -P <DropVerifyPID> -fl .
 Use `lsof` to see whether Drop Verify is touching receipts, exports, or external storage:
 
 ```zsh
-lsof -p <DropVerifyPID> | egrep 'Drop Verify_Receipts|dropverify|contactsheet|mhl|csv|tree|\.pdf|\.html'
+lsof -p <DropVerifyPID> | egrep 'Receipts|dropverify|contactsheet|mhl|csv|tree|\.pdf|\.html'
 ```
 
 Seeing unrelated HTTP storage or SQLite files can be normal macOS framework/app state. Look for paths that point to the project, receipt folder, export folder, or an external tool.
@@ -110,7 +110,7 @@ If timestamp and size do not change while the app is still running, the app may 
 ## Confirm Artifacts Already Exist
 
 ```zsh
-find "/path/to/project/Drop Verify_Receipts" -maxdepth 2 -type f -print -exec ls -lh {} \;
+find "/path/to/project/Receipts" -maxdepth 2 -type f -print -exec ls -lh {} \;
 ```
 
 Look for:
@@ -151,7 +151,7 @@ sample <PID> 5 -file ~/Desktop/dropverify_sample.txt
 pgrep -P <PID> -fl .
 ps -o pid,ppid,stat,etime,pcpu,pmem,command -p <PID>
 tail -n 80 /path/to/session_XXXX.log
-find "/path/to/project/Drop Verify_Receipts" -maxdepth 2 -type f -print -exec ls -lh {} \;
+find "/path/to/project/Receipts" -maxdepth 2 -type f -print -exec ls -lh {} \;
 ```
 
 These usually answer whether Drop Verify is still working, waiting on an external command, done but not updated in the UI, or missing only an optional artifact.
