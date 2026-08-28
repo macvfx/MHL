@@ -67,6 +67,14 @@ By default, Drop Verify writes artifacts into an ordinary dropped folder inside:
 
 - `Receipts/`
 
+**The MHL manifest is the exception, and belongs at the top of the folder it describes.** A
+manifest's paths are relative to its own location, so one written into `Receipts/` while describing
+the folder above it resolves every path one level too deep — which is what happened until 2.7.7
+build 2. It is now written to the dropped folder itself, beside the files it covers, which is what
+MHL's own convention expects and what every reader assumes. For a package root it goes beside the
+package, with each path carrying the package's folder name.
+
+The rest — receipts, logs, contact sheet, CSV, HTML tree, proxy evidence — is in `Receipts/`.
 This is the same folder CopyTrust writes into, shared since 2.7.7 — a folder both apps had
 touched used to carry `Drop Verify_Receipts` and `CopyTrust_Receipts` side by side, neither name
 saying what was inside. The files are already named by the app that wrote them (`dropverify_…`,

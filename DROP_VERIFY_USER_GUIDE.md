@@ -53,6 +53,12 @@ Since 2.7.7 that folder is shared with CopyTrust rather than a separate
 `Drop Verify_Receipts` beside `CopyTrust_Receipts`; the placement rule above is unchanged, only
 the name. A folder already holding one of the older names keeps using it.
 
+The **MHL manifest** does not go in that folder. It is written to the dropped folder itself, beside
+the files it describes, because its paths are relative to that folder — until 2.7.7 build 2 it went
+into the receipts folder and every path resolved one level too deep. Beside a package it sits with
+the receipts folder rather than inside the package, and each path carries the package's own folder
+name so it still resolves.
+
 ## Basic Workflow
 
 ### 1. Open Drop Verify
@@ -102,7 +108,9 @@ Use the **Cancel** button in the header bar to stop at any time without quitting
 ### 5. Review artifacts
 If local output is enabled, artifacts are written into:
 
-- `Receipts/`
+- `Receipts/` — receipts, logs, contact sheet, CSV, HTML tree, proxy evidence
+- the dropped folder itself — **the MHL manifest only**, because its paths are relative to that
+  folder and a manifest one level below them resolves nothing
 
 You can open individual artifacts from the app after generation.
 
