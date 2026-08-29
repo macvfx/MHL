@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-22
-Applies to: CopyTrust 2.7.5 Build 28; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 2.7.8; keep the 2.5.3 stable line available for comparison
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -239,6 +239,21 @@ Known tested baseline (private fixture identifiers anonymized): P5 8.0.4
 archived a CopyCore Inline-verified PNG, text sidecar, and MHL to a non-deleting
 test index; readback returned both complete hashes, `64x36` image dimensions,
 and the expected CopyTrust fields.
+
+## K. Source Manifest (2.7.8)
+
+| ID | Scenario | Steps | Expected |
+|---|---|---|---|
+| K1 | Arrival manifest found | Stage a folder with a vendor `.mhl` at its root, and one with `ascmhl/`. | The row names the tool and entry count for both, before any copy. |
+| K2 | No manifest | Stage an ordinary card. | The row says none was found. Absence stated, not silent. |
+| K3 | Unreadable manifest | Put a truncated `.mhl` beside a source. | Reported as present and unreadable — never as absent. |
+| K4 | Intact card, Inline | Copy K1's card. | Green Source Provenance card, all entries matched, tool credited. No measurable time added to the copy. |
+| K5 | Damaged card | Alter a byte after the manifest was written; copy. | Copy completes and verifies clean; source verdict red and names the file. Both recorded as separate fields. |
+| K6 | Partial coverage | Manifest mixing xxHash64 with MD5 entries. | Amber *Partly checked*, never a green seal. |
+| K7 | Quick verification | Copy K5's card with Quick. | No source verdict at all, and the staging row said so beforehand. |
+| K8 | Our own manifest | Re-stage a CopyTrust delivery. | Credited as ours, no arrival verdict. |
+| K9 | Resumed copy | Cancel part-way, resume. | Same verdict as an uninterrupted copy of the same card. |
+| K10 | Fan-out | Two destinations. | One verdict per source in the log, not one per destination. |
 
 ## Ship Decision
 

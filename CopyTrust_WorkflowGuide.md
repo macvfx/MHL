@@ -66,8 +66,8 @@ CopyTrust offers two copy modes accessible via a segmented control in the toolba
 
 | Mode | Best for | Key defaults |
 |--------|----------|-------------|
-| **Card** | Camera card ingest | `{alias}_{date}` naming, inline verification, contact sheet on, sort on, auto-advance on, camera card exclusions active, preserve original names on |
-| **Folder** | Folder backup / archive | `{alias}` naming, quick verification, contact sheet off, sort off, auto-advance off, preserve original names on, File Storage / System / Camera Card exclusion groups |
+| **Card** | Camera card ingest | `{alias}_{date}` naming, inline verification, contact sheet on, sort on, auto-advance on, preserve original names on. **Camera Card exclusions start disabled** — they can remove a whole structural folder, so they are opted into, and any you enable are named in a warning before the copy |
+| **Folder** | Folder backup / archive | `{alias}` naming, quick verification, contact sheet off, sort off, auto-advance off, preserve original names on. Exclusion groups are Receipts & Manifests, Proxies, System and Camera Card; only System is on |
 
 Each mode maintains its own **independent settings profile**. Changes to Card settings never affect Folder settings and vice versa. Configure each mode's defaults in **Settings > Card Copy** and **Settings > Folder Copy**.
 
@@ -84,7 +84,7 @@ The **Preset** menu beside the mode picker saves your Card **and** Folder settin
 | Update … from Current Settings | Re-captures in place, keeping the preset's name and identity |
 | Duplicate as My Preset… | Makes an editable copy of a read-only shared preset |
 
-**Presets never change destinations.** Loading one names the destination set it expects and says whether that set exists on this Mac; you confirm the destination list yourself before copying.
+**A preset built by the wizard carries its destinations.** Since 2.7.5 a preset made with *Build an Enforced Naming Preset…* stores the destinations that were staged when it was made — as a volume name and a path, not a bookmark to one Mac — and loading it stages them, naming them in the confirmation first. A volume that is not mounted is requested from SMB Connect and named on screen if it does not appear. Confirm the destination list before copying either way.
 
 Shared presets live in `/Users/Shared/CopyTrust/Presets` (read-only to the app, deployable by script or MDM before an operator's first launch); your own are saved in `~/Library/Application Support/CopyTrust/Presets`. Tool *paths*, P5 credentials, operator name and appearance are deliberately excluded so a preset stays portable between machines.
 
