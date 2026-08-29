@@ -1,7 +1,7 @@
 # CopyTrust 2.7.8 — Test Notes
 
-**Build under test:** 2.7.8 Build 7 · **Previous release:** 2.7.7 Build 2
-**Written:** 2026-08-28
+**Build under test:** 2.7.8.1 Build 8 · **Previous release:** 2.7.8 Build 7
+**Written:** 2026-08-28 · **Build 8 added:** 2026-08-29
 
 **What this release is about:** the manifest a card **arrived with**. Everything else in CopyTrust
 proves the copy *it* made. This proves what the footage was before CopyTrust touched it — and the
@@ -34,7 +34,7 @@ footage that arrived broken from footage this facility broke.
 - Date:
 - Operator:
 - Machine / macOS:
-- Version in About (must read **2.7.8**):
+- Version in About (must read **2.7.8.1** — the fourth number is what Munki compares):
 - Verification level (**Inline or Full** for most of this):
 - Source used:
 - Destinations:
@@ -188,6 +188,96 @@ grep -E "sourceManifest" ~/Library/Application\ Support/CopyTrust/logs/*/session
 - [ ] **Drop Verify and Folder Compare skip the `Receipts` folder.** A second Drop Verify pass over
       a folder does not hash its own prior output, and a deep compare of a clean delivery reports
       no differences.
+
+---
+
+## G. Build 8 — where evidence lands, and what a preset carries
+
+Four things field testing build 7 turned up. The first two are placement faults: evidence written
+somewhere other than where an operator goes looking for it. The last two are preset gaps — the
+model could already describe a facility's setup, and there was no way to say so.
+
+**G1 — One receipts folder per delivery, holding everything**
+- **Do:** copy a card with the EXIF CSV, contact sheet, HTML tree and proxies all on, to a
+  destination that has never held a CopyTrust delivery. Open the delivered folder.
+- **Expect:** exactly **one** `Receipts` folder. Inside it: the receipt `.txt`, the `.log`, the
+  session manifest, the provenance JSON, the HTML tree, the contact sheet PDF, `Proxy Media/`, and
+  the `…_copytrust_exif.csv`.
+- **Was:** the CSV alone went to a second folder named `CopyTrust_Receipts` — the pre-2.7.7 name,
+  left pinned in one line of the writer. A delivery carried two receipts folders and the one an
+  operator opened was the one without the metadata.
+- **Also check:** a folder an *older* build delivered into, which already has a
+  `CopyTrust_Receipts`. A second copy must add to that one folder, not start a `Receipts` beside
+  it. Both readings of "two receipts folders in one delivered folder" are now defects.
+
+**G2 — Nothing is written at the root of a destination**
+- **Do:** stage a destination as the **volume root** (`/Volumes/Copy A`, not a folder inside it)
+  and run a normal card copy.
+- **Expect:** `/Volumes/Copy A` gains the delivered folder and **nothing else**. No `Receipts` and
+  no `CopyTrust_Receipts` at the top of the drive.
+- **Was:** the session receipt `.txt` and the per-copy `.log` were written to the folder the
+  operator picked rather than the folder the card landed in, so every job left a receipts folder at
+  the root of every destination drive as well as the real one beside the footage.
+- **Where they are instead:** beside the delivery, in the same `Receipts` folder as G1 — plus
+  `~/Library/Application Support/CopyTrust/receipts/` as always, and the receipt export folder when
+  one is set. A destination that received nothing this session gets nothing written to it.
+- **Under enforcement:** the receipt follows the card into the project folder, not
+  `destination + subfolder`, which stopped being the same place once placement could resolve a
+  project deeper in the tree.
+
+**G3 — A preset can say one destination archives to P5 and another makes proxies**
+- **Do:** Preset ▸ Build… (or Edit…) and go to **What each destination is for**.
+- **Expect:** every staged destination listed by volume and path, each with **Archive to P5** and
+  **Create proxies**. Turning P5 on for one turns it off for the others — the copy allows exactly
+  one archive source. A proxies-only destination is listed separately and takes neither.
+- **Then:** save, load the preset on another Mac, and read the confirmation. It names which drive
+  is the P5 source and which makes proxies before staging anything.
+- **Was:** the preset always carried these, and the only place to set them was the destination row
+  behind the wizard — where **Create proxies** is on for every destination added. A facility that
+  archives from one drive and makes proxies on the other got proxies on both.
+- **Note:** editing here writes the preset, not the job on the bench. The destinations in front of
+  you keep their own settings until the preset is loaded.
+
+**G4 — A preset carries the P5 server, so all an operator sets is the password**
+- **Do:** set up P5 in Settings ▸ P5 Archive on one Mac, then Preset ▸ Build… ▸ **P5 archive
+  server** and tick *Carry this Mac's P5 server settings in the preset*. Review, save.
+- **Expect:** the step reads back server, port, API version, user, archive index, client and plan.
+- **Then:** load the preset on a Mac with no P5 set up. All seven fields fill in; **Test
+  Connection** fails only for the missing password. Enter it in Settings ▸ P5 Archive and it works.
+- **Check the file:** open the saved `.json` in a text editor. The server is in it. **No password
+  is, and there is no field that could hold one** — it stays in each operator's Keychain, filed
+  under the `host:port|user` this preset fills in, which is what makes their saved password the
+  one used.
+- **Deliberately not carried:** *Archive verified copies to P5* and the deferred request. Those
+  stay per-job, so loading a preset never starts submitting archive jobs on its own.
+
+---
+
+**G5 — The exported report covers the whole preset**
+- **Do:** with destinations staged and P5 set up, Preset ▸ (your preset) ▸ **Save Report…** ▸ Rich
+  Text. Do it again as CSV and as Markdown.
+- **Expect:** as well as the naming decisions, three more sections — *Destinations this preset
+  carries, and what each is for*, *P5 archive server*, and *Copy settings this preset also
+  carries*. All three formats carry all three.
+- **Read the P5 section:** it must name the server, port, user, index, client and plan, **and say
+  plainly that the password is not carried**. Search all three files for `password` — every hit
+  should be that sentence.
+- **Read the destinations section:** which drive is the P5 source, which makes proxies, which
+  receives proxies only. Volume-and-path, never this Mac's mount points.
+- **Then:** compare the report against the wizard's review step. They are built from the same
+  assembly of the preset, so they cannot disagree — if they do, that is the defect.
+
+**G6 — The launch panel is five steps, and the detail is in Help**
+- **Do:** launch build 8 for the first time.
+- **Expect:** the panel opens headed *Start here — five steps, in this order* and lists them:
+  newest build, load the preset, add the P5 password if you use P5, choose the sources, assign the
+  project and Start. Not a changelog and not a test script.
+- **Then:** Help ▸ **What's New** — a new topic carrying what changed in this build, what to test
+  in it, and what is still worth testing from build 7. It should say the same things as section G
+  above, and be reachable long after the panel has been dismissed.
+- **Why:** the panel opens by itself with a card usually already in the reader. Loading the preset
+  *after* staging cards is the mistake it exists to prevent, and a list of changes cannot prevent
+  it.
 
 ---
 

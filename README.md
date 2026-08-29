@@ -3,8 +3,10 @@
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.7.8 Build 7** — CopyTrust now checks
-footage against the manifest it arrived with. See [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md).
+**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.7.8.1 Build 8** — a delivery gets one
+receipts folder holding everything, nothing is written at the root of a destination drive, and a
+preset can say which destination archives to P5, which makes proxies, and which P5 server to use.
+See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md).
 
 > **2.7.8 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub

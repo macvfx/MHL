@@ -1,8 +1,8 @@
-# Media Trust Tools 2.7.8 Build 7 — BETA
+# Media Trust Tools 2.7.8.1 Build 8 — BETA
 
-**Released:** 2026-08-28 · CopyTrust · Drop Verify · Folder Copy Compare
-**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8%2B7) ·
-**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md)
+**Released:** 2026-08-29 · CopyTrust · Drop Verify · Folder Copy Compare
+**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.1%2B8) ·
+**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — section G is this build
 
 > **This is a beta.** Run it on media you can afford to lose, and keep a separate, independently
 > verified backup made by **other software** — Archiware P5 or equivalent. This is free software
@@ -10,6 +10,101 @@
 > different tools.
 
 ---
+
+# Build 8 — where evidence lands, and what a preset can say
+
+Four findings from a field pass on build 7. Two are placement faults — evidence written somewhere
+other than where the person looking for it goes. Two are preset gaps, where CopyTrust could already
+do the thing and there was no way to ask for it.
+
+## One receipts folder per delivery, holding everything
+
+2.7.7 renamed a delivery's evidence folder to **`Receipts`**. The EXIF metadata CSV was still
+writing to the old `CopyTrust_Receipts`, so a delivery came out with **two** receipts folders: one
+holding the receipt, the manifest, the provenance record, the HTML tree, the contact sheet and the
+proxy evidence — and one holding a single CSV. The folder you open looking for the metadata export
+was the one without it in.
+
+A folder an older build delivered into keeps the name it already has, and everything joins that one
+folder rather than starting a second beside it.
+
+## Nothing is written at the top of a destination drive
+
+The session receipt and the per-copy log were written to the folder staged in the Destinations
+panel, which is usually a volume root, while every other artifact went into the delivered folder.
+So every job left a receipts folder at the root of every destination drive as well as the real one
+beside the footage.
+
+They now follow the card into the folder it landed in — including under enforced naming, where the
+card lands inside its project folder rather than one level down from the drive. A destination that
+received nothing this session has nothing written to it. The copies in
+`~/Library/Application Support/CopyTrust` and in the receipt export folder are unchanged.
+
+## A preset says what each destination is *for*
+
+**Preset ▸ Build…** (or **Edit…**) has a new step listing every staged destination with **Archive
+to P5** and **Create proxies**. One drive can be the P5 archive source while another makes the
+proxies.
+
+CopyTrust always carried these in a preset; the only place to set them was the destination row, and
+**Create proxies is on by default for every destination you add**. A facility that archives from one
+drive and makes proxies on the other shipped a preset that made proxies on both, and found out by
+watching an encode run on a drive that was never meant to make any.
+
+Loading a preset now names which drive archives and which makes proxies before it stages anything.
+
+## A preset carries the P5 server, so all that is left is the password
+
+Address, port, API version, user, archive index, client and plan travel with the preset. Load it on
+another Mac and the only thing to fill in is the password.
+
+**The password is never in a preset file, and there is no field that could hold one.** It stays in
+each operator's own Keychain, entered once in **Settings ▸ P5 Archive** and filed under the server
+and user the preset fills in — which is what makes their saved password the one that gets used.
+
+Whether a job archives to P5 is still a per-job switch. Loading a preset never turns it on.
+
+## The exported report describes the whole preset
+
+**Preset ▸ Save Report…** wrote out the naming decisions and nothing else, while the same file also
+decides which drive archives, which makes proxies, what verification runs and what is excluded. It
+now carries three more sections in all three formats: the destinations and what each is for, the P5
+server with the explicit statement that the password is not carried, and every copy setting the
+preset applies when it loads.
+
+## The panel that opens on launch is the order of work
+
+It has been a list of changes and then a test script, and both were the wrong thing for the moment
+it appears in — you have just launched the app, usually with a card already in the reader. It now
+carries the five steps that get a copy started correctly, in the order they have to happen: newest
+build, load the preset, add the P5 password if you use P5, choose the sources, assign the project
+and Start.
+
+What changed and what to test moved to **Help ▸ What's New**, where it stays reachable.
+
+## Why the version has a fourth number
+
+Munki compares an app's version string and ignores its build number, so every build of 2.7.8 looked
+to it like the same release and a managed Mac was never offered the newer one. **2.7.8.1** gives it
+something to compare. All three apps move together — build 8 changes code all three share.
+
+## Downloads
+
+| File | Contents |
+|---|---|
+| `MediaTrustTools-2.7.8.1-b8-BETA.dmg` | All three apps |
+| `CopyTrust.dmg` | CopyTrust only |
+| `Drop.Verify.dmg` | Drop Verify only |
+| `FolderCopyCompare.dmg` | Folder Copy Compare only |
+
+All apps are universal (arm64 + x86_64), signed with a Developer ID, notarized and stapled.
+**Requires macOS 14 (Sonoma) or later.** `mhl-tool` 2.7.7 is a separate download.
+
+---
+
+# Build 7 — CopyTrust reads the manifest a card arrived with
+
+*Everything below shipped in 2.7.8 build 7 and is still in this build.*
 
 ## CopyTrust checks the manifest a card arrived with
 
@@ -85,7 +180,7 @@ will not parse is reported as unreadable, never as absent.
 
 | File | Contents |
 |---|---|
-| `MediaTrustTools-2.7.8-b7-BETA.dmg` | All three apps |
+| `MediaTrustTools-2.7.8-b7-BETA.dmg` | All three apps (build 7's download) |
 | `CopyTrust.dmg` | CopyTrust only |
 | `Drop.Verify.dmg` | Drop Verify only |
 | `FolderCopyCompare.dmg` | Folder Copy Compare only |

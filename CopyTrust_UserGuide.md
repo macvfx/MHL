@@ -1583,6 +1583,38 @@ point that operators can type past, and whatever they type is offered again on t
 time. A card with no location loses that folder level entirely — never a gap, and never a folder
 called `UNKNOWN`, which is right for a project or a roll but not for this.
 
+**A preset says what each destination is *for*, not only where it is.** The wizard's *What each
+destination is for* step lists every destination staged right now, by volume and path, with two
+choices each:
+
+| Choice | What it means |
+|---|---|
+| **Archive to P5** | This destination is the source for the P5 archive job. At most one can be — turning it on for one turns it off for the others, because that is the rule the copy itself follows. |
+| **Create proxies** | Proxy media is generated on this destination when proxy generation is on in Post-Copy settings. |
+
+A proxies-only destination — one added with *Send proxies to another destination…* — is listed
+separately and takes neither: it receives proxies and never originals.
+
+This matters because **Create proxies is on by default for every destination you add**. A facility
+that archives from one drive and makes proxies on another has to say so, and this is where. Setting
+it here writes the *preset*; the destinations in front of you keep their own settings until the
+preset is loaded. Loading it says which drive archives and which makes proxies before staging
+anything.
+
+**A preset can carry the P5 server.** The *P5 archive server* step captures what is set in
+Settings ▸ P5 Archive on this Mac — address, port, API version, user, archive index, client and
+plan — so every operator on the job talks to the same server, client and plan without typing seven
+fields each.
+
+**The password is never in a preset**, and there is no field in the file that could hold one. It
+stays in each operator's own Keychain, entered once in Settings ▸ P5 Archive. The Keychain entry is
+filed under the server, port and user — the fields the preset fills in — which is what makes their
+saved password the one used. Loading a preset on a new Mac leaves exactly one thing to do.
+
+*Archive verified copies to P5* and the deferred request are deliberately **not** carried. Whether
+a particular job talks to P5 is the operator's decision on the night, and a preset that quietly
+started submitting archive jobs on load would be a surprise with a cost at the other end.
+
 **Preset ▸ (any preset) ▸ Save Report…** writes those decisions out in prose:
 
 | Format | For |
@@ -1596,6 +1628,21 @@ file is none of those to anyone who does not read JSON. The report states the fi
 too — a copy is never prevented, a name is only added to, the year comes from the project
 number, nothing is created silently — because anyone bound by the convention is equally bound
 by those.
+
+**The report covers the whole preset, not the naming half.** As well as the naming decisions it
+lists:
+
+- **Every destination the preset carries**, as a volume and a path, with what each is for — which
+  makes proxies, which is the P5 archive source, which receives proxies only.
+- **The P5 archive server**: address, port, API version, user, archive index, client and plan —
+  and, in the same section, the statement that the password is not carried and never will be.
+- **Every copy setting the preset applies on load**, for both Card and Folder mode: verification
+  level, re-verify, folder template and file prefix, contact sheet, EXIF CSV, HTML tree, proxies
+  and codec, destination sort, hidden files and the exclusions in force — plus the shared ones,
+  external codecs, ExifTool, receipt export and the notifications.
+
+Those are the parts nobody can recover by looking at a delivered folder six months later, which
+is what makes them worth signing for. All three formats carry all of it.
 
 ### What gets recorded
 
