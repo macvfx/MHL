@@ -1,8 +1,8 @@
-# Media Trust Tools 2.7.8.2 Build 9 — BETA
+# Media Trust Tools 2.7.8.3 Build 10 — BETA
 
 **Released:** 2026-08-30 · CopyTrust · Drop Verify · Folder Copy Compare
-**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.2%2B9) ·
-**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — sections G7 and G8 are this build
+**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.3%2B10) ·
+**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — section G9 is this build
 
 > **This is a beta.** Run it on media you can afford to lose, and keep a separate, independently
 > verified backup made by **other software** — Archiware P5 or equivalent. This is free software
@@ -11,7 +11,71 @@
 
 ---
 
+# Build 10 — a facility can lock a preset in
+
+Once a preset has been tested and agreed, it *is* the configuration: the naming convention, what
+each destination is for, the P5 server, and every copy setting. There was no way to hold a fleet on
+one. An operator could load a different preset, or none at all, and the only evidence afterwards was
+the name recorded in the receipt.
+
+**Setup is in [CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md)** — this
+is a summary.
+
+## Pinned by name, so the convention can still change daily
+
+Two things deploy, by two routes, changing at different rates.
+
+| | What it is | How it gets there | How often it changes |
+|---|---|---|---|
+| **Which preset** | A name, in a configuration profile | MDM | Once, at the end of testing |
+| **The preset itself** | `<name>.json` in `/Users/Shared/CopyTrust/Presets` | However you deploy the app | As often as testing needs |
+
+The profile pins a **name** and nothing else. If it carried the convention, every changed folder
+template during a testing period would mean editing the profile, re-signing it, pushing it and
+waiting for each Mac to pick it up — hours, for a one-line change. Pinning a name means a new
+convention is a new file through the channel already in use, and the profile is written once.
+
+**CopyTrust now watches that folder.** A preset replaced there is in force within a second or two,
+on a running app, with no relaunch and nothing for the operator to do. Before this build the store
+only re-read its folders when the preset menu was opened, so a redeployed convention took effect at
+the next launch — on a machine open for a shoot, the next morning.
+
+## enforce, and seed
+
+`enforce` applies the pinned preset at every launch, applies it again whenever the file changes, and
+locks the preset menu: no loading another, no editing, importing or saving. The Preset button
+carries a lock and the menu names what is enforced.
+
+**Export and Save Report… stay.** Reading out what is in force is not what a lock protects against,
+and the report is how a facility proves what a job ran under.
+
+`seed` applies once, on a Mac that has never loaded a preset, then leaves it alone — for setting a
+machine up rather than holding it there.
+
+## What it does not lock
+
+Individual settings. Enforce fixes *which preset is in force*, not every control in the app. An
+operator can still change the verification level; the Preset button shows the modified dot and the
+preset is applied again at the next launch or the next redeploy. Reverting a setting the moment it
+changed would fight an operator mid-keystroke, and the narrower claim is the honest one.
+
+## Downloads
+
+| File | Contents |
+|---|---|
+| `MediaTrustTools-2.7.8.3-b10-BETA.dmg` | All three apps |
+| `CopyTrust.dmg` | CopyTrust only |
+| `Drop.Verify.dmg` | Drop Verify only |
+| `FolderCopyCompare.dmg` | Folder Copy Compare only |
+
+All apps are universal (arm64 + x86_64), signed with a Developer ID, notarized and stapled.
+**Requires macOS 14 (Sonoma) or later.** `mhl-tool` 2.7.7 is a separate download.
+
+---
+
 # Build 9 — the right menus, and one export instead of four
+
+*Everything below shipped in 2.7.8.2 build 9 and is still in this build.*
 
 Build 8 went out to a facility and worked: Munki saw the new version and offered it, and the
 wizard's P5 step, the per-destination roles and the exported report all did what they say. What
@@ -56,7 +120,7 @@ line move the fourth number.
 
 | File | Contents |
 |---|---|
-| `MediaTrustTools-2.7.8.2-b9-BETA.dmg` | All three apps |
+| `MediaTrustTools-2.7.8.2-b9-BETA.dmg` | All three apps (build 9's download) |
 | `CopyTrust.dmg` | CopyTrust only |
 | `Drop.Verify.dmg` | Drop Verify only |
 | `FolderCopyCompare.dmg` | Folder Copy Compare only |

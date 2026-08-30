@@ -1615,6 +1615,16 @@ saved password the one used. Loading a preset on a new Mac leaves exactly one th
 a particular job talks to P5 is the operator's decision on the night, and a preset that quietly
 started submitting archive jobs on load would be a surprise with a cost at the other end.
 
+**A facility can lock a preset in.** Where one has been, the Preset button carries a lock and the
+menu names the enforced preset — and says whether that came from your organisation or from a local
+test. Loading, editing, importing and saving are unavailable; **Export** and **Save Report…** stay,
+because reading out what is in force is not what the lock is protecting against.
+
+An enforced preset is applied at launch and again whenever it is redeployed, so a changed
+convention reaches you without a relaunch. It fixes *which preset is in force*, not every control:
+a setting you change still shows the modified dot and is put back at the next launch. Setting this
+up is in [CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md).
+
 **Preset ▸ (any preset) ▸ Save Report…** writes those decisions out in prose:
 
 | Format | For |

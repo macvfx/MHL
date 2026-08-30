@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<!-- The app's own preference domain. Everything in this dict beside the
+			     Payload* keys is delivered into com.copytrust.app as a *forced*
+			     value, which is what makes the app report it as managed. -->
+			<key>PayloadType</key>
+			<string>com.copytrust.app</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadIdentifier</key>
+			<string>ca.example.copytrust.preset</string>
+			<key>PayloadUUID</key>
+			<string>28C8584C-F409-4D18-A360-9A585BDC2FA2</string>
+			<key>PayloadDisplayName</key>
+			<string>CopyTrust preset policy</string>
+
+			<!-- EDIT THIS. The preset's name exactly as it appears in the app, and
+			     exactly as the .json in /Users/Shared/CopyTrust/Presets carries it. -->
+			<key>CopyTrustEnforcedPresetName</key>
+			<string>House Card Ingest</string>
+
+			<!-- enforce = applied at every launch and whenever the preset file is
+			     replaced, with the preset menu locked.
+			     seed    = applied once, on a Mac that has never loaded a preset. -->
+			<key>CopyTrustPresetEnforcementMode</key>
+			<string>enforce</string>
+		</dict>
+	</array>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+	<key>PayloadIdentifier</key>
+	<string>ca.example.copytrust</string>
+	<key>PayloadUUID</key>
+	<string>9B658C3E-711B-4C2A-87D6-1BF5298F9851</string>
+	<key>PayloadDisplayName</key>
+	<string>CopyTrust — Enforced Preset</string>
+	<key>PayloadDescription</key>
+	<string>Pins the CopyTrust preset that must be in force on this Mac. The preset itself is the matching .json in /Users/Shared/CopyTrust/Presets and is deployed separately.</string>
+	<key>PayloadOrganization</key>
+	<string>Example Facility</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<!-- false while testing, so it can be removed from System Settings.
+	     Set to true for a real deployment. -->
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+</dict>
+</plist>

@@ -3,11 +3,13 @@
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.7.8.2 Build 9** — a delivery gets one
-receipts folder holding everything, nothing is written at the root of a destination drive, and a
-preset can say which destination archives to P5, which makes proxies, and which P5 server to use.
-Build 9 corrects the menus the launch panel names and adds a one-folder export of every report and
-the preset itself. See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and
+**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.7.8.3 Build 10** — a facility can lock
+a preset in, pinned by name so the convention itself can still be redeployed as often as testing
+needs ([CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md)).
+
+Earlier in the 2.7.8 line: a delivery gets one receipts folder holding everything, nothing is
+written at the root of a destination drive, and a preset can say which destination archives to P5,
+which makes proxies, and which P5 server to use. See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and
 [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md).
 
 > **2.7.8 is a beta.** Test it on media you can afford to lose, and keep a separate, verified

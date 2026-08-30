@@ -1,6 +1,6 @@
 # CopyTrust 2.7.8 — Test Notes
 
-**Build under test:** 2.7.8.2 Build 9 · **Previous release:** 2.7.8.1 Build 8
+**Build under test:** 2.7.8.3 Build 10 · **Previous release:** 2.7.8.2 Build 9
 **Written:** 2026-08-28 · **Build 8 added:** 2026-08-29
 
 **What this release is about:** the manifest a card **arrived with**. Everything else in CopyTrust
@@ -34,7 +34,7 @@ footage that arrived broken from footage this facility broke.
 - Date:
 - Operator:
 - Machine / macOS:
-- Version in About (must read **2.7.8.2** — the fourth number is what Munki compares):
+- Version in About (must read **2.7.8.3** — the fourth number is what Munki compares):
 - Verification level (**Inline or Full** for most of this):
 - Source used:
 - Destinations:
@@ -299,6 +299,36 @@ model could already describe a facility's setup, and there was no way to say so.
   load: this is the file the app itself would save, not a description of one.
 - **Check:** search the `.json` for `password`. There must be no hit. The P5 server is in it; the
   password is in the Keychain and cannot travel.
+
+**G9 — Build 10: a preset can be locked in**
+
+*For whoever deploys CopyTrust. Full setup in `COPYTRUST_MANAGED_PRESET_DEPLOYMENT.md`.*
+
+- **Pin one locally**, which needs no MDM:
+  ```
+  defaults write com.copytrust.app CopyTrustEnforcedPresetName -string "House Card Ingest"
+  ```
+  Relaunch CopyTrust.
+- **Expect:** the Preset button carries a **lock** and the preset's name. The menu opens with
+  *"House Card Ingest" is enforced — pinned locally for testing*. Build, Edit, Import, Save,
+  Update, Load, Rename, Delete and Duplicate are all gone. **Export** and **Save Report…** are
+  still there.
+- **The wording matters:** *pinned locally for testing* is what a `defaults write` must say. A
+  configuration profile must say *managed by your organisation*. If you push a profile and it still
+  says "pinned locally", the profile has not landed — that distinction is the point.
+- **Change the convention without touching the profile.** With the app **still open**, replace that
+  preset's `.json` in `/Users/Shared/CopyTrust/Presets` with an edited one. Within a second or two
+  the new convention should be in force — check a card's resolved delivery path. No relaunch.
+- **Pin a name that does not exist.** The menu should say so and name the folder to deploy it to,
+  and nothing else should load in its place.
+- **Try `seed`:** add `CopyTrustPresetEnforcementMode -string "seed"`. On a Mac that has already
+  loaded a preset it should do nothing at all; the menu is unlocked and normal.
+- **A typo enforces.** Set the mode to `enforced` — not a real value — and confirm it locks rather
+  than silently doing nothing.
+- **Undo:** `defaults delete com.copytrust.app CopyTrustEnforcedPresetName` and relaunch.
+- **Known and deliberate:** individual settings are *not* locked. Change the verification level
+  under an enforced preset — it changes, the modified dot appears, and it is put back at the next
+  launch. That is the documented behaviour, not a defect.
 
 ---
 
