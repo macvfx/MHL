@@ -1622,6 +1622,11 @@ started submitting archive jobs on load would be a surprise with a cost at the o
 | **RTF** | The copy that gets signed and filed |
 | **CSV** | Comparing one facility's convention with another |
 | **Markdown** | Committing beside the preset, so a change shows in a diff |
+| **All three, and the preset (.json)** | Handing the whole job over — pick a folder and get all four |
+
+The fourth option writes the three documents *and the preset itself* into one folder. The `.json`
+is the file CopyTrust would save, so it can be imported on the next Mac rather than only described
+— and it carries no password, which stays in each operator's Keychain.
 
 A convention only works if the decisions are **known, understood and agreed**, and a preset
 file is none of those to anyone who does not read JSON. The report states the fixed behaviour

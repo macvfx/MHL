@@ -1,8 +1,8 @@
-# Media Trust Tools 2.7.8.1 Build 8 — BETA
+# Media Trust Tools 2.7.8.2 Build 9 — BETA
 
-**Released:** 2026-08-29 · CopyTrust · Drop Verify · Folder Copy Compare
-**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.1%2B8) ·
-**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — section G is this build
+**Released:** 2026-08-30 · CopyTrust · Drop Verify · Folder Copy Compare
+**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.2%2B9) ·
+**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — sections G7 and G8 are this build
 
 > **This is a beta.** Run it on media you can afford to lose, and keep a separate, independently
 > verified backup made by **other software** — Archiware P5 or equivalent. This is free software
@@ -11,7 +11,64 @@
 
 ---
 
+# Build 9 — the right menus, and one export instead of four
+
+Build 8 went out to a facility and worked: Munki saw the new version and offered it, and the
+wizard's P5 step, the per-destination roles and the exported report all did what they say. What
+came back was three wrong menu paths and one missing convenience.
+
+## The launch panel named menus that do not hold what it named
+
+The five-step panel is the first thing anyone sees on a new build, and two of its steps pointed
+somewhere the thing is not.
+
+- **Check for Updates…** is in the **CopyTrust** menu, under About — not in Help. Step 1 says so.
+- Help has no *What's New* item of its own. It has **CopyTrust Help**, and What's New is a topic
+  inside that window. The last line now reads **Help ▸ CopyTrust Help ▸ What's New**.
+- **All release notes**, at the bottom of the panel, opened the GitHub releases page. It now opens
+  CopyTrust Help at What's New. The panel appears on a machine that has just been updated, often on
+  a facility network that will not reach github.com, and what the reader wants is this build's
+  changes — which are in Help. Both ways out of the panel now end in the same document.
+
+Opening Help from the panel lands on **What's New** rather than Quick Start.
+
+Underneath all three was a real defect: two sheets on the same window cannot both be open, so
+asking for one from inside the other did nothing at all. Help's *Open the What's New panel* button
+had been dead since it was added. Both directions work now.
+
+## Save Report… writes all four files at once
+
+**Preset ▸ Save Report…** gains a fourth option: **All three, and the preset (.json) — into a
+folder**. The three documents answer three different questions and a facility handing a job over
+generally wants all of them — plus the `.json` they describe, which is the only one of the four
+that can actually be loaded on the next Mac. Pick a folder and Finder opens with all four selected.
+
+The exported preset is the file CopyTrust itself would save, so it imports on another Mac rather
+than only describing one. It carries no password, and there is no field in it that could.
+
+## Why the version moved again
+
+Munki compares the version string and ignores the build number, so a build 9 of 2.7.8.1 would be
+invisible to every managed Mac — the problem 2.7.8.1 was created to fix. Fix-level builds in this
+line move the fourth number.
+
+## Downloads
+
+| File | Contents |
+|---|---|
+| `MediaTrustTools-2.7.8.2-b9-BETA.dmg` | All three apps |
+| `CopyTrust.dmg` | CopyTrust only |
+| `Drop.Verify.dmg` | Drop Verify only |
+| `FolderCopyCompare.dmg` | Folder Copy Compare only |
+
+All apps are universal (arm64 + x86_64), signed with a Developer ID, notarized and stapled.
+**Requires macOS 14 (Sonoma) or later.** `mhl-tool` 2.7.7 is a separate download.
+
+---
+
 # Build 8 — where evidence lands, and what a preset can say
+
+*Everything below shipped in 2.7.8.1 build 8 and is still in this build.*
 
 Four findings from a field pass on build 7. Two are placement faults — evidence written somewhere
 other than where the person looking for it goes. Two are preset gaps, where CopyTrust could already
@@ -92,7 +149,7 @@ something to compare. All three apps move together — build 8 changes code all 
 
 | File | Contents |
 |---|---|
-| `MediaTrustTools-2.7.8.1-b8-BETA.dmg` | All three apps |
+| `MediaTrustTools-2.7.8.1-b8-BETA.dmg` | All three apps (build 8's download) |
 | `CopyTrust.dmg` | CopyTrust only |
 | `Drop.Verify.dmg` | Drop Verify only |
 | `FolderCopyCompare.dmg` | Folder Copy Compare only |

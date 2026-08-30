@@ -1,6 +1,6 @@
 # CopyTrust 2.7.8 — Test Notes
 
-**Build under test:** 2.7.8.1 Build 8 · **Previous release:** 2.7.8 Build 7
+**Build under test:** 2.7.8.2 Build 9 · **Previous release:** 2.7.8.1 Build 8
 **Written:** 2026-08-28 · **Build 8 added:** 2026-08-29
 
 **What this release is about:** the manifest a card **arrived with**. Everything else in CopyTrust
@@ -34,7 +34,7 @@ footage that arrived broken from footage this facility broke.
 - Date:
 - Operator:
 - Machine / macOS:
-- Version in About (must read **2.7.8.1** — the fourth number is what Munki compares):
+- Version in About (must read **2.7.8.2** — the fourth number is what Munki compares):
 - Verification level (**Inline or Full** for most of this):
 - Source used:
 - Destinations:
@@ -278,6 +278,27 @@ model could already describe a facility's setup, and there was no way to say so.
 - **Why:** the panel opens by itself with a card usually already in the reader. Loading the preset
   *after* staging cards is the mistake it exists to prevent, and a list of changes cannot prevent
   it.
+
+**G7 — Build 9: the launch panel names the right menus, and points into the app**
+- **Do:** launch build 9 and read the five steps.
+- **Expect:** step 1 says **CopyTrust ▸ Check for Updates…** — the app menu, under About, which is
+  where it is. The last line says **Help ▸ CopyTrust Help ▸ What's New**, naming the Help item that
+  has to be opened first.
+- **Then:** click **All release notes** at the bottom. It should open **CopyTrust Help on the
+  What's New topic**, not a browser. Build 8 sent it to GitHub, which is no use on a facility
+  network that cannot reach it.
+- **And back:** from Help ▸ What's New, click *Open the What's New panel*. The panel should open.
+  It did nothing before build 9 — two sheets cannot present at once, so the second was dropped.
+
+**G8 — Build 9: Save Report… writes all four files at once**
+- **Do:** Preset ▸ (your preset) ▸ **Save Report…** ▸ *All three, and the preset (.json) — into a
+  folder*. Choose a folder name and save.
+- **Expect:** the folder holds four files — the RTF, the CSV, the Markdown and a `.json` named for
+  the preset — and Finder opens with all four selected.
+- **Then:** copy that `.json` to another Mac and use **Preset ▸ Import a Preset…** on it. It must
+  load: this is the file the app itself would save, not a description of one.
+- **Check:** search the `.json` for `password`. There must be no hit. The P5 server is in it; the
+  password is in the Keychain and cannot travel.
 
 ---
 
