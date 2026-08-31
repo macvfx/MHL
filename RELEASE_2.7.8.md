@@ -1,8 +1,8 @@
-# Media Trust Tools 2.7.8.3 Build 10 — BETA
+# Media Trust Tools 2.7.8.4 Build 11 — BETA
 
 **Released:** 2026-08-30 · CopyTrust · Drop Verify · Folder Copy Compare
-**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.3%2B10) ·
-**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — section G9 is this build
+**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.4%2B11) ·
+**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — sections G10 to G13 are this build
 
 > **This is a beta.** Run it on media you can afford to lose, and keep a separate, independently
 > verified backup made by **other software** — Archiware P5 or equivalent. This is free software
@@ -11,7 +11,69 @@
 
 ---
 
+# Build 11 — four things a day of testing found
+
+## Editing a convention from Settings emptied the preset's destinations
+
+The worst of the four, and silent. **Settings ▸ Card Copy ▸ Edit Enforced Naming…** opened the
+wizard without telling it about the destinations staged in the main window — so it reported
+*"Nothing is staged, so this preset will carry no destinations"* to a facility with three staged,
+and then **saved that**, removing the destinations and their Archive-to-P5 and Create-proxies roles
+from a working preset.
+
+The wizard now tells the two cases apart. Opened from Settings it says it cannot see the session,
+lists the destinations the preset already carries, and leaves them alone.
+
+That button also created a **new** preset on every save despite saying *Edit* — a near-duplicate
+with the original left beside it. It now edits the loaded preset. (A **Shared** preset stays
+read-only, so from Settings it still makes a new one; use **Duplicate as My Preset** in the Preset
+menu for those.)
+
+## Settings for the copy mode you are not in could not be changed
+
+The exclusion checkboxes on the **Folder Copy** tab sprang straight back, and making the same change
+on **Card Copy** then appeared to change Folder's too — as though the two modes shared one set of
+settings.
+
+They never did. Editing the mode that is not active saved correctly and the window simply never
+redrew; the next edit to the active mode forced a redraw, and the Folder tab displayed its own
+state for the first time, all at once. On the reporting Mac the two profiles differed by nine
+enabled patterns throughout.
+
+## The Unit menu remembered every keystroke
+
+**Used before** listed `S, So, Son, Sony, Sony F, Sony FX` — a unit was recorded as it was typed. It
+is recorded when you finish now, on Return or on leaving the field. The fragments an existing Mac
+has collected are cleared once, on first launch, and the menu has a **Forget** item for anything
+left that should not be there.
+
+## The wizard warns as well as blocks
+
+A convention's *warnings* — as distinct from the faults that stop it saving — had been computed
+since the feature shipped and displayed nowhere. They now appear in the review step.
+
+The first new one catches a real trap: a folder template using `{location}` while *"Also ask where
+the card was shot"* is off. An empty location is dropped cleanly, so nothing is malformed — the
+folder is simply, permanently, missing the part the convention was written around, and the only
+symptom is a Location field that never appears on the card row.
+
+## Downloads
+
+| File | Contents |
+|---|---|
+| `MediaTrustTools-2.7.8.4-b11-BETA.dmg` | All three apps |
+| `CopyTrust.dmg` | CopyTrust only |
+| `Drop.Verify.dmg` | Drop Verify only |
+| `FolderCopyCompare.dmg` | Folder Copy Compare only |
+
+All apps are universal (arm64 + x86_64), signed with a Developer ID, notarized and stapled.
+**Requires macOS 14 (Sonoma) or later.** `mhl-tool` 2.7.7 is a separate download.
+
+---
+
 # Build 10 — a facility can lock a preset in
+
+*Everything below shipped in 2.7.8.3 build 10 and is still in this build.*
 
 Once a preset has been tested and agreed, it *is* the configuration: the naming convention, what
 each destination is for, the P5 server, and every copy setting. There was no way to hold a fleet on
@@ -63,7 +125,7 @@ changed would fight an operator mid-keystroke, and the narrower claim is the hon
 
 | File | Contents |
 |---|---|
-| `MediaTrustTools-2.7.8.3-b10-BETA.dmg` | All three apps |
+| `MediaTrustTools-2.7.8.3-b10-BETA.dmg` | All three apps (build 10's download) |
 | `CopyTrust.dmg` | CopyTrust only |
 | `Drop.Verify.dmg` | Drop Verify only |
 | `FolderCopyCompare.dmg` | Folder Copy Compare only |

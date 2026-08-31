@@ -1,6 +1,6 @@
 # CopyTrust 2.7.8 — Test Notes
 
-**Build under test:** 2.7.8.3 Build 10 · **Previous release:** 2.7.8.2 Build 9
+**Build under test:** 2.7.8.4 Build 11 · **Previous release:** 2.7.8.3 Build 10
 **Written:** 2026-08-28 · **Build 8 added:** 2026-08-29
 
 **What this release is about:** the manifest a card **arrived with**. Everything else in CopyTrust
@@ -34,7 +34,7 @@ footage that arrived broken from footage this facility broke.
 - Date:
 - Operator:
 - Machine / macOS:
-- Version in About (must read **2.7.8.3** — the fourth number is what Munki compares):
+- Version in About (must read **2.7.8.4** — the fourth number is what Munki compares):
 - Verification level (**Inline or Full** for most of this):
 - Source used:
 - Destinations:
@@ -329,6 +329,66 @@ model could already describe a facility's setup, and there was no way to say so.
 - **Known and deliberate:** individual settings are *not* locked. Change the verification level
   under an enforced preset — it changes, the modified dot appears, and it is put back at the next
   launch. That is the documented behaviour, not a defect.
+
+**G10 — Build 11: the settings for the mode you are not in**
+- **Do:** with **Card** mode active in the toolbar, open Settings ▸ **Folder Copy**. Uncheck two
+  exclusion patterns and change the verification level.
+- **Expect:** every control holds where you put it. Before build 11 they sprang straight back — the
+  change was saved and the window simply never redrew.
+- **Then:** switch the toolbar to Folder mode and reopen Settings ▸ Folder Copy. Your changes
+  should be there.
+- **And the other half:** go to Settings ▸ **Card Copy** and change an exclusion. Folder's must not
+  move. The two modes have always been stored separately; the old behaviour only made it look
+  otherwise.
+- **Post-Copy too:** Settings ▸ Post-Copy, set its picker to the mode you are *not* in, and change
+  the contact sheet split limit. It should hold, and the other mode's should not change. That tab
+  had a workaround for this bug and now uses the same mechanism as the rest.
+- **Not a defect:** Folder mode showing **Inline**. That is whatever your folder profile says.
+  `Quick` is only the factory default for folder mode — check Settings ▸ Folder Copy ▸ Post-Copy
+  Verification for what yours is actually set to, and the session log's `verificationLevel=` for
+  what a copy ran at.
+
+**G11 — Build 11: the Unit menu lists units, not keystrokes**
+- **Do:** with a convention loaded, open a staged card's **Unit** menu.
+- **Expect:** under **Used before**, whole units only. Any `S`, `So`, `Son` fragments an earlier
+  build collected are cleared on this build's first launch.
+- **Then type a new unit** the preset does not list — say `SOUND-B` — and **tab to Roll**. Stage
+  another card and open its Unit menu: `SOUND-B` should be there. Pressing Return instead of
+  tabbing must work the same way.
+- **And check nothing is recorded early:** type `DR` and then delete it without leaving the field.
+  `DR` must not appear in the menu.
+- **Forget:** the menu has a **Forget** submenu listing the remembered ones. Removing one takes it
+  out of the list.
+- **Worth knowing:** the one-time cleanup drops any remembered unit that is a strict prefix of
+  another, so a Mac that legitimately had both `Canon` and `Canon C300` will lose `Canon`. Type it
+  once and it stays — the cleanup does not run again.
+
+**G12 — Build 11: editing a convention from Settings keeps the destinations**
+- **Do:** load a preset that carries destinations. **Settings ▸ Card Copy ▸ Edit Enforced
+  Naming…**, go to *What each destination is for*.
+- **Expect:** it says it was opened from Settings and cannot see the staged destinations, and lists
+  the ones the preset already carries. It must **not** say "nothing is staged".
+- **Save it, then check the preset still has them** — Preset ▸ Save Report… and read the
+  destinations section, or open the `.json`. Before build 11 this save emptied them, and took the
+  P5 and proxy roles with them.
+- **And check it edited rather than duplicated:** the preset list should have the same number of
+  presets as before, with the same name — not a second one beside it. (A **Shared** preset is
+  read-only, so editing one from Settings still creates a new preset. That is by design; use
+  Duplicate as My Preset in the Preset menu.)
+- **From the main window** — Preset ▸ Build an Enforced Naming Preset… — the step still lists the
+  staged destinations with their Archive to P5 and Create proxies choices, as in build 8.
+
+**G13 — Build 11: the wizard warns as well as blocks**
+- **Do:** in the wizard, set a folder template using `{location}` — say
+  `{project}_{location}_{unit}_roll{roll}` — and leave *"Also ask where the card was shot"* **off**.
+  Go to the review step.
+- **Expect:** *"Worth checking before you save — none of these stop the preset working"*, naming the
+  delivered folder name as using `{location}` while nothing asks for one. It must not block saving:
+  an empty location drops the token cleanly and the convention still works.
+- **Then turn locations on** and confirm the warning goes, and that a card row now shows a
+  **Location** field beside Unit and Roll.
+- **Also:** clear the units list with the unit policy on, and confirm the long-standing "no units"
+  warning appears. It has been computed since the feature shipped and displayed nowhere until now.
 
 ---
 
