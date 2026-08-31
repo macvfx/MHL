@@ -28,7 +28,7 @@ a second or two, on a running app** — no relaunch, no profile change, nothing 
 do. That is what makes it practical to iterate on a convention while people are using it.
 
 A name rather than an id, because an id is stable when a preset is edited in place and different
-when one is rebuilt from scratch on another Mac. A facility pinning `House Card Ingest` means the
+when one is rebuilt from scratch on another Mac. A facility pinning `Example Facility Card Ingest` means the
 preset by that name, whatever its history.
 
 ---
@@ -72,7 +72,7 @@ Its shape, for a profile you write yourself:
 <key>PayloadIdentifier</key>
 <string>ca.example.copytrust.preset</string>
 <key>CopyTrustEnforcedPresetName</key>
-<string>House Card Ingest</string>
+<string>Example Facility Card Ingest</string>
 <key>CopyTrustPresetEnforcementMode</key>
 <string>enforce</string>
 ```
@@ -104,7 +104,7 @@ cannot be tested at a desk, and "it did not apply" would be indistinguishable fr
 not arrived yet".
 
 ```bash
-defaults write com.copytrust.app CopyTrustEnforcedPresetName -string "House Card Ingest"
+defaults write com.copytrust.app CopyTrustEnforcedPresetName -string "Example Facility Card Ingest"
 defaults write com.copytrust.app CopyTrustPresetEnforcementMode -string "enforce"
 ```
 
@@ -129,7 +129,7 @@ A profile-delivered value cannot be removed this way, which is the point of a pr
 ## What an operator sees under `enforce`
 
 - The Preset button carries a **lock** and the preset's name.
-- The menu opens with one line: *"House Card Ingest" is enforced — managed by your organisation*.
+- The menu opens with one line: *"Example Facility Card Ingest" is enforced — managed by your organisation*.
 - Build, Edit, Import, Save, Update, Load, Rename, Delete and Duplicate are gone.
 - **Export** and **Save Report…** remain. Reading out what is in force is never what a lock is
   protecting against, and the report is how a facility proves what a job was copied under.

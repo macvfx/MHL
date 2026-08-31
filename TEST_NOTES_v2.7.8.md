@@ -1,6 +1,6 @@
 # CopyTrust 2.7.8 — Test Notes
 
-**Build under test:** 2.7.8.4 Build 11 · **Previous release:** 2.7.8.3 Build 10
+**Build under test:** 2.7.8.5 Build 12 · **Previous release:** 2.7.8.4 Build 11
 **Written:** 2026-08-28 · **Build 8 added:** 2026-08-29
 
 **What this release is about:** the manifest a card **arrived with**. Everything else in CopyTrust
@@ -34,7 +34,7 @@ footage that arrived broken from footage this facility broke.
 - Date:
 - Operator:
 - Machine / macOS:
-- Version in About (must read **2.7.8.4** — the fourth number is what Munki compares):
+- Version in About (must read **2.7.8.5** — the fourth number is what Munki compares):
 - Verification level (**Inline or Full** for most of this):
 - Source used:
 - Destinations:
@@ -389,6 +389,24 @@ model could already describe a facility's setup, and there was no way to say so.
   **Location** field beside Unit and Roll.
 - **Also:** clear the units list with the unit policy on, and confirm the long-standing "no units"
   warning appears. It has been computed since the feature shipped and displayed nowhere until now.
+
+**G14 — Build 12: launch, with a preset carrying destinations**
+
+*Needs a preset carrying two destinations that take originals and one proxies-only.*
+
+- **Do:** load it, quit, relaunch.
+- **Expect:** all three staged before you touch anything. From build 11 and earlier only the very
+  first launch staged them; every launch after restored the name and nothing else.
+- **Then:** Preset menu ▸ **Stage This Preset's Destinations Again**. It should re-stage, and it
+  must be present even under an enforced preset, where Load is not.
+- **Unmount one footage drive and relaunch.** **One** prompt about it, not three. Check the session
+  log: one `presetDestination staged` group, one `mountRequest`.
+- **Now unmount only the proxies-only volume and relaunch.** You should **not** be asked whether you
+  are off site — both drives that take originals are there. Staging still reports the share as
+  unavailable, which is the right place for it.
+- **Under an enforced preset, replace the .json while running.** It must still take effect within a
+  second or two: the once-only guard is keyed on the preset's timestamp, so a redeployed preset is
+  a new mark.
 
 ---
 

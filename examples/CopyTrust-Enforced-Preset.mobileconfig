@@ -22,7 +22,7 @@
 			<!-- EDIT THIS. The preset's name exactly as it appears in the app, and
 			     exactly as the .json in /Users/Shared/CopyTrust/Presets carries it. -->
 			<key>CopyTrustEnforcedPresetName</key>
-			<string>House Card Ingest</string>
+			<string>Example Facility Card Ingest</string>
 
 			<!-- enforce = applied at every launch and whenever the preset file is
 			     replaced, with the preset menu locked.

@@ -1,8 +1,8 @@
-# Media Trust Tools 2.7.8.4 Build 11 — BETA
+# Media Trust Tools 2.7.8.5 Build 12 — BETA
 
-**Released:** 2026-08-30 · CopyTrust · Drop Verify · Folder Copy Compare
-**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.4%2B11) ·
-**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — sections G10 to G13 are this build
+**Released:** 2026-08-31 · CopyTrust · Drop Verify · Folder Copy Compare
+**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.5%2B12) ·
+**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — section G14 is this build
 
 > **This is a beta.** Run it on media you can afford to lose, and keep a separate, independently
 > verified backup made by **other software** — Archiware P5 or equivalent. This is free software
@@ -11,7 +11,61 @@
 
 ---
 
+# Build 12 — three faults from one session log
+
+**Anyone using an enforced preset with staged destinations should take this build.**
+
+## Your destinations stage on every launch
+
+The one worth updating for. From the **second** launch onwards, an operator arrived to the preset's
+name in the toolbar, its convention enforced, and **no destinations staged**.
+
+A preset's settings are written into preferences when it is applied, so they are already in force at
+launch. Its **destinations are not** — they are session state and survive nothing. Restoring the
+preset restored only its identity, so the destinations had to be loaded by hand every morning; and
+under an enforced preset the Load item is deliberately not there to use.
+
+The menu also gains **Stage This Preset's Destinations Again**, which stays available under an
+enforced policy. Staging the destinations the pinned preset already names changes nothing about
+*which* preset is in force, and a volume mounted after launch otherwise left an operator stuck.
+
+## One missing volume asked three times
+
+An unmounted volume produced three "not available" prompts, three mount requests and three
+fifteen-second waits. An enforced preset was being applied three times at launch — three separate
+things notice it, and the guard meant to stop the second and third was reading a value the first had
+not finished writing.
+
+A redeployed preset still applies at once, so replacing the `.json` on a running app is unchanged.
+
+## A missing dailies share asked whether you were off site
+
+Both footage drives mounted, the cloud proxies-only share not, and CopyTrust asked whether the
+operator was off site. That question is about the storage the job copies **to**. A proxies-only
+destination is where dailies are delivered — the one most likely to be absent on any given morning,
+and the one whose absence stops nothing, because every original still lands on every destination
+that takes originals.
+
+It is not passed over in silence: staging still reports the share as unavailable. This is about
+which absence is worth interrupting a launch for.
+
+## Downloads
+
+| File | Contents |
+|---|---|
+| `MediaTrustTools-2.7.8.5-b12-BETA.dmg` | All three apps |
+| `CopyTrust.dmg` | CopyTrust only |
+| `Drop.Verify.dmg` | Drop Verify only |
+| `FolderCopyCompare.dmg` | Folder Copy Compare only |
+
+All apps are universal (arm64 + x86_64), signed with a Developer ID, notarized and stapled.
+**Requires macOS 14 (Sonoma) or later.** `mhl-tool` 2.7.7 is a separate download.
+
+---
+
 # Build 11 — four things a day of testing found
+
+*Everything below shipped in 2.7.8.4 build 11 and is still in this build.*
 
 ## Editing a convention from Settings emptied the preset's destinations
 
@@ -61,7 +115,7 @@ symptom is a Location field that never appears on the card row.
 
 | File | Contents |
 |---|---|
-| `MediaTrustTools-2.7.8.4-b11-BETA.dmg` | All three apps |
+| `MediaTrustTools-2.7.8.4-b11-BETA.dmg` | All three apps (build 11's download) |
 | `CopyTrust.dmg` | CopyTrust only |
 | `Drop.Verify.dmg` | Drop Verify only |
 | `FolderCopyCompare.dmg` | Folder Copy Compare only |

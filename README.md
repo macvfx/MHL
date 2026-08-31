@@ -3,11 +3,11 @@
 Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.7.8.4 Build 11** — four fixes a day of
-testing found, the worst of them an edit made from Settings emptying a preset's destinations.
-Build 10's headline feature is still here: a facility can lock a preset in, pinned by name so the
-convention itself can still be redeployed as often as testing needs
-([CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md)).
+**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.7.8.5 Build 12** — the destinations a
+preset carries now stage on every launch, not just the first. Anyone using an enforced preset with
+staged destinations should take this build. Build 10's headline feature is still here: a facility
+can lock a preset in, pinned by name so the convention itself can still be redeployed as often as
+testing needs ([CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md)).
 
 Earlier in the 2.7.8 line: a delivery gets one receipts folder holding everything, nothing is
 written at the root of a destination drive, and a preset can say which destination archives to P5,
