@@ -1320,8 +1320,15 @@ The **Preset** menu sits next to the Card / Folder picker in the bottom action b
 
 | Action | What it does |
 |---|---|
+| Build an Enforced Naming Preset… | Opens the wizard: the naming convention, what each destination is for, the P5 server, and this Mac's current copy settings |
+| Edit "…"… | Reopens the wizard on the loaded preset and saves over it rather than leaving a second copy. Your own presets only |
+| Destination Sets | The saved destination sets, kept in this menu rather than in the toolbar |
+| Stage This Preset's Destinations Again | Re-stages the destinations the loaded preset carries — for a volume that was mounted after launch |
+| Import a Preset… | Reads a `.json` exported from another Mac into your own presets, with a new identity, so two Macs cannot overwrite each other |
+| Export "…"… | Writes the loaded preset out as a file |
+| Save Report… | The naming decisions in RTF, CSV or Markdown — or all three plus the preset `.json`, into one folder |
 | Save Current Settings as Preset… | Captures the current Card and Folder settings under a new name |
-| Load | Replaces both mode profiles and the shared settings with the preset's |
+| Load / Reload | Replaces both mode profiles and the shared settings with the preset's, and stages its destinations |
 | Update … from Current Settings | Re-captures the loaded preset in place, keeping its name and identity |
 | Rename… / Delete | Your own presets only |
 | Duplicate as My Preset… | Makes your own editable copy of a shared preset |
@@ -1329,6 +1336,17 @@ The **Preset** menu sits next to the Card / Folder picker in the bottom action b
 The menu label shows the loaded preset's name. A **dot (•)** after the name means settings
 have changed since it was loaded — choose *Update…* to keep those changes, or *Load* again
 to discard them.
+
+**Under an enforced preset the menu is shorter, and the button carries a lock.** Where a facility
+has locked a preset in, Build, Edit, Import, Save, Update, Load, Rename, Delete and Duplicate are
+all absent: the preset in force is not the operator's to change. **Export**, **Save Report…** and
+**Stage This Preset's Destinations Again** stay — reading out what is in force, and re-staging the
+destinations it already names, change nothing about *which* preset is in force.
+
+**Destinations are staged on every launch.** A preset's settings are written into preferences when
+it is applied, so they are already in force when the app opens. Its destinations are session state
+and are staged fresh each time the app starts. A volume mounted after that is picked up with *Stage
+This Preset's Destinations Again* rather than by reloading the preset.
 
 ### What a preset contains
 
@@ -1342,14 +1360,20 @@ Everything that describes *how* a copy is made:
   categories, folder mode).
 - **Shared** — confirm before copy, external codecs on/off, ExifTool metadata, the ffmpeg /
   REDline / BRAW extension lists, receipt export, and the four notification settings.
+- **The naming convention**, where the preset enforces one — and, since 2.7.5, **the
+  destinations** it expects, written portably as a volume name and a path. Since 2.7.8.1 that
+  includes **what each destination is for**: which one is the P5 archive source, which make
+  proxies, which receives proxies only.
+- **The P5 server**, since 2.7.8.1 — address, port, API version, user, archive index, client and
+  plan. Not the password; see below.
 
 ### What a preset deliberately does not contain
 
 | Not included | Why |
 |---|---|
-| Destinations | A preset never changes your destination list. Loading one names the destination set it expects and tells you whether that set exists on this Mac — you then check the destinations yourself before copying. |
 | External tool paths | ffmpeg, REDline, BRAW Decode, ExifTool and tree live in different places on each Mac and are detected locally. The *extensions* that route to each tool do travel. |
-| P5 server and credentials | Per-site, and the password is held in Keychain. |
+| The P5 password | The one part of the P5 setup that cannot travel. It stays in each operator's own Keychain, entered once in Settings ▸ P5 Archive and filed under the server and user the preset fills in — which is exactly what makes their saved password the one that gets used. A preset is a file people copy around; a password in it would be a password in a shared folder. |
+| Whether a job archives to P5 | *Archive verified copies to P5* and the deferred request stay per-job decisions. A preset that quietly started submitting archive jobs on load would be a surprise with a cost at the other end. |
 | Operator name | It is stamped on receipts as who performed the copy. A shared preset must never put someone else's name on your receipts. |
 | Appearance mode | A personal preference, not a copy setting. |
 | Drop Verify settings | A separate part of the app. |
@@ -1376,11 +1400,18 @@ imaging or MDM step. That folder exists on every Mac from the moment macOS is in
 does not require the user to have launched CopyTrust first, so presets can be placed before
 anyone's first run.
 
-CopyTrust reads the folder at launch. A preset added while the app is running appears after
-a relaunch.
+**CopyTrust watches that folder** (2.7.8.3). A preset added, replaced or removed while the app is
+running is picked up within a second or two — no relaunch. That is what makes it practical to
+iterate on a convention while people are working: replace the `.json` and the new one is in force.
 
 If a preset file cannot be read, the Preset menu says so and names the file; every other
 preset still loads.
+
+**A facility can go further and lock one in.** A configuration profile can pin *which* preset must
+be in force, by name, so an operator cannot switch conventions mid-shoot. The preset's *content*
+stays a `.json` in the shared folder and can be redeployed as often as testing needs — the profile
+pins a name and nothing else, so it is written once. Setup, the keys and a ready-made profile are in
+`CopyTrust_ManagedPresetDeployment.md`.
 
 ## Enforced Naming (Preset-Activated)
 

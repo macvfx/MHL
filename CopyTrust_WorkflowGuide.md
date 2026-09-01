@@ -79,14 +79,33 @@ The **Preset** menu beside the mode picker saves your Card **and** Folder settin
 
 | Action | Effect |
 |--------|--------|
+| Build an Enforced Naming Preset… | Opens the wizard: the naming convention, what each destination is for, the P5 server, and the current copy settings |
+| Edit "…"… | Reopens the wizard on the loaded preset and saves over it. Your own presets only |
+| Destination Sets | The saved destination sets, kept here rather than in the toolbar |
+| Stage This Preset's Destinations Again | Re-stages what the loaded preset carries — for a volume mounted after launch. Works under an enforced preset |
+| Import a Preset… / Export "…"… | Read a `.json` from another Mac, or write this one out. An import is copied into your own presets and given a new identity |
+| Save Report… | The naming decisions in RTF, CSV or Markdown — or all three plus the preset `.json`, into one folder |
 | Save Current Settings as Preset… | Captures both mode profiles plus shared settings (confirm-before-copy, external codecs, ExifTool, codec extension lists, receipt export, notifications) |
-| Load | Restores all of the above; a dot (•) on the menu label means settings have drifted since loading |
+| Load / Reload | Restores all of the above and stages the destinations; a dot (•) on the menu label means settings have drifted since loading |
 | Update … from Current Settings | Re-captures in place, keeping the preset's name and identity |
+| Rename… / Delete | Your own presets only |
 | Duplicate as My Preset… | Makes an editable copy of a read-only shared preset |
+
+**Under an enforced preset the menu is shorter.** Where a facility has locked a preset in, the Preset
+button carries a lock and Build, Edit, Import, Save, Update, Load, Rename, Delete and Duplicate are
+all absent — the preset in force is not the operator's to change. **Export**, **Save Report…** and
+**Stage This Preset's Destinations Again** stay: reading out what is in force, and re-staging the
+destinations it already names, change nothing about which preset is in force.
 
 **A preset built by the wizard carries its destinations.** Since 2.7.5 a preset made with *Build an Enforced Naming Preset…* stores the destinations that were staged when it was made — as a volume name and a path, not a bookmark to one Mac — and loading it stages them, naming them in the confirmation first. A volume that is not mounted is requested from SMB Connect and named on screen if it does not appear. Confirm the destination list before copying either way.
 
-Shared presets live in `/Users/Shared/CopyTrust/Presets` (read-only to the app, deployable by script or MDM before an operator's first launch); your own are saved in `~/Library/Application Support/CopyTrust/Presets`. Tool *paths*, P5 credentials, operator name and appearance are deliberately excluded so a preset stays portable between machines.
+**And what each destination is *for*** (2.7.8.1). The wizard's *What each destination is for* step gives every staged destination two choices: **Archive to P5** — at most one destination may be the archive source — and **Create proxies**, which is on by default for every destination you add. A facility that archives from one drive and makes proxies on another has to say so, and this is where. A proxies-only destination, added with *Send proxies to another destination…*, takes neither. The load confirmation names which drive does which before it stages anything.
+
+**Destinations are staged on every launch** (2.7.8.5). A preset's settings are written into preferences and are already in force when the app opens; its destinations are session state and are staged fresh each time. If a volume is mounted after launch, **Stage This Preset's Destinations Again** picks it up — and that item works even under an enforced preset.
+
+Shared presets live in `/Users/Shared/CopyTrust/Presets` (read-only to the app, deployable by script or MDM before an operator's first launch); your own are saved in `~/Library/Application Support/CopyTrust/Presets`. Tool *paths*, the **P5 password**, operator name and appearance are deliberately excluded so a preset stays portable between machines.
+
+**A preset does carry the P5 server** (2.7.8.1): address, port, API version, user, archive index, client and plan. Everyone on the job then talks to the same server and plan without typing seven fields each, and the only thing left to set on a new Mac is the password — which stays in that operator's Keychain, filed under the server and user the preset fills in. Whether a job archives to P5 remains a per-job switch; loading a preset never turns it on.
 
 **Contact sheets on proxy/MXF cards:** the contact sheet is a background artifact (never blocks copy/verify/MHL). For cards heavy in camera proxies (`.LRF`) or professional formats (MXF/R3D), enabling **external thumbnail codecs** (Settings > External Codecs, shared) makes CopyTrust run ffmpeg/REDline per file for real thumbnails — worth it for a visual sheet, but expect noticeably longer generation. Leave **external codecs off** for a fast sheet where those files appear as "No Preview" placeholders, and leave **hide placeholders off** unless you specifically want them omitted. See the "Unsupported media, external codecs, and placeholders" section of the User Guide.
 

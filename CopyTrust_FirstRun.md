@@ -1,11 +1,5 @@
 # CopyTrust — First Run
 
-<style>
-/* Keep the flow inside one page: the renderer slices any block taller than a
-   page, which would leave a blank trailing page. */
-.mermaid svg { max-height: 600px; }
-</style>
-
 Cards copied to every destination at once, verified, with all artifacts, proxies and a P5
 archive. Companion to the **CameraCard preset** demo.
 
@@ -25,7 +19,6 @@ archive. Companion to the **CameraCard preset** demo.
 Counts are **file copies**: 47 files to two destinations counts toward 94. When copying
 ends the cards are free; artifacts, proxies and P5 continue in the background, so leave
 CopyTrust open. Finish with **Review Summary**, then **End Session**.
-
 
 ```mermaid
 flowchart TD
