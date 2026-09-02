@@ -1,8 +1,8 @@
-# Media Trust Tools 2.7.8.5 Build 12 — BETA
+# Media Trust Tools 2.7.8.6 Build 13 — BETA
 
-**Released:** 2026-08-31 · CopyTrust · Drop Verify · Folder Copy Compare
-**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.5%2B12) ·
-**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — section G14 is this build
+**Released:** 2026-09-01 · CopyTrust · Drop Verify · Folder Copy Compare
+**Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.6%2B13) ·
+**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — section G15 is this build
 
 > **This is a beta.** Run it on media you can afford to lose, and keep a separate, independently
 > verified backup made by **other software** — Archiware P5 or equivalent. This is free software
@@ -11,7 +11,63 @@
 
 ---
 
+# Build 13 — the card row says what it will do
+
+*Enforced naming only, and nothing about the copy changed. All three fixes are about whether an
+operator can check a card row against the name it produces without reasoning about the app.*
+
+## "Follow preset" named the mechanism, not the answer
+
+The Files control read **Follow preset**, which says where the renaming decision comes from and
+nothing about what the decision is — and opening the menu repeated the same three words. So the one
+question the control exists to answer, *are this card's files being renamed*, could not be answered
+by looking at it.
+
+It reads **Rename Files Yes** in green or **No** in red, worked out exactly the way the copy works
+it out: this card's own answer, then the convention, then the session-wide switch. The menu still
+offers Follow preset, Rename files and Keep original names, with a checkmark on the current one, and
+Follow preset now says which way it falls for this card.
+
+A card whose rule *requires* renaming used to render as an empty control. It shows a locked state
+and says why.
+
+## The fields were in a different order from the name they write
+
+The row was fixed at unit, roll, location for every facility, while the **Lands as** line directly
+beneath it read `2026-014_Vancouver_ACAM_roll1`. Checking one against the other meant re-ordering
+three fields in your head, on every card.
+
+The fields now follow the convention's own template. Reading the row left to right is reading the
+folder name.
+
+## Two arrows in every menu
+
+The Unit, Location and Roll menus were each drawing their own chevron on top of the system's, which
+read as a doubled glyph.
+
+## Why the version is 2.7.8.6 and not 2.7.8.5 build 13
+
+A fix normally moves the build alone. This one moves the version because deployment tools compare
+the version string, not the build: a managed Mac offered 2.7.8.5 build 13 sees the version it
+already has and never updates.
+
+## Downloads
+
+| File | Contents |
+|---|---|
+| `MediaTrustTools-2.7.8.6-b13-BETA.dmg` | All three apps |
+| `CopyTrust.dmg` | CopyTrust only |
+| `Drop.Verify.dmg` | Drop Verify only |
+| `FolderCopyCompare.dmg` | Folder Copy Compare only |
+
+All apps are universal (arm64 + x86_64), signed with a Developer ID, notarized and stapled.
+**Requires macOS 14 (Sonoma) or later.** `mhl-tool` 2.7.7 is a separate download.
+
+---
+
 # Build 12 — three faults from one session log
+
+*Everything below shipped in 2.7.8.5 build 12 and is still in this build.*
 
 **Anyone using an enforced preset with staged destinations should take this build.**
 

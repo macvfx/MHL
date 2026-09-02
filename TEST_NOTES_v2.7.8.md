@@ -408,6 +408,28 @@ model could already describe a facility's setup, and there was no way to say so.
   second or two: the once-only guard is keyed on the preset's timestamp, so a redeployed preset is
   a new mark.
 
+**G15 — Build 13: the card row, read against the name it produces**
+
+*Needs an enforcing preset. Nothing here changes what is copied — it is all about whether the row
+can be checked at a glance.*
+
+- **Do:** stage a card and look at the row against the **Lands as** line below it.
+- **Expect:** the fields appear in the order the folder name is written. With a template of
+  `{project}_{location}_{unit}_roll{roll}` the row reads Location, Unit, Roll — not Unit, Roll,
+  Location as in build 12 and earlier.
+- **Then:** edit the convention to move a token in the folder template, load it again, and confirm
+  the row follows. A token used only in the folder *path* and not the name orders after the ones in
+  the name.
+- **The renaming control** now reads **Rename Files Yes** or **No** before it is opened, green or
+  red. Check the word against what actually happens: set it to **Keep original names** and copy —
+  the delivered files keep the camera's names, and the delivered **folder** name is unchanged.
+- **Open the menu.** Three choices, a checkmark on the current one, and *Follow preset* says which
+  way it falls for this card.
+- **A card whose rule requires renaming** shows a lock instead of the chevron and cannot be
+  changed. In build 12 that state rendered as an empty control.
+- **The Unit, Location and Roll menus** should each show **one** chevron. Two overlapping arrows was
+  the build 12 rendering.
+
 ---
 
 ## Known limits — not defects
