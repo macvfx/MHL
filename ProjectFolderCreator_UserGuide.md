@@ -3,7 +3,7 @@
 Project Folder Creator creates one numbered project from a reusable main template, with an
 independent folder selection for each Edit, Archive, Cloud, or Custom storage destination.
 
-This is the canonical operator guide for Project Folder Creator 0.4.1 build 20. For the one-page
+This is the canonical operator guide for Project Folder Creator 0.4.2 build 21. For the one-page
 version, see the `Project Folder Creator Quick Start`.
 
 > **Development status:** planning, destination-specific copy rules, nested renaming, staged
@@ -581,7 +581,7 @@ app. Use the receipt and path outcomes to understand where the run stopped.
 
 ## Current capability boundary
 
-The following are not complete in version 0.4.1 build 20:
+The following are not complete in version 0.4.2 build 21:
 
 - CopyTrust *handoff* — a refreshable project list, or **Create missing project…** opening this
   workflow from inside CopyTrust. Reading a preset's destinations is implemented; handing results
@@ -598,4 +598,5 @@ executor, the profile store and the receipt writer — rather than from memory. 
 source file backs which section is maintained with the source, where it can be kept correct.
 
 The in-app Help window is a concise companion to this guide. Open it from the **Help** button in
-the main window or **Help → Project Folder Creator Help**.
+the main window or **Help → Project Folder Creator Help**. Both documents ship inside the app:
+**Help → Open Quick Start** and **Help → Open User Guide**.

@@ -24,7 +24,7 @@ See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](TEST_NOTES_v
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
 > and it comes with no guarantees.
 
-**Development preview:** Project Folder Creator **0.4.1 Build 20** — not released, and not to be
+**Development preview:** Project Folder Creator **0.4.2 Build 21** — not released, and not to be
 used on work that matters. See [its section below](#project-folder-creator-development-preview).
 
 CopyTrust, Drop Verify and Folder Copy Compare share a version and build from one project. MHL

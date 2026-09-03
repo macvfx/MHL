@@ -47,6 +47,7 @@ acceptance on real facility storage.
 
 | Version | Date | Summary |
 |---|---|---|
+| **0.4.2 (21)** | 2026-09-03 | **Help → Open Quick Start**, above *Open User Guide*, and a matching button in the Help window. One page from an empty window to a created project — most people who open this app were handed a profile by somebody else, and for them the job is a project number, a project name and a look at the plan |
 | **0.4.1 (20)** | 2026-09-03 | The Create button was still refusing to work without a receipts folder — the 0.1 rule, left behind by 0.4, directly beneath a panel calling that folder optional. Creation is gated on a valid plan alone. Guide and in-app Help brought up to the current build |
 | 0.4 (19) | 2026-09-03 | **Receipts are always kept.** A receipt is written to this Mac on every run with nothing to configure; a chosen folder becomes an extra copy, and a copy that fails to land there is reported without failing the run. Optionally, `_ProjectFolderCreated.txt` in each project created — a pointer to the full receipt, off by default. A profile can carry its own receipts folder |
 | 0.3.7 (18) | 2026-09-03 | The last availability check still reading a folder's existence as a mounted volume — the one behind a profile's destination list, where a mistake is a whole project structure on the boot disk. A refusal about mounting now prints the mount table |
