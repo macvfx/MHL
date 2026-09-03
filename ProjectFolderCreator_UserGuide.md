@@ -591,8 +591,8 @@ The following are not complete in version 0.4.1 build 20:
 ## How this guide is kept true
 
 Every statement here is written against the implementation and its tests — the planner, the
-executor, the profile store and the receipt writer — rather than from memory, and the map of
-which file backs which section is maintained in the Project Folder Creator source repository.
+executor, the profile store and the receipt writer — rather than from memory. The map of which
+source file backs which section is maintained with the source, where it can be kept correct.
 
-The in-app Help window is a concise companion to this guide. Open it from the **Help** button
-in the main window or **Help → Project Folder Creator Help**.
+The in-app Help window is a concise companion to this guide. Open it from the **Help** button in
+the main window or **Help → Project Folder Creator Help**.
