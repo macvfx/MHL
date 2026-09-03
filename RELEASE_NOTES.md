@@ -40,6 +40,22 @@ One line per release, newest first. Detailed changes live in each app's own docu
 | 2.4.1 (7) | 2026-05-01 | Copy progress: smallest-first ordering, within-file byte progress; NAS/SMB copy hang fixes; Check All Hashes; Clean Windows Files; Check for Updates in all apps |
 | 2.3 | 2026-04-25/29 | Subfolder Check repair workflows, guided symlink recovery, P5 stub cleanup |
 
+## Project Folder Creator (development preview)
+
+Not released. Published so the workflow can be read and discussed; it has not been through
+acceptance on real facility storage.
+
+| Version | Date | Summary |
+|---|---|---|
+| **0.4.1 (20)** | 2026-09-03 | The Create button was still refusing to work without a receipts folder — the 0.1 rule, left behind by 0.4, directly beneath a panel calling that folder optional. Creation is gated on a valid plan alone. Guide and in-app Help brought up to the current build |
+| 0.4 (19) | 2026-09-03 | **Receipts are always kept.** A receipt is written to this Mac on every run with nothing to configure; a chosen folder becomes an extra copy, and a copy that fails to land there is reported without failing the run. Optionally, `_ProjectFolderCreated.txt` in each project created — a pointer to the full receipt, off by default. A profile can carry its own receipts folder |
+| 0.3.7 (18) | 2026-09-03 | The last availability check still reading a folder's existence as a mounted volume — the one behind a profile's destination list, where a mistake is a whole project structure on the boot disk. A refusal about mounting now prints the mount table |
+| 0.3.6 (17) | 2026-09-02 | First build carrying the whole volume-detection line, including filespaces mounted more than one level below `/Volumes` |
+| 0.3.2–0.3.5 (13–16) | 2026-09-02 | Creation refused on storage whose volume is not really mounted; volumes found by the folder they mount at as well as the name they report |
+| 0.3–0.3.1 (11–12) | 2026-09-02 | **Profiles** — the whole set-up under a name, template included, exported as one folder and imported on a Mac that then needs nothing else. Destinations can be taken from a CopyTrust preset |
+| 0.2 (2–10) | 2026-09-01 | Per-destination copy rules, nested renaming, the read-only plan, staged-and-verified creation, incomplete-only retry, and JSON/text receipts |
+| 0.1 (1) | 2026-09-01 | One template, several storages, one truthful receipt |
+
 ## MHL Verify
 
 | Version | Date | Summary |

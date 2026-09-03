@@ -1,24 +1,34 @@
 # Media Trust Tools
 
-Four macOS apps and a CLI tool for media integrity — copy, verify, and prove it.
+Five macOS apps and a CLI tool for media integrity and project preparation — create, copy,
+verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.7.8.5 Build 12** — the destinations a
-preset carries now stage on every launch, not just the first. Anyone using an enforced preset with
-staged destinations should take this build. Build 10's headline feature is still here: a facility
-can lock a preset in, pinned by name so the convention itself can still be redeployed as often as
-testing needs ([CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md)).
+**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.8.1 Build 21** — knowing whether a
+volume is really there, and never refusing to copy because one is not. macOS leaves the
+mount-point folder under `/Volumes` behind after an unclean unmount, and every availability check
+read that folder as the drive; nothing is created there now. A volume is found by the folder it
+mounts at as well as the name it reports, at any depth below `/Volumes`, so a filespace mounted
+two levels down resolves instead of being called missing. And one absent destination no longer
+stops a run: it is dropped and named, every other destination still receives the footage, and
+Start stays available.
 
-Earlier in the 2.7.8 line: a delivery gets one receipts folder holding everything, nothing is
-written at the root of a destination drive, and a preset can say which destination archives to P5,
-which makes proxies, and which P5 server to use. See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and
-[TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md).
+Earlier in the line: a facility can lock a preset in, pinned by name so the convention itself can
+still be redeployed as often as testing needs
+([CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md)); a delivery gets one
+receipts folder holding everything; nothing is written at the root of a destination drive; and a
+preset can say which destination archives to P5, which makes proxies, and which P5 server to use.
+See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md).
 
-> **2.7.8 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
+> **2.8 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
 > and it comes with no guarantees.
 
-All three apps share a version and build from one project. MHL Verify 2.6.0.
+**Development preview:** Project Folder Creator **0.4.1 Build 20** — not released, and not to be
+used on work that matters. See [its section below](#project-folder-creator-development-preview).
+
+CopyTrust, Drop Verify and Folder Copy Compare share a version and build from one project. MHL
+Verify 2.6.0.
 
 What each app does is below. What changed in each version is in
 [RELEASE_NOTES.md](RELEASE_NOTES.md).
@@ -113,6 +123,48 @@ Use after copying with CopyTrust, Archiware P5 Sync, a Finder copy, `rsync`, Hed
 - Folder selections persist across a mode switch, and cancelling a scan is non-destructive
 - Standalone app — no ingest session, no receipts, no artifacts
 
+## Project Folder Creator (development preview)
+
+Creates one numbered project from a reusable main folder template, across Edit, Archive, Cloud or
+custom storage — the step before the first card is copied. Each destination gets its own copy
+rules from the same template: Edit may receive the whole thing while Archive receives only
+`1n {project}` and its descendants.
+
+> **Not a release.** This is a development build, published so the workflow can be read and
+> discussed. It has not been through acceptance on real facility storage. Do not use it on work
+> that matters.
+
+- **One template, a different projection on each storage** — a per-destination tree of what that
+  storage receives, showing what every folder, file and package name becomes
+- **Project tokens** — `{project}`, `{project_name}` and `{project_full}` render into the project
+  folder and into any selected folder or `.fcpbundle` name; a template already using a facility's
+  own `year-xxx` shorthand needs no renaming to be used
+- **Per-destination layout** — `Projects/2026` directly, or `Projects` with a year folder, set per
+  destination or taken from the layouts CopyTrust already enforces
+- **The projects already on that storage**, with the next free number offered, and an existing
+  number refused before anything is written
+- **A read-only plan** — every final path, every folder the run will create, free-space warnings,
+  and a refusal by name for anything it will not do
+- **Staged, verified, then committed** — each destination is copied to a hidden staging folder
+  beside its final path, every planned path is verified, the staged tree is checked for anything
+  the plan did not ask for, and only then committed by a same-volume rename. Nothing is ever
+  overwritten or merged
+- **Storage that is not really mounted is refused** — the same mount-table rule as 2.8.1, and here
+  a mistake is a whole project structure written to the boot disk
+- **Receipts, always** — JSON and text, written to this Mac on every run with nothing to
+  configure, and to a chosen folder as well when one is set
+- **Profiles** — the whole set-up under a name, template included, exported as one folder and
+  imported on another Mac that then needs nothing else. Destinations can be taken from a CopyTrust
+  preset rather than typed a second time
+- **Retry Incomplete** — replans only the destinations that failed and reverifies those already
+  committed, and the new receipt still answers for the complete requested set
+
+Not complete: CopyTrust handoff, per-destination live progress, cancellation during one large
+copy, and acceptance on real Edit, Archive and Cloud storage.
+
+See the [Project Folder Creator User Guide](ProjectFolderCreator_UserGuide.md)
+([PDF](ProjectFolderCreator_UserGuide.pdf)).
+
 ## mhl-tool (CLI)
 
 Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL v1.x and ASC MHL v2.0 manifests (v2.7.7). Same MHL engine as CopyTrust and Drop Verify, built for the terminal.
@@ -138,6 +190,8 @@ Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL
   [Drop Verify / MHL Verify Workflow](DROP_VERIFY_AND_MHL_VERIFY_WORKFLOW.md)
 - Folder Copy Compare: [README](FOLDER_COPY_COMPARE_README.md) and
   [User Guide](FOLDER_COPY_COMPARE_USER_GUIDE.md)
+- Project Folder Creator: [User Guide](ProjectFolderCreator_UserGuide.md)
+  ([PDF](ProjectFolderCreator_UserGuide.pdf))
 - Testing and operations: [CopyTrust 2.6 Beta Test Notes](TEST_NOTES_v2.6.0.md)
   and [CopyTrust Sentry Observability](SENTRY_OBSERVABILITY.md)
 - Background: [What Is MHL and Why Use It?](WHAT_IS_MHL_AND_WHY_USE_IT.md)
