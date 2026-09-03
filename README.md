@@ -162,8 +162,10 @@ rules from the same template: Edit may receive the whole thing while Archive rec
 Not complete: CopyTrust handoff, per-destination live progress, cancellation during one large
 copy, and acceptance on real Edit, Archive and Cloud storage.
 
-See the [Project Folder Creator User Guide](ProjectFolderCreator_UserGuide.md)
-([PDF](ProjectFolderCreator_UserGuide.pdf)).
+Start with the [Quick Start](ProjectFolderCreator_QuickStart.md)
+([PDF](ProjectFolderCreator_QuickStart.pdf)) — one page from an empty window to a created project.
+The [User Guide](ProjectFolderCreator_UserGuide.md)
+([PDF](ProjectFolderCreator_UserGuide.pdf)) is the full document.
 
 ## mhl-tool (CLI)
 
@@ -190,7 +192,8 @@ Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL
   [Drop Verify / MHL Verify Workflow](DROP_VERIFY_AND_MHL_VERIFY_WORKFLOW.md)
 - Folder Copy Compare: [README](FOLDER_COPY_COMPARE_README.md) and
   [User Guide](FOLDER_COPY_COMPARE_USER_GUIDE.md)
-- Project Folder Creator: [User Guide](ProjectFolderCreator_UserGuide.md)
+- Project Folder Creator: [Quick Start](ProjectFolderCreator_QuickStart.md)
+  ([PDF](ProjectFolderCreator_QuickStart.pdf)) and [User Guide](ProjectFolderCreator_UserGuide.md)
   ([PDF](ProjectFolderCreator_UserGuide.pdf))
 - Testing and operations: [CopyTrust 2.6 Beta Test Notes](TEST_NOTES_v2.6.0.md)
   and [CopyTrust Sentry Observability](SENTRY_OBSERVABILITY.md)

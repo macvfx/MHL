@@ -3,7 +3,8 @@
 Project Folder Creator creates one numbered project from a reusable main template, with an
 independent folder selection for each Edit, Archive, Cloud, or Custom storage destination.
 
-This is the canonical operator guide for Project Folder Creator 0.4.1 build 20.
+This is the canonical operator guide for Project Folder Creator 0.4.1 build 20. For the one-page
+version, see the `Project Folder Creator Quick Start`.
 
 > **Development status:** planning, destination-specific copy rules, nested renaming, staged
 > creation, verification, partial-failure reporting, retry, JSON/text receipts, saved profiles and
@@ -430,8 +431,10 @@ adding a second copy, so a corrected profile can be redeployed to a client at an
 
 ### What a loaded profile tells you
 
-- **Destinations that are not mounted** are listed and nothing is blocked. The archive drive gets
-  plugged in at ten.
+- **Destinations that are not mounted** are listed, and loading the profile is not blocked. The
+  archive drive gets plugged in at ten. Creating a project is a different matter: every
+  destination in the plan must be mounted, so mount it before the run, or remove that
+  destination's card for today.
 - **Template drift** — if the profile's own template has been changed since the copy rules were
   chosen, the app says what changed. A template that only gained folders is normal and is reported
   quietly. A branch that a destination was told to take and which no longer exists puts a warning
