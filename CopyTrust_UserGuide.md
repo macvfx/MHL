@@ -1323,7 +1323,7 @@ The **Preset** menu sits next to the Card / Folder picker in the bottom action b
 | Build an Enforced Naming Preset… | Opens the wizard: the naming convention, what each destination is for, the P5 server, and this Mac's current copy settings |
 | Edit "…"… | Reopens the wizard on the loaded preset and saves over it rather than leaving a second copy. Your own presets only |
 | Destination Sets | The saved destination sets, kept in this menu rather than in the toolbar |
-| Stage This Preset's Destinations Again | Re-stages the destinations the loaded preset carries — for a volume that was mounted after launch |
+| Stage This Preset's Destinations Again | Re-stages the destinations the loaded preset carries. Since 2.8 a volume that mounts after launch is picked up on its own, so this is for asking rather than for rescue |
 | Import a Preset… | Reads a `.json` exported from another Mac into your own presets, with a new identity, so two Macs cannot overwrite each other |
 | Export "…"… | Writes the loaded preset out as a file |
 | Save Report… | The naming decisions in RTF, CSV or Markdown — or all three plus the preset `.json`, into one folder |
@@ -1345,8 +1345,13 @@ destinations it already names, change nothing about *which* preset is in force.
 
 **Destinations are staged on every launch.** A preset's settings are written into preferences when
 it is applied, so they are already in force when the app opens. Its destinations are session state
-and are staged fresh each time the app starts. A volume mounted after that is picked up with *Stage
-This Preset's Destinations Again* rather than by reloading the preset.
+and are staged fresh each time the app starts.
+
+**A volume that arrives late stages itself** (2.8). CopyTrust waits about fifteen seconds for a
+mount it has requested, and SMB Connect is not cancelled when that elapses, so a first mount at
+login can land afterwards. That destination used to sit unstaged until somebody found *Stage This
+Preset's Destinations Again* — an operator who did not know to look had one fewer copy than they
+believed. It is picked up on its own now. The menu item remains for the times you want to ask.
 
 ### What a preset contains
 

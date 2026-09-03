@@ -101,7 +101,9 @@ destinations it already names, change nothing about which preset is in force.
 
 **And what each destination is *for*** (2.7.8.1). The wizard's *What each destination is for* step gives every staged destination two choices: **Archive to P5** — at most one destination may be the archive source — and **Create proxies**, which is on by default for every destination you add. A facility that archives from one drive and makes proxies on another has to say so, and this is where. A proxies-only destination, added with *Send proxies to another destination…*, takes neither. The load confirmation names which drive does which before it stages anything.
 
-**Destinations are staged on every launch** (2.7.8.5). A preset's settings are written into preferences and are already in force when the app opens; its destinations are session state and are staged fresh each time. If a volume is mounted after launch, **Stage This Preset's Destinations Again** picks it up — and that item works even under an enforced preset.
+**Destinations are staged on every launch** (2.7.8.5). A preset's settings are written into preferences and are already in force when the app opens; its destinations are session state and are staged fresh each time.
+
+**A volume that arrives late stages itself** (2.8). CopyTrust waits about fifteen seconds for a mount it has requested, and SMB Connect is not cancelled when that elapses — a first mount at login can land afterwards. That destination used to sit unstaged until somebody found **Stage This Preset's Destinations Again**, so an operator who did not know to look had one fewer copy than they believed. It is now picked up on its own, whether the window is in front of you or you have just come back to it. The menu item remains, and still works under an enforced preset.
 
 Shared presets live in `/Users/Shared/CopyTrust/Presets` (read-only to the app, deployable by script or MDM before an operator's first launch); your own are saved in `~/Library/Application Support/CopyTrust/Presets`. Tool *paths*, the **P5 password**, operator name and appearance are deliberately excluded so a preset stays portable between machines.
 
