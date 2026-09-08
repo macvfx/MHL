@@ -4,8 +4,18 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.8.1 Build 21** — knowing whether a
-volume is really there, and never refusing to copy because one is not. macOS leaves the
+**Beta:** **CopyTrust 2.8.2 Build 23** — CopyTrust can be made larger. Over 60% of the app's
+labels were drawn at 10 points, the smallest size Apple documents for macOS, and there was no way
+to ask for more. CopyTrust can now be shown at **1x, 1.25x, 1.5x or 2x** from a control in the
+window header, from **View ▸ Interface Size**, or with **⌘+** and **⌘−**. Text, controls, spacing
+and the window itself all grow together, so the same content stays on screen and simply becomes
+easier to read. The choice is remembered per Mac and is never carried in a preset. Nothing in the
+copy, verification, naming, receipt or P5 paths changed. CopyTrust only — Drop Verify and Folder
+Copy Compare stay at 2.8.1 build 21. Test notes:
+[TEST_NOTES_v2.8.2.md](TEST_NOTES_v2.8.2.md).
+
+**Also in beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.8.1 Build 21** — knowing
+whether a volume is really there, and never refusing to copy because one is not. macOS leaves the
 mount-point folder under `/Volumes` behind after an unclean unmount, and every availability check
 read that folder as the drive; nothing is created there now. A volume is found by the folder it
 mounts at as well as the name it reports, at any depth below `/Volumes`, so a filespace mounted

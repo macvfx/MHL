@@ -3,7 +3,7 @@
 Project Folder Creator creates one numbered project from a reusable main template, with an
 independent folder selection for each Edit, Archive, Cloud, or Custom storage destination.
 
-This is the canonical operator guide for Project Folder Creator 0.4.2 build 21. For the one-page
+This is the canonical operator guide for Project Folder Creator 0.5.0 build 22. For the one-page
 version, see the `Project Folder Creator Quick Start`.
 
 > **Development status:** planning, destination-specific copy rules, nested renaming, staged
@@ -11,6 +11,12 @@ version, see the `Project Folder Creator Quick Start`.
 > reading destinations from a CopyTrust preset are implemented. CopyTrust *handoff*,
 > per-destination live progress, cancellation during an individual large copy, and acceptance on
 > real facility storage are not complete. Do not treat this build as a production release.
+
+> **New in 0.5.0 build 23:** the app opens in **simple mode** — a project number, a project name,
+> the projects already on the storage, and how loaded and how full each storage is. Everything
+> that decides *what* gets created still lives in **Advanced**, one segment of the
+> **Simple | Advanced** picker in the header, and where this guide's numbered sections all take
+> place.
 
 > **New since 0.3.1 build 12:** a receipt is written to this Mac on every run and a chosen
 > receipts folder is no longer required (0.4 build 19, and 0.4.1 build 20 where the Create button
@@ -66,6 +72,67 @@ written to this Mac whether or not a folder is chosen.
 If somebody has handed you a profile, steps 1, 3, 4 and 5 are already answered: choose
 **Profile → Import Profile…** once, and from then on the job is a project number and a project
 name. See *Profiles*, below.
+
+## Simple mode, and Advanced
+
+The app has two windows over one set-up. A Mac that has never been asked opens in **simple mode**.
+
+**Simple mode** asks the two questions that change every day and shows the three things worth
+knowing before answering them:
+
+- the **project number** and **project name**, with **Use 2026-124** offering the next unused
+  number in that year, and a duplicate number called out in red as it is typed;
+- **Storage** — one row per destination, saying whether it is loaded, what is free of what it
+  holds, and how many projects the last scan found on it;
+- **Projects on this storage** — the same list advanced mode keeps, with a filter, and any
+  entry openable in the Finder.
+
+Creating works the same way it does in advanced mode: the same plan, the same refusals, the
+same confirmation naming every final path, the same staged-and-verified run, and each
+destination's own result shown above the button afterwards.
+
+Simple mode deliberately has **no** template, copy rules, renaming, destinations or receipts
+controls. Nothing in the window changes what gets created — only which project. That is what
+makes it safe to hand to somebody working under a set-up they did not make. (**Settings**, ⌘,
+stays on the menu bar where macOS requires it, and still edits naming and exclusions; it is the
+menu bar, not the window.)
+
+**Advanced** — the right-hand segment of the **Simple | Advanced** picker in the header, or
+View ▸ Advanced (⇧⌘M) — opens everything this guide's numbered sections describe. The same picker
+sits in the same place in that window and brings you back, so switching never moves the control
+you switch back with. It reads as two segments with one of them selected, rather than a button
+named after the mode you are not in, so the header answers *which mode am I in* without a click.
+The choice is remembered per Mac, and is never carried by a profile: which window somebody works
+in is a fact about that desk, not about the facility's set-up.
+
+### A storage row, read carefully
+
+| The row says | What it means |
+| --- | --- |
+| `8.2 TB free of 24 TB` | Loaded, its project folder is there, and it can be written to |
+| `Not loaded — /Volumes/Archive is not mounted` | Nothing is mounted there. A folder under `/Volumes` is not proof of a volume, and no size is shown, because the size would be the boot disk's |
+| `Not loaded` | The storage folder itself is not there |
+| `Loaded, but …/Projects is not there` | The volume is present; the folder it keeps projects in is missing. It is never created for you |
+| `Loaded, but …/Projects cannot be written to` | Present and read-only |
+| `Free space could not be read` | The volume answered neither capacity question. This is not a full disc — several network mounts answer this way — so check it yourself |
+
+The bar beside a row is drawn only when the free and total figures were both read and agree with
+each other. A share whose quota is smaller than the pool behind it legitimately reports more free
+than it holds; a bar drawn from that would look exactly like one drawn from a measurement.
+
+The rows are read again every minute while the window is open, and on demand from the refresh
+control beside them, because free space is the one thing here that changes without anybody
+touching this app.
+
+Like the project list, this is a convenience and is allowed to be a minute out of date. The
+planner reads the storage itself at plan time and remains the authority for every refusal.
+
+### The first launch of a Mac with nothing set up
+
+Simple mode cannot invent a template or a destination, so on a Mac with neither it says so and
+offers the two ways a facility actually answers it: **Import a Profile…**, or **Set Up This
+Mac…**, which switches to advanced mode. A profile is the usual answer; advanced mode is how the
+first one is made.
 
 ## 1. Choose and inspect the main template
 
@@ -521,7 +588,8 @@ The app restores:
 - storage destinations, labels, roles, project directories, and arrangements;
 - each destination's template selection;
 - the chosen receipts folder, if there is one;
-- exclusions, rename rules, project-folder naming, and new-destination defaults.
+- exclusions, rename rules, project-folder naming, and new-destination defaults;
+- whether this Mac opens in simple mode or advanced mode.
 
 It deliberately does not restore the previous project number or project name.
 
@@ -538,6 +606,19 @@ Literal bracket-name confirmations last only for the current session.
 
 Read the plan panel and correct the refusal it names. Every destination needs at least one
 selected template item. A receipts folder is not required.
+
+### A storage row says a storage is not loaded
+
+Mount it, and use the refresh control beside **Storage**. A folder under `/Volumes` is not proof
+that a volume is mounted — the folder is there whether or not the drive is — which is why the row
+names the mount point it expected and shows no free space for it. Creating on that storage is
+refused for the same reason.
+
+### A storage row says free space could not be read
+
+The volume answered neither capacity question. Several network mounts do this, and it is not a
+full disc: runs on storage that reports this way complete normally. Check the space yourself
+before creating something large. The plan says the same thing, as a warning rather than a refusal.
 
 ### The project directory says “not there yet”
 
@@ -581,7 +662,7 @@ app. Use the receipt and path outcomes to understand where the run stopped.
 
 ## Current capability boundary
 
-The following are not complete in version 0.4.2 build 21:
+The following are not complete in version 0.5.0 build 22:
 
 - CopyTrust *handoff* — a refreshable project list, or **Create missing project…** opening this
   workflow from inside CopyTrust. Reading a preset's destinations is implemented; handing results

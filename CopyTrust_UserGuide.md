@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-08-24
-Release status: **2.5.3 stable**; **2.7.7 Build 1** in testing.
+Date: 2026-09-07
+Release status: **2.8.1 build 21 current**; **2.8.2 build 23** in beta testing.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -60,6 +60,47 @@ What `Advanced Start` focuses on:
 - set the `Copy` switch to `In series` for an ordered `A -> B -> C` path
 - set `Archive to P5` and `Create proxies` on the intended destination rows
 - leave this out of the way unless the session actually calls for relay copy
+
+## Interface Size — making the text and controls larger
+
+Added in 2.8.2. CopyTrust can be shown at four sizes, for anyone who cannot comfortably read
+the app's smaller text.
+
+| Size | Scale |
+|---|---|
+| Standard | 100% |
+| Large | 125% |
+| Extra Large | 150% |
+| Maximum | 200% |
+
+Three ways to change it:
+
+1. The `1x / 1.25x / 1.5x / 2x` control at the top right of the main window.
+2. `View > Interface Size`.
+3. `Command-Plus` and `Command-Minus`. `Command-0` returns to Standard.
+
+`Settings > Appearance` carries the same four sizes with a live sample, so a size can be judged
+without closing Settings.
+
+**What grows.** Text, controls, spacing, icons and the constrained columns that hold them — and
+the window itself, by the same ratio, clamped to the screen. Doubling the text inside a window
+that stays put only means less fits, so the window grows with it and the same content stays on
+screen. Where the display cannot give the window the room, the layout reflows instead: the
+controls on a destination row move onto their own line rather than being squeezed.
+
+**Where it is stored.** In this Mac's preferences, remembered between launches. It is never
+written into an operator or destination preset — interface size is a personal accessibility
+preference, not copy policy — so loading a preset never changes how large the app is.
+
+**Known limits in 2.8.2.**
+
+- The tab strip along the top of Settings does not grow; it is drawn by macOS.
+- The update alert (`CopyTrust > Check for Updates…`) is a system alert and does not grow.
+- Resizing the window by hand and then changing size scales from the window's original size,
+  which looks like a jump. Relaunching settles it.
+
+**macOS also helps, and works alongside this.** `System Settings > Accessibility > Zoom` and
+`Hover Text`, and a larger text display resolution under `System Settings > Displays`.
 
 ## Workflow Summary
 
