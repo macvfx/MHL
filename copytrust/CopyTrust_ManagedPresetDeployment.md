@@ -55,7 +55,7 @@ arrived yet.
 
 ### A profile you can install today
 
-**[`examples/CopyTrust-Enforced-Preset.mobileconfig`](examples/CopyTrust-Enforced-Preset.mobileconfig)**
+**[`examples/CopyTrust-Enforced-Preset.mobileconfig`](../examples/CopyTrust-Enforced-Preset.mobileconfig)**
 is a complete, unsigned profile. Change two things and it is ready:
 
 1. `CopyTrustEnforcedPresetName` — the preset's name, exactly as the app shows it and exactly as the

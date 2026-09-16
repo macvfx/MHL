@@ -881,7 +881,7 @@ the portable file-by-file verification record.
 The complete current operator procedure—including restore preview, receiving
 client and landing-path checks, path/count/byte reconciliation, MHL result
 interpretation, and the planned coordinated workflow—is in
-[CopyTrust → P5 Restore and Hash Verification](COPYTRUST_P5_RESTORE_AND_VERIFY_WORKFLOW.md).
+[CopyTrust → P5 Restore and Hash Verification](CopyTrust_P5_Restore_and_Verify_Workflow.md).
 CopyTrust 2.7.0 does not yet submit or automatically verify a P5 restore.
 
 ## Destination Sort (Post-Copy)

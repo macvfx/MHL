@@ -3,7 +3,7 @@
 The original tool that started it all.
 
 Current version: **v2.7.7 (Build 2 beta)**, aligned with CopyTrust and Drop Verify.
-Version history is in [RELEASE_NOTES.md](RELEASE_NOTES.md).
+Version history is in [RELEASE_NOTES.md](../RELEASE_NOTES.md).
 
 **Folder Copy Compare** began as a simple idea: after copying a folder, prove that the copy worked. Drop a source folder, drop a target folder, and get a clear answer — do they match?
 
@@ -68,4 +68,4 @@ If the copy was made by something else and you just want a quick sanity check �
 ## Related Docs
 
 - [FOLDER_COPY_COMPARE_USER_GUIDE.md](FOLDER_COPY_COMPARE_USER_GUIDE.md) — full user guide with workflows
-- [README.md](README.md) — project overview covering all four tools
+- [README.md](../README.md) — project overview covering all four tools

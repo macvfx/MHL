@@ -6,7 +6,7 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
 Stable release: **2.5.3**. **2.7.8 Build 7 is a BETA** — test on media you can afford to lose, and keep a separate verified backup made by other software such as Archiware P5. Version history is
-in [RELEASE_NOTES.md](RELEASE_NOTES.md).
+in [RELEASE_NOTES.md](../RELEASE_NOTES.md).
 
 > **Check the confirmation before a copy starts.** It shows the active mode
 > (Card / Folder), verification level, artifact settings, and either **Proxy: Off**

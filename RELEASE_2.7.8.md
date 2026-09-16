@@ -2,7 +2,7 @@
 
 **Released:** 2026-09-01 · CopyTrust · Drop Verify · Folder Copy Compare
 **Short notes:** [the release page](https://github.com/macvfx/MHL/releases/tag/2.7.8.6%2B13) ·
-**What to test:** [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md) — section G15 is this build
+**What to test:** [TEST_NOTES_v2.7.8.md](docs/releases/TEST_NOTES_v2.7.8.md) — section G15 is this build
 
 > **This is a beta.** Run it on media you can afford to lose, and keep a separate, independently
 > verified backup made by **other software** — Archiware P5 or equivalent. This is free software
@@ -190,7 +190,7 @@ each destination is for, the P5 server, and every copy setting. There was no way
 one. An operator could load a different preset, or none at all, and the only evidence afterwards was
 the name recorded in the receipt.
 
-**Setup is in [CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md)** — this
+**Setup is in [CopyTrust_ManagedPresetDeployment.md](copytrust/CopyTrust_ManagedPresetDeployment.md)** — this
 is a summary.
 
 ## Pinned by name, so the convention can still change daily

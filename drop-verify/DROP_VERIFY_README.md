@@ -163,4 +163,4 @@ When the optional external tools are enabled:
 ## Documentation
 
 - [Drop Verify User Guide](DROP_VERIFY_USER_GUIDE.md)
-- [Media Trust Tools Release Notes](RELEASE_NOTES.md)
+- [Media Trust Tools Release Notes](../RELEASE_NOTES.md)

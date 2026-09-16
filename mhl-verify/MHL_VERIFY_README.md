@@ -36,7 +36,7 @@ Click `Verify…` in the `Reader` tab, or in any document window opened via **Op
 
 ## About the Code in This Repo
 
-The [MHL_VERIFY_CODE](MHL_VERIFY_CODE) folder is a **reference snapshot** of the app's source, kept as a worked example of a macOS Quick Look extension (with preview rendering derived from [Pique](https://github.com/macadmins/pique)). It is not updated in lockstep with releases — as of 2.5.1 the shipping app's MHL parsing and verification moved into the shared (private) CopyCore engine, so the snapshot reflects the last self-contained version (2.4.1).
+The [MHL_VERIFY_CODE](../MHL_VERIFY_CODE) folder is a **reference snapshot** of the app's source, kept as a worked example of a macOS Quick Look extension (with preview rendering derived from [Pique](https://github.com/macadmins/pique)). It is not updated in lockstep with releases — as of 2.5.1 the shipping app's MHL parsing and verification moved into the shared (private) CopyCore engine, so the snapshot reflects the last self-contained version (2.4.1).
 
 ## Main Workflows
 
@@ -112,7 +112,7 @@ xcodebuild -project MHLDefaultApps.xcodeproj -scheme MHLDefaultApps -configurati
 
 Copyright 2026 Mat X Network Consultants / MacVFX
 
-Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for
+Licensed under the Apache License, Version 2.0. See [LICENSE](../LICENSE) for
 the full terms.
 
 If you use or redistribute this code, please attribute

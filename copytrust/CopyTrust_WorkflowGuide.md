@@ -228,7 +228,7 @@ For relay chains, the pre-copy check evaluates the P5 choice across all legs,
 so a P5 destination on a later stop is reported without a false no-destination
 warning.
 Follow
-[CopyTrust → P5 Restore and Hash Verification](COPYTRUST_P5_RESTORE_AND_VERIFY_WORKFLOW.md)
+[CopyTrust → P5 Restore and Hash Verification](CopyTrust_P5_Restore_and_Verify_Workflow.md)
 for the complete manual restore, reconciliation, and hash-verification procedure
 and the explicitly planned coordinated workflow.
 

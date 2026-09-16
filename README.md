@@ -25,10 +25,10 @@ Start stays available.
 
 Earlier in the line: a facility can lock a preset in, pinned by name so the convention itself can
 still be redeployed as often as testing needs
-([CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md)); a delivery gets one
+([CopyTrust_ManagedPresetDeployment.md](copytrust/CopyTrust_ManagedPresetDeployment.md)); a delivery gets one
 receipts folder holding everything; nothing is written at the root of a destination drive; and a
 preset can say which destination archives to P5, which makes proxies, and which P5 server to use.
-See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](TEST_NOTES_v2.7.8.md).
+See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](docs/releases/TEST_NOTES_v2.7.8.md).
 
 > **2.8 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
@@ -82,7 +82,7 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - **Archiware P5 archive (testing)** — after Full or Inline verification, submit a verified destination to a P5 server with searchable xxHash64, frame size and other bounded media metadata. `Archive to P5` and `Create proxies` are chosen per destination, and P5 preflight evaluates a whole relay chain
 - **Deferred P5 handoff** — a password-free request JSON preserves paths, hashes, metadata, target hints and job state when P5 is offline or automatic archive is off
 
-Docs: [Why and How](CopyTrust_WhyAndHow.md) ([PDF](CopyTrust_WhyAndHow.pdf)) — the short case for it, a page per topic, [First Run](CopyTrust_FirstRun.md) ([PDF](CopyTrust_FirstRun.pdf)) — one page, fan-out to every destination, [Operator Field Guide](COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — features + 2-minute field test), [User Guide](CopyTrust_UserGuide.md) (full), [Workflow Guide](CopyTrust_WorkflowGuide.md) (relay strategy), [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md) ([PDF](CopyTrust_Illustrated_Workflow_Guide.pdf)), [P5 Restore & Verify](CopyTrust_P5_Restore_and_Verify_Workflow.md), [Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md), and [Quick Start](CopyTrust_QuickStart.md).
+Docs: [Why and How](copytrust/CopyTrust_WhyAndHow.md) ([PDF](copytrust/CopyTrust_WhyAndHow.pdf)) — the short case for it, a page per topic, [First Run](copytrust/CopyTrust_FirstRun.md) ([PDF](copytrust/CopyTrust_FirstRun.pdf)) — one page, fan-out to every destination, [Operator Field Guide](copytrust/COPYTRUST_OPERATOR_FIELD_GUIDE.md) (short — features + 2-minute field test), [User Guide](copytrust/CopyTrust_UserGuide.md) (full), [Workflow Guide](copytrust/CopyTrust_WorkflowGuide.md) (relay strategy), [Illustrated Workflow Guide](copytrust/CopyTrust_Illustrated_Workflow_Guide.md) ([PDF](copytrust/CopyTrust_Illustrated_Workflow_Guide.pdf)), [P5 Restore & Verify](copytrust/CopyTrust_P5_Restore_and_Verify_Workflow.md), [Workflow QA Matrix](copytrust/COPYTRUST_WORKFLOW_QA_MATRIX.md), and [Quick Start](copytrust/CopyTrust_QuickStart.md).
 
 The illustrated guide images are stored in
 [`assets/copytrust_workflows/`](assets/copytrust_workflows/), so they render
@@ -119,7 +119,7 @@ Standalone MHL reader and verifier. Load any `.mhl` file, review it, and verify 
 - Works with MHLs from Drop Verify, CopyTrust, OffShoot, Silverstack, YoYotta, ShotPut Pro, or any MHL-capable tool
 - Requires macOS 14+ as of 2.5.1 (2.4.1 remains for macOS 13, but cannot read ASC MHL v2.0)
 
-See [MHL_VERIFY_README.md](MHL_VERIFY_README.md), [MHL_VERIFY_USER_GUIDE.md](MHL_VERIFY_USER_GUIDE.md), and [MHL_VERIFY_CHANGELOG.md](MHL_VERIFY_CHANGELOG.md).
+See [MHL_VERIFY_README.md](mhl-verify/MHL_VERIFY_README.md), [MHL_VERIFY_USER_GUIDE.md](mhl-verify/MHL_VERIFY_USER_GUIDE.md), and [MHL_VERIFY_CHANGELOG.md](mhl-verify/MHL_VERIFY_CHANGELOG.md).
 
 ## Folder Copy Compare
 
@@ -172,10 +172,10 @@ rules from the same template: Edit may receive the whole thing while Archive rec
 Not complete: CopyTrust handoff, per-destination live progress, cancellation during one large
 copy, and acceptance on real Edit, Archive and Cloud storage.
 
-Start with the [Quick Start](ProjectFolderCreator_QuickStart.md)
-([PDF](ProjectFolderCreator_QuickStart.pdf)) — one page from an empty window to a created project.
-The [User Guide](ProjectFolderCreator_UserGuide.md)
-([PDF](ProjectFolderCreator_UserGuide.pdf)) is the full document.
+Start with the [Quick Start](project-folder-creator/ProjectFolderCreator_QuickStart.md)
+([PDF](project-folder-creator/ProjectFolderCreator_QuickStart.pdf)) — one page from an empty window to a created project.
+The [User Guide](project-folder-creator/ProjectFolderCreator_UserGuide.md)
+([PDF](project-folder-creator/ProjectFolderCreator_UserGuide.pdf)) is the full document.
 
 ## mhl-tool (CLI)
 
@@ -195,18 +195,34 @@ Command-line tool for creating MHL v1.1 manifests and verifying both classic MHL
 - `⌘R` — Refresh Comparison
 - `⌘⇧N` — Reset both folders
 
+## Repository layout
+
+Documentation is grouped per product. Each folder holds that app's guides; the
+root keeps only what spans all of them.
+
+| Folder | Contents |
+|---|---|
+| `copytrust/` | CopyTrust guides, field guide, QA matrix, workflow PDFs |
+| `drop-verify/` | Drop Verify README, user guide, troubleshooting |
+| `mhl-verify/` | MHL Verify README, user guide, changelog, Pique attribution |
+| `folder-copy-compare/` | Folder Copy Compare README and user guide |
+| `project-folder-creator/` | Project Folder Creator quick start and user guide |
+| `docs/` | Cross-product docs, plus `docs/releases/` for superseded release notes |
+| `workflows/`, `assets/`, `examples/` | Diagrams, images, and sample configuration profiles |
+| `MHL_VERIFY_CODE/` | Deliberate source snapshot of MHL Verify, kept as a worked Quick Look example |
+
 ## More Documentation
 
-- Drop Verify: [README](DROP_VERIFY_README.md), [User Guide](DROP_VERIFY_USER_GUIDE.md),
-  [Troubleshooting](DROP_VERIFY_TROUBLESHOOTING.md), and
-  [Drop Verify / MHL Verify Workflow](DROP_VERIFY_AND_MHL_VERIFY_WORKFLOW.md)
-- Folder Copy Compare: [README](FOLDER_COPY_COMPARE_README.md) and
-  [User Guide](FOLDER_COPY_COMPARE_USER_GUIDE.md)
-- Project Folder Creator: [Quick Start](ProjectFolderCreator_QuickStart.md)
-  ([PDF](ProjectFolderCreator_QuickStart.pdf)) and [User Guide](ProjectFolderCreator_UserGuide.md)
-  ([PDF](ProjectFolderCreator_UserGuide.pdf))
-- Testing and operations: [CopyTrust 2.6 Beta Test Notes](TEST_NOTES_v2.6.0.md)
-  and [CopyTrust Sentry Observability](SENTRY_OBSERVABILITY.md)
-- Background: [What Is MHL and Why Use It?](WHAT_IS_MHL_AND_WHY_USE_IT.md)
+- Drop Verify: [README](drop-verify/DROP_VERIFY_README.md), [User Guide](drop-verify/DROP_VERIFY_USER_GUIDE.md),
+  [Troubleshooting](drop-verify/DROP_VERIFY_TROUBLESHOOTING.md), and
+  [Drop Verify / MHL Verify Workflow](docs/DROP_VERIFY_AND_MHL_VERIFY_WORKFLOW.md)
+- Folder Copy Compare: [README](folder-copy-compare/FOLDER_COPY_COMPARE_README.md) and
+  [User Guide](folder-copy-compare/FOLDER_COPY_COMPARE_USER_GUIDE.md)
+- Project Folder Creator: [Quick Start](project-folder-creator/ProjectFolderCreator_QuickStart.md)
+  ([PDF](project-folder-creator/ProjectFolderCreator_QuickStart.pdf)) and [User Guide](project-folder-creator/ProjectFolderCreator_UserGuide.md)
+  ([PDF](project-folder-creator/ProjectFolderCreator_UserGuide.pdf))
+- Testing and operations: [CopyTrust 2.6 Beta Test Notes](docs/releases/TEST_NOTES_v2.6.0.md)
+  and [CopyTrust Sentry Observability](docs/SENTRY_OBSERVABILITY.md)
+- Background: [What Is MHL and Why Use It?](docs/WHAT_IS_MHL_AND_WHY_USE_IT.md)
 - Release history: [Media Trust Tools Release Notes](RELEASE_NOTES.md) and
-  [MHL Verify Changelog](MHL_VERIFY_CHANGELOG.md)
+  [MHL Verify Changelog](mhl-verify/MHL_VERIFY_CHANGELOG.md)
