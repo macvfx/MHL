@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-09-21
-Release status: **2.8.1 build 21 current**; **2.8.4 build 25** in beta testing.
+Release status: **2.8.1 build 21 current**; **2.8.5 build 26** in beta testing.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -94,7 +94,8 @@ preference, not copy policy — so loading a preset never changes how large the 
 
 **Known limits in 2.8.2.**
 
-- The tab strip along the top of Settings does not grow; it is drawn by macOS.
+- The tab strip along the top of Settings did not grow. Since 2.8.5 Settings lists its tabs down
+  the left side instead, and the list grows with the rest of the app.
 - The update alert (`CopyTrust > Check for Updates…`) is a system alert and does not grow.
 - Resizing the window by hand and then changing size scales from the window's original size,
   which looks like a jump. Relaunching settles it.

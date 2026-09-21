@@ -4,12 +4,13 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust 2.8.4 Build 25** — switching from Card to Folder with an enforced naming
-preset loaded now lets go of the card setup: the preset's destinations are removed, destinations
-you added keep no proxy or P5 role, Inline verification becomes Quick and proxies turn off. A
-destination added in a mode that makes no proxies is no longer ticked for them, and the menu bar
-icon is now a folder with an arrow. CopyTrust only — Drop Verify and Folder Copy Compare stay at
-2.8.1 build 21. Release notes: [RELEASE-NOTES-2.8.4.md](RELEASE-NOTES-2.8.4.md).
+**Beta:** **CopyTrust 2.8.5 Build 26** — Settings works again: in 2.8.4 its tab labels were drawn
+on top of each other, so only one tab could be reached. The tabs are now listed down the left side,
+and Settings gains a title, the version and build beside Done, and an About tab. It also carries
+everything in 2.8.4 — switching from Card to Folder with an enforced naming preset loaded lets go of
+the card setup, and the menu bar icon is a folder with an arrow. CopyTrust only — Drop Verify and
+Folder Copy Compare stay at 2.8.1 build 21. Release notes:
+[RELEASE-NOTES-2.8.5.md](RELEASE-NOTES-2.8.5.md) and [RELEASE-NOTES-2.8.4.md](RELEASE-NOTES-2.8.4.md).
 
 **Also in beta:** **CopyTrust 2.8.2 Build 23** — Interface Size: CopyTrust can be shown at 1x,
 1.25x, 1.5x or 2x. Test notes: [TEST_NOTES_v2.8.2.md](TEST_NOTES_v2.8.2.md).
