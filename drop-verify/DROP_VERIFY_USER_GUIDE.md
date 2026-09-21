@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.7.4 (Build 27 beta)**. Version history is in the release notes.
+Current app version: **v2.8.2 (Build 22 beta)**. Version history is in the release notes.
 
 ## External Codec Setup
 
@@ -65,7 +65,8 @@ name so it still resolves.
 - Launch the `Drop Verify` app target.
 
 ### 2. Review settings
-- Open `Drop Verify > Settings…`
+- Open `Drop Verify > Settings…`. Since 2.8.2 its tabs — Outputs, Exclusions, External Codecs
+  and About — are listed down the left side, and the version and build sit beside Done.
 - Choose which artifacts should be written in the dropped folder:
   - `MHL (Media Hash List)`
   - `Contact sheet PDF (thumbnails and camera data)`

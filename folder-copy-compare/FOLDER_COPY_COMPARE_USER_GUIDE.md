@@ -1,6 +1,6 @@
 # Folder Copy Compare User Guide
 
-Current version: **v2.7.2 (Build 14 beta)**, aligned with CopyTrust and Drop Verify.
+Current version: **v2.8.2 (Build 22 beta)**, released alongside Drop Verify 2.8.2.
 Version history is in the release notes.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
@@ -75,7 +75,8 @@ The active scan mode applies everywhere: Compare mode, Subfolder Check drill-dow
 
 ## Settings
 
-Open **Folder Copy Compare > Settings** (`⌘,`) to configure:
+Open **Folder Copy Compare > Settings** (`⌘,`). Since 2.8.2 its tabs are listed down the left
+side, with an **About** tab last and the version and build at the bottom. It configures:
 
 - **Exclusions** — file and folder patterns to skip during scanning (grouped by category: Coding, File Storage, System, Media Files, Camera Card). Every visible checkbox is respected: checked patterns are skipped and unchecked patterns remain included. The **System** group is enabled by default and excludes OS-generated directories (`.Spotlight-V100`, `.fseventsd`, `.Trashes`, `@eaDir`, `System Volume Information`, etc.). Camera Card patterns such as `MISC`, `THMBNL`, `.THM`, and `.LRV` are optional and are not silently forced on. All pattern matching is case-insensitive.
 - **Scan Options** — hidden files, symlink handling, hash algorithm, concurrency, and metadata cache. **Skip hidden files and folders** is enabled by default, excluding dot-prefixed items (e.g. `.git`, `.ssh`) from scans.

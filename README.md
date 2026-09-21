@@ -8,9 +8,13 @@ verify, and prove it.
 on top of each other, so only one tab could be reached. The tabs are now listed down the left side,
 and Settings gains a title, the version and build beside Done, and an About tab. It also carries
 everything in 2.8.4 — switching from Card to Folder with an enforced naming preset loaded lets go of
-the card setup, and the menu bar icon is a folder with an arrow. CopyTrust only — Drop Verify and
-Folder Copy Compare stay at 2.8.1 build 21. Release notes:
+the card setup, and the menu bar icon is a folder with an arrow. CopyTrust only. Release notes:
 [RELEASE-NOTES-2.8.5.md](RELEASE-NOTES-2.8.5.md) and [RELEASE-NOTES-2.8.4.md](RELEASE-NOTES-2.8.4.md).
+
+**Also in beta:** **Drop Verify and Folder Copy Compare 2.8.2 Build 22** — Settings in both apps
+lists its tabs down the left side, as CopyTrust 2.8.5 does, with an About tab and the version and
+build at the bottom. Nothing else changed. Release notes:
+[RELEASE-NOTES-DV-FCC-2.8.2.md](RELEASE-NOTES-DV-FCC-2.8.2.md).
 
 **Also in beta:** **CopyTrust 2.8.2 Build 23** — Interface Size: CopyTrust can be shown at 1x,
 1.25x, 1.5x or 2x. Test notes: [TEST_NOTES_v2.8.2.md](TEST_NOTES_v2.8.2.md).
@@ -38,7 +42,8 @@ See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](docs/release
 **Development preview:** Project Folder Creator **0.4.2 Build 21** — not released, and not to be
 used on work that matters. See [its section below](#project-folder-creator-development-preview).
 
-CopyTrust, Drop Verify and Folder Copy Compare share a version and build from one project. MHL
+CopyTrust, Drop Verify and Folder Copy Compare are built from one project; since 2.8.2 each has
+its own version and build. MHL
 Verify 2.6.0.
 
 What each app does is below. What changed in each version is in
