@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-09-21
-Release status: **2.8.1 build 21 current**; **2.8.5 build 26** in beta testing.
+Release status: **2.8.1 build 21 current**; **2.8.6 build 27** in beta testing.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -284,6 +284,11 @@ What CopyTrust does:
 - background artifact work can continue afterward without blocking the next queued session
 - completed rows distinguish copy completion, artifacts, P5 archive, post-copy
   issues, and full completion
+- a completed row's **Reveal** is a menu (2.8.6): for each destination, by name, **Copied Files**
+  and **Receipts & Artifacts** (manifest, MHL, contact sheet, metadata CSV, file tree), plus
+  **Proxies** when a preset pools them elsewhere — each opening that exact folder, with its path
+  shown beneath. With enforced naming these are the project folders the files went to, not the
+  volumes. **All Copied Files** / **All Receipts & Artifacts** open every destination at once
 - queued rows can be intentionally reordered, including placing a standalone queued job before or between relay-chain rows
 
 This is the strongest fit for:

@@ -4,11 +4,11 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust 2.8.5 Build 26** — Settings works again: in 2.8.4 its tab labels were drawn
-on top of each other, so only one tab could be reached. The tabs are now listed down the left side,
-and Settings gains a title, the version and build beside Done, and an About tab. It also carries
-everything in 2.8.4 — switching from Card to Folder with an enforced naming preset loaded lets go of
-the card setup, and the menu bar icon is a folder with an arrow. CopyTrust only. Release notes:
+**Beta:** **CopyTrust 2.8.6 Build 27** — Reveal on a finished source goes to the folders the files
+were copied into; with enforced naming and more than one destination it used to open the volumes.
+Reveal is now a menu listing each destination's copied files and its receipts and artifacts, each
+with its path. Includes everything in 2.8.5 (Settings works again) and 2.8.4. CopyTrust only.
+Release notes: [RELEASE-NOTES-2.8.6.md](RELEASE-NOTES-2.8.6.md),
 [RELEASE-NOTES-2.8.5.md](RELEASE-NOTES-2.8.5.md) and [RELEASE-NOTES-2.8.4.md](RELEASE-NOTES-2.8.4.md).
 
 **Also in beta:** **Drop Verify and Folder Copy Compare 2.8.2 Build 22** — Settings in both apps
