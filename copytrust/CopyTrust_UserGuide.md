@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-09-07
-Release status: **2.8.1 build 21 current**; **2.8.2 build 23** in beta testing.
+Date: 2026-09-21
+Release status: **2.8.1 build 21 current**; **2.8.4 build 25** in beta testing.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -1298,6 +1298,17 @@ Copy modes let operators switch between camera-card and folder-copy configuratio
 ### Mode picker
 
 A segmented control in the toolbar shows the active mode: **Card** or **Folder** (orange tint). Switching modes saves the current settings to the outgoing profile and loads the incoming profile. The picker is hidden during an active copy.
+
+**Switching to Folder with an enforced naming preset loaded** (2.8.4 build 25) also lets go of the
+card setup the preset created, because Folder mode is not enforced: the preset's destinations are
+removed — a proxies-only destination included — and a preset drive that mounts later no longer
+adds itself; destinations you added yourself stay with **Create proxies** and **Archive to P5**
+cleared; Inline verification becomes Quick (Full and None are left alone) and proxy generation
+turns off. Switching back to Card restores the preset's settings but does not re-stage its
+destinations — load the preset again for those.
+
+A destination's **Create proxies** box is greyed out while proxy generation is off for the active
+mode, and a destination added in that mode arrives unticked.
 
 ### Mode defaults
 
