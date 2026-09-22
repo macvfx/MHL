@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-09-21
-Release status: **2.8.1 build 21 current**; **2.8.6 build 27** in beta testing.
+Release status: **2.8.1 build 21 current**; **2.8.7 build 28** in beta testing.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -131,7 +131,9 @@ How to do it:
 2. Add destination `B`.
 3. Add destination `C`.
 4. Leave the `Copy` switch on `Simultaneously` (the default).
-5. Click `Start`, then confirm the pre-copy review.
+5. Click `Start`, then confirm the pre-copy review. Since 2.8.7 it is the only window: the active
+   Camera Card exclusions and any folders CopyTrust will create — one row per destination — are
+   sections of it, and it appears for them even when the routine review is switched off.
 
 What CopyTrust does:
 - it treats this as one ingest session
@@ -1611,8 +1613,9 @@ A project folder is matched by its **number**. The rest of the name is a label, 
 That is deliberate — folder names are not stable enough to match on — but it means an archive
 NAS and a working drive can hold the same job under different names. When that happens:
 
-- The delivery confirmation **always** appears before the copy, even though nothing is being
-  created and nothing was redirected, and names both folders.
+- The pre-copy review **always** appears before the copy — even with the routine review switched
+  off, and even though nothing is being created or redirected — and its delivery section names both
+  folders. (Before 2.8.7 this was a separate alert after the review.)
 - **CopyTrust does not choose.** It cannot know which name is the current one. You confirm, or
   cancel and fix the folders.
 - The divergence and your answer go into the session log.
