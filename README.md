@@ -4,20 +4,28 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust 2.8.7 Build 28** — one pre-copy review instead of up to three windows, with
-the Camera Card exclusions and the folders to create inside it; MKV contact sheets when `mkv` is
-listed under External Codecs; P5 status in plain words; Proxy Delivery and P5 listed as waiting
+**Beta:** **CopyTrust 2.9.1 Build 31** — from an on-site test: a card with no unit has no roll (and
+no `_roll` in its folder name); a preset can list the units whose files are renamed, so the Rename
+control appears only for the drone; the pre-copy review opens with a Go / Check banner, shows the
+proxies-only destination and full destination paths, and warns when no destination is set for
+proxies; the Session Summary reports proxies; and a preset can reload itself and open in Card or
+Folder mode at every launch. CopyTrust only. Release notes:
+[RELEASE-NOTES-2.9.1.md](RELEASE-NOTES-2.9.1.md).
+
+**Also in beta:** **CopyTrust 2.8.7 Build 28** — one pre-copy review instead of up to three windows,
+with the Camera Card exclusions and the folders to create inside it; MKV contact sheets when `mkv`
+is listed under External Codecs; P5 status in plain words; Proxy Delivery and P5 listed as waiting
 from the start; and Settings in the header. Includes everything in 2.8.6 (Reveal per destination),
-2.8.5 and 2.8.4. CopyTrust only. Release notes:
-[RELEASE-NOTES-2.8.7.md](RELEASE-NOTES-2.8.7.md) and [RELEASE-NOTES-2.8.6.md](RELEASE-NOTES-2.8.6.md).
+2.8.5 and 2.8.4. Release notes: [RELEASE-NOTES-2.8.7.md](RELEASE-NOTES-2.8.7.md) and
+[RELEASE-NOTES-2.8.6.md](docs/releases/RELEASE-NOTES-2.8.6.md).
 
 **Also in beta:** **Drop Verify and Folder Copy Compare 2.8.2 Build 22** — Settings in both apps
 lists its tabs down the left side, as CopyTrust 2.8.5 does, with an About tab and the version and
 build at the bottom. Nothing else changed. Release notes:
-[RELEASE-NOTES-DV-FCC-2.8.2.md](RELEASE-NOTES-DV-FCC-2.8.2.md).
+[RELEASE-NOTES-DV-FCC-2.8.2.md](docs/releases/RELEASE-NOTES-DV-FCC-2.8.2.md).
 
 **Also in beta:** **CopyTrust 2.8.2 Build 23** — Interface Size: CopyTrust can be shown at 1x,
-1.25x, 1.5x or 2x. Test notes: [TEST_NOTES_v2.8.2.md](TEST_NOTES_v2.8.2.md).
+1.25x, 1.5x or 2x. Test notes: [TEST_NOTES_v2.8.2.md](docs/releases/TEST_NOTES_v2.8.2.md).
 
 **Also in beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.8.1 Build 21** — knowing
 whether a volume is really there, and never refusing to copy because one is not. macOS leaves the
@@ -33,7 +41,7 @@ still be redeployed as often as testing needs
 ([CopyTrust_ManagedPresetDeployment.md](copytrust/CopyTrust_ManagedPresetDeployment.md)); a delivery gets one
 receipts folder holding everything; nothing is written at the root of a destination drive; and a
 preset can say which destination archives to P5, which makes proxies, and which P5 server to use.
-See [RELEASE_2.7.8.md](RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](docs/releases/TEST_NOTES_v2.7.8.md).
+See [RELEASE_2.7.8.md](docs/releases/RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](docs/releases/TEST_NOTES_v2.7.8.md).
 
 > **2.8 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
