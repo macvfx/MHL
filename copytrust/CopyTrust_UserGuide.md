@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-09-21
-Release status: **2.8.1 build 21 current**; **2.8.7 build 28** in beta testing.
+Date: 2026-10-01
+Release status: **2.8.1 build 21 current**; **2.9.1 build 31** in beta testing.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -370,13 +370,34 @@ sorting, artifacts, and explicit **Proxies** and **P5 Archive** states. Proxy
 and P5 choices are evaluated across the complete relay sequence, including a
 choice that exists only on a later stop.
 
+The review opens with a one-line banner (2.9.0): green **Go — nothing below needs a decision**,
+or orange **Check before continuing** with a count of the items that do. It never blocks —
+Continue is always available — it says whether to stop and read first.
+
 The review also summarizes the active **mode** (Card / Folder), **verification
-level**, enabled **artifacts**, **destination sort**, and **contact-sheet split**.
+level**, enabled **artifacts**, **destination sort**, and **contact-sheet split**. While a loaded
+preset is still exactly as it was loaded, the artifacts line reads *Per preset "name"* instead of
+listing the contact sheet, CSV and tree — those are the facility's choice. The full list returns
+the moment anything is changed by hand.
+
+Each destination card shows its **whole path**, wrapped, below the name. Below the cards, a
+**Proxies-only copy** section lists every proxies-only destination with its full path and a
+**Proxies Yes / Proxies No**. A proxies-only destination is fed by the proxies a *copy* destination
+makes, so if proxy generation is off, or no copy destination has **Create proxies** ticked, it
+reads **No**, says why, and the review warns *No destination set for proxies* — nothing will be
+made and nothing will be sent. A preset that expects a proxies-only destination which is not
+staged (its volume is not mounted) is warned about the same way.
+
 Click **Continue** to proceed or **Cancel**
 to fix the settings first. It appears only when you start a new session — an
 auto-advanced next card or a resumed copy is never interrupted. Turn it off (or
 back on) in **Settings → Post-Copy → Before Copy**, or tick "Don't ask again" in
 the sheet itself.
+
+The **Session Summary** (Review Summary) has a **Proxies** block: whether proxies were made and
+on which destination, per card, and whether they reached each proxies-only destination — or that
+none were made, so none were sent. It is absent when proxies were never in play, and it is not
+shown when a closed summary is reopened later, because it reads the session that is still open.
 
 ### During a running copy
 
@@ -835,6 +856,12 @@ The checkbox is **disabled while P5 archiving is off** (2.7.3) — with neither
 *Archive verified copies to P5* nor the deferred request enabled in
 **Settings → P5 Archive**, checking it produced no archive job and no request
 file, so it is no longer offered. Its tooltip names the setting to change.
+
+Checking it **asks first when the active mode's verification level cannot produce a hash**
+(2.8.8) — Folder mode's Quick default is the common case. P5 only archives files it can hash, and
+a request built without one used to be saved to disk but never submitted, with nothing at the
+checkbox to say so. The checkbox now opens a short dialog instead: switch this mode to Inline or
+Full verification, or cancel and leave Archive to P5 off.
 
 A missing P5 selection **never blocks a copy** (2.7.3). If P5 archiving is on
 and no destination is routed to it, the pre-copy review says so under *Check
@@ -1403,6 +1430,14 @@ all absent: the preset in force is not the operator's to change. **Export**, **S
 **Stage This Preset's Destinations Again** stay — reading out what is in force, and re-staging the
 destinations it already names, change nothing about *which* preset is in force.
 
+**A preset can reload itself at launch, without a profile** (2.9.0). The wizard's last step has
+two options, off unless ticked: **Always reload this preset when the app launches** puts the whole
+preset back — settings and destinations — each time the app starts; **Always open in Card (or
+Folder) mode** puts only the mode back, for an operator who switched to Folder mode and quit. Both
+apply only while that preset is the loaded one, and only once per launch, so nothing is reverted
+under an operator's hands. They are choices in the preset, so a house preset can hold them and a
+personal one need not. For a lock that also stops the preset being changed, use the MDM profile.
+
 **Destinations are staged on every launch.** A preset's settings are written into preferences when
 it is applied, so they are already in force when the app opens. Its destinations are session state
 and are staged fresh each time the app starts.
@@ -1717,9 +1752,10 @@ menu names the enforced preset — and says whether that came from your organisa
 test. Loading, editing, importing and saving are unavailable; **Export** and **Save Report…** stay,
 because reading out what is in force is not what the lock is protecting against.
 
-An enforced preset is applied at launch and again whenever it is redeployed, so a changed
-convention reaches you without a relaunch. It fixes *which preset is in force*, not every control:
-a setting you change still shows the modified dot and is put back at the next launch. Setting this
+An enforced preset is applied at **every launch** (2.9.0 — before, only when it differed from the
+loaded one) and again whenever it is redeployed, so a changed convention reaches you without a
+relaunch. It fixes *which preset is in force*, not every control: a setting you change still shows
+the modified dot and is put back at the next launch. Setting this
 up is in [CopyTrust_ManagedPresetDeployment.md](CopyTrust_ManagedPresetDeployment.md).
 
 **Preset ▸ (any preset) ▸ Save Report…** writes those decisions out in prose:

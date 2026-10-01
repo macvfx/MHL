@@ -42,7 +42,7 @@ Domain: `com.copytrust.app`
 | `CopyTrustEnforcedPresetName` | String | The preset's name, exactly as it appears in the app |
 | `CopyTrustPresetEnforcementMode` | String | `enforce` (default) or `seed` |
 
-**`enforce`** — applied at every launch, applied again whenever the preset file is replaced, and
+**`enforce`** — applied at every launch (the first time each launch, whether or not that preset was already loaded — before 2.9.0 it was skipped when it was), applied again whenever the preset file is replaced, and
 the preset menu is locked: no loading another preset, no editing, no importing, no saving. This is
 "locked in".
 
@@ -152,6 +152,18 @@ can be handled on its own terms.
 
 **The `.json` in the house folder.** It is world-readable by design — every user on the Mac needs
 it. Nothing secret is in it: the P5 server travels, the P5 *password* does not and cannot.
+
+---
+
+## Reload and mode at launch, without a profile
+
+A preset can carry two options of its own (2.9.0), set in the wizard's last step under *At launch*:
+**Always reload this preset when the app launches** and **Always open in Card (or Folder) mode**.
+They need no MDM profile and no lock, and apply only while that preset is the loaded one. Use them
+where the aim is "every morning starts from the agreed settings, in Card mode" rather than "nobody
+may change the preset". They sit alongside the pin, not instead of it: the pin also stops the menu
+being used to load or edit anything. Existing presets have both off, so each preset needs editing
+once, and redeploying, to turn them on.
 
 ---
 
