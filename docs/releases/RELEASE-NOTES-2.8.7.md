@@ -2,7 +2,7 @@
 
 2026-09-21 · CopyTrust only. Drop Verify and Folder Copy Compare are unchanged at 2.8.2 build 22.
 Everything in 2.8.6 build 27 is included unchanged — see
-[RELEASE-NOTES-2.8.6.md](docs/releases/RELEASE-NOTES-2.8.6.md). Every change here was tested on site in local
+[RELEASE-NOTES-2.8.6.md](RELEASE-NOTES-2.8.6.md). Every change here was tested on site in local
 builds before release.
 
 BETA. Test on media you can afford to lose, and keep a separate verified backup made by other

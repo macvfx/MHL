@@ -2,7 +2,7 @@
 
 2026-10-01 · CopyTrust only. Drop Verify and Folder Copy Compare are unchanged at 2.8.2 build 22.
 Includes everything in 2.9.0 build 30 and 2.8.8 build 29, and everything in 2.8.7 build 28 — see
-[RELEASE-NOTES-2.8.7.md](RELEASE-NOTES-2.8.7.md). Every change here came from an on-site test with a
+[RELEASE-NOTES-2.8.7.md](docs/releases/RELEASE-NOTES-2.8.7.md). Every change here came from an on-site test with a
 client and was tested in local builds first.
 
 BETA. Test on media you can afford to lose, and keep a separate verified backup made by other
@@ -19,7 +19,7 @@ asked for.
 
 ## Renaming is offered only for the units that need it
 
-A preset can now list the units whose files are renamed — normally the drone, whose `DJI_0001.MOV`
+A preset can now list the units whose files are renamed — Drone files, for example, whose `DJI_0001.MOV`
 restarts every flight. In the preset wizard's Units step, tick **Files need renaming**. The Rename
 control then appears only for those units; every other unit keeps its original names. A preset that
 ticks none behaves as before. **An existing preset has to be edited once, and redeployed, to use
@@ -27,8 +27,8 @@ this.**
 
 ## A pre-copy review you can read at a glance
 
-- A one-line banner first: green **Go**, or orange **Check before continuing** with a count. It
-  never blocks; Continue is always there.
+- A one-line banner first (reworded in 2.9.2): green **Looks good**, or orange **Read below before
+  you start** with a count. It never blocks; the button is always there.
 - Each destination shows its **whole path**, wrapped, below the name.
 - A **Proxies-only copy** section lists every proxies-only destination and whether it will receive
   anything. If proxy generation is off, or no copy destination is set to create proxies, it reads

@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-10-01
-Release status: **2.8.1 build 21 current**; **2.9.1 build 31** in beta testing.
+Release status: **2.8.1 build 21 current**; **2.9.2 build 32** in beta testing.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -370,9 +370,10 @@ sorting, artifacts, and explicit **Proxies** and **P5 Archive** states. Proxy
 and P5 choices are evaluated across the complete relay sequence, including a
 choice that exists only on a later stop.
 
-The review opens with a one-line banner (2.9.0): green **Go — nothing below needs a decision**,
-or orange **Check before continuing** with a count of the items that do. It never blocks —
-Continue is always available — it says whether to stop and read first.
+The review opens with a banner at the very top (2.9.0): green **Looks good — start
+the copy** when nothing below needs a decision, or orange **Read below before you start** with a
+count of the items that do. It never blocks — the **Start Copy** button is always available — it
+says whether to stop and read first.
 
 The review also summarizes the active **mode** (Card / Folder), **verification
 level**, enabled **artifacts**, **destination sort**, and **contact-sheet split**. While a loaded
@@ -388,7 +389,7 @@ reads **No**, says why, and the review warns *No destination set for proxies* �
 made and nothing will be sent. A preset that expects a proxies-only destination which is not
 staged (its volume is not mounted) is warned about the same way.
 
-Click **Continue** to proceed or **Cancel**
+Click **Start Copy** to proceed or **Cancel**
 to fix the settings first. It appears only when you start a new session — an
 auto-advanced next card or a resumed copy is never interrupted. Turn it off (or
 back on) in **Settings → Post-Copy → Before Copy**, or tick "Don't ask again" in
