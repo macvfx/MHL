@@ -1,8 +1,8 @@
-# CopyTrust 2.9.3 Build 33 — beta
+# CopyTrust, Drop Verify and Folder Copy Compare 2.9.3 Build 33 — beta
 
-2026-10-06 · CopyTrust only. Drop Verify and Folder Copy Compare are unchanged at 2.8.2 build 22.
-Everything in 2.9.2 build 32 is included unchanged — see
-[RELEASE-NOTES-2.9.2.md](RELEASE-NOTES-2.9.2.md).
+2026-10-06 · All three apps, one version again. CopyTrust includes everything in 2.9.2 build 32 —
+see [RELEASE-NOTES-2.9.2.md](RELEASE-NOTES-2.9.2.md). Drop Verify and Folder Copy Compare move
+from 2.8.2 build 22.
 
 BETA. Test on media you can afford to lose, and keep a separate verified backup made by other
 software — Archiware P5 or equivalent.
@@ -32,9 +32,24 @@ alias folder can be deleted afterwards. Field-tested on Final Cut Pro 12.4.
 - The aliases stay out of the proxy folder, so a proxies-only delivery does not carry aliases that
   point back at the first drive. Nothing is written inside a `.fcpbundle`.
 
+## Drop Verify does the same
+
+Drop Verify's proxies get the same **Final Cut Relink Aliases** folder, and its Settings and Help
+explain the relink steps.
+
+## One version for all three apps
+
+All three apps check this repository for updates and compare themselves against the release marked
+Latest. While their versions were split, Drop Verify and Folder Copy Compare were offered
+CopyTrust's release as an update to themselves, and their own pre-releases never appeared in Check
+for Updates. From 2.9.3 they share one version and one release. Folder Copy Compare has no other
+change.
+
 ## What to test
 
 1. Copy a card with proxies on and import the originals into a test library.
 2. Relink Files > Proxy Media > All > Locate All on the Final Cut Relink Aliases folder: every clip
    matches, and stays linked after relaunching Final Cut.
 3. If you can, a `.MOV` camera, and two cards with the same clip names.
+4. Drop Verify: drop a folder with video and proxies on, then relink from its alias folder the same way.
+5. Drop Verify and Folder Copy Compare: Check for Updates reports up to date on 2.9.3.

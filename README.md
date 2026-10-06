@@ -11,7 +11,9 @@ aliases named exactly like the originals, to choose in Relink Files > Proxy Medi
 Includes 2.9.2 (the pre-copy review opens with a **Looks good** / **Read below** banner and a
 **Start Copy** button) and 2.9.1 (a card with no unit has no roll; per-unit renaming in presets;
 the review shows the proxies-only destination; the Session Summary reports proxies; presets can
-reload and open in Card or Folder mode at launch). CopyTrust only. Release notes:
+reload and open in Card or Folder mode at launch). **Drop Verify and Folder Copy Compare 2.9.3
+Build 33** ship in the same release — Drop Verify writes the same relink-aliases folder, and all three
+apps share one version again so Check for Updates agrees. Release notes:
 [RELEASE-NOTES-2.9.3.md](RELEASE-NOTES-2.9.3.md) and [RELEASE-NOTES-2.9.2.md](RELEASE-NOTES-2.9.2.md).
 
 **Also in beta:** **CopyTrust 2.8.7 Build 28** — one pre-copy review instead of up to three windows,

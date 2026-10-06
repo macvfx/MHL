@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.8.2 (Build 22 beta)**. Version history is in the release notes.
+Current app version: **v2.9.3 (Build 33 beta)**, the same version as CopyTrust and Folder Copy Compare. Version history is in the release notes.
 
 ## External Codec Setup
 
@@ -184,6 +184,12 @@ codecs and settings as CopyTrust's Proxy Media.
   `Final Cut Proxy Media/YYYY-MM-DD/…/OriginalFileName.mov`, keeping the original basename
   that Final Cut Pro requires for relinking. Otherwise output goes to
   `Drop Verify_Proxies/…/OriginalFileName.mov`.
+- *New in 2.9.3:* a **Final Cut Relink Aliases** folder is written beside the proxies —
+  Finder aliases named exactly like the originals, each opening its proxy. Final Cut's
+  Locate All matches by filename and will not match `clip.mov` to `clip.MP4`, so in Final Cut
+  choose **Relink Files > Proxy Media**, click **All**, then **Locate All**, and pick that
+  folder to relink every proxy at once. Final Cut keeps the proxies' own paths, so the folder
+  can be deleted afterwards. Nothing is written inside a `.fcpbundle`.
 - Progress is reported per clip — *"Proxy 3 of 8 — clip.mov — 42% · 1.85× · ~2m 10s
   remaining"* — so a long encode never looks like a hang.
 - Each run writes evidence to `Receipts/Proxy Media`: a JSON receipt, a
