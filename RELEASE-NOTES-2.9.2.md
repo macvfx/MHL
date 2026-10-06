@@ -2,7 +2,7 @@
 
 2026-10-02 · CopyTrust only. Drop Verify and Folder Copy Compare are unchanged at 2.8.2 build 22.
 Everything in 2.9.1 build 31 is included unchanged — see
-[RELEASE-NOTES-2.9.1.md](RELEASE-NOTES-2.9.1.md). Both come from an on-site test with a client.
+[RELEASE-NOTES-2.9.1.md](docs/releases/RELEASE-NOTES-2.9.1.md). Both come from an on-site test with a client.
 
 BETA. Test on media you can afford to lose, and keep a separate verified backup made by other
 software — Archiware P5 or equivalent.

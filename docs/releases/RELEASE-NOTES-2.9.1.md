@@ -2,7 +2,7 @@
 
 2026-10-01 · CopyTrust only. Drop Verify and Folder Copy Compare are unchanged at 2.8.2 build 22.
 Includes everything in 2.9.0 build 30 and 2.8.8 build 29, and everything in 2.8.7 build 28 — see
-[RELEASE-NOTES-2.8.7.md](docs/releases/RELEASE-NOTES-2.8.7.md). Every change here came from an on-site test with a
+[RELEASE-NOTES-2.8.7.md](RELEASE-NOTES-2.8.7.md). Every change here came from an on-site test with a
 client and was tested in local builds first.
 
 BETA. Test on media you can afford to lose, and keep a separate verified backup made by other
@@ -46,7 +46,7 @@ Two options in the wizard's last step, off unless ticked: **Always reload this p
 launches**, and **Always open in Card (or Folder) mode**. A preset pinned with a configuration
 profile is now also applied on every launch; before, it was skipped when it was already loaded, so a
 setting changed mid-shoot survived a relaunch. See
-[CopyTrust_ManagedPresetDeployment.md](copytrust/CopyTrust_ManagedPresetDeployment.md).
+[CopyTrust_ManagedPresetDeployment.md](../../copytrust/CopyTrust_ManagedPresetDeployment.md).
 
 ## Also included from 2.8.8
 

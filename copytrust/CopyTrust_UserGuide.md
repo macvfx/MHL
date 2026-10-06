@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-10-01
-Release status: **2.8.1 build 21 current**; **2.9.2 build 32** in beta testing.
+Date: 2026-10-06
+Release status: **2.8.1 build 21 current**; **2.9.3 build 33** in beta testing.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -1087,8 +1087,49 @@ Enable **Create Final Cut Proxy Media dated folder** to write:
 The date is the completed-copy date. Source subfolders are retained so camera
 cards containing duplicate basenames do not overwrite one another. The proxy
 basename always matches the delivered original exactly, with only its extension
-changed to `.mov`. Field testing with both CopyTrust H.264 and HEVC proxies
-confirmed that Final Cut Pro reconnects them after they are named this way.
+changed to `.mov`.
+
+### Relinking every proxy at once in Final Cut Pro (2.9.3)
+
+Final Cut Pro accepts CopyTrust proxies, but its **Locate All** search matches
+files by name *before* it looks at the media, and it does not count a changed
+extension as a match. Pointed at the proxy folder, it finds nothing for
+`clip001.MP4` in `clip001.mov`, so before 2.9.3 every clip had to be relinked
+one at a time with **Locate Selected**.
+
+From 2.9.3, CopyTrust also writes a **Final Cut Relink Aliases** folder beside
+the proxy folder, with the same date and card folders beneath it:
+
+`Final Cut Relink Aliases/YYYY-MM-DD/<source subfolders>/OriginalFileName.MP4`
+
+Each file there is a Finder alias with the original's exact name — extension and
+case included — that opens the real proxy. To relink a whole batch:
+
+1. In Final Cut Pro, select the clips, event or library.
+2. Choose **File > Relink Files > Proxy Media**, click **All**, then **Locate All**.
+3. Choose the **Final Cut Relink Aliases** folder (or the date or card folder inside it).
+   The window should read *N of N files matched*. Click **Relink Files**.
+
+Final Cut stores the path of the real `.mov`, not the alias, so the proxies stay
+connected after a relaunch and the alias folder can be deleted once you have
+relinked. Field-tested on Final Cut Pro 12.4.
+
+- The aliases are kept **out of the proxy folder** on purpose: a proxies-only
+  delivery copies the proxy tree to another volume, and a copied alias would
+  still open the proxy on this one. Make aliases on the machine that will relink,
+  or relink from the destination that made the proxies.
+- Nothing is ever written inside a `.fcpbundle`. An alias placed inside a library
+  by hand crashed Final Cut Pro in testing.
+- Each alias is checked after it is written: it must be a real Finder alias (not
+  a symlink) and must open its own proxy. A file at that path that is not an
+  alias is left untouched and reported. The proxy receipt lists the alias folder,
+  how many were prepared, and any that failed. It says *prepared for relinking* —
+  Final Cut is not connected to anything until you relink.
+- `Final Cut Relink Aliases` is recognised as proxy output like the proxy folders
+  below, so a later copy never tries to transcode its `.MP4`-named aliases.
+- Proxies made before 2.9.3 can be given aliases with the stand-alone tool
+  `make_relink_aliases.swift`, which is distributed with the CopyTrust source, not
+  with these docs.
 
 Automated real-encode tests cover a MOV source and an MXF source. Other
 standard formats should work when the packaged ffmpeg can decode their video
@@ -1098,7 +1139,7 @@ unless the packaged ffmpeg can decode it. Failures are logged and remain
 retryable without changing the verified-copy result.
 
 A later CopyTrust run does not transcode proxies again: `Final Cut Proxy Media`,
-`CopyTrust_Proxies` and `Drop Verify_Proxies` are recognised as proxy output
+`CopyTrust_Proxies`, `Drop Verify_Proxies` and `Final Cut Relink Aliases` are recognised as proxy output
 wherever they sit in a tree, and files under them are not offered as proxy
 inputs. Until 2.7.6 this was achieved by **excluding those folders from
 the copy**, which also meant a proxy tree could not be archived or handed on —
