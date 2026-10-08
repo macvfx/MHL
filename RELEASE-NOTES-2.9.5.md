@@ -84,6 +84,10 @@ aliases point at proxies on the drive they were made on. It is the only exclusio
 
 ## What to test
 
+A printable sheet is in [copytrust/CopyTrust_OffSite_OperatorTest.md](copytrust/CopyTrust_OffSite_OperatorTest.md),
+and the whole running order, with every file each step writes, is in
+[copytrust/CopyTrust_OffSite_Workflow.md](copytrust/CopyTrust_OffSite_Workflow.md). In short:
+
 1. With the preset's drives unreachable, take **Off Site…**, pick a drive, add a second by hand, and
    copy a card with a project from the list. Both drives should show verified, the receipt should say
    **Off site: yes** and name the drive, and the review should have listed the folders first.

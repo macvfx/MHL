@@ -1,7 +1,11 @@
 # CopyTrust User Guide
 
-Date: 2026-10-06
-Release status: **2.8.1 build 21 current**; **2.9.3 build 33** in beta testing.
+Date: 2026-10-07
+Release status: **2.8.1 build 21 current**; **2.9.5 build 35** in beta testing.
+
+**Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
+copied to a drive on location and that drive ingested at the facility, with the folders, files and
+receipts each step writes.
 
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
@@ -732,6 +736,7 @@ Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Excl
 `.DS_Store` and `Thumbs.db` moved to **System** because that is what they are — metadata no app copies — and they had been sitting beside a camera card's manifest, which is evidence. Your existing checkbox states are carried across unchanged; only the heading a row appears under has moved. Drop Verify uses the same group names.
 
 Defaults, in **both** modes as of **2.7.6**:
+- **One row starts on: `Final Cut Relink Aliases`.** It holds Finder aliases to proxies on the drive they were made on, so a copy to another volume would carry links to a drive that is no longer there. The facility writes its own. Untick it to carry them. It is not evidence and nothing in it is lost.
 - **Nothing that could be evidence is excluded unless you ask.** All eight rows — the two MHL rows, `receipt_`, `Receipts`, `CopyTrust_Receipts`, `Drop Verify_Receipts`, `CopyTrust_Proxies` and `Final Cut Proxy Media` — start **unchecked**. They are offered, not imposed. `Receipts` is the eighth, added in 2.7.7 with the folder rename, and it arrives switched off on every installation.
 - **System patterns start enabled** — macOS's own metadata, not your files.
 - **Camera Card patterns start disabled**, and any you enable are named in a mandatory pre-run warning.
@@ -1075,6 +1080,10 @@ CopyTrust uses the packaged `/usr/local/bin/ffmpeg` and
 Transcoding begins only after copy and verification, and after the lighter
 contact-sheet/CSV/tree work. A proxy failure is reported in its own retryable
 status row and never changes the verified-copy result.
+
+From 2.9.5 the pre-copy review warns, under Workflow warnings, when proxies are on and
+`ffmpeg` or `ffprobe` is not at that path, and when contact sheets and external codecs are on and
+the ffmpeg path in Settings is empty or not executable. It never blocks Start Copy.
 
 By default, proxies are written beneath:
 
@@ -1618,6 +1627,25 @@ prevent.
 | The project folder is missing and may not be created | The card goes to a dated ingest folder on that destination, reported, and re-filable later because the folder *name* is already correct |
 | An expected volume is not mounted | You are told at launch, by name — with Try Again, Open SMB Connect, and Off Site (which asks you for a drive that *is* connected) |
 
+**Off site, with the project's folders made on your drive.** If the preset has *Let operators create
+a project folder on an off-site drive* turned on (the wizard's last step; off by default, and
+separate from the setting that guards your own storage), then after you take **Off Site** and choose
+a drive, picking a project from the list CopyTrust last scanned lets it make that project's folders
+on the drive: your storage's layout, with the landing folder inside. The pre-copy review lists every
+folder before anything is written and says when the project list was scanned. Only the drive you
+chose is written to, and a project that is not in the list, a preset with the option off, or any
+other drive goes to the dated ingest folder as before. The list is scanned when CopyTrust
+is open with your preset loaded and its storage mounted, so open it once that way, with the network up, before you leave. Your
+facility's list is kept for the session; scanning only your drive does not replace it. A drive
+ingested later is checked against the manifest and the provenance record the first copy left on it,
+as the files are read (Inline or Full verification); the result is reported as **Drive** and is
+separate from how the footage arrived. A second
+preset option, *Proxies on an off-site drive*, sets whether the drive's Create proxies box starts
+ticked: not by default, because proxies are made at the facility from the verified copy. The full
+running order, including how off-site mode starts and bringing the drive in, is
+`CopyTrust_OffSite_Workflow.md`, and Help ▸
+Off Site Capture carries the same steps.
+
 Unknown is written as a **word, not a blank**, on purpose: a blank cannot be searched for
 later, and a card nobody could identify is then findable only by someone remembering it
 exists.
@@ -1920,7 +1948,7 @@ Name length issues are more likely with the Folder preset and Preserve Original 
 
 ## Dark Mode
 
-CopyTrust defaults to dark appearance.
+CopyTrust defaults to dark appearance. The pre-copy review follows the same setting.
 
 ### Settings
 
