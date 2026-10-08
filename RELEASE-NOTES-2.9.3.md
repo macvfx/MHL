@@ -1,7 +1,7 @@
 # CopyTrust, Drop Verify and Folder Copy Compare 2.9.3 Build 33 — beta
 
 2026-10-06 · All three apps, one version again. CopyTrust includes everything in 2.9.2 build 32 —
-see [RELEASE-NOTES-2.9.2.md](RELEASE-NOTES-2.9.2.md). Drop Verify and Folder Copy Compare move
+see [RELEASE-NOTES-2.9.2.md](docs/releases/RELEASE-NOTES-2.9.2.md). Drop Verify and Folder Copy Compare move
 from 2.8.2 build 22.
 
 BETA. Test on media you can afford to lose, and keep a separate verified backup made by other

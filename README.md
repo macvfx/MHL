@@ -4,7 +4,17 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust 2.9.3 Build 33** — Final Cut Pro now relinks every CopyTrust proxy at once.
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.5 Build 35** — off-site capture,
+card to drive to facility, provable from the files alone. Declare Off Site, copy to a drive, and its
+receipt and provenance file say so and name the drive by volume ID; with a preset option, the
+project's folders are made on the drive from the project list last scanned. At the facility the
+folder is matched to its drive, the earlier project, unit and roll are offered, and with Inline or
+Full verification the drive is checked against its own manifest and provenance record. Proxies from an
+earlier copy are kept, and the camera card, not the folder, is P5's Source Card. Also: an ffmpeg
+warning before a copy, and an Always Dark / Follow System choice. Release notes:
+[RELEASE-NOTES-2.9.5.md](RELEASE-NOTES-2.9.5.md).
+
+**Also in beta:** **CopyTrust 2.9.3 Build 33** — Final Cut Pro now relinks every CopyTrust proxy at once.
 Its Locate All search would not match `clip001.mov` to `clip001.MP4`, so proxies had to be relinked
 one at a time; CopyTrust now writes a **Final Cut Relink Aliases** folder beside the proxies, with
 aliases named exactly like the originals, to choose in Relink Files > Proxy Media > Locate All.
@@ -14,7 +24,7 @@ the review shows the proxies-only destination; the Session Summary reports proxi
 reload and open in Card or Folder mode at launch). **Drop Verify and Folder Copy Compare 2.9.3
 Build 33** ship in the same release — Drop Verify writes the same relink-aliases folder, and all three
 apps share one version again so Check for Updates agrees. Release notes:
-[RELEASE-NOTES-2.9.3.md](RELEASE-NOTES-2.9.3.md) and [RELEASE-NOTES-2.9.2.md](RELEASE-NOTES-2.9.2.md).
+[RELEASE-NOTES-2.9.3.md](RELEASE-NOTES-2.9.3.md) and [RELEASE-NOTES-2.9.2.md](docs/releases/RELEASE-NOTES-2.9.2.md).
 
 **Also in beta:** **CopyTrust 2.8.7 Build 28** — one pre-copy review instead of up to three windows,
 with the Camera Card exclusions and the folders to create inside it; MKV contact sheets when `mkv`
