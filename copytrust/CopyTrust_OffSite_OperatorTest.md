@@ -81,7 +81,7 @@ Use the **second** drive's card folder. In Finder, replace or edit one clip in i
 
 A small checker script is available that reads a delivered folder and prints PASS, FAIL or INFO for
 each thing it expects to find. It is distributed with the CopyTrust source, not with these docs; ask for
-it if you would like to use it. It prints no full path, but it does print the names of the files it reads, which can contain card and
+it if you would like to use it. It needs nothing installed beyond macOS. It prints no full path, but it does print the names of the files it reads, which can contain card and
 project names, so send its output only to the person running the test. Run it on each drive's card folder with `--field`, and on the facility's with
 `--facility`.
 
