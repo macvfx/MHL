@@ -77,6 +77,7 @@ the button; it never switches itself.
 | **Any one missing is enough** | If a single drive the preset expects is not there, an orange banner appears: *Some project volumes are not available*, with **Try Again**, **Open SMB Connect** (if installed) and **Off Site…**. It does not interrupt and does not stop a copy. |
 | **The operator declares** | Press **Off Site…** on the banner. When nothing is missing (the share is reachable over a VPN, say, but you are still copying to a drive in a bag) a quiet *Declare Off Site…* link sits under the drives, shown whenever a preset that names drives or a project list is loaded. |
 | **Then a drive is chosen** | A picker opens at once. Pick Drive 1. A read-only volume is refused. |
+| **Ending it** | **End Off Site**, on the *Working off site* line (and in the banner while the preset's drives are missing), ends the declaration and clears what is remembered for a relaunch. Drives already added stay staged but stop being recorded as off site; the preset's drives are looked at again, and if they are still missing the ordinary banner returns. When a declaration was made because the preset's drives were missing and all of them are mounted again, the line says *The preset's volumes are mounted again.* It is a suggestion only: mounting the facility storage never ends off-site mode by itself. A declaration made while nothing was missing gets no such suggestion. |
 | **Drives added after that** | A drive you add by hand while declared is off site too, and its row shows an **Off site** box you can untick. A drive the **preset** stages, such as a facility share that mounts late, is never treated as off site. |
 
 What declaring changes: the banner reads *Working off site*; the drives are marked, so their
@@ -94,7 +95,7 @@ the facility:
 - the **same physical drive** is mounted (by volume ID, not name);
 - it was last used **within 14 days**.
 
-Otherwise it is ignored and you declare again. Loading a different preset also forgets it. Removing
+Otherwise it is ignored and you declare again. Loading a different preset, or pressing **End Off Site**, also forgets it. Removing
 the drive, or unticking *Off site* on its row, removes it from what is remembered. A declaration made
 with *Declare Off Site…* while nothing was missing is remembered only while something is missing.
 Without a preset there is nothing to declare against, so a plain copy is just a copy, and its receipts
@@ -113,6 +114,14 @@ there is the preset's answer and not an omission.
 1. **Open CopyTrust with your preset loaded and the facility storage mounted.** This is the only step
    that cannot be done on location. CopyTrust scans the storage for projects and keeps the list on
    disk; off site, with no network, that list is what you pick from.
+   **No list on this Mac?** If the facility storage cannot be reached from here, **Load project list…**
+   (next to *Working off site*) fills the picker without making that storage a destination. *From a
+   saved list* reads the CSV that **Save project list…** writes, or a plain text file with one project
+   per line (`2026-014 Some Project`, or number and name in two columns). *From a volume or folder*
+   reads the projects once from a mounted volume or from its Projects folder. Either way the list is
+   kept on disk like a scan, and the status line says it was loaded by hand and from what. Nothing
+   in it has been checked against storage, so a project on it may not exist on the drive yet; the
+   pre-copy review lists the folders that will be made.
 2. **Check the list is real.** On the Destinations panel choose **Show project list…**. It shows every
    project found and what could not be read. A project missing here will not be offered on location.
 3. **Check what the preset allows on a drive.** The preset wizard's last step has *Let operators

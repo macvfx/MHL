@@ -4,7 +4,13 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.5 Build 36** — off-site capture,
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.6 Build 37** — working off site
+without the facility's storage. **Load project list…** fills the project picker from a saved list or
+a volume you point at, without making it a destination, and **End Off Site** ends the declaration
+when you are back, suggesting it once the preset's drives are mounted again. Release notes:
+[RELEASE-NOTES-2.9.6.md](RELEASE-NOTES-2.9.6.md).
+
+**Also in beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.5 Build 36** — off-site capture,
 card to drive to facility, provable from the files alone. Declare Off Site, copy to a drive, and its
 receipt and provenance file say so and name the drive by volume ID; with a preset option, the
 project's folders are made on the drive from the project list last scanned. At the facility the
@@ -24,7 +30,7 @@ the review shows the proxies-only destination; the Session Summary reports proxi
 reload and open in Card or Folder mode at launch). **Drop Verify and Folder Copy Compare 2.9.3
 Build 33** ship in the same release — Drop Verify writes the same relink-aliases folder, and all three
 apps share one version again so Check for Updates agrees. Release notes:
-[RELEASE-NOTES-2.9.3.md](RELEASE-NOTES-2.9.3.md) and [RELEASE-NOTES-2.9.2.md](docs/releases/RELEASE-NOTES-2.9.2.md).
+[RELEASE-NOTES-2.9.3.md](docs/releases/RELEASE-NOTES-2.9.3.md) and [RELEASE-NOTES-2.9.2.md](docs/releases/RELEASE-NOTES-2.9.2.md).
 
 **Also in beta:** **CopyTrust 2.8.7 Build 28** — one pre-copy review instead of up to three windows,
 with the Camera Card exclusions and the folders to create inside it; MKV contact sheets when `mkv`
