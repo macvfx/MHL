@@ -381,7 +381,7 @@ Plainly, so no one assumes more than is there.
 | [CopyTrust_OffSite_OperatorTest.md](CopyTrust_OffSite_OperatorTest.md) | A printable test sheet: copy a card to a drive off site, then bring the drive in. |
 | [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md) | The settings (the preset's off-site options, exclusions) and a summary, in the Receipts and Enforced Naming parts. |
 | In the app: Help ▸ **Off Site Capture** | The same running order, in the app. |
-| [RELEASE-NOTES-2.9.5.md](../RELEASE-NOTES-2.9.5.md) | What changed in the release that introduced it. |
+| [RELEASE-NOTES-2.9.5.md](../docs/releases/RELEASE-NOTES-2.9.5.md) | What changed in the release that introduced it. |
 
 ---
 
