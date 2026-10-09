@@ -4,7 +4,7 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.5 Build 35** — off-site capture,
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.5 Build 36** — off-site capture,
 card to drive to facility, provable from the files alone. Declare Off Site, copy to a drive, and its
 receipt and provenance file say so and name the drive by volume ID; with a preset option, the
 project's folders are made on the drive from the project list last scanned. At the facility the

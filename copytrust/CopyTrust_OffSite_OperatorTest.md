@@ -1,6 +1,6 @@
 # Off-site capture — operator test sheet
 
-CopyTrust 2.9.5 (build 35) · Print this, tick as you go, write on it.
+CopyTrust 2.9.5 (build 36) · Print this, tick as you go, write on it.
 
 This tests copying a camera card to a drive away from the facility, and then copying that drive's
 folder into the facility's storage. It is a **test**: use a card you can copy again, and **do not

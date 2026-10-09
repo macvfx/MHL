@@ -1,6 +1,6 @@
 # CopyTrust — off-site capture, and bringing the drive home
 
-Date: 2026-10-08 · For CopyTrust 2.9.5 (build 35)
+Date: 2026-10-08 · For CopyTrust 2.9.5 (build 36)
 
 This is the working order for a shoot away from the facility: a camera card copied to a drive on
 location, and that drive copied into the facility's storage days later by someone else. It says what
