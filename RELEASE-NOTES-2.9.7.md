@@ -22,7 +22,7 @@ the *Working off site* line — makes the folders for those projects on a drive 
 - The preset has to allow it: *Let operators create a project folder on an off-site drive*, or the
   facility option. Without it the sheet says so and creates nothing.
 
-**Template…** on a row opens that project in Project Folder Creator (a development preview, 0.7.0 and later) with its number
+**Template…** on a row opens that project in Project Folder Creator 0.7.0 or later with its number
 and name filled in, to make it from the facility's full template instead.
 
 ## What to test
