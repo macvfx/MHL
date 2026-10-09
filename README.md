@@ -72,8 +72,9 @@ See [RELEASE_2.7.8.md](docs/releases/RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
 > and it comes with no guarantees.
 
-**Development preview:** Project Folder Creator **0.4.2 Build 21** — not released, and not to be
-used on work that matters. See [its section below](#project-folder-creator-development-preview).
+**Pre-release:** Project Folder Creator **0.7.0 Build 25** — a beta, on its own pre-release, and not to be
+used on work that matters. It opens a project handed over from CopyTrust's *Create project folders…*
+(**Template…**). See [its section below](#project-folder-creator-beta).
 
 CopyTrust, Drop Verify and Folder Copy Compare are built from one project; since 2.8.2 each has
 its own version and build. MHL
@@ -172,7 +173,7 @@ Use after copying with CopyTrust, Archiware P5 Sync, a Finder copy, `rsync`, Hed
 - Folder selections persist across a mode switch, and cancelling a scan is non-destructive
 - Standalone app — no ingest session, no receipts, no artifacts
 
-## Project Folder Creator (development preview)
+## Project Folder Creator (beta)
 
 Creates one numbered project from a reusable main folder template, across Edit, Archive, Cloud or
 custom storage — the step before the first card is copied. Each destination gets its own copy
