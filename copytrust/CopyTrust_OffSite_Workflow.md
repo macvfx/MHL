@@ -122,6 +122,17 @@ there is the preset's answer and not an omission.
    kept on disk like a scan, and the status line says it was loaded by hand and from what. Nothing
    in it has been checked against storage, so a project on it may not exist on the drive yet; the
    pre-copy review lists the folders that will be made.
+   **Make the folders before you go.** With the list loaded and a drive plugged in, **Create project
+   folders…** (on the *Working off site* line) asks for a volume or folder, reads it, and lists every
+   project in the list as *already there*, *will make* or *blocked*, with the missing ones ticked. The
+   folders that will be made are listed in full, and nothing is written until you confirm. Only the
+   project folder and the year or client folder above it that the preset's layout calls for are made,
+   empty: a card's landing folders are made when the card is copied. A project that already has a folder
+   on the volume, under any of the preset's roots and whatever it is called, is left alone. The preset
+   has to allow it (*Let operators create a project folder on an off-site drive*, or the facility
+   option); without it the sheet says so and creates nothing. **Template…** on a row opens that project
+   in Project Folder Creator, with its number and name filled in, to make it from the facility's full
+   template instead.
 2. **Check the list is real.** On the Destinations panel choose **Show project list…**. It shows every
    project found and what could not be read. A project missing here will not be offered on location.
 3. **Check what the preset allows on a drive.** The preset wizard's last step has *Let operators
@@ -371,7 +382,7 @@ Plainly, so no one assumes more than is there.
 | [CopyTrust_OffSite_OperatorTest.md](CopyTrust_OffSite_OperatorTest.md) | A printable test sheet: copy a card to a drive off site, then bring the drive in. |
 | [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md) | The settings (the preset's off-site options, exclusions) and a summary, in the Receipts and Enforced Naming parts. |
 | In the app: Help ▸ **Off Site Capture** | The same running order, in the app. |
-| [RELEASE-NOTES-2.9.5.md](../RELEASE-NOTES-2.9.5.md) | What changed in the release that introduced it. |
+| [RELEASE-NOTES-2.9.5.md](../docs/releases/RELEASE-NOTES-2.9.5.md) | What changed in the release that introduced it. |
 
 ---
 

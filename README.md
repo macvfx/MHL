@@ -4,7 +4,12 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.6 Build 37** — working off site
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 38** — **Create project folders…**
+makes the folders for the loaded project list on a drive you choose before a shoot: listed first,
+existing folders never touched, and **Template…** opens a project in Project Folder Creator. Release
+notes: [RELEASE-NOTES-2.9.7.md](RELEASE-NOTES-2.9.7.md).
+
+**Also in beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.6 Build 37** — working off site
 without the facility's storage. **Load project list…** fills the project picker from a saved list or
 a volume you point at, without making it a destination, and **End Off Site** ends the declaration
 when you are back, suggesting it once the preset's drives are mounted again. Release notes:
@@ -18,7 +23,7 @@ folder is matched to its drive, the earlier project, unit and roll are offered, 
 Full verification the drive is checked against its own manifest and provenance record. Proxies from an
 earlier copy are kept, and the camera card, not the folder, is P5's Source Card. Also: an ffmpeg
 warning before a copy, and an Always Dark / Follow System choice. Release notes:
-[RELEASE-NOTES-2.9.5.md](RELEASE-NOTES-2.9.5.md).
+[RELEASE-NOTES-2.9.5.md](docs/releases/RELEASE-NOTES-2.9.5.md).
 
 **Also in beta:** **CopyTrust 2.9.3 Build 33** — Final Cut Pro now relinks every CopyTrust proxy at once.
 Its Locate All search would not match `clip001.mov` to `clip001.MP4`, so proxies had to be relinked

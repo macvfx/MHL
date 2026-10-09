@@ -1,7 +1,7 @@
 # CopyTrust, Drop Verify and Folder Copy Compare 2.9.5 Build 36 — beta
 
 2026-10-08 · All three apps share this version. CopyTrust includes everything in 2.9.3 build 33 — see
-[RELEASE-NOTES-2.9.3.md](docs/releases/RELEASE-NOTES-2.9.3.md). A 2.9.4 build was made and tested but never
+[RELEASE-NOTES-2.9.3.md](RELEASE-NOTES-2.9.3.md). A 2.9.4 build was made and tested but never
 released; its changes are in this one. Build 36 replaces build 35, published earlier the same day; the
 only difference is in-app Help wording.
 
@@ -85,9 +85,9 @@ aliases point at proxies on the drive they were made on. It is the only exclusio
 
 ## What to test
 
-A printable sheet is in [copytrust/CopyTrust_OffSite_OperatorTest.md](copytrust/CopyTrust_OffSite_OperatorTest.md),
+A printable sheet is in [copytrust/CopyTrust_OffSite_OperatorTest.md](../../copytrust/CopyTrust_OffSite_OperatorTest.md),
 and the whole running order, with every file each step writes, is in
-[copytrust/CopyTrust_OffSite_Workflow.md](copytrust/CopyTrust_OffSite_Workflow.md). In short:
+[copytrust/CopyTrust_OffSite_Workflow.md](../../copytrust/CopyTrust_OffSite_Workflow.md). In short:
 
 1. With the preset's drives unreachable, take **Off Site…**, pick a drive, add a second by hand, and
    copy a card with a project from the list. Both drives should show verified, the receipt should say
