@@ -41,7 +41,7 @@ Plug in both drives.
   **Expect:** both drives show as verified.
 - [ ] Open the first drive in Finder and look inside the card folder it made.
   **Expect:** the card's files; a file ending **.mhl**; and a folder called **Receipts**.
-  Open **Receipts**. **Expect:** a receipt (`ingest_…`, a text file) that says **Off site: yes** near the top.
+  Open **Receipts**. **Expect:** a receipt (`receipt_…`, a text file, there once you have pressed **End Session**) that says **Off site: yes** near the top.
 - [ ] Do the same on the second drive.
 - [ ] *(Optional)* Quit CopyTrust while the drives are still plugged in and storage is still away, then open it again.
   **Expect:** it says the off-site setting was **restored**, and both drives are listed again.

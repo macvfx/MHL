@@ -206,8 +206,7 @@ SHOOT_A_01/                                   the drive, as you named it
                     ├── <the card's files, as they were on the card>
                     ├── CopyTrust - <date> at <time> - <card name>.mhl
                     └── Receipts/
-                        ├── ingest_<folder>_S<session>_<stamp>.txt
-                        ├── ingest_<folder>_S<session>_<stamp>.log
+                        ├── receipt_<folder>_<date>.txt
                         ├── PROVENANCE_<card name>_<stamp>.json
                         └── <contact sheet, EXIF CSV, HTML tree — if turned on>
 ```
@@ -218,8 +217,8 @@ What each one is:
 | --- | --- |
 | The delivered folder name | Project, unit and roll, from the preset's convention. The first thing anyone sees. |
 | `….mhl` at the folder's root | A hash for every file copied, with the tool, the operator and the dates. This is what later proves the drive still matches. |
-| `Receipts/ingest_….txt` | The plain-language receipt of that copy: what was copied, where, and how it verified. For an off-site copy it says so in the header (`Off site: yes`), marks the drive, and names its volume and volume ID. |
-| `Receipts/ingest_….log` | The log of that copy. |
+| `Receipts/receipt_<folder>_<date>.txt` | The plain-language receipt, **written when the session is ended with End Session** (not after each copy):  what was copied, where, and how it verified. For an off-site copy it says so in the header (`Off site: yes`), marks the drive, and names its volume and volume ID. |
+| `~/Library/Application Support/CopyTrust/logs/<session>/ingest_….log` | The log of that copy. It stays on the Mac that made the copy, not on the drive. |
 | `Receipts/PROVENANCE_….json` | For every file, where it came from and where it went, with its hash and size, plus the settings that shaped the names. Also the card's name, its path and its volume ID, the session ID and the destination, and the **drive's** volume name and ID and an `offSite` flag. |
 | Contact sheet / CSV / tree | Only if turned on. Pictures and camera metadata. |
 
@@ -299,9 +298,9 @@ on a real shoot. It is:
 ├── CopyTrust - <date> at <time> - <card name>.mhl     written on location (card → drive)
 ├── CopyTrust - <date> at <time> - <folder name>.mhl   written now (drive → facility)
 └── Receipts/
-    ├── ingest_…S<session A>….txt / .log               written on location
+    ├── receipt_…<date A>….txt                         written on location, at End Session
     ├── PROVENANCE_<card name>_<stamp>.json            card → drive 1
-    ├── ingest_…S<session B>….txt / .log               written now
+    ├── receipt_…<date B>….txt                         written now, at End Session
     └── PROVENANCE_<folder name>_<stamp>.json          drive 1 → facility
 ```
 
@@ -382,7 +381,7 @@ Plainly, so no one assumes more than is there.
 | [CopyTrust_OffSite_OperatorTest.md](CopyTrust_OffSite_OperatorTest.md) | A printable test sheet: copy a card to a drive off site, then bring the drive in. |
 | [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md) | The settings (the preset's off-site options, exclusions) and a summary, in the Receipts and Enforced Naming parts. |
 | In the app: Help ▸ **Off Site Capture** | The same running order, in the app. |
-| [RELEASE-NOTES-2.9.5.md](../docs/releases/RELEASE-NOTES-2.9.5.md) | What changed in the release that introduced it. |
+| [RELEASE-NOTES-2.9.5.md](../RELEASE-NOTES-2.9.5.md) | What changed in the release that introduced it. |
 
 ---
 
