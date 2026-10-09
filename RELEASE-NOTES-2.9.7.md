@@ -1,7 +1,13 @@
-# CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 38 — beta
+# CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 39 — beta
 
 2026-10-09 · All three apps share this version. Only CopyTrust changed; it includes everything in
 2.9.6 build 37 — see [RELEASE-NOTES-2.9.6.md](RELEASE-NOTES-2.9.6.md).
+
+Build 39 replaces build 38, published earlier the same day. It fixes a hang: with a cloud volume
+(LucidLink) staged, choosing a different project could freeze CopyTrust for up to a minute while the
+project folder was looked for on the slow volume. The window now carries on and says it is still
+looking, and Start waits for the answer; the copy itself is unchanged. The project list may still
+flicker briefly when the project changes. Nothing else differs.
 
 BETA. Test on media you can afford to lose, and keep a separate verified backup made by other
 software — Archiware P5 or equivalent.

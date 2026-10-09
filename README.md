@@ -4,7 +4,7 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 38** — **Create project folders…**
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 39** — **Create project folders…**
 makes the folders for the loaded project list on a drive you choose before a shoot: listed first,
 existing folders never touched, and **Template…** opens a project in Project Folder Creator. Release
 notes: [RELEASE-NOTES-2.9.7.md](RELEASE-NOTES-2.9.7.md).
