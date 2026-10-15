@@ -4,7 +4,13 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 39** — **Create project folders…**
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 41** — several cards to several
+drives: one progress for the whole run, a card that will not fit a drive is skipped for that drive and
+topped up later, a copy map of every card against every drive, remote notifications by Pushover or
+webhook, and more camera detail (serial, lens, timecode) in the EXIF CSV. Release notes:
+[RELEASE-NOTES-2.9.8.md](RELEASE-NOTES-2.9.8.md).
+
+**Also in beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 39** — **Create project folders…**
 makes the folders for the loaded project list on a drive you choose before a shoot: listed first,
 existing folders never touched, and **Template…** opens a project in Project Folder Creator. Release
 notes: [RELEASE-NOTES-2.9.7.md](RELEASE-NOTES-2.9.7.md).
@@ -13,7 +19,7 @@ notes: [RELEASE-NOTES-2.9.7.md](RELEASE-NOTES-2.9.7.md).
 without the facility's storage. **Load project list…** fills the project picker from a saved list or
 a volume you point at, without making it a destination, and **End Off Site** ends the declaration
 when you are back, suggesting it once the preset's drives are mounted again. Release notes:
-[RELEASE-NOTES-2.9.6.md](RELEASE-NOTES-2.9.6.md).
+[RELEASE-NOTES-2.9.6.md](docs/releases/RELEASE-NOTES-2.9.6.md).
 
 **Also in beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.5 Build 36** — off-site capture,
 card to drive to facility, provable from the files alone. Declare Off Site, copy to a drive, and its

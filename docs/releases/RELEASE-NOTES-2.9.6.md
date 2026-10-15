@@ -1,7 +1,7 @@
 # CopyTrust, Drop Verify and Folder Copy Compare 2.9.6 Build 37 — beta
 
 2026-10-09 · All three apps share this version. Only CopyTrust changed; it includes everything in
-2.9.5 build 36 — see [RELEASE-NOTES-2.9.5.md](docs/releases/RELEASE-NOTES-2.9.5.md).
+2.9.5 build 36 — see [RELEASE-NOTES-2.9.5.md](RELEASE-NOTES-2.9.5.md).
 
 BETA. Test on media you can afford to lose, and keep a separate verified backup made by other
 software — Archiware P5 or equivalent.
@@ -35,4 +35,4 @@ out of reach, the project picker was empty and there was no way to name a card.
    again; off site stays declared until **End Off Site**. Afterwards a new copy's receipt does not
    say off site.
 
-The whole running order is in [copytrust/CopyTrust_OffSite_Workflow.md](copytrust/CopyTrust_OffSite_Workflow.md).
+The whole running order is in [copytrust/CopyTrust_OffSite_Workflow.md](../../copytrust/CopyTrust_OffSite_Workflow.md).
