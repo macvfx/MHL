@@ -1,9 +1,18 @@
-# CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 43 — beta
+# CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 45 — beta
 
-2026-10-14 · All three apps share this version. CopyTrust and Drop Verify carry the changes. It
+2026-10-15 · All three apps share this version. CopyTrust and Drop Verify carry the changes. It
 includes everything in 2.9.7 build 39 and 40 — see [RELEASE-NOTES-2.9.7.md](RELEASE-NOTES-2.9.7.md).
 
-Build 43 replaces build 41, published earlier the same day. What changed since build 41:
+Build 45 replaces build 43, published the day before. Build 44 was a test build and was never
+published; its change is part of 45. What changed since build 43:
+
+- **Loading a project list says so.** Off site, *Load project list… ▸ From a volume or folder…* now
+  shows *Reading projects from …* while it scans and then *Project list loaded from …: N projects*
+  next to the menu, in both off-site layouts. Before, nothing on screen changed until a destination
+  was added, so there was no way to tell it had worked. If the preset has no naming convention the
+  load now says so instead of returning silently.
+
+What changed in build 43, since build 41:
 
 - **One name for every receipt.** The files in a delivery's `Receipts` folder are named
   `<delivered folder>_<kind>_<stamp>`, flat in the one folder, with one timestamp for the delivery.
@@ -65,3 +74,5 @@ column name, not position.** The contact sheet shows lens and serial and lists t
 4. Copy a Sony and a Canon card and open the metadata CSV: serial, lens, `StartTimecode`, `MetadataSources`.
 5. Under enforced naming, add a card while a copy is running: the naming sheet should ask.
 6. Look at one delivery's `Receipts` folder: one name pattern, one timestamp, nothing in a subfolder.
+7. Off site, with the facility volumes ejected: load a project list from a volume or folder. The line
+   *Project list loaded from …* appears at once, with a count, and the card's project picker offers them.
