@@ -11,71 +11,7 @@ webhook, more camera detail (serial, lens, timecode) in the metadata CSV, and on
 file in a delivery's Receipts folder. Release notes:
 [RELEASE-NOTES-2.9.8.md](RELEASE-NOTES-2.9.8.md).
 
-**Also in beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 39** — **Create project folders…**
-makes the folders for the loaded project list on a drive you choose before a shoot: listed first,
-existing folders never touched, and **Template…** opens a project in Project Folder Creator. Release
-notes: [RELEASE-NOTES-2.9.7.md](RELEASE-NOTES-2.9.7.md).
-
-**Also in beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.6 Build 37** — working off site
-without the facility's storage. **Load project list…** fills the project picker from a saved list or
-a volume you point at, without making it a destination, and **End Off Site** ends the declaration
-when you are back, suggesting it once the preset's drives are mounted again. Release notes:
-[RELEASE-NOTES-2.9.6.md](docs/releases/RELEASE-NOTES-2.9.6.md).
-
-**Also in beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.5 Build 36** — off-site capture,
-card to drive to facility, provable from the files alone. Declare Off Site, copy to a drive, and its
-receipt and provenance file say so and name the drive by volume ID; with a preset option, the
-project's folders are made on the drive from the project list last scanned. At the facility the
-folder is matched to its drive, the earlier project, unit and roll are offered, and with Inline or
-Full verification the drive is checked against its own manifest and provenance record. Proxies from an
-earlier copy are kept, and the camera card, not the folder, is P5's Source Card. Also: an ffmpeg
-warning before a copy, and an Always Dark / Follow System choice. Release notes:
-[RELEASE-NOTES-2.9.5.md](docs/releases/RELEASE-NOTES-2.9.5.md).
-
-**Also in beta:** **CopyTrust 2.9.3 Build 33** — Final Cut Pro now relinks every CopyTrust proxy at once.
-Its Locate All search would not match `clip001.mov` to `clip001.MP4`, so proxies had to be relinked
-one at a time; CopyTrust now writes a **Final Cut Relink Aliases** folder beside the proxies, with
-aliases named exactly like the originals, to choose in Relink Files > Proxy Media > Locate All.
-Includes 2.9.2 (the pre-copy review opens with a **Looks good** / **Read below** banner and a
-**Start Copy** button) and 2.9.1 (a card with no unit has no roll; per-unit renaming in presets;
-the review shows the proxies-only destination; the Session Summary reports proxies; presets can
-reload and open in Card or Folder mode at launch). **Drop Verify and Folder Copy Compare 2.9.3
-Build 33** ship in the same release — Drop Verify writes the same relink-aliases folder, and all three
-apps share one version again so Check for Updates agrees. Release notes:
-[RELEASE-NOTES-2.9.3.md](docs/releases/RELEASE-NOTES-2.9.3.md) and [RELEASE-NOTES-2.9.2.md](docs/releases/RELEASE-NOTES-2.9.2.md).
-
-**Also in beta:** **CopyTrust 2.8.7 Build 28** — one pre-copy review instead of up to three windows,
-with the Camera Card exclusions and the folders to create inside it; MKV contact sheets when `mkv`
-is listed under External Codecs; P5 status in plain words; Proxy Delivery and P5 listed as waiting
-from the start; and Settings in the header. Includes everything in 2.8.6 (Reveal per destination),
-2.8.5 and 2.8.4. Release notes: [RELEASE-NOTES-2.8.7.md](docs/releases/RELEASE-NOTES-2.8.7.md) and
-[RELEASE-NOTES-2.8.6.md](docs/releases/RELEASE-NOTES-2.8.6.md).
-
-**Also in beta:** **Drop Verify and Folder Copy Compare 2.8.2 Build 22** — Settings in both apps
-lists its tabs down the left side, as CopyTrust 2.8.5 does, with an About tab and the version and
-build at the bottom. Nothing else changed. Release notes:
-[RELEASE-NOTES-DV-FCC-2.8.2.md](docs/releases/RELEASE-NOTES-DV-FCC-2.8.2.md).
-
-**Also in beta:** **CopyTrust 2.8.2 Build 23** — Interface Size: CopyTrust can be shown at 1x,
-1.25x, 1.5x or 2x. Test notes: [TEST_NOTES_v2.8.2.md](docs/releases/TEST_NOTES_v2.8.2.md).
-
-**Also in beta:** CopyTrust, Drop Verify and Folder Copy Compare **2.8.1 Build 21** — knowing
-whether a volume is really there, and never refusing to copy because one is not. macOS leaves the
-mount-point folder under `/Volumes` behind after an unclean unmount, and every availability check
-read that folder as the drive; nothing is created there now. A volume is found by the folder it
-mounts at as well as the name it reports, at any depth below `/Volumes`, so a filespace mounted
-two levels down resolves instead of being called missing. And one absent destination no longer
-stops a run: it is dropped and named, every other destination still receives the footage, and
-Start stays available.
-
-Earlier in the line: a facility can lock a preset in, pinned by name so the convention itself can
-still be redeployed as often as testing needs
-([CopyTrust_ManagedPresetDeployment.md](copytrust/CopyTrust_ManagedPresetDeployment.md)); a delivery gets one
-receipts folder holding everything; nothing is written at the root of a destination drive; and a
-preset can say which destination archives to P5, which makes proxies, and which P5 server to use.
-See [RELEASE_2.7.8.md](docs/releases/RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md](docs/releases/TEST_NOTES_v2.7.8.md).
-
-> **2.8 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
+> **2.9 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
 > and it comes with no guarantees.
 
@@ -83,9 +19,8 @@ See [RELEASE_2.7.8.md](docs/releases/RELEASE_2.7.8.md) and [TEST_NOTES_v2.7.8.md
 used on work that matters. It opens a project handed over from CopyTrust's *Create project folders…*
 (**Template…**). See [its section below](#project-folder-creator-beta).
 
-CopyTrust, Drop Verify and Folder Copy Compare are built from one project; since 2.8.2 each has
-its own version and build. MHL
-Verify 2.6.0.
+CopyTrust, Drop Verify and Folder Copy Compare are built from one project and share one version.
+MHL Verify 2.6.0.
 
 What each app does is below. What changed in each version is in
 [RELEASE_NOTES.md](RELEASE_NOTES.md).
