@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-10-07
-Release status: **2.8.1 build 21 current**; **2.9.8 build 48** in beta testing. This guide was last
+Release status: **2.9.8 build 48**, the current beta; earlier releases are no longer listed. This guide was last
 synced at 2.9.5; what changed since is in [RELEASE-NOTES-2.9.8.md](../RELEASE-NOTES-2.9.8.md), including
 the receipt file names, which changed in 2.9.8.
 
