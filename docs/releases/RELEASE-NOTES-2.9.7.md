@@ -1,7 +1,7 @@
 # CopyTrust, Drop Verify and Folder Copy Compare 2.9.7 Build 39 — beta
 
 2026-10-09 · All three apps share this version. Only CopyTrust changed; it includes everything in
-2.9.6 build 37 — see [RELEASE-NOTES-2.9.6.md](docs/releases/RELEASE-NOTES-2.9.6.md).
+2.9.6 build 37 — see [RELEASE-NOTES-2.9.6.md](RELEASE-NOTES-2.9.6.md).
 
 Build 39 replaces build 38, published earlier the same day. It fixes a hang: with a cloud volume
 (LucidLink) staged, choosing a different project could freeze CopyTrust for up to a minute while the
@@ -41,4 +41,4 @@ and name filled in, to make it from the facility's full template instead.
 3. Rename one project's folder on the drive to `2026-014_old` and reopen: it reads *already there*
    under that name and no second folder is made.
 
-The whole running order is in [copytrust/CopyTrust_OffSite_Workflow.md](copytrust/CopyTrust_OffSite_Workflow.md).
+The whole running order is in [copytrust/CopyTrust_OffSite_Workflow.md](../../copytrust/CopyTrust_OffSite_Workflow.md).
