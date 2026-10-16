@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.9.3 (Build 33 beta)**, the same version as CopyTrust and Folder Copy Compare. Version history is in the release notes.
+Current app version: **v2.9.8 (Build 48 beta)**, the same version as CopyTrust and Folder Copy Compare. Version history is in the release notes.
 
 ## External Codec Setup
 

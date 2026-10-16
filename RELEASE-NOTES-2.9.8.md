@@ -1,10 +1,14 @@
-# CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 47 — beta
+# CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 48 — beta
 
 2026-10-15 · All three apps share this version. CopyTrust and Drop Verify carry the changes. It
 includes everything in 2.9.7 build 39 and 40 — see [RELEASE-NOTES-2.9.7.md](RELEASE-NOTES-2.9.7.md).
 
-Build 47 replaces build 45. Build 46 was never built; its changes are part of 47. What changed since
-build 45:
+Build 48 replaces build 47, published the same day. It changes no behaviour: the in-app help,
+What's New and launch panel now describe this release, and read their version from the app instead
+of showing the one they were last typed for. The user guides' status lines were corrected too.
+
+Build 47 replaces build 45. Build 46 was never built; its changes are part of 47. What changed in 47,
+since build 45:
 
 - **A card added during a copy joins that copy.** For the same drives, the Add button or a drop on
   the queue strip now makes it one more source of the running copy (*4 sources*), measured like the

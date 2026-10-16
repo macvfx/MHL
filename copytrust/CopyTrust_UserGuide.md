@@ -1,7 +1,9 @@
 # CopyTrust User Guide
 
 Date: 2026-10-07
-Release status: **2.8.1 build 21 current**; **2.9.5 build 36** in beta testing.
+Release status: **2.8.1 build 21 current**; **2.9.8 build 48** in beta testing. This guide was last
+synced at 2.9.5; what changed since is in [RELEASE-NOTES-2.9.8.md](../RELEASE-NOTES-2.9.8.md), including
+the receipt file names, which changed in 2.9.8.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
 copied to a drive on location and that drive ingested at the facility, with the folders, files and

@@ -4,7 +4,7 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 47** — several cards to several
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 48** — several cards to several
 drives: one progress for the whole run, a card that will not fit a drive is skipped for that drive and
 topped up later, a copy map of every card against every drive, remote notifications by Pushover or
 webhook, more camera detail (serial, lens, timecode) in the metadata CSV, and one name for every
