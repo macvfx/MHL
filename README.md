@@ -4,7 +4,7 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Available:** only the latest release of each tool is listed: Media Trust Tools 2.9.8 build 48
-(CopyTrust, Drop Verify, Folder Copy Compare), Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
+(CopyTrust, Drop Verify, Folder Copy Compare) and mhl-tool 2.7.7.
 Earlier releases are hidden; their notes are in the release notes below.
 **Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 48** — several cards to several
 drives: one progress for the whole run, a card that will not fit a drive is skipped for that drive and
