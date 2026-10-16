@@ -4,7 +4,7 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Stable:** CopyTrust and Drop Verify 2.5.3, mhl-tool 2.7.7.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 45** — several cards to several
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 47** — several cards to several
 drives: one progress for the whole run, a card that will not fit a drive is skipped for that drive and
 topped up later, a copy map of every card against every drive, remote notifications by Pushover or
 webhook, more camera detail (serial, lens, timecode) in the metadata CSV, and one name for every
@@ -208,3 +208,10 @@ root keeps only what spans all of them.
 - Background: [What Is MHL and Why Use It?](docs/WHAT_IS_MHL_AND_WHY_USE_IT.md)
 - Release history: [Media Trust Tools Release Notes](RELEASE_NOTES.md) and
   [MHL Verify Changelog](mhl-verify/MHL_VERIFY_CHANGELOG.md)
+
+## License
+
+Free to use for your own business or work, including on client jobs. You may not sell,
+redistribute or sublicense the software. The terms are the
+[PolyForm Internal Use License 1.0.0](LICENSE). Versions released before 2.9.8 build 47 were
+published under Apache-2.0 and keep that license for anyone who already has them.
