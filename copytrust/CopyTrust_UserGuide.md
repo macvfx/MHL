@@ -2,7 +2,7 @@
 
 Date: 2026-10-07
 Release status: **2.9.8 build 48**, the current beta; earlier releases are no longer listed. This guide was last
-synced at 2.9.5; what changed since is in [RELEASE-NOTES-2.9.8.md](../RELEASE-NOTES-2.9.8.md), including
+synced at 2.9.5; what changed since is in [RELEASE-NOTES-2.9.8.md](../docs/releases/RELEASE-NOTES-2.9.8.md), including
 the receipt file names, which changed in 2.9.8.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card

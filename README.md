@@ -3,15 +3,15 @@
 Five macOS apps and a CLI tool for media integrity and project preparation — create, copy,
 verify, and prove it.
 
-**Available:** only the latest release of each tool is listed: Media Trust Tools 2.9.9 build 49
+**Available:** only the latest release of each tool is listed: Media Trust Tools 3.0 build 50
 (CopyTrust, Drop Verify, Folder Copy Compare), Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
 Earlier releases are hidden; their notes are in the release notes below.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 2.9.9 Build 49** — proxies sent to a
-proxies-only drive (an edit share or a cloud volume) now come with their own Final Cut relink aliases,
-and the delivery is counted: a shortfall is reported instead of passing silently. Release notes:
-[RELEASE-NOTES-2.9.9.md](RELEASE-NOTES-2.9.9.md).
+**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 3.0 Build 50** — CopyTrust can send live
+progress (numbers only, never names or paths) to a CopyTrust Monitor on your network, and the Monitor
+shows what is running, when it should finish, and whether anyone is needed. Off until you turn it on.
+Release notes: [RELEASE-NOTES-3.0.md](RELEASE-NOTES-3.0.md).
 
-> **2.9 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
+> **3.0 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
 > and it comes with no guarantees.
 

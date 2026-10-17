@@ -2,7 +2,7 @@
 
 Date: 2026-08-22
 Release status: **CopyTrust 2.9.8 build 48**, the current beta
-([release notes](../RELEASE-NOTES-2.9.8.md)). The workflow strategy below was written at 2.7.7.
+([release notes](../docs/releases/RELEASE-NOTES-2.9.8.md)). The workflow strategy below was written at 2.7.7.
 Version history is in the release notes.
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the

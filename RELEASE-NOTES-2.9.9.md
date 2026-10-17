@@ -1,7 +1,7 @@
 # CopyTrust, Drop Verify and Folder Copy Compare 2.9.9 Build 49 — beta
 
 2026-10-16 · All three apps share this version. CopyTrust carries the changes. It includes
-everything in 2.9.8 build 48 — see [RELEASE-NOTES-2.9.8.md](RELEASE-NOTES-2.9.8.md).
+everything in 2.9.8 build 48 — see [RELEASE-NOTES-2.9.8.md](docs/releases/RELEASE-NOTES-2.9.8.md).
 
 Found after a large on-site copy of many cards to several drives, with proxies sent to a cloud
 volume: the cloud volume had no Final Cut relink aliases and fewer proxies than the edit volume,

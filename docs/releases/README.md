@@ -4,6 +4,7 @@ Per-release notes for superseded builds, moved out of the repository
 root so the current documentation is not buried among them. The newest
 2 remain at the root.
 
+- [RELEASE-NOTES-2.9.8](RELEASE-NOTES-2.9.8.md)
 - [RELEASE-NOTES-2.9.7](RELEASE-NOTES-2.9.7.md)
 - [RELEASE-NOTES-2.9.6](RELEASE-NOTES-2.9.6.md)
 - [RELEASE-NOTES-2.9.5](RELEASE-NOTES-2.9.5.md)

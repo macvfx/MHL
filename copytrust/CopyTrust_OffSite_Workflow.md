@@ -1,7 +1,7 @@
 # CopyTrust — off-site capture, and bringing the drive home
 
 Date: 2026-10-08 · Written for CopyTrust 2.9.5 (build 36). The running order still holds in
-2.9.8 build 48; receipt file names changed in 2.9.8, see [RELEASE-NOTES-2.9.8.md](../RELEASE-NOTES-2.9.8.md).
+2.9.8 build 48; receipt file names changed in 2.9.8, see [RELEASE-NOTES-2.9.8.md](../docs/releases/RELEASE-NOTES-2.9.8.md).
 
 This is the working order for a shoot away from the facility: a camera card copied to a drive on
 location, and that drive copied into the facility's storage days later by someone else. It says what

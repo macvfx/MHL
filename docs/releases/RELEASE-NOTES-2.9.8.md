@@ -1,7 +1,7 @@
 # CopyTrust, Drop Verify and Folder Copy Compare 2.9.8 Build 48 — beta
 
 2026-10-15 · All three apps share this version. CopyTrust and Drop Verify carry the changes. It
-includes everything in 2.9.7 build 39 and 40 — see [RELEASE-NOTES-2.9.7.md](docs/releases/RELEASE-NOTES-2.9.7.md).
+includes everything in 2.9.7 build 39 and 40 — see [RELEASE-NOTES-2.9.7.md](RELEASE-NOTES-2.9.7.md).
 
 Build 48 replaces build 47, published the same day. It changes no behaviour: the in-app help,
 What's New and launch panel now describe this release, and read their version from the app instead
