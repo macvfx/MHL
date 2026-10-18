@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v2.9.8 (Build 48 beta)**, the same version as CopyTrust and Folder Copy Compare. Version history is in the release notes.
+Current app version: **v3.0 (Build 50 beta)**, the same version as CopyTrust and Folder Copy Compare. Version history is in the release notes.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
@@ -52,14 +52,15 @@ Current expected results:
 
 ## What It Scans
 
-- Media files only
+- Every regular file for MHL/hash output, including camera XML sidecars, databases, support files, and thumbnail folders
+- Media files for contact-sheet, metadata CSV, and proxy processing
 - Recursive folder scan
 - Hidden files excluded by default
 - User-configurable exclusion patterns
 - Camera Card exclusion patterns are optional and disabled by default: `MISC`, `THMBNL`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, and `.Db`
 - Checked exclusions are skipped; unchecked exclusions remain included
 
-Tree-only exception: if `HTML directory tree` is the only selected output, Drop Verify does not scan media files. It generates the requested folder index/tree directly with native file enumeration. No external `tree` command is required.
+Tree-only exception: if `HTML directory tree` is the only selected output, Drop Verify does not build a hash/media inventory. It generates the requested folder index/tree directly with native file enumeration. No external `tree` command is required.
 
 ## Outputs
 
@@ -86,7 +87,7 @@ Drop Verify does not modify package contents. MHL, PDF, CSV, HTML, manifests,
 retry, history, and Reveal Receipts use the sibling folder.
 
 Disabled outputs are not generated. For example:
-- MHL on = media hashes + MHL + session manifest
+- MHL on = hashes for every included regular file + MHL + session manifest
 - CSV only = media index + metadata CSV, no file hashes
 - Contact sheet only = media index + thumbnails/metadata, no file hashes
 - HTML tree only = folder tree/index, no media scan and no hashes
@@ -129,7 +130,7 @@ At least one output must be selected. If all outputs are off, Drop Verify stops 
 
 Drop Verify applies only the exclusion checkboxes that are enabled in `Settings > Exclusions`. Built-in generated-artifact patterns such as `Drop Verify_Receipts`, `CopyTrust_Receipts`, contact sheets, generated MHLs, and Drop Verify reports are enabled by default so a later run does not treat prior outputs as source media.
 
-The Camera Card group is available for operators who want to skip common camera-side metadata or proxy folders/files. These patterns are not silently forced on. If `THMBNL` is unchecked, matching folders remain part of the scan; if it is checked, matching folders are skipped. Existing saved settings are migrated additively, so new built-in options appear without changing the checkbox state of patterns you already had.
+The Camera Card group is available for operators who intentionally want to skip common camera-side metadata or proxy folders/files. These patterns are disabled by default and are not silently forced on. If `THMBNL` is unchecked, matching folders remain in the MHL inventory; if it is checked, the complete folder is skipped. Because that can remove original card structure, Drop Verify shows a mandatory pre-run confirmation naming every active Camera Card pattern, plus persistent Settings/Run Status warnings and a session-log warning. Cancelling creates no hashes or MHL. Existing saved settings are migrated additively without changing earlier checkbox choices.
 
 ## Session Logs
 

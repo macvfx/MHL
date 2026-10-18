@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v2.9.8 (Build 48 beta)**, the same version as CopyTrust and Folder Copy Compare. Version history is in the release notes.
+Current app version: **v3.0 (Build 50 beta)**, the same version as CopyTrust and Folder Copy Compare. Version history is in the release notes.
 
 ## External Codec Setup
 
@@ -24,6 +24,8 @@ Expected branch behavior:
 - ExifTool enriches MXF and R3D metadata in the contact sheet and CSV when enabled.
 - HTML directory tree output is generated natively and does not require the external `tree` command.
 - ffmpeg provides MXF thumbnails when enabled and valid.
+- *New in 2.9.5:* if proxies or contact sheets are selected and ffmpeg is missing, Drop Verify says so before hashing starts; **Continue Without** carries on, **Cancel** stops. Verification and the MHL are not affected.
+- *New in 2.9.5:* **Settings > Appearance** chooses Always Dark (default) or Follow System.
 - REDline provides R3D thumbnails when enabled and valid.
 - If ffmpeg or REDline fails, Drop Verify falls back to the placeholder behavior and logs the attempt.
 
@@ -85,17 +87,19 @@ name so it still resolves.
 - Drag one folder onto the main Drop Verify window.
 - Or click `Choose Folder`.
 
-Drop Verify scans recursively. With MHL enabled, it hashes every included regular file,
-including camera XML sidecars, databases, support files and thumbnail folders. Media
-classification remains limited to contact-sheet, metadata CSV and proxy processing.
+Drop Verify scans recursively. When MHL output is enabled, every included regular file is
+hashed and documented — camera XML sidecars, databases, support files and thumbnail folders
+are part of the trust record alongside picture and sound. Media classification is used only
+for contact-sheet, metadata CSV and proxy work.
 
 Exception: if the only enabled output is `HTML directory tree`, Drop Verify skips media scanning, hashing, and metadata extraction, then generates the requested folder tree/index directly.
 
 ### 4. Wait for artifact generation
 The app runs only the stages needed for the selected outputs:
 
-- inventory and hash every included regular file when MHL output is selected
+- inventory all included regular files when MHL output is selected
 - scan media files when CSV, contact sheet, or proxy output is selected
+- hash every included regular file when MHL output is selected
 - extract image/video metadata when CSV or contact sheet output needs it
 - write CSV when enabled
 - render contact sheet PDF when enabled
@@ -160,6 +164,7 @@ file there.
 - Intended for reporting, sorting, and review in Numbers, Excel, or Google Sheets
 - When ExifTool is configured, CSV output also includes richer ExifTool-backed fields such as start timecode, audio sample rate, audio bit depth, and firmware/application version where available for MXF and R3D
 - The current testing build can also populate fields such as `VideoFormat`, `ReelNumber`, `CameraSerialNumber`, `StorageModel`, and `StorageSerialNumber` where ExifTool provides them.
+- *New in 2.9.8:* camera make, model, lens, serial, firmware and start timecode also come from the camera's sidecar file (Sony, Canon) and ffprobe, not only AVFoundation and ExifTool. The file is named `<folder>_metadata_<stamp>.csv`, and five columns say where each row's values came from: `DateNote`, `DateBasis`, `DateTakenWallClock`, `MetadataSources` and `MetadataNote`. **Read the CSV by column name, not position.** The contact sheet shows the lens, the serial, the date's clock and which tools supplied it.
 - CSV can be generated without MHL. In that mode Drop Verify indexes media and reads metadata, but does not hash files.
 
 ### HTML directory tree
@@ -192,7 +197,7 @@ codecs and settings as CopyTrust's Proxy Media.
   can be deleted afterwards. Nothing is written inside a `.fcpbundle`.
 - Progress is reported per clip — *"Proxy 3 of 8 — clip.mov — 42% · 1.85× · ~2m 10s
   remaining"* — so a long encode never looks like a hang.
-- Each run writes evidence to `Receipts/Proxy Media`: a JSON receipt, a
+- Each run writes evidence to `Receipts/`, named `<folder>_proxy-receipt_<stamp>` (before 2.9.8 it was in a `Proxy Media` subfolder): a JSON receipt, a
   readable summary, and an encode log, recording operator, codec, scale, the ffmpeg and
   ffprobe used, and per-clip original-vs-proxy validation.
 
@@ -219,19 +224,23 @@ Drop Verify excludes:
 
 Use the `Exclusions` tab in Settings to add or remove patterns. Every visible checkbox is respected: checked patterns are skipped, unchecked patterns remain included.
 
-The Camera Card group includes optional patterns for common card-side folders and sidecar/proxy files: `MISC`, `THMBNL`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, and `.Db`. These are disabled by default. If `THMBNL` is unchecked, the folder and its files enter the MHL inventory; if it is checked, the complete folder is skipped. Drop Verify therefore shows a mandatory, non-suppressible pre-run warning naming every active Camera Card pattern. Cancelling writes no hashes or MHL.
+The Camera Card group includes optional patterns for common card-side folders and sidecar/proxy files: `MISC`, `THMBNL`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, and `.Db`. These are disabled by default. If `THMBNL` is unchecked, the folder and its files enter the MHL inventory; if it is checked, the complete folder is skipped. Drop Verify therefore presents a mandatory warning naming every active Camera Card exclusion before work starts. The warning cannot be suppressed. Cancelling it creates no hashes or MHL, and continuing is recorded in Run Status, Settings and the session log.
 
 ## Expected Artifact Filenames
 
-New artifacts use the subject-first pattern `<folderName>_<date-time>_dropverify_<type>.<ext>`:
+From 2.9.8 build 43, Drop Verify names every file in `Receipts` by the same rule as CopyTrust,
+`<folderName>_<kind>_<stamp>.<ext>`, flat in the one folder, with one stamp for the run. (Earlier
+builds used a subject-first pattern with `_dropverify_` in the name. Files made by an earlier build keep
+the names they were given, and are still read.) The full list is in CopyTrust's receipts notes, available on request.
 
 | Artifact | Filename example |
 |----------|-----------------|
 | MHL | `Drop Verify - 2026-06-07 at 15.19.19 - LiveCam.mhl` |
-| Contact Sheet | `LiveCam_2026-06-07-151919_dropverify_contactsheet.pdf` |
-| EXIF CSV | `LiveCam_2026-06-07-151919_dropverify_exif.csv` |
-| HTML Tree / Index | `LiveCam_2026-06-07-151919_dropverify_tree_index.html` or `LiveCam_2026-06-07-151919_dropverify_tree.html` |
-| Session Manifest | `SESSION_MANIFEST_LiveCam_2026-06-07-151919.json` |
+| Contact Sheet | `LiveCam_contactsheet_2026-06-07-151919.pdf` |
+| EXIF CSV | `LiveCam_metadata_2026-06-07-151919.csv` |
+| HTML Tree / Index | `LiveCam_tree_2026-06-07-151919.html` (and `LiveCam-<folder>_tree_…html` per top-level folder) |
+| Session Manifest | `LiveCam_manifest_2026-06-07-151919.json` |
+| Proxy receipt | `LiveCam_proxy-receipt_2026-06-07-151919.json` (and `.txt`, `.log`) |
 
 When "One HTML per top-level folder" mode is selected, each immediate subfolder produces its own HTML tree file and the generated subject-first index links to those files. The index file is shown as the clickable HTML artifact in the Artifacts card. Legacy pre-Build-5 filenames are still recognized.
 
@@ -248,7 +257,7 @@ When enabled, the app also copies generated artifacts to a separate export folde
 ### Session manifest
 When MHL/hash output is enabled, Drop Verify writes a session manifest:
 
-- `Receipts/SESSION_MANIFEST_{folderName}_{timestamp}.json`
+- `Receipts/{folderName}_manifest_{timestamp}.json`
 
 The manifest records every verified file with path, size, and xxHash64 hash. On cancellation during a hashing run, it captures which files were verified before the cancel (`"status": "cancelled"`). The JSON uses `filesVerified` / `bytesVerified` keys (distinct from CopyTrust's `filesCopied` / `bytesCopied`).
 
@@ -273,8 +282,8 @@ Use the **Help > Drop Verify Help** menu to open a built-in help sheet covering 
 
 ## Notes
 
-- Drop Verify MHLs document every included regular file; contact sheets, metadata CSVs and proxies remain media-focused.
+- Drop Verify MHLs document every included regular file; contact sheets, metadata CSVs, and proxies remain media-focused.
 - Tree-only runs are folder-focused and do not require media files or hashes.
 - Hidden files are excluded by default.
-- Exclusion checkboxes are operator-controlled; Camera Card patterns are disabled by default and require visible pre-run confirmation when enabled.
+- Exclusion checkboxes are operator-controlled; Camera Card patterns are disabled by default and require a visible pre-run confirmation when enabled.
 - The app is intended for post-copy verification/reporting, not multi-destination ingest.

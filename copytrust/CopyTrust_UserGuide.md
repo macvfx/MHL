@@ -1,9 +1,8 @@
 # CopyTrust User Guide
 
-Date: 2026-10-07
-Release status: **2.9.8 build 48**, the current beta; earlier releases are no longer listed. This guide was last
-synced at 2.9.5; what changed since is in [RELEASE-NOTES-2.9.8.md](../docs/releases/RELEASE-NOTES-2.9.8.md), including
-the receipt file names, which changed in 2.9.8.
+Date: 2026-10-17
+Release status: **3.0 build 50**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare share
+one version. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
 copied to a drive on location and that drive ingested at the facility, with the folders, files and
@@ -12,7 +11,6 @@ receipts each step writes.
 **Working a shift rather than reading a reference?** `COPYTRUST_WORKFLOW_ENFORCED_NAMING.md`
 and `COPYTRUST_WORKFLOW_PLAIN.md` are the two running orders — one for a facility whose
 convention CopyTrust applies, one for copying where you decide the names and places.
-Version history is in the release notes.
 For a one-page fan-out walkthrough see [CopyTrust_FirstRun.md](CopyTrust_FirstRun.md).
 
 ## Purpose
@@ -434,7 +432,16 @@ have it open automatically. The full log is always written to disk either way.
 Destinations panels the moment the last file landed, which took the screen away from
 the artifacts still being built and the review below them. To add another card without
 ending the session, use the queue's **Add** button, drop a volume on its drop strip, or
-click **Source** on a tile in Available Volumes.
+click **Source** on a tile in Volumes.
+
+### A card added during a copy
+
+A card added while a copy is running, to the same drives, by the **Add** button or the drop strip,
+**joins the running copy**: the run says *4 sources* rather than starting a second batch below, the
+card is measured like the others, and the menu bar's *1 of 3* becomes *1 of 4* at once. Under enforced
+naming it is named first, with the same naming sheet. It then gets the **pre-copy review** before it
+goes into the run. Left unanswered for 90 seconds it is queued as shown; **Cancel** holds that card back
+from auto-advance without removing it. Cards for different drives still queue as a separate batch.
 
 ### After cancelling — progress sheet
 
@@ -614,6 +621,84 @@ CopyTrust posts native macOS notifications for key events so you can walk away d
 
 Open `Settings > Notifications` to toggle each event type on or off. The test button sends a sample notification to verify your system is configured correctly.
 
+### Remote notifications (phone or chat)
+
+The macOS notifications above stay on the Mac. To be told when you are away from it, turn on
+**Remote notifications** in the same tab. CopyTrust sends a push through **Pushover** (an
+application token and a user key) or posts JSON to a **webhook URL** you give it.
+
+| Event | Default | Message |
+|-------|---------|---------|
+| All cards finished | On | `5 of 5 cards copied and verified.` or, with problems, `4 of 5 cards finished, 1 needs attention.` |
+| A copy fails | On | `A card did not complete. Open CopyTrust to see why.` |
+| A drive disconnects, comes back, or a copy resumes | On | `A destination drive disconnected.` |
+| Each card finishes | Off | `2 of 5 cards finished.` |
+
+- **What leaves the Mac is counts and a fixed sentence.** Never a card, project, drive or folder name
+  and never a path; there is no way to put one in. The only text you control is an optional station
+  name (40 characters), which is sent with every message, so keep it generic.
+- **The webhook also carries three identifiers:** `schema_version`, an `event_id` that names one
+  event (a retry carries the same one, so a receiver can drop the duplicate), and a `sender_id`, a
+  random ID made once for this installation. The sender ID is not taken from the Mac, the user or the
+  network, is shown in Settings as *Station ID*, and can be reset there. Pushover is never sent
+  either identifier. None of them proves a message is genuine.
+- "All cards finished" waits until every card is complete, failed or cancelled, and is sent once per
+  run. A card you have not started keeps the run open.
+- The token, user key and webhook URL are kept in the **Keychain**, not in preferences or presets.
+- A webhook must be `https`, or `http` to this Mac or your own network. A refused or unreachable
+  push is a line in the log; it never fails or delays a copy.
+- **Save and send test** sends one message and tells you whether it was sent, refused or unreachable.
+
+### CopyTrust Monitor Hub (live progress)
+
+Remote notifications tell you when something finished or went wrong. For a running picture of
+every station, send live progress to a **CopyTrust Monitor Hub**: a separate menu-bar app on an
+always-on Mac. People away from the station can see what is running, when it should finish, and
+whether anyone is needed, on the Monitor's menu and on a wallboard page in any browser on your
+network. CopyTrust Monitor is a separate menu-bar app that is in private testing and is not part of
+these downloads; its guide is available on request.
+
+To connect a station:
+
+1. In CopyTrust Monitor, choose **Live status ▸ Copy Link**. (Not the notifications webhook link.)
+2. In CopyTrust, open `Settings > Notifications > CopyTrust Monitor Hub`.
+3. Paste the link, turn on **Send live progress to a Monitor Hub**, and choose
+   **Save and send test status**.
+
+It is **off until you turn it on**. The line under the button says what the hub last answered:
+*Connected*, *The hub could not be reached*, or *The hub does not recognise this URL* (the usual
+cause is the wrong link, or a Monitor older than 0.3).
+
+| Station shows | When |
+|---|---|
+| Scanning, Copying, Copying and verifying, Verifying | A card is being worked on. Percent, bytes, speed, time left and file-copy count come from the same numbers as CopyTrust's own progress. |
+| Preparing | Between cards, while the next one starts. |
+| Waiting for an operator | A card stopped and can be resumed; cards are waiting to be named; or the next card has to be started (auto-advance off). Shown after about 15 seconds, because the next card normally starts by itself. |
+| Background work | The copy is done and contact sheets, proxies or reports are still running, with "3 of 12 done" and the number of cards ready to eject. |
+| Finished / Failed / Cancelled | The run has ended. |
+| Idle | CopyTrust is on and nothing is running. |
+
+- **What leaves the Mac is numbers and fixed words.** The phase, percent, bytes, speed, time left,
+  card and file-copy counts, background-job counts, and a reason code when a person is needed
+  (resume, name, start). Never a card, project, drive or folder name, and never a path.
+- **The station name** is the one under Remote notifications. If it is empty, the Mac's local
+  network name is used (the computer name is not, because it often carries a person's name). The
+  same random *Station ID* as the webhook tells two stations with the same name apart.
+- **Updates are about every five seconds** while a run is going. They are never queued or retried:
+  a slow, unreachable or refusing hub is a status line in Settings, and never slows or fails a copy.
+  If the hub answers with a refusal, CopyTrust backs off for a while instead of asking every few
+  seconds.
+- **Live, Update delayed (15 seconds), Status unknown (45 seconds)** describe the connection between
+  the station and the hub, not the copy. A station that has gone quiet may be asleep, off the
+  network, or fine. Open CopyTrust to see.
+- **It is status, not evidence.** Receipts, MHLs and the session log remain the record of what was
+  copied.
+- The hub link is kept in the **Keychain** and must be `https`, or `http` to this Mac or your own
+  network.
+
+With auto-advance off, the progress window's button after a card finishes reads **Start Next Card**
+and starts the next one (after the usual pre-copy review).
+
 ### System Permissions
 
 On first launch, macOS will prompt you to allow notifications from CopyTrust. If notifications do not appear:
@@ -716,6 +801,13 @@ With inline verification (step 3), the separate batch verify phase (step 4) is s
 Before verification hashing begins, CopyTrust logs a structured diagnostic showing file count, byte count, reused files, and whether any prior copy failures or skipped files already exist. This provides context that was previously only reconstructable by replaying the full session log.
 
 If verification aborts, the abort path now logs the exact stage (source hashing vs destination hashing) and the file path that triggered the failure, instead of collapsing into a vague terminal error. JSON and plaintext receipts preserve failed/skipped file counts and the first recorded error line for post-run analysis.
+
+### A quiet verify
+
+Hashing one large file reports nothing until it is done, so a verify says *Verifying <file> · still
+checking this file, 1m 35s* and is only flagged amber after five minutes. A copy that really has gone
+quiet says *Copying <file> · no new data for 1m 35s*. The copy indicator moves, shows the file being
+worked on and says when nothing has moved.
 
 ## Hidden Files
 
@@ -1050,12 +1142,64 @@ CopyTrust makes thumbnails natively for photos and common video, but it can't de
 
 **Practical guidance for proxy/MXF-heavy cards:** decide whether you actually need real thumbnails for those formats. If yes, enable external codecs and expect longer generation. If placeholders are fine, leave external codecs off for a fast sheet. Either way, leave **hide placeholders off** unless you specifically need the no-placeholder look — it's the lighter path. (Contact sheet generation is a background artifact and never blocks copy, verify, MHL, or receipts; if it fails you can retry just that artifact — see below.)
 
+### Where each value came from
+
+Camera details come from up to four places, each filling what the one before it left blank:
+**AVFoundation** (the file itself), the **sidecar** next to the clip (Sony `M01.XML`, Canon `.XML`),
+**ExifTool** if switched on, and **ffprobe**. The contact sheet's footer says which tools supplied
+the sheet: `Metadata: AVFoundation 12 · Sidecar 12 · ffprobe 3` (the number is clips the tool gave
+at least one value for).
+
+- **Lens and serial number** are shown with the camera, which is what tells A-cam from B-cam when a
+  card has several bodies.
+- **The date says which clock it is.** A MOV or MP4 stores UTC, shown in this Mac's time zone
+  (*UTC, shown local*); an MXF or a still stores the camera's own wall-clock (*camera clock*).
+- A bitrate is checked against the file (size over duration). A figure that cannot be right is
+  replaced and the replacement is marked *Derived*; the EXIF CSV says so.
+
+### The EXIF CSV beside the sheet
+
+One row per clip, in CopyTrust's and Drop Verify's CSV alike. Read it **by column name**, not
+position. After the camera and exposure columns, five say where the row's values came from:
+
+| Column | Says |
+|---|---|
+| `DateNote` | A date that looks wrong: a reset camera clock (a recorder never set reads 1 Jan 2014), a date in the future, or days away from the file's own date. The date itself is never changed |
+| `DateBasis` | `utc`, `offset` (a sidecar that writes the zone) or `camera-local` |
+| `DateTakenWallClock` | What the camera's clock said, for `camera-local` dates only |
+| `MetadataSources` | Which tool gave each field, e.g. `Make=Sidecar; StartTimecode=ffprobe` |
+| `MetadataNote` | Corrections and disagreements, one sentence each |
+
+### What the Receipts folder is called
+
+Every file in a delivery's `Receipts` folder follows one rule, **`<delivered folder>_<kind>_<stamp>`**,
+flat in the one folder, with one stamp (the time the copy began) for the whole delivery, so they
+sort together:
+
+| File | Kind | Example |
+|---|---|---|
+| Session manifest | `manifest` | `2026-033_Audio_roll1_manifest_2026-10-14-211718.json` |
+| Provenance | `provenance` | `…_provenance_….json` |
+| Metadata CSV (was the EXIF CSV) | `metadata` | `…_metadata_….csv` |
+| Contact sheet | `contactsheet` | `…_contactsheet_….pdf`, or `…_part2of9.pdf` |
+| Copy log | `log` | `…_log_….log` |
+| Receipt | `receipt` | `…_receipt_….txt` |
+| HTML tree | `tree` | `…_tree_….html` |
+| Proxy receipt (`.json`, `.txt`, `.log`) | `proxy-receipt` | `…_proxy-receipt_….json` |
+| Copy map | `copymap` | `…_copymap_….csv` |
+
+What each file is, when it is written and what reads it is in CopyTrust's receipts notes, available on request.
+
+Deliveries made by earlier builds keep the names they were given (`SESSION_MANIFEST_…`,
+`…_copytrust_exif.csv`, a `Proxy Media` subfolder) and are read exactly as before. A regenerated or
+retried file replaces its earlier version instead of leaving a second one a minute later.
+
 ### Split large contact sheets
 
 A 4,000+-file card in Grid layout produces a single PDF with hundreds of pages. **Split large contact sheets** caps how many files go into each PDF:
 
 - **Off — single PDF** (default) · **Every 250 files** · **Every 500 files** · **Every 1,000 files**
-- Cards over the limit are written as numbered parts: `copytrust_contactsheet_<alias>_<stamp>_part1of9.pdf`, `_part2of9.pdf`, …
+- Cards over the limit are written as numbered parts: `<delivered folder>_contactsheet_<stamp>_part1of9.pdf`, `_part2of9.pdf`, …
 - Each part's header carries a **"Part x of y — files a–b"** line so a printed or emailed part identifies its file range on its own. Thumbnails, EXIF, and all other content are unchanged — only how many PDFs carry it.
 - Receipt export, the extra export folder, and **Retry missing artifacts** all recognize split parts.
 
@@ -1129,6 +1273,14 @@ relinked. Field-tested on Final Cut Pro 12.4.
   delivery copies the proxy tree to another volume, and a copied alias would
   still open the proxy on this one. Make aliases on the machine that will relink,
   or relink from the destination that made the proxies.
+- **Proxies sent to a proxies-only drive (2.9.9) get their own aliases there.** After the delivery is
+  verified, a *Final Cut Relink Aliases* folder is written on that drive beside the delivered proxies
+  and pointing at them, so an editor relinking from a cloud volume or an edit share has them in one pass.
+  Before, the aliases existed only beside the edit copy and resolved to that drive.
+- **A delivery is counted.** After each proxy delivery the proxies that were in the tree are checked
+  against the receiving drive by name and size. A shortfall fails the *Proxy Delivery* row and names the
+  missing files, instead of the run looking complete. Deliveries run one at a time, and a proxy still
+  being encoded (`.partial.mov`) is never sent.
 - Nothing is ever written inside a `.fcpbundle`. An alias placed inside a library
   by hand crashed Final Cut Pro in testing.
 - Each alias is checked after it is written: it must be a real Finder alias (not
@@ -1161,17 +1313,17 @@ copy now; only the transcode is skipped.
 
 After proxy generation, each destination receives three evidence files beneath:
 
-`Receipts/Proxy Media/`
+`Receipts/`
 
-- `proxy_receipt_<source>_<stamp>.json` is the structured receipt. It records
+- `<delivered folder>_proxy-receipt_<stamp>.json` is the structured receipt. It records
   the operator, session, selected codec and percentage, packaged tool paths,
   every original-to-proxy path pair, both ffprobe snapshots, individual
   comparison results, and failed encode attempts.
-- `proxy_receipt_<source>_<stamp>.txt` is the operator-readable summary. It
+- `<delivered folder>_proxy-receipt_<stamp>.txt` is the operator-readable summary. It
   states the explicit choice (for example, **H.264 at 50%** or **HEVC / H.265
   at 25%**), identifies the original and proxy paths, and lists every
   comparison as PASS, FAIL, or N/A.
-- `proxy_receipt_<source>_<stamp>.log` records timestamped encode starts,
+- `<delivered folder>_proxy-receipt_<stamp>.log` records timestamped encode starts,
   percentage/speed/ETA heartbeats, completions, failures, comparison results,
   and the final batch result.
 
@@ -1281,6 +1433,139 @@ From v2.5.4:
 - a genuinely timed-out or cancelled run now stops promptly and removes any partial or already-written part PDFs, so a reported failure means no PDFs are left on the destination;
 - use **Retry missing artifacts** (or Drop Verify on the destination folder) to regenerate after a timeout.
 
+## Running a Queue of Cards
+
+How several cards go to several destinations in one run. Cards are copied one after another, each to
+every destination, and a finished card can be pulled at once.
+
+### Naming comes first, when naming is enforced
+
+With an enforced-naming preset loaded, a card being added opens the **naming sheet**: project,
+unit, roll, location and date, with the landing preview. **Add Source** is enabled once the naming is
+valid; **Cancel** removes the card. Several cards dropped together are named one after another. A
+card waiting for its name is never auto-started, though it is scanned while the sheet is open.
+
+### Progress across the whole run
+
+The main window and the menu bar show the run, not just the card being copied: overall percentage,
+bytes, file copies, speed and time left, and a labelled line for the current card ("Card 2 of 4").
+Speed is bytes over time actually spent copying, so card swaps and the naming sheet are not charged
+to the drives. No time-left is shown until every card has been measured and there is enough to go on.
+A sign of life (the file being worked on, and a note if nothing has moved for a while) shows during
+large files and verification. Auto-advance is shown as a read-only label when the loaded preset
+fixes it.
+
+### Will it all fit?
+
+The five places a card's size is weighed against a drive's free space, and what each can change, are
+in CopyTrust's capacity decision notes, available on request. In short:
+
+```mermaid
+flowchart TD
+    A([Cards added]) --> B{"Will every card fit<br/>on every drive?"}
+    B -->|yes| S([Start])
+    B -->|"no: banner"| C["Add a destination for all cards,<br/>or for just the extra cards,<br/>or carry on"]
+    C --> S
+    S --> D["As each card starts:<br/>free space read again"]
+    D --> E{"Room on a drive?"}
+    E -->|yes| F[Receives the card whole]
+    E -->|no| G["Skipped for this card, nothing written,<br/>owed: Copy to N missing later"]
+    F --> H([Copy map: what is on which drive])
+    G --> H
+```
+
+Space is checked across the whole queue, in order, with each drive's free space used up as it goes.
+The **copies per card** are set in **Settings › Copy Behaviour › Copies of each card**:
+
+- **Minimum** (default 1): a card is not safe to clear until this many verified copies exist.
+- **Preferred** (default 2): the target. It is capped by the destinations present, so a single
+  off-site SSD is never reported as a shortfall.
+
+When the queue or the destinations change and not everything will fit, a banner names the cards that
+have nowhere to go and the cards that will have fewer than the preferred copies, with the sizes, and
+offers **Add a destination for all cards** or **Add one for just the N extra cards**. An *extra-cards*
+drive takes only a card that did not fit elsewhere.
+
+Before each card starts, free space is read again. A drive without room is **skipped for that card
+whole**, never partly written; the others still receive it. The pre-copy review names the skipped
+drive and the sizes. If no drive has room, nothing is written, the card is marked resumable and the
+queue moves on, since a smaller card may fit.
+
+### The copy map and topping up
+
+**Copy map** (in Completed This Run) lists every card against every drive: unit, roll, project and
+location, size, and what became of each pair (verified, skipped for space, not mounted, not needed,
+incomplete, pending), the copies held, and what is still owed. Cards sort by unit, so A-cam cards
+sit together, then B-cam, audio and drone. It is written as CSV and JSON to the Receipts folder on
+each drive that received something, and to `~/Library/Application Support/CopyTrust/CopyMaps`.
+
+A card owed to a drive can be copied there later, with the same folder name, leaving the others
+alone: **Copy to N missing** on the completed card, **Top up** per row in the copy map, or **Top up
+all**. A drive that still has no room is skipped again and said so.
+
+### Volumes and ejecting
+
+**Volumes** (called Available Volumes before 2.9.8) lists every mounted volume. A volume picked as a
+source or destination stays in the list, marked *Source* or *Destination* with its own button greyed,
+so a card does not seem to vanish. Click a tile to reveal it in Finder. Every drive and network volume
+has an eject icon, and destination rows have **Eject Drive…** in the context menu.
+
+Completed cards also offer **Eject** for any whole volume (auto-eject stays for camera cards).
+
+- A card is **never** ejected while it is being copied or verified, nor a destination during the copy
+  that uses it, nor while proxies or artifacts are still writing to it. This is refused outright.
+- Everything else **asks first**, and says why when Eject is pressed: *"X" is selected as a source and
+  its copy has not started* (or *did not finish*), a card with fewer verified copies than the minimum,
+  or a card with warnings. A card short of the preferred copies because of space says so and is not
+  auto-ejected.
+- **Eject All** in the Volumes header offers every volume that is safe to eject in one answer and lists
+  what it left mounted and why. Nothing in use is touched, and network volumes are not included.
+
+### Skip measuring
+
+A card row that is still *Scanning…* has a **Skip measuring** button, for a card going to a NAS or a
+large SSD where the space is known to be there. The row then says *Size not measured* with a
+**Measure** button to run the scan after all. The copy is unaffected: it walks the source itself and
+reports the real count and size as it starts. A destination whose cards were not measured says *Size
+not measured* rather than *Needs 0 bytes*. Starting a copy stops any size scan or preflight walk still
+running for that card.
+
+### A new drive with no project folder
+
+A drive that would take the ingest folder, while another destination found the project's folder,
+shows *No project folder here · going to the ingest folder* and **Use the same structure as…**. The
+folders to create are listed in the review and made only when the copy starts. **Remember for this
+drive** keeps the choice for that pair of drives (never in a preset). The delivery records which
+destination's structure it took.
+
+### Working off site: project list, End Off Site, project folders
+
+On location the facility's storage cannot be reached, so the project picker has nothing to offer.
+Next to *Working off site*:
+
+- **Load project list…** fills the picker without making the facility's storage a destination. Load a
+  saved list (the CSV from *Save project list…*, or one project per line) or read a volume or folder
+  once. The list is kept on disk and the status line says it was loaded by hand: *Project list loaded
+  from <name>: N projects*.
+- **End Off Site** ends the declaration and clears what is remembered for a relaunch. When the preset's
+  drives are all mounted again the line says so and suggests ending it; it never ends by itself.
+- **Create project folders…** makes the folders for the loaded list on a volume you choose. Each project
+  is *already there*, *will make* or *blocked*, everything is listed before anything is written, and an
+  existing folder is never touched. Project folders (and the year or client folder above them) only,
+  empty. The preset must allow project creation. **Template…** on a row opens that project in Project
+  Folder Creator, with its number and name filled in.
+- In Folder mode there is no off-site banner: off site means the facility's storage cannot be reached
+  for a card ingest, which does not apply to a plain folder-to-folder copy.
+
+The running order for the whole job is `CopyTrust_OffSite_Workflow.md`.
+
+### Off-site folders arriving on site
+
+A folder that arrives already named is kept under its name; the copy still gets its own receipts and
+verification. If the destination already holds a folder of that name, the review says what is in it
+(same files, extra files, different files) and the verdict decides, never the name. See
+`CopyTrust_OffSite_Workflow.md`.
+
 ## Safety Concept
 
 CopyTrust is designed around the idea that safety can mean either:
@@ -1372,7 +1657,7 @@ Since 2.5.2 (stable as of 2.5.3), CopyTrust handles this automatically:
 
 - A **delivery MHL** describing the sorted layout is written to the destination root, and every verify action — **Verify Using MHL**, **Re-Verify Destinations**, **Retry MHL Export** — targets it.
 - The original **source MHL** is preserved as provenance under `Receipts/… - Source.mhl`, so the destination root holds exactly one verifiable MHL.
-- A **`PROVENANCE_<source>_<timestamp>.json`** record is written to `Receipts/` for every copy: the settings used (naming, sort categories, folder mode) plus the per-file source→destination mapping (identity for a plain copy).
+- A **`<delivered folder>_provenance_<stamp>.json`** record is written to `Receipts/` for every copy: the settings used (naming, sort categories, folder mode) plus the per-file source→destination mapping (identity for a plain copy).
 - If a network destination drops and reconnects mid-pipeline, the sort is **not** re-run (it is one-shot) — only unfinished artifacts are retried.
 
 > Sorted-copy MHL handling shipped in the 2.5.3 stable release. Plain (unsorted) copies are unchanged: the single copy-time MHL at the destination root is the one you verify against.
@@ -2025,7 +2310,7 @@ The queue manager replaces the two side-by-side panels with a single full-width 
 - **Queued rows** for staged batches — each showing source, destinations, preset, and status
 - **One line per source** under the running row when the run has more than one source
 - **Completed/failed rows** that remain until manually cleared or auto-pruned after 24 hours
-- A **drop target strip** at the bottom for dragging volumes from the Available Volumes pool
+- A **drop target strip** directly under the running card for dragging volumes from the Volumes pool
 
 ### Inline progress panel
 
@@ -2074,9 +2359,9 @@ Three ways to add a new batch during an active copy:
 
 1. **[+ Add] button** — click in the queue manager header. A sheet opens with available source volumes shown as wrapping chips (read-only and camera card volumes sorted first, volumes already in use filtered out) and pre-populated destinations from the running copy. Choose a preset (Card/Folder with orange segmented control), adjust destinations if needed, then click "Add to Queue."
 
-2. **Drop a volume** — drag a volume chip from the Available Volumes pool onto the dashed drop strip at the bottom of the queue manager. This creates a queued batch using that volume as the source and the current active destinations.
+2. **Drop a volume** — drag a volume chip from the Volumes pool onto the dashed drop strip at the bottom of the queue manager. This creates a queued batch using that volume as the source and the current active destinations.
 
-3. **Click a volume in the pool** — while the queue manager is active, clicking a volume in the Available Volumes pool adds it directly to the queue using the current destinations.
+3. **Click a volume in the pool** — while the queue manager is active, clicking a volume in the Volumes pool adds it directly to the queue using the current destinations.
 
 ### What happens to staged batches
 

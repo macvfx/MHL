@@ -167,6 +167,57 @@ once, and redeploying, to turn them on.
 
 ---
 
+## File permissions
+
+The preset is read by whoever is logged in, not by the account that installed it. Every operator on
+the Mac must be able to **open the folder and read the file**:
+
+| Item | Mode | Owner |
+|---|---|---|
+| `/Users/Shared/CopyTrust` and `/Users/Shared/CopyTrust/Presets` | `755` | `root:wheel` (or an admin) |
+| each `<name>.json` | `644` | `root:wheel` (or an admin) |
+
+CopyTrust never creates or repairs these: it only reads them. A file that is `600`, or in a folder
+that is `700`, produces "could not load" with *no permission* on every operator account, and under
+`enforce` the pinned preset cannot be applied.
+
+**What goes wrong.** `pkgbuild` and Munki's `pkg` installs preserve the modes and owners in the
+payload. A payload built from files created under a restrictive `umask` (some editors, cloud-synced
+folders, a script run as root with `umask 077`) installs `600` and root-only, and nothing in the
+install looks like a failure.
+
+**Set it in the package**, before `pkgbuild`:
+
+```bash
+find payload/Users/Shared/CopyTrust -type d -exec chmod 755 {} +
+find payload/Users/Shared/CopyTrust -type f -exec chmod 644 {} +
+```
+
+and, as a belt-and-braces `postinstall` (it runs as root after the payload is laid down, and covers a
+payload that was built wrongly):
+
+```bash
+#!/bin/sh
+chmod 755 /Users/Shared/CopyTrust /Users/Shared/CopyTrust/Presets
+chmod 644 /Users/Shared/CopyTrust/Presets/*.json
+exit 0
+```
+
+A Munki item that only copies the file (`copy_from_dmg`) takes its modes from the `mode` key
+(`<key>mode</key><string>0644</string>`) and its owner from `user` / `group`; set them there.
+
+**Check a Mac** — no sudo, changes nothing:
+
+```bash
+ls -ld /Users/Shared/CopyTrust /Users/Shared/CopyTrust/Presets
+ls -l /Users/Shared/CopyTrust/Presets
+```
+
+Look for a folder in the path or a preset file that other users cannot read. (A checker script that does
+this and prints the commands that fix it is distributed with the CopyTrust source, not with these docs.) When CopyTrust itself cannot read a preset it
+now says the same thing in its own message: which file, who owns it, what mode it has, and which
+of the file or its folder is the problem.
+
 ## Rollout order
 
 1. Build the preset on one Mac and test it. Export it with **Save Report… ▸ All three, and the

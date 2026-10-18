@@ -1,7 +1,10 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-22
-Applies to: CopyTrust 2.7.8; keep the 2.5.3 stable line available for comparison
+Applies to: CopyTrust 3.0 build 50. Sections A to K were written for 2.7 and re-checked since; a failure
+in them is a regression in something long settled.
+Sections L to N were added 14 Oct 2026 for the 2.9.8 field-test work; section O (the Monitor Hub and live
+progress) was added 17 Oct 2026 for 3.0.
 Purpose: one current, auditable pass through the operator workflows that are
 otherwise spread across the User Guide, Field Checklist, QA Run Sheet, and
 release-specific notes.
@@ -138,7 +141,7 @@ proxy fails.
 | F2 | HEVC 25% | HEVC Main 10 MOV has quarter-width and quarter-height with 10-bit pixel format. |
 | F3 | Final Cut layout | Final Cut option creates `Final Cut Proxy Media/YYYY-MM-DD/.../OriginalBasename.mov`. |
 | F4 | Progress | Long encode shows clip/total, percent, speed, and ETA in UI and periodic log lines. |
-| F5 | Evidence bundle | JSON, TXT, and LOG exist under `Receipts/Proxy Media` and agree on settings and outcomes. |
+| F5 | Evidence bundle | JSON, TXT, and LOG named `<folder>_proxy-receipt_<stamp>` exist under `Receipts` (before 2.9.8, in a `Receipts/Proxy Media` subfolder) and agree on settings and outcomes. |
 | F6 | Relink | Final Cut can relink the generated proxy using the preserved original basename and compatible media properties. |
 | F7 | Retry | Delete one proxy evidence file and retry missing artifacts. Evidence is regenerated without changing the verified original. |
 | F8 | Cancel | Cancel during encode. Encoder exits and no `.partial.mov` remains. |
@@ -255,6 +258,79 @@ and the expected CopyTrust fields.
 | K9 | Resumed copy | Cancel part-way, resume. | Same verdict as an uninterrupted copy of the same card. |
 | K10 | Fan-out | Two destinations. | One verdict per source in the log, not one per destination. |
 
+## L. Space, Skipped Drives and Topping Up (field test 13 Oct 2026)
+
+Reference: `COPYTRUST_CAPACITY_DECISION_GATES.md`. Use a deliberately small second destination (a
+small SSD or a disk image under one card's size), never a client's drive. Free space is read fresh
+at the review and again as each card starts, so freeing or filling a drive between rows changes
+what the next row shows.
+
+| ID | Check | Procedure | Expected evidence |
+|---|---|---|---|
+| L1 | Full drive is a warning | Stage one card and two destinations, the second with less free space than the card. | Second drive's row and the card's badge read as a warning (*this drive will be skipped for this card*), not a red failure; the aggregate badge says warnings, not failed. |
+| L2 | Start is not held | With L1 staged, auto-advance off. | Start is enabled. The pre-copy review names the second drive with free and needed figures, and appears even if the routine review is switched off. |
+| L3 | Skipped whole | Run L2. | Card complete and verified on the first drive; **no folder and no file** on the second. Log `performCopy destinationSkipped … reason=no-space`; copy map row *skipped: no room*. |
+| L4 | Queue does not halt | Three cards, the second drive able to hold only the first; auto-advance on; Start and leave. | All three cards run. No `autoAdvance blocked … preflight=fail`. Cards 2 and 3 are on the first drive only, and owed to the second in the copy map. |
+| L5 | Nothing has room | One card larger than every destination's free space, a smaller card queued behind it. | Nothing written anywhere; the card reads *No destination has room … Nothing was written* and can be resumed; the smaller card is attempted next. Log `performCopy noRoom`. |
+| L6 | Margin | A card whose size equals a drive's free space to within 0.5%. | That drive is skipped (size plus margin does not fit); the review and copy map give the free and needed figures. |
+| L7 | Banner appears and follows | Stage cards that do not all fit; remove a card; add a drive. | The banner names the cards with no copy and those below the preferred copies, with bytes; it updates on each change. |
+| L8 | Extra-cards drive | Use *Add one for just the N extra cards*; run. | The new drive is badged, takes only a card that did not fit elsewhere, and shows *not needed* for a card that fit the main drives. |
+| L9 | Copies policy | Settings › Copy Behaviour: minimum 1, preferred 2; then with one destination only. | With one drive the preferred count is capped at one, and no shortfall is reported; with two drives and a skipped card the card is reported below preferred. |
+| L10 | Top-up | After L3, free the space and press *Copy to 1 missing*. | Same folder name on the missed drive; the first drive untouched; copy map shows both verified, nothing owed. A drive still without room is skipped again with its reason. |
+| L11 | Copy map files | After any of the above. | `CopyMap_<session>.csv` and `.json` in the `Receipts` folder of each drive that received something, and in `~/Library/Application Support/CopyTrust/CopyMaps`; rows sorted by unit so A-cam cards sit together. |
+| L12 | Eject policy | Try to eject the card from L3 before the top-up, manually and with auto-eject on. | Manual eject warns that the card is short of the preferred copies for want of room and asks; auto-eject does not eject. After L10 the warning is gone and auto-eject is allowed. |
+| L13 | Eject while in use | During a copy, try to eject the source, then a destination. | Both refused with the reason. Between cards a destination may be ejected. |
+| L14 | Whole-run progress | Run four cards to two destinations. | Headline bytes, file copies, speed and time left refer to the run; the card line says *Card N of 4*; the menu bar agrees. With a skipped drive the totals count only the copies that will be written. |
+| L15 | Same structure | Stage a drive with no project folder beside one with it; choose *Use the same structure as…*. | Folders to create are listed in the review and made only at Start; the delivery's provenance carries `structureCopiedFrom`. |
+
+## M. Metadata Sources and the EXIF CSV (field test 13 Oct 2026)
+
+Reference: `COPYTRUST_METADATA_COLLECTION_REVIEW.md`. Use cards from at least two camera families
+(for example Sony XAVC S MP4 with `M01.XML`, Canon Cinema EOS MXF with `.XML`, an Atomos MOV).
+
+| ID | Check | Procedure | Expected evidence |
+|---|---|---|---|
+| M1 | Sidecar fills what the container lacks | Copy a Sony and a Canon card. | EXIF CSV `CameraSerialNumber`, `Lens`, `FirmwareVersion` and (Sony) `StartTimecode` are filled; Canon firmware is the sidecar's, not `1`. |
+| M2 | ffprobe over ExifTool | Switch ExifTool on and copy the Canon card. | `StartTimecode` is `HH:MM:SS:FF`, not seconds; `BitrateMBps` is tens of MB/s, not 0.144. `MetadataSources` credits ffprobe for both. |
+| M3 | Date basis | Copy a MOV and an MXF. | MOV: `DateBasis=utc`, no wall-clock; MXF: `camera-local` with `DateTakenWallClock` equal to the camera's own clock. |
+| M4 | Implausible date | Copy clips from a recorder whose clock was never set. | `DateNote` reads *date looks like a reset clock*; `DateTaken` is unchanged. |
+| M5 | Checked against the file | Any card where a tool reports a bitrate far from size over duration. | `BitrateMBps` is the file's figure, `MetadataSources` says `Derived`, `MetadataNote` says what was replaced. |
+| M6 | Contact sheet | Open the sheet for M1. | Lens and serial shown; the date line says *UTC, shown local* or *camera clock*; the footer lists the tools used with clip counts. |
+| M7 | Drop Verify matches | Run the same folder through Drop Verify. | Same columns, same order, same values as CopyTrust's CSV. |
+
+## N. Remote Notifications (field test 13 Oct 2026)
+
+Use a Pushover account or a test webhook (a local listener on this Mac is enough). Nothing here
+should ever contain a card, project, drive or folder name or a path.
+
+| ID | Check | Procedure | Expected evidence |
+|---|---|---|---|
+| N1 | Test message | Settings › Notifications › Remote: enter credentials, *Save and send test*. | Message arrives; the sheet says it was sent. A wrong token says *refused*; no network says *unreachable*. |
+| N2 | Run finished once | Three cards, to completion. | One *all cards finished* message with counts, not three. A card left unstarted keeps the run open. |
+| N3 | Failure | Make a copy fail (eject a destination mid-copy). | A *copy failed* or *needs attention* message at high priority, naming nothing. |
+| N4 | Drive events | Disconnect and reconnect a destination. | *Drive disconnected* then *available again*, and *resumed* if it auto-resumes. |
+| N5 | Content check | Read every message received during N1 to N4, and the webhook's raw body. | No card alias, project, volume name or path anywhere; only counts and fixed sentences. |
+| N6 | Secrets | Inspect Preferences and the session log. | Token, user key and webhook URL are in the Keychain only; the log has `remoteNotify event= outcome=` lines and nothing else. |
+
+## O. CopyTrust Monitor Hub: live progress (field test, unreleased)
+
+Needs CopyTrust Monitor 0.3 on a second Mac or the same Mac, and CopyTrust with *Send live progress*
+switched on. Nothing sent may contain a card, project, drive or folder name or a path.
+
+| ID | Check | Procedure | Expected evidence |
+|---|---|---|---|
+| O1 | Connect | Monitor: Live status ▸ Copy Link. CopyTrust: Settings › Notifications › CopyTrust Monitor Hub, paste, turn on, *Save and send test status*. | Settings says the hub accepted the test; the Monitor lists the station as Idle. The notifications webhook link says the hub did not recognise the URL. |
+| O2 | Off by default | Fresh settings. | Nothing is sent until the toggle is on; turning it off stops updates at once. |
+| O3 | Live copy | Several cards to two destinations, verification on. | Scanning, Copying, Verifying with percent, bytes, speed and time left agreeing with CopyTrust's own progress. Copied never exceeds the total. Verifying never shows Finished. |
+| O4 | One run | Watch between cards. | *Preparing* between cards; the same run continues; the card position rises. No new card appears. |
+| O5 | Auto-advance off | Leave the next card unstarted. | After about 15 seconds: Waiting for an operator, *The next card needs to be started*. Never Finished. *Start Next Card* in the progress window starts it. |
+| O6 | Resume | Unplug a destination mid-copy, leave it stopped. | After about 15 seconds: Waiting for an operator, *A card stopped and can be resumed*. Resuming continues the same run. |
+| O7 | Background jobs | Turn on proxies or reports for two or more cards. | After copying: Background work, *Background jobs: X of Y done* rising, ready-to-eject count; Finished at the end. |
+| O8 | Hub down | Quit the Monitor mid-copy, then reopen it. | The copy is unaffected. The station shows Status unknown, then Live when it reports again. |
+| O9 | Network loss | Take the station off the network for a minute. | Update delayed at 15 seconds, Status unknown at 45; never Finished or Failed on its own. |
+| O10 | Two stations | Two CopyTrust Macs, same hub. | Separate cards. Same name on both: a short ID suffix appears on the wallboard. Forget Station removes a retired one. |
+| O11 | Content check | Capture the traffic or read the hub's status JSON. | Numbers and fixed words only. No names, paths, volume names, URL secret or observed network address. |
+
 ## Ship Decision
 
 Do not call the workflow ready if:
@@ -263,6 +339,11 @@ Do not call the workflow ready if:
 - an artifact remains permanently queued/running;
 - queue or relay dependencies can start out of order;
 - proxy work changes the verified-original result;
+- a card is written partly to a drive that has no room for it, or a full drive holds Start or halts
+  an unattended queue (section L);
+- a remote notification or a live status update carries a name or a path (sections N and O);
+- a station is reported Finished while a card is unstarted, stopped or unnamed (section O);
+- a CSV value is credited to the wrong tool, or a date is shown without its clock (section M);
 - P5 accepts a Quick/copy-only job, a source-deleting plan, or an incomplete hash;
 - P5 job/metadata cannot be confirmed in its own web GUI;
 - package artifacts are written inside `.fcpbundle`;

@@ -37,29 +37,38 @@ Multi-source, multi-destination copy tool designed for camera card ingest but ca
 - **Relay chains** show `Stop 1`, `Stop 2` in order; a queued leg can be pulled back into the workspace with `Edit` to reorder it
 - **Resumable ingest** for cancelled or partial runs, when the saved manifest still matches the same source, destinations, and rendered subfolder
 - **Pre-copy review** of the whole job — direct, fan-out, relay, or active-plus-queued — with one card per destination showing its verification, sorting, proxy and P5 choices
-- Per-destination preflight (free space, write permissions, reachability), and a safe-to-eject flow after transfer
+- Per-destination preflight (free space, write permissions, reachability), and a guarded safe-to-eject flow after transfer: refused while a volume is in use, and it says why when it asks first
+- **Space planned across the queue** — a card that does not fit a drive is skipped for that drive whole, never partly written, and recorded in a **copy map** (CSV and JSON); **Copy to N missing** tops it up later
+- **Cards added during a copy** join the running copy once named and reviewed; one progress covers the whole run (bytes, speed, time left)
+- **Working off site** — card, to drive, to facility: **Load project list…**, **End Off Site** and **Create project folders…**, with the card's history carried in the files
 
 **Verification and evidence**
 
 - Verification levels: **Quick** existence and size, **Full** post-copy xxHash64, or **Inline** hashing during the copy
 - **MHL v1.1** hash lists for Full and Inline — compatible with OffShoot, Silverstack, ShotPut Pro, YoYotta
 - MHL import verification — drop any `.mhl` to re-verify destination files; reads classic MHL v1.x **and ASC MHL v2.0**
-- Session receipts (JSON + TXT), per-ingest logs, optional export to a separate folder, and relay-chain summaries at session close
+- Session receipts (JSON + TXT), per-ingest logs, optional export to a separate folder, and relay-chain summaries at session close. Every file in a delivery's `Receipts` folder follows one name, `<delivered folder>_<kind>_<stamp>`
 - Relay chains write an immutable, password-free workflow plan with ordered step and dependency IDs, exported beside every leg's receipts
 - The operator is recorded in every session manifest, defaulting to the macOS account
 - Verify panel: Deep Compare Files, Compare Browser, Copy Missing, Retry MHL Export
 
 **Setup**
 
-- Volume browser and **Volume Pool** for fast source and destination setup
+- **Volumes** pool for fast source and destination setup: every mounted volume listed and marked Source or Destination, with **Eject All** for the volumes that are safe to eject
 - **Destination sets** for one-click restore of saved destination groups
 - **Presets** — save every Card and Folder setting under one name and load it back in one action; read-only shared presets deploy to a whole facility via `/Users/Shared/CopyTrust/Presets`
 - Built-in Help with `Quick Start`, `Advanced Start`, and `Several Cards at Once`
+
+**Away from the Mac**
+
+- **Remote notifications** — a push (Pushover) or a JSON webhook when a run finishes, a copy fails or a drive needs you; counts and fixed sentences only, never a name or a path
+- **Live progress (3.0)** — optional, off until you turn it on: numbers and fixed words only, sent every few seconds to a CopyTrust Monitor on your network, so someone elsewhere can see what is running, when it should finish and whether anyone is needed. CopyTrust Monitor is a separate menu-bar app in private testing
 
 **After the copy**
 
 - **Contact sheet PDF** (row or grid) and **EXIF metadata CSV**, generated as independent background artifacts — ExifTool for richer metadata, ffmpeg for MXF and MPEG-2 family thumbnails, REDline for R3D. Quick mode never invents hashes or an MHL
 - **HTML directory tree** — `Project summary index`, `One HTML per top-level folder`, or `Entire project`, all generated natively
+- **Final Cut Relink Aliases** — Finder aliases named like the originals so Final Cut relinks every proxy at once, also written on a proxies-only drive, where each delivery is counted by name and size
 - **Proxy media** — optional H.264 High or HEVC Main 10 MOV at 12.5%, 25%, or 50%, with an optional `Final Cut Proxy Media/YYYY-MM-DD` layout and exact-basename relinking. Display rotation and the source's own colour characteristics carry into the encode, and each run writes JSON/TXT/LOG evidence. Real encode tests cover MOV and MXF; broader formats depend on the packaged ffmpeg decoder
 - **Archiware P5 archive (testing)** — after Full or Inline verification, submit a verified destination to a P5 server with searchable xxHash64, frame size and other bounded media metadata. `Archive to P5` and `Create proxies` are chosen per destination, and P5 preflight evaluates a whole relay chain
 - **Deferred P5 handoff** — a password-free request JSON preserves paths, hashes, metadata, target hints and job state when P5 is offline or automatic archive is off

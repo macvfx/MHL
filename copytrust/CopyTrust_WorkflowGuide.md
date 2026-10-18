@@ -1,9 +1,8 @@
 # CopyTrust Workflow Guide
 
-Date: 2026-08-22
-Release status: **CopyTrust 2.9.8 build 48**, the current beta
-([release notes](../docs/releases/RELEASE-NOTES-2.9.8.md)). The workflow strategy below was written at 2.7.7.
-Version history is in the release notes.
+Date: 2026-10-17
+Release status: **3.0 build 50**, the current beta. What changed in each release is in the release notes.
+Sections that name a version (for example *2.7.8.1*) say when a behaviour began.
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the
 [Illustrated Workflow Guide](CopyTrust_Illustrated_Workflow_Guide.md). Use it
@@ -301,7 +300,7 @@ Use this when you want to set up the next batch while a copy is already running.
 1. Start a copy. The source/destination panels transform into the **Copy Queue** manager.
 2. Click **[+ Add]** in the queue header. A sheet opens with available source volumes (shown as wrapping chips, read-only volumes first) and pre-populated destinations from the running copy.
 3. Select a source volume chip, adjust destinations if needed, choose a mode (Card/Folder), and click **Add to Queue**.
-4. Alternatively, drag a volume from Available Volumes onto the drop target strip at the bottom of the queue.
+4. Alternatively, drag a volume from Volumes onto the drop target strip under the running card. A card added to the same drives as the running copy joins it (*4 sources*) once it is named and reviewed.
 5. Repeat to stage more batches if needed.
 6. The running row shows its progress panel already — percentage, speed, time remaining, a
    bar per destination, and files as they are copied and verified. Click the summary line to

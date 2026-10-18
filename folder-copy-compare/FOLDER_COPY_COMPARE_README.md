@@ -2,7 +2,7 @@
 
 The original tool that started it all.
 
-Current version: **v2.9.8 (Build 48 beta)**, released alongside Drop Verify and CopyTrust 2.9.8.
+Current version: **v3.0 (Build 50 beta)**, released alongside Drop Verify and CopyTrust 3.0.
 Version history is in [RELEASE_NOTES.md](../RELEASE_NOTES.md).
 
 **Folder Copy Compare** began as a simple idea: after copying a folder, prove that the copy worked. Drop a source folder, drop a target folder, and get a clear answer — do they match?

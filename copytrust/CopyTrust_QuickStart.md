@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
-Date: 2026-08-22
-Current testing release: `2.8.1 (Build 21 BETA)` — see [Release Notes](../RELEASE_NOTES.md)
+Date: 2026-10-17
+Current testing release: `3.0 (Build 50 BETA)` — see [Release Notes](../RELEASE_NOTES.md)
 
 With two or more destinations, one **Copy** switch chooses `Simultaneously` or
 `In series`, and one button — always labelled **Start** — runs it. That is the
@@ -11,6 +11,11 @@ CopyTrust 2.7 adds an optional Archiware P5 archive action for controlled
 testing. Configure Settings → P5 Archive, use Full or Inline verification,
 select a non-deleting plan, and confirm the resulting job and `CT_*` metadata
 in P5 Web. Quick/copy-only work is never auto-submitted.
+
+Since 2.9.8 several cards can go to several drives in one run: a card that will not fit a drive is skipped for
+that drive whole and topped up later, and the queue shows one progress for the whole run. From 3.0 CopyTrust can
+also send live progress, as numbers only, to a CopyTrust Monitor on your network (Settings › Notifications ›
+CopyTrust Monitor Hub, off until you turn it on). Both are described in the User Guide.
 
 This file is a Quick Start for the current CopyTrust workflow.
 

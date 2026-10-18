@@ -5,7 +5,7 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-Stable release: **2.5.3**. **2.7.8 Build 7 is a BETA** — test on media you can afford to lose, and keep a separate verified backup made by other software such as Archiware P5. Version history is
+**3.0 build 50 is a BETA** — test on media you can afford to lose, and keep a separate verified backup made by other software such as Archiware P5. Version history is
 in [RELEASE_NOTES.md](../RELEASE_NOTES.md).
 
 > **Check the confirmation before a copy starts.** It shows the active mode
@@ -42,7 +42,11 @@ existence and size verification without hashes.
 | Destination Sort (optional) | Reorganizes the copy into type folders (JPG / RAW / Video / …) **after** the trust chain is sealed |
 | Receipts & artifacts | JSON + TXT receipts, per-copy log, session manifest, optional contact-sheet PDF, EXIF CSV, HTML directory tree |
 | Proxy media (beta) | Optional H.264/HEVC MOV at 12.5%, 25%, or 50%; display-rotation-aware scaling; source-aware color handling; live progress; optional dated Final Cut layout; JSON/TXT/LOG validation evidence |
-| Provenance | `PROVENANCE_*.json` records the settings used and the source→destination file mapping |
+| Provenance | `<folder>_provenance_<stamp>.json` records the settings used and the source→destination file mapping |
+| Space planning and a copy map | With several cards and several drives, a card that does not fit a drive is skipped for that drive whole and recorded in a copy map; **Copy to N missing** tops it up later |
+| Volumes and guarded eject | Every mounted volume is listed and marked Source or Destination; eject is refused during use and asks first otherwise; **Eject All** offers every safe volume |
+| Remote notifications | Optional push (Pushover) or JSON webhook when a run finishes, a copy fails or a drive needs you; counts only, never names or paths |
+| Live progress (3.0) | Optional: numbers and fixed words only, sent every few seconds to a CopyTrust Monitor on your network so someone away from the Mac can see what is running, when it should finish and whether anyone is needed |
 | Safe-to-eject + auto-eject | Eject is gated on the selected copy/verification workflow completing; Full/Inline also require their MHL |
 
 ---
@@ -53,11 +57,11 @@ After a **Full or Inline** copy completes, on the destination drive:
 
 1. **Media is there** — the subfolder (e.g. `A001_2026-06-14`) holds your files and they open.
 2. **One MHL at the root** — exactly one `*.mhl` in the destination subfolder root.
-3. **Receipts folder** — `Receipts/` inside the delivery contains:
-   - `ingest_*.log` (per-copy log with a header: app/build, macOS, host, session tag, source)
-   - `ingest_*.json` + `ingest_*.txt` (receipt)
-   - `SESSION_MANIFEST_*.json`
-   - `PROVENANCE_*.json`
+3. **Receipts folder** — `Receipts/` inside the delivery holds files named `<delivered folder>_<kind>_<stamp>` (from 2.9.8; earlier builds used `ingest_*`, `SESSION_MANIFEST_*` and `PROVENANCE_*`, and those deliveries are still read):
+   - `…_log_….log` (per-copy log with a header: app/build, macOS, host, session tag, source)
+   - `…_receipt_….json` + `….txt` (receipt)
+   - `…_manifest_….json`
+   - `…_provenance_….json`
 4. **Verify it** — drag the `.mhl` back into CopyTrust (or verify with **MHL Verify**); it should report **all files matched**, 0 missing.
 5. **Health verdict** — the Session Summary shows a green/clean health verdict (or clearly-labelled warnings).
 
@@ -79,7 +83,7 @@ it. Ordinary folder copies retain their existing internal receipt placement.
 Before relying on a new build or a new machine:
 
 - Copy one small card to two destinations (one APFS, one exFAT) with **Full** verification.
-- Confirm all five receipt files above appear on **both** destinations (exFAT included).
+- Confirm all the receipt files above appear on **both** destinations (exFAT included).
 - Cancel a copy mid-run, then **Resume** — verified files are reused, not recopied.
 - Run a relay chain (`card → SSD → NAS`): add the destinations in order, set the `Copy`
   switch to `In series`, press `Start`, confirm the pre-copy review appears, and confirm

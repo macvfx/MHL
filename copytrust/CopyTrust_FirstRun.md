@@ -6,7 +6,7 @@ archive. Companion to the **CameraCard preset** demo.
 ## Run it
 
 1. **Load the CameraCard preset** — Inline verification, all artifacts and proxies.
-2. **Add the cards** — drag them in, or click them in the Available Volumes pool.
+2. **Add the cards** — drag them in, or click them in the Volumes pool.
 3. **Add the destinations.** Two or more is the fan-out case.
 4. **Leave `Copy` on `Simultaneously`.** `In series` is the relay chain, a different job.
 5. **Tick `Create proxies` and `Archive to P5`** per destination row.

@@ -1,7 +1,6 @@
 # CopyTrust — off-site capture, and bringing the drive home
 
-Date: 2026-10-08 · Written for CopyTrust 2.9.5 (build 36). The running order still holds in
-2.9.8 build 48; receipt file names changed in 2.9.8, see [RELEASE-NOTES-2.9.8.md](../docs/releases/RELEASE-NOTES-2.9.8.md).
+Date: 2026-10-08 · For CopyTrust 2.9.5 (build 36)
 
 This is the working order for a shoot away from the facility: a camera card copied to a drive on
 location, and that drive copied into the facility's storage days later by someone else. It says what
@@ -150,6 +149,18 @@ there is the preset's answer and not an omission.
 
 ---
 
+### Copies and room on location
+
+Off site the usual shape is **one verified copy is the minimum** (one SSD) and **two is preferred**
+(two SSDs). Settings › Copy Behaviour › *Copies of each card* holds both numbers. With a single SSD
+the preferred count is capped by what is present, so one drive is never reported as a shortfall.
+
+When the cards will not all fit the SSDs, the banner names the cards with no copy and offers a
+destination for all cards or for just the extras. A drive without room for a card is skipped for that
+card whole and the card goes to the other; the **copy map** (CSV and JSON, written to the receipts
+folder on each SSD) records what is where, so the second ingest can top up what is missing. The decision notes
+behind this are available on request.
+
 ## 3. On location
 
 ```mermaid
@@ -208,7 +219,7 @@ SHOOT_A_01/                                   the drive, as you named it
                     ├── CopyTrust - <date> at <time> - <card name>.mhl
                     └── Receipts/
                         ├── receipt_<folder>_<date>.txt
-                        ├── PROVENANCE_<card name>_<stamp>.json
+                        ├── <folder name>_provenance_<stamp>.json
                         └── <contact sheet, EXIF CSV, HTML tree — if turned on>
 ```
 
@@ -220,7 +231,7 @@ What each one is:
 | `….mhl` at the folder's root | A hash for every file copied, with the tool, the operator and the dates. This is what later proves the drive still matches. |
 | `Receipts/receipt_<folder>_<date>.txt` | The plain-language receipt, **written when the session is ended with End Session** (not after each copy):  what was copied, where, and how it verified. For an off-site copy it says so in the header (`Off site: yes`), marks the drive, and names its volume and volume ID. |
 | `~/Library/Application Support/CopyTrust/logs/<session>/ingest_….log` | The log of that copy. It stays on the Mac that made the copy, not on the drive. |
-| `Receipts/PROVENANCE_….json` | For every file, where it came from and where it went, with its hash and size, plus the settings that shaped the names. Also the card's name, its path and its volume ID, the session ID and the destination, and the **drive's** volume name and ID and an `offSite` flag. |
+| `Receipts/<folder>_provenance_<stamp>.json` | For every file, where it came from and where it went, with its hash and size, plus the settings that shaped the names. Also the card's name, its path and its volume ID, the session ID and the destination, and the **drive's** volume name and ID and an `offSite` flag. |
 | Contact sheet / CSV / tree | Only if turned on. Pictures and camera metadata. |
 
 On a macOS package such as a `.fcpbundle`, `Receipts` sits **beside** the package, never inside it.
@@ -286,6 +297,23 @@ flowchart TD
    (the preset's *create a project folder* setting).
 7. **Start,** and check the result as in section 3.
 
+### The folder name, and a folder that is already there
+
+A delivered card folder keeps its own name when it comes home. Under an enforced naming preset the
+convention builds the name from the project, unit and roll you confirm (use the earlier answers and it
+is the same name); without an enforced preset a folder CopyTrust delivered is filed under the name it
+already has, not renamed with a date.
+
+If the destination already has a folder of that name, CopyTrust now compares what is in it with the
+card before it says anything:
+
+| It says | Meaning | What to do |
+| --- | --- | --- |
+| *holds this card* | Every file of the card is there at the same size. Matched by name and size. | Nothing more to copy. Do not rename it to get past the message. Verify it if you want byte-for-byte. |
+| *holds part of this card* | Some files are there, some are not. | Use **Resume** if it was an interrupted copy of the same card. Do not merge by hand. |
+| *NOT this card* | A file has the same name and a different size. | Do not copy over it. Check project, unit and roll: probably a different card that composed the same name. |
+| *none of this card's files* | A different card has the same name. | Check project, unit and roll. |
+
 ### What the facility folder holds
 
 The delivered folder arrives as the source, so its `Receipts` folder and `.mhl` come with it, and
@@ -300,9 +328,9 @@ on a real shoot. It is:
 ├── CopyTrust - <date> at <time> - <folder name>.mhl   written now (drive → facility)
 └── Receipts/
     ├── receipt_…<date A>….txt                         written on location, at End Session
-    ├── PROVENANCE_<card name>_<stamp>.json            card → drive 1
+    ├── <folder name>_provenance_<stamp>.json            card → drive 1
     ├── receipt_…<date B>….txt                         written now, at End Session
-    └── PROVENANCE_<folder name>_<stamp>.json          drive 1 → facility
+    └── <folder name>_provenance_<stamp>.json          drive 1 → facility
 ```
 
 The two sets differ by session ID and timestamp, so neither overwrites the other. Read together they

@@ -61,7 +61,7 @@ Plug in the **first** drive. Keep the second one aside, untouched.
   **Expect:** two entries marked **Drive**, saying the drive **still matches**, all files.
   If either says **DOES NOT MATCH**: write down the file it names. **Do not wipe either drive.**
 - [ ] Open the new card folder in the facility storage, then **Receipts**.
-  **Expect:** *two* receipts and *two* files starting `PROVENANCE_` (the one from the drive and the new one). At the folder's top level, *two* `.mhl` files.
+  **Expect:** *two* receipts and *two* `…_provenance_…` files (the one from the drive and the new one). At the folder's top level, *two* `.mhl` files.
 
 ## Part 4 — Optional: a drive that has changed
 
