@@ -3,7 +3,7 @@
 Project Folder Creator creates one numbered project from a reusable main template, with an
 independent folder selection for each Edit, Archive, Cloud, or Custom storage destination.
 
-This is the canonical operator guide for Project Folder Creator 0.5.0 build 22. For the one-page
+This is the canonical operator guide for Project Folder Creator 0.7.0 build 25. For the one-page
 version, see the `Project Folder Creator Quick Start`.
 
 > **Development status:** planning, destination-specific copy rules, nested renaming, staged
@@ -11,6 +11,15 @@ version, see the `Project Folder Creator Quick Start`.
 > reading destinations from a CopyTrust preset are implemented. CopyTrust *handoff*,
 > per-destination live progress, cancellation during an individual large copy, and acceptance on
 > real facility storage are not complete. Do not treat this build as a production release.
+
+> **New in 0.6.0 and 0.7.0:** the simple window's storage card is one line (a green dot, orange when
+> the storage is not ready, the name, free space, and the project count; the full sentence and path
+> are in the tooltip). **Profile ▸ Add to Template…** adds files or folders (a new Final Cut library,
+> say) to the loaded profile's own copy of the template, optionally renames the profile, and saves it,
+> in place of exporting, adding, re-importing and renaming: a same-named item is replaced, destinations
+> that already receive the target folder receive the new item, and narrowed ones are left alone. The
+> app also answers a `projectfoldercreator://create?number=&name=` link, which fills the project number
+> and name; CopyTrust's *Template…* button (on a project in *Create project folders…*) uses it.
 
 > **New in 0.5.0 build 23:** the app opens in **simple mode** — a project number, a project name,
 > the projects already on the storage, and how loaded and how full each storage is. Everything
@@ -662,11 +671,11 @@ app. Use the receipt and path outcomes to understand where the run stopped.
 
 ## Current capability boundary
 
-The following are not complete in version 0.5.0 build 22:
+The following are not complete in version 0.7.0 build 25:
 
-- CopyTrust *handoff* — a refreshable project list, or **Create missing project…** opening this
-  workflow from inside CopyTrust. Reading a preset's destinations is implemented; handing results
-  back is not;
+- CopyTrust *handoff* in full — a refreshable project list, or **Create missing project…** opening this
+  workflow from inside CopyTrust. Reading a preset's destinations is implemented, and CopyTrust's
+  *Template…* link opens this app with the number and name filled in; handing results back is not;
 - per-destination live byte/file progress;
 - cancellation during an individual large copy operation;
 - acceptance testing on real Edit, Archive, and Cloud facility storage;

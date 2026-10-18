@@ -1,6 +1,6 @@
 # Project Folder Creator Quick Start
 
-Version 0.5.0 build 22. This is the one page that gets a project made; the full document is the
+Version 0.7.0 build 25. This is the one page that gets a project made; the full document is the
 `Project Folder Creator User Guide`, at **Help → Open User Guide** in the app.
 
 > **Development build.** Not released, and not through acceptance on real facility storage.
