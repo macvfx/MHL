@@ -1,7 +1,6 @@
 # Folder Copy Compare User Guide
 
-Current version: **v3.0 (Build 50 beta)**, released alongside Drop Verify and CopyTrust 3.0. Folder Copy Compare
-has had no changes of its own since 2.8.2; it moves with the suite so update checks agree.
+Current version: **v3.0.1 (Build 53 beta)**. CopyTrust is at 3.0.1 build 51 and Drop Verify at 3.0.1 build 52. Folder Copy Compare's one change since 2.8.2 is dropping folders on the Dock icon.
 Version history is in the release notes.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
@@ -26,6 +25,8 @@ Folder Copy Compare has two modes, selectable from the **Compare | Subfolder Che
 - **Subfolder Check** — a fast structural sanity check. Drop two folders, get a side-by-side view of their immediate subfolders with match indicators and stub file warnings. Click any row to drill down into a comparison of just that subfolder pair (Quick or Full Scan), then repair missing files or clean up P5 stubs in place.
 
 Use Compare when you want a complete answer. Use Subfolder Check when you want a quick overview first — especially useful after Archiware P5 restores or any operation that works folder-by-folder.
+
+**Drop folders on the Dock icon.** You do not need the window in front. Drop one or two folders on Folder Copy Compare's Dock icon (or on the app in Finder, or use **Open With** on a folder). The first folder fills the empty Source side and the next the Target side, in whichever mode is showing, and the window comes forward. Two folders dropped together become Source then Target. If both sides are already loaded, dropping one folder asks which to replace, and dropping two asks before replacing both. Files are ignored, a folder already loaded on the other side is not compared with itself, and anything beyond two folders is left out; the app says when it did any of this. It loads the folders as a drop on the drop zones does: in Compare mode you still click **Compare Folders**, and Subfolder Check starts its scan.
 
 **Switching modes does not clear your drop zones.** Folders loaded in Compare mode are carried over when you switch to Subfolder Check, and vice versa. You can switch freely without re-dropping.
 

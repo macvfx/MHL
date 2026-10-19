@@ -4,12 +4,15 @@ Five macOS apps and a CLI tool for media integrity and project preparation — c
 verify, and prove it.
 
 **Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 51,
-Drop Verify 3.0.1 build 52, Folder Copy Compare 3.0 build 50, Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
+Drop Verify 3.0.1 build 52, Folder Copy Compare 3.0.1 build 53, Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
 Earlier releases are hidden; their notes are in the release notes below.
+**Beta:** **Folder Copy Compare 3.0.1 Build 53** — drop one or two folders on its Dock icon (or on the app in Finder) and
+they load into the Source and Target sides, in either mode, without the window being in front. Release notes:
+[RELEASE-NOTES-FCC-3.0.1.md](RELEASE-NOTES-FCC-3.0.1.md).
 **Beta:** **Drop Verify 3.0.1 Build 52** — a push to your phone (Pushover) or a JSON webhook when a folder has been
 processed or Drop Verify stops before finishing: a fixed sentence and counts, never a name or a path. Off until you turn
 it on. Release notes: [RELEASE-NOTES-DV-3.0.1.md](RELEASE-NOTES-DV-3.0.1.md).
-**Beta:** **CopyTrust 3.0.1 Build 51** (Folder Copy Compare stays at 3.0 build 50 for now) — a volume that stops answering
+**Beta:** **CopyTrust 3.0.1 Build 51** — a volume that stops answering
 (a SAN or network share with a stuck lock) no longer freezes CopyTrust or hangs it at launch: it is listed as
 Not responding and everything else keeps working. The user guide and Help gain troubleshooting for a stuck or
 crashed CopyTrust. Release notes: [RELEASE-NOTES-3.0.1.md](RELEASE-NOTES-3.0.1.md). 3.0 added live progress
