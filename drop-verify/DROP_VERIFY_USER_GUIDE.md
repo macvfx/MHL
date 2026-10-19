@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v3.0 (Build 50 beta)**, the same version as CopyTrust and Folder Copy Compare. Version history is in the release notes.
+Current app version: **v3.0.1 (Build 52 beta)**. CopyTrust is at 3.0.1 build 51 and Folder Copy Compare at 3.0 build 50. Version history is in the release notes.
 
 ## External Codec Setup
 
@@ -276,9 +276,24 @@ If Drop Verify cannot create or write the session log, the run can still finish 
 
 For stuck or ambiguous runs, see [Drop Verify Troubleshooting](DROP_VERIFY_TROUBLESHOOTING.md). It includes the process, child-command, sample, `lsof`, log-tail, and artifact-check commands used to distinguish a still-running job from a stuck optional artifact.
 
+## Remote Notifications
+
+Drop Verify can send a push to your phone or a chat channel when a folder has been processed, or when it stops before finishing. It is off until you switch it on in **Settings > Notifications**.
+
+- **Service.** Pushover (an application token from pushover.net/apps and your user key) or a JSON webhook. A webhook URL must be `https`, or `http` to a machine on your own network.
+- **When a folder has been processed.** "Drop Verify: finished", or "finished with problems" when an output (contact sheet, CSV, HTML tree, proxies) failed. The message gives the number of files processed and, if any, the number of outputs that failed.
+- **Only if it took at least N seconds.** A small folder does not send a push seconds after you drop it. The default is 30 seconds; set 0 to always send.
+- **When Drop Verify stops before finishing.** Sent on an error, whatever the duration. Cancelling a run yourself sends nothing.
+
+A message carries a fixed sentence and counts, with the optional station name you choose. It never contains a folder, project or file name, or a path. The token, user key and webhook URL are kept in the Keychain, separate from CopyTrust's, so setting one app up does not change the other. **Save and send test** sends a sample "finished" message and says whether the service accepted it.
+
+The JSON webhook receives `app` ("Drop Verify"), `event` (`runFinished` or `runFailed`), `title`, `message`, `priority`, `issues`, `files_processed` when known, `station`, a random `sender_id` and a unique `event_id`.
+
+Drop Verify does not send live progress to a CopyTrust Monitor Hub; that is CopyTrust only.
+
 ## In-App Help
 
-Use the **Help > Drop Verify Help** menu to open a built-in help sheet covering quick start, artifact descriptions, HTML tree setup, external codec configuration, and output options. The Help menu also includes a link to **code.matx.ca**.
+Use the **Help > Drop Verify Help** menu to open a built-in help sheet covering quick start, artifact descriptions, HTML tree setup, external codec configuration, output options, and remote notifications. The Help menu also includes a link to **code.matx.ca**.
 
 ## Notes
 
