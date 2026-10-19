@@ -2,7 +2,7 @@
 
 2026-10-17 · All three apps share this version. CopyTrust carries the changes; Drop Verify and Folder
 Copy Compare move with it and have none of their own. It includes everything in 2.9.9 build 49 — see
-[RELEASE-NOTES-2.9.9.md](RELEASE-NOTES-2.9.9.md).
+[RELEASE-NOTES-2.9.9.md](docs/releases/RELEASE-NOTES-2.9.9.md).
 
 Written for an office where people away from the ingest Mac need to know what is running, when it
 should finish, and whether someone is needed.

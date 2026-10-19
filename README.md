@@ -3,15 +3,17 @@
 Five macOS apps and a CLI tool for media integrity and project preparation — create, copy,
 verify, and prove it.
 
-**Available:** only the latest release of each tool is listed: Media Trust Tools 3.0 build 50
-(CopyTrust, Drop Verify, Folder Copy Compare), Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
+**Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 51,
+Drop Verify and Folder Copy Compare 3.0 build 50, Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
 Earlier releases are hidden; their notes are in the release notes below.
-**Beta:** **CopyTrust, Drop Verify and Folder Copy Compare 3.0 Build 50** — CopyTrust can send live
-progress (numbers only, never names or paths) to a CopyTrust Monitor on your network, and the Monitor
-shows what is running, when it should finish, and whether anyone is needed. Off until you turn it on.
-Release notes: [RELEASE-NOTES-3.0.md](RELEASE-NOTES-3.0.md).
+**Beta:** **CopyTrust 3.0.1 Build 51** (Drop Verify and Folder Copy Compare stay at 3.0 build 50 for now) — a volume that stops answering
+(a SAN or network share with a stuck lock) no longer freezes CopyTrust or hangs it at launch: it is listed as
+Not responding and everything else keeps working. The user guide and Help gain troubleshooting for a stuck or
+crashed CopyTrust. Release notes: [RELEASE-NOTES-3.0.1.md](RELEASE-NOTES-3.0.1.md). 3.0 added live progress
+(numbers only, never names or paths) to a CopyTrust Monitor on your network; off until you turn it on
+([RELEASE-NOTES-3.0.md](RELEASE-NOTES-3.0.md)).
 
-> **3.0 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
+> **3.0.1 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
 > and it comes with no guarantees.
 

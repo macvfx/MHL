@@ -1,8 +1,8 @@
 # CopyTrust User Guide
 
-Date: 2026-10-17
-Release status: **3.0 build 50**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare share
-one version. What changed in each release is in the release notes and the CHANGELOG.
+Date: 2026-10-19
+Release status: **3.0.1 build 51**, the current beta. Drop Verify and Folder Copy Compare stay at 3.0 build 50
+for now. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
 copied to a drive on location and that drive ingested at the facility, with the folders, files and
@@ -756,6 +756,81 @@ If Card 1's copy failed due to a volume disconnect, Card 2 was not started becau
 2. Check **Settings > Notifications** in CopyTrust — the event type must be toggled on.
 3. Use the **Send Test Notification** button in Settings to verify the system is working.
 4. Focus mode or Do Not Disturb will suppress notifications — check your macOS Focus settings.
+
+### CopyTrust is stuck, or has crashed or hung (including on launch)
+
+This applies when CopyTrust stops responding, quits unexpectedly, or crashes every
+time you open it. It is most often seen after a long unattended session — for
+example, a large many-sources, many-destinations job left open for days.
+
+A common cause is a **shared-storage volume that has stopped answering** — a SAN
+(Xsan or StorNext) volume or a network share that is mounted but stuck. macOS then
+never returns from reading that volume, and any app that touches it appears frozen.
+Diagnostic reports for this case show CopyTrust's main thread waiting inside a
+directory read on the volume, and often other tools stuck on the same volume. If
+other apps or Finder windows on that volume are also frozen, the volume is the
+problem, not CopyTrust. CopyTrust 3.0.1 and later list a volume that does not answer
+within a few seconds as **Not responding** instead of freezing, but a stuck volume
+usually needs the SAN or share restarted, or the Mac restarted.
+
+Work through these in order and stop as soon as CopyTrust launches normally.
+Nothing in steps 1–3 changes your copies, receipts, or manifests.
+
+1. **Restart the Mac first.** Use **Apple menu > Restart**, then open CopyTrust
+   again. A restart clears a hung or half-quit process, stale volume mounts, and
+   system services left in a bad state. In one reported case, a Mac left alone
+   for days with CopyTrust open launched CopyTrust normally again after a
+   restart, even though it had crashed on every launch before.
+2. **Check that nothing is still running.** If you did not restart, open
+   **Activity Monitor**, search for `CopyTrust`, and quit any CopyTrust or
+   CopyTrust Monitor process still listed (select it, then **Quit**; use
+   **Force Quit** only if it does not respond). Then open CopyTrust again.
+3. **Confirm your copies are safe before doing anything else.** Your finished
+   copies are on the destination drives, and the receipt, MHL, and manifest for
+   each completed copy are already written. If a copy was in progress when the
+   problem happened, CopyTrust offers to resume it from its session manifest
+   when you start the same source and destination again (see *Copy was
+   interrupted — can I resume?*). Already-verified files are skipped.
+4. **Find the crash report.** If it still crashes, open **Console** (in
+   `/Applications/Utilities`) and choose **Crash Reports** in the sidebar. Look
+   for the newest `CopyTrust` report, and note its date. Send it with the
+   CopyTrust version and build (**CopyTrust > About CopyTrust**) when asking for
+   help. Crash reports contain stack functions and addresses, not your media
+   paths — see *Crash-report privacy* below.
+5. **If it hangs rather than crashes** (the window opens but never responds),
+   capture what it is doing while it is stuck. In Terminal:
+
+   ```bash
+   sample CopyTrust 5 -file ~/Desktop/CopyTrust-sample.txt
+   ```
+
+   Send `CopyTrust-sample.txt` along with the version and build.
+6. **Test whether saved state is the cause.** If it crashes on every launch and
+   a restart did not help, something CopyTrust saved from the last session may
+   be at fault. Quit CopyTrust, then move one item aside (move it to the
+   Desktop — do not delete it), open CopyTrust, and see whether it launches.
+   Put the item back if it made no difference, and try the next one:
+   1. Saved window state — the CopyTrust folder in
+      `~/Library/Containers/com.copytrust.app/Data/Library/Saved Application State/`.
+   2. Session and queue data — the contents of
+      `~/Library/Application Support/CopyTrust/` (or the same folder inside the
+      app container above). Moving these aside means CopyTrust cannot offer to
+      resume an interrupted copy, so do this only after step 3.
+   3. Settings — `~/Library/Preferences/com.copytrust.app.plist`. Moving this
+      resets CopyTrust to its default settings, including any destinations,
+      presets, and verification choices you changed.
+
+   macOS may refuse access to the app container from Terminal. If so, grant
+   Terminal **Full Disk Access** in **System Settings > Privacy & Security**, or
+   use Finder with **Go > Go to Folder**. If CopyTrust launches after you move a
+   specific item, keep that item and include it when asking for help.
+7. **Rule out CopyTrust Monitor.** If you use the CopyTrust Monitor menu-bar
+   app, quit it and check **System Settings > General > Login Items** to see
+   whether it starts at login. Test CopyTrust with the Monitor not running.
+
+Before a long unattended job, it helps to start from a fresh launch of
+CopyTrust, and to **End Session** when the job finishes rather than leaving the
+app open on the last session for days.
 
 ### The pipeline: what runs when
 
