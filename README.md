@@ -3,9 +3,12 @@
 Five macOS apps and a CLI tool for media integrity and project preparation — create, copy,
 verify, and prove it.
 
-**Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 51,
+**Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 54,
 Drop Verify 3.0.1 build 52, Folder Copy Compare 3.0.1 build 53, Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
 Earlier releases are hidden; their notes are in the release notes below.
+**Beta:** **CopyTrust 3.0.1 Build 54** — no Eject beside a volume that is copying, and a quiet spell during a copy is no
+longer shown as an orange warning: the line stays grey, says Verifying while a file is checked, and adds the time of the
+last update. Release notes: [RELEASE-NOTES-3.0.1-b54.md](RELEASE-NOTES-3.0.1-b54.md).
 **Beta:** **Folder Copy Compare 3.0.1 Build 53** — drop one or two folders on its Dock icon (or on the app in Finder) and
 they load into the Source and Target sides, in either mode, without the window being in front. Release notes:
 [RELEASE-NOTES-FCC-3.0.1.md](RELEASE-NOTES-FCC-3.0.1.md).

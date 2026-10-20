@@ -1,8 +1,8 @@
 # CopyTrust User Guide
 
 Date: 2026-10-19
-Release status: **3.0.1 build 51**, the current beta. Drop Verify and Folder Copy Compare stay at 3.0 build 50
-for now. What changed in each release is in the release notes and the CHANGELOG.
+Release status: **3.0.1 build 54**, the current beta. Drop Verify is at 3.0.1 build 52 and Folder Copy Compare at
+3.0.1 build 53. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
 copied to a drive on location and that drive ingested at the facility, with the folders, files and
@@ -879,10 +879,17 @@ If verification aborts, the abort path now logs the exact stage (source hashing 
 
 ### A quiet verify
 
-Hashing one large file reports nothing until it is done, so a verify says *Verifying <file> · still
-checking this file, 1m 35s* and is only flagged amber after five minutes. A copy that really has gone
-quiet says *Copying <file> · no new data for 1m 35s*. The copy indicator moves, shows the file being
-worked on and says when nothing has moved.
+Hashing one large file reports nothing until it is done, so the line beside the spinner just says
+*Verifying <file>*, however long it is quiet. CopyTrust knows when it is verifying: with inline
+verification a file is reported as copied and then checked, in silence, and a verify phase after the
+copy is the same. A copy that is simply quiet between updates keeps its line, *Copying <file>*, and
+after 30 seconds adds the time of the last update in lighter type, for example *· last update 14:02:11*.
+
+Up to 3.0.1 build 51 a quiet copy turned amber with a warning triangle and *no new data for 1m 35s*.
+That was informational but read as an alarm on a healthy copy, so the line never changes colour now.
+The gap is written to the session log when updates resume (*Copy activity resumed after N s without an
+update*). A copy that has really failed, for example on a volume that went away, is reported by the copy
+itself.
 
 ## Hidden Files
 
@@ -1583,12 +1590,15 @@ all**. A drive that still has no room is skipped again and said so.
 **Volumes** (called Available Volumes before 2.9.8) lists every mounted volume. A volume picked as a
 source or destination stays in the list, marked *Source* or *Destination* with its own button greyed,
 so a card does not seem to vanish. Click a tile to reveal it in Finder. Every drive and network volume
-has an eject icon, and destination rows have **Eject Drive…** in the context menu.
+that can be ejected has an eject icon, and destination rows have **Eject Drive…** in the context menu.
+From 3.0.1 build 54 the icon (and the context-menu item) is **not shown** while the volume is copying
+or verifying, or is a destination of the copy in progress, or has proxies or artifacts still writing to
+it; it comes back when that ends. Before, it was shown and only refused when pressed.
 
 Completed cards also offer **Eject** for any whole volume (auto-eject stays for camera cards).
 
 - A card is **never** ejected while it is being copied or verified, nor a destination during the copy
-  that uses it, nor while proxies or artifacts are still writing to it. This is refused outright.
+  that uses it, nor while proxies or artifacts are still writing to it. Eject is not offered then.
 - Everything else **asks first**, and says why when Eject is pressed: *"X" is selected as a source and
   its copy has not started* (or *did not finish*), a card with fewer verified copies than the minimum,
   or a card with warnings. A card short of the preferred copies because of space says so and is not
