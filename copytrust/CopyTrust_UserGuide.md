@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-10-19
-Release status: **3.0.1 build 54**, the current beta. Drop Verify is at 3.0.1 build 52 and Folder Copy Compare at
+Release status: **3.0.1 build 58**, the current beta. Drop Verify is at 3.0.1 build 52 and Folder Copy Compare at
 3.0.1 build 53. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
@@ -905,18 +905,16 @@ Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Excl
 |---|---|---|
 | **Receipts & Manifests** | `.mhl` manifests (two rows: any, or only ours), `receipt_`, `Receipts`, `CopyTrust_Receipts`, `Drop Verify_Receipts` | Off |
 | **Proxies** | `CopyTrust_Proxies`, `Final Cut Proxy Media` | Off |
-| **System** | `.DS_Store`, `Thumbs.db`, `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (NAS), `System Volume Information` (Windows) | On |
+| **System** | `.DS_Store`, `Thumbs.db`, `.Spotlight-V100`, `.fseventsd`, `.DocumentRevisions-V100`, `.TemporaryItems`, `.Trashes`, `__MACOSX`, `@eaDir` (NAS), `System Volume Information` (Windows) | On Off |
 | **Camera Card** | `THMBNL`, `MISC`, `BACKUP`, `CLIPINF`, `.THM`, `.LRV`, `.SCR`, `.db`, `.Db` | Off |
 | **Custom** | Anything you add | As you set it |
 
 `.DS_Store` and `Thumbs.db` moved to **System** because that is what they are — metadata no app copies — and they had been sitting beside a camera card's manifest, which is evidence. Your existing checkbox states are carried across unchanged; only the heading a row appears under has moved. Drop Verify uses the same group names.
 
-Defaults, in **both** modes as of **2.7.6**:
-- **One row starts on: `Final Cut Relink Aliases`.** It holds Finder aliases to proxies on the drive they were made on, so a copy to another volume would carry links to a drive that is no longer there. The facility writes its own. Untick it to carry them. It is not evidence and nothing in it is lost.
-- **Nothing that could be evidence is excluded unless you ask.** All eight rows — the two MHL rows, `receipt_`, `Receipts`, `CopyTrust_Receipts`, `Drop Verify_Receipts`, `CopyTrust_Proxies` and `Final Cut Proxy Media` — start **unchecked**. They are offered, not imposed. `Receipts` is the eighth, added in 2.7.7 with the folder rename, and it arrives switched off on every installation.
-- **System patterns start enabled** — macOS's own metadata, not your files.
-- **Camera Card patterns start disabled**, and any you enable are named in a mandatory pre-run warning.
-- Upgrading keeps your saved checkbox states, with one exception described below.
+Defaults as of **3.0.1 build 56**: **Card mode starts with no row on. Folder mode starts with only the System group on** (`.DS_Store`, `Thumbs.db`, `.Spotlight-V100` and the rest, which are the Mac's and Windows' own metadata). Receipts & Manifests, Proxies, Camera Card and `Final Cut Relink Aliases` start **unchecked** in both modes, so a copy carries everything but that metadata unless you choose to leave something out. This was changed at an operator's decision: an exclusion omits files without a message, and the earlier defaults had skipped proxy folders a facility wanted. Before build 56, `Final Cut Relink Aliases` started on in both modes and System started on in Card mode too.
+- `Final Cut Relink Aliases` holds Finder aliases to proxies on the drive they were made on, so a copy to another volume carries links to a drive that is no longer there. Tick it if you do not want them; nothing in it is lost.
+- Camera Card patterns that you enable are named in a mandatory pre-run warning.
+- **Upgrading keeps your saved checkbox states, and so does loading an operator preset**: a preset applies the exclusions it was saved with. A preset saved before build 56 may switch rows on. To clear them, load the preset, untick the rows in Settings, and save the preset again, or use **Preset ▸ Unload** with **Reset Settings to Defaults** and build the preset again with **Preset ▸ Build a Preset…**.
 
 **Two manifest rows, and they mean opposite things.** *Any MHL manifest — including one another tool wrote* skips every `.mhl`. *MHL manifests written by CopyTrust, Drop Verify or mhl-tool* skips only ours, matched on the filename this suite writes. Use the second if you want a re-copy to leave a stale CopyTrust manifest behind while still carrying the manifest ShotPut, Hedge, OffShoot or the camera wrote — that one is often the only record of what a source held.
 
@@ -1585,6 +1583,16 @@ A card owed to a drive can be copied there later, with the same folder name, lea
 alone: **Copy to N missing** on the completed card, **Top up** per row in the copy map, or **Top up
 all**. A drive that still has no room is skipped again and said so.
 
+### Reading a finished card
+
+Each finished card in **Completed This Run** reads **Card 1 · name** with a verdict beneath it. A green
+thumbs-up and **copied & verified** means the copy and its check passed with nothing outstanding, so the card
+is ready to eject. An orange triangle and **copied — check before ejecting** means something needs a look, and
+the first reason is written beneath it (with *+N more* if there are several): verification did not pass, fewer
+verified copies than the minimum, an MHL missing after Inline or Full verification, a report that could not be
+written, or a card not yet archived to P5. At **Quick** verification no MHL is written, and that is not a
+warning. Session Health in the Review Summary agrees with the card; both are green for a clean copy.
+
 ### Volumes and ejecting
 
 **Volumes** (called Available Volumes before 2.9.8) lists every mounted volume. A volume picked as a
@@ -1830,6 +1838,7 @@ The **Preset** menu sits next to the Card / Folder picker in the bottom action b
 
 | Action | What it does |
 |---|---|
+| Build a Preset… | Steps through an ordinary preset, with no naming convention enforced: name and starting mode, how a copy is checked, reports made afterwards, proxies, what is left out, how delivered folders are named, who is told, and (optionally) the destinations staged now. Starts from the factory defaults, or from this Mac's current settings if you switch that on. Card and Folder settings are set separately. The last step reads it back, and Save Preset saves and loads it |
 | Build an Enforced Naming Preset… | Opens the wizard: the naming convention, what each destination is for, the P5 server, and this Mac's current copy settings |
 | Edit "…"… | Reopens the wizard on the loaded preset and saves over it rather than leaving a second copy. Your own presets only |
 | Destination Sets | The saved destination sets, kept in this menu rather than in the toolbar |
@@ -1840,12 +1849,15 @@ The **Preset** menu sits next to the Card / Folder picker in the bottom action b
 | Save Current Settings as Preset… | Captures the current Card and Folder settings under a new name |
 | Load / Reload | Replaces both mode profiles and the shared settings with the preset's, and stages its destinations |
 | Update … from Current Settings | Re-captures the loaded preset in place, keeping its name and identity |
+| Unload "…"… | Lets go of the loaded preset: its name, naming rules and destination check stop applying and nothing reloads it at launch. Choose **Keep** to leave verification, exclusions, proxies and notifications as they are, or **Reset to Defaults** to start a different preset from a clean start. The preset file is not deleted. Not shown under a managed (enforced or seeded) policy |
 | Rename… / Delete | Your own presets only |
 | Duplicate as My Preset… | Makes your own editable copy of a shared preset |
 
 The menu label shows the loaded preset's name. A **dot (•)** after the name means settings
 have changed since it was loaded — choose *Update…* to keep those changes, or *Load* again
 to discard them.
+
+**Starting a different preset.** Moving a preset's file out of the presets folder does not stop it applying: its naming rules, destination check and name are held in settings, not read from the file. Use **Preset ▸ Unload "…"** instead. For an ordinary preset use **Preset ▸ Build a Preset…**: unload the old preset first (Reset to Defaults if you want a clean start), then step through the builder, which starts from the factory defaults. The wizard under *Build an Enforced Naming Preset…* is for a naming convention.
 
 **Under an enforced preset the menu is shorter, and the button carries a lock.** Where a facility
 has locked a preset in, Build, Edit, Import, Save, Update, Load, Rename, Delete and Duplicate are

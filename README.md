@@ -3,24 +3,12 @@
 Five macOS apps and a CLI tool for media integrity and project preparation — create, copy,
 verify, and prove it.
 
-**Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 54,
+**Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 58,
 Drop Verify 3.0.1 build 52, Folder Copy Compare 3.0.1 build 53, Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
 Earlier releases are hidden; their notes are in the release notes below.
-**Beta:** **CopyTrust 3.0.1 Build 54** — no Eject beside a volume that is copying, and a quiet spell during a copy is no
-longer shown as an orange warning: the line stays grey, says Verifying while a file is checked, and adds the time of the
-last update. Release notes: [RELEASE-NOTES-3.0.1-b54.md](RELEASE-NOTES-3.0.1-b54.md).
-**Beta:** **Folder Copy Compare 3.0.1 Build 53** — drop one or two folders on its Dock icon (or on the app in Finder) and
-they load into the Source and Target sides, in either mode, without the window being in front. Release notes:
-[RELEASE-NOTES-FCC-3.0.1.md](RELEASE-NOTES-FCC-3.0.1.md).
-**Beta:** **Drop Verify 3.0.1 Build 52** — a push to your phone (Pushover) or a JSON webhook when a folder has been
-processed or Drop Verify stops before finishing: a fixed sentence and counts, never a name or a path. Off until you turn
-it on. Release notes: [RELEASE-NOTES-DV-3.0.1.md](RELEASE-NOTES-DV-3.0.1.md).
-**Beta:** **CopyTrust 3.0.1 Build 51** — a volume that stops answering
-(a SAN or network share with a stuck lock) no longer freezes CopyTrust or hangs it at launch: it is listed as
-Not responding and everything else keeps working. The user guide and Help gain troubleshooting for a stuck or
-crashed CopyTrust. Release notes: [RELEASE-NOTES-3.0.1.md](RELEASE-NOTES-3.0.1.md). 3.0 added live progress
-(numbers only, never names or paths) to a CopyTrust Monitor on your network; off until you turn it on
-([RELEASE-NOTES-3.0.md](RELEASE-NOTES-3.0.md)).
+**Beta:** **CopyTrust 3.0.1 Build 58** — **Preset ▸ Build a Preset…** steps through an ordinary preset (no naming convention), **Preset ▸ Unload** lets go of a loaded preset, almost nothing is excluded by default (Folder mode keeps only system metadata), and a clean copy is no longer marked "check before ejecting". Release notes: [RELEASE-NOTES-3.0.1-b58.md](RELEASE-NOTES-3.0.1-b58.md).
+
+Earlier: **CopyTrust 3.0.1 Build 54** — no Eject beside a volume that is copying, and a quiet spell during a copy is no longer shown as an orange warning. Release notes: [RELEASE-NOTES-3.0.1-b54.md](RELEASE-NOTES-3.0.1-b54.md).
 
 > **3.0.1 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
