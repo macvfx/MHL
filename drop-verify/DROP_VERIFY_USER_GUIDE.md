@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v3.0.1 (Build 52 beta)**. CopyTrust is at 3.0.1 build 59 and Folder Copy Compare at 3.0.1 build 53. Version history is in the release notes.
+Current app version: **v3.0.1 (Build 60 beta)**. Drop Verify is released together with CopyTrust and Folder Copy Compare, which carry the same build. Build 60 changes its exclusion defaults (see Exclusions). Version history is in the release notes.
 
 ## External Codec Setup
 
@@ -219,8 +219,11 @@ Encoding is much slower than the other artifacts, which is why it is off by defa
 Drop Verify excludes:
 
 - hidden files by default
-- generated receipt/artifact folders
+- the **System** group by default (`.DS_Store`, `Thumbs.db`)
+- anything else only if you tick it: from build 60 the Receipts & Manifests rows (`Receipts`, `Drop Verify_Receipts`, `CopyTrust_Receipts`, any `.mhl`, `contactsheet_`, `dropverify_`) start **unchecked**, like CopyTrust's
 - built-in or custom patterns enabled in Drop Verify Settings
+
+**Note.** With those rows unchecked, verifying the same folder a second time hashes Drop Verify's own earlier `Receipts` folder and `.mhl`, and a manifest another tool wrote is hashed too. Tick the Receipts & Manifests rows if you want a re-verify to ignore Drop Verify's own output. A saved list keeps what it had, so this changes fresh installs and resets only.
 
 Use the `Exclusions` tab in Settings to add or remove patterns. Every visible checkbox is respected: checked patterns are skipped, unchecked patterns remain included.
 

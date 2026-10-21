@@ -1,8 +1,8 @@
 # CopyTrust User Guide
 
 Date: 2026-10-19
-Release status: **3.0.1 build 59**, the current beta. Drop Verify is at 3.0.1 build 52 and Folder Copy Compare at
-3.0.1 build 53. What changed in each release is in the release notes and the CHANGELOG.
+Release status: **3.0.1 build 60**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
+carry the same version and build. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
 copied to a drive on location and that drive ingested at the facility, with the folders, files and
@@ -893,7 +893,7 @@ itself.
 
 ## Hidden Files
 
-Settings → Card Copy (or Folder Copy) → Hidden Files → **Skip hidden files and folders** controls whether dot-prefixed files and directories (e.g. `.git`, `.ssh`, `.Trash`) are included in copies. Enabled by default. Card and Folder modes store this setting independently.
+Settings → Card Copy (or Folder Copy) → Hidden Files → **Skip hidden files and folders** controls whether dot-prefixed files and directories (e.g. `.git`, `.ssh`, `.Trash`) are included in copies. **Off by default from build 60** (hidden files are copied unless you turn this on): it dropped files without saying so, `.DS_Store` included. A Mac that already has a saved setting keeps it. Card and Folder modes store this setting independently.
 
 ## Exclusions (Card and Folder)
 
@@ -1585,7 +1585,7 @@ all**. A drive that still has no room is skipped again and said so.
 
 ### Reading a finished card
 
-Each finished card in **Completed This Run** reads **Card 1 · name** with a verdict beneath it. A green
+Each finished card in **Completed This Run** reads **Card 1 · name** (**Folder 1 · name** in Folder mode) with a verdict beneath it. A green
 thumbs-up and **copied & verified** means the copy and its check passed with nothing outstanding, so the card
 is ready to eject. An orange triangle and **copied — check before ejecting** means something needs a look, and
 the first reason is written beneath it (with *+N more* if there are several): verification did not pass, fewer
@@ -1782,7 +1782,7 @@ mode, and a destination added in that mode arrives unticked.
 |---------|------|--------|
 | Subfolder naming | `{alias}_{date}` | `{alias}` |
 | Preserve original folder names | On | On |
-| Skip hidden files | On | On |
+| Skip hidden files | Off (build 60; was On) | Off (build 60; was On) |
 | System exclusions | Off (fresh profiles, v2.5.0 b2) | On |
 | Receipts, manifest and proxy exclusions | Off | Off — all eight rows offered and unticked (2.7.6) |
 | Camera card exclusions | Optional, default off | Optional, default off |
@@ -1856,6 +1856,8 @@ The **Preset** menu sits next to the Card / Folder picker in the bottom action b
 The menu label shows the loaded preset's name. A **dot (•)** after the name means settings
 have changed since it was loaded — choose *Update…* to keep those changes, or *Load* again
 to discard them.
+
+**A folder dropped while a naming convention is loaded.** In Card mode an enforcing preset asks every new source for a project, unit and roll. If what you dropped is a plain folder rather than a camera card, the naming sheet says so and offers **Switch to Folder Mode**, which keeps the source and copies it as it is. Pressing Escape or Cancel on the sheet takes the source out again; the session log records which of the two happened (`namingAtAdd decision=…`).
 
 **Starting a different preset.** Moving a preset's file out of the presets folder does not stop it applying: its naming rules, destination check and name are held in settings, not read from the file. Use **Preset ▸ Unload "…"** instead. For an ordinary preset use **Preset ▸ Build a Preset…**: unload the old preset first (Reset to Defaults if you want a clean start), then step through the builder, which starts from the factory defaults. The wizard under *Build an Enforced Naming Preset…* is for a naming convention.
 

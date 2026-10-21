@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v3.0.1 (Build 52 beta)**. CopyTrust is at 3.0.1 build 59 and Folder Copy Compare at 3.0.1 build 53. Version history is in the release notes.
+Current app version: **v3.0.1 (Build 60 beta)**. Drop Verify is released together with CopyTrust and Folder Copy Compare, which carry the same build. Build 60 changes its exclusion defaults (below). Version history is in the release notes.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
@@ -128,7 +128,7 @@ At least one output must be selected. If all outputs are off, Drop Verify stops 
 
 ## Exclusions
 
-Drop Verify applies only the exclusion checkboxes that are enabled in `Settings > Exclusions`. Built-in generated-artifact patterns such as `Drop Verify_Receipts`, `CopyTrust_Receipts`, contact sheets, generated MHLs, and Drop Verify reports are enabled by default so a later run does not treat prior outputs as source media.
+Drop Verify applies only the exclusion checkboxes that are enabled in `Settings > Exclusions`. From build 60 the built-in generated-artifact rows (`Receipts`, `Drop Verify_Receipts`, `CopyTrust_Receipts`, any `.mhl`, `contactsheet_`, `dropverify_`) are offered but **unchecked**, as in CopyTrust, so a verify never skips a file you did not ask it to skip; only the System group (`.DS_Store`, `Thumbs.db`) is on. Consequence: a later verify of the same folder hashes Drop Verify's own earlier output unless you tick those rows. A saved list keeps what it had.
 
 The Camera Card group is available for operators who intentionally want to skip common camera-side metadata or proxy folders/files. These patterns are disabled by default and are not silently forced on. If `THMBNL` is unchecked, matching folders remain in the MHL inventory; if it is checked, the complete folder is skipped. Because that can remove original card structure, Drop Verify shows a mandatory pre-run confirmation naming every active Camera Card pattern, plus persistent Settings/Run Status warnings and a session-log warning. Cancelling creates no hashes or MHL. Existing saved settings are migrated additively without changing earlier checkbox choices.
 

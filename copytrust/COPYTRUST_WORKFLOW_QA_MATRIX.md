@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-22
-Applies to: CopyTrust 3.0.1 build 59. Sections A to K were written for 2.7 and re-checked since; a failure
+Applies to: CopyTrust 3.0.1 build 60. Sections A to K were written for 2.7 and re-checked since; a failure
 in them is a regression in something long settled.
 Sections L to N were added 14 Oct 2026 for the 2.9.8 field-test work; section O (the Monitor Hub and live
 progress) was added 17 Oct 2026 for 3.0.
@@ -358,6 +358,13 @@ were never published separately, so test them as one: build 58 onward carries al
 | P18 | Duplicate name refused | Open the builder again and type the same name. | A warning appears and **Next** and **Save Preset** are disabled. |
 | P19 | Destinations toggle | With two destinations staged, open the builder. | A *Destinations* page offers to include them; leaving it off saves a settings-only preset; turning it on and reloading stages them again. |
 | P20 | Enforced builder unchanged | **Build an Enforced Naming Preset…** | Opens the same wizard as before and builds an enforced preset. |
+| P21 | Folder under enforced naming: switch | With an enforced naming preset in **Card** mode, drop a plain folder (not a camera card) as a source. | The naming sheet shows *This looks like a folder, not a camera card…* and **Switch to Folder Mode**. Pressing it closes the sheet, the mode becomes Folder, and the source is still staged. The log has `namingAtAdd decision=switchToFolderMode … sourceKept=yes` and a `copyMode switch from=card to=folder` line. |
+| P22 | Cancel is logged | Drop a folder as in P21, press Escape. | The source is removed, and the log says `namingAtAdd cancelled … decision=removed`. A real camera card shows no folder note. |
+| P23 | Mode change releases waiting sources | Drop two sources under enforced naming, but do not answer the sheet (use *Switch to Folder Mode* on the first). | Neither source is removed. Nothing is left waiting for a name. The log shows `released by switch to Folder mode`. |
+| P24 | Folder wording | Folder mode: copy two folders. | The progress reads *Folder 1 of 2*, the banner *Folder 1 · name*, the menu bar *1 of 2 folders done*. Card mode still says *Card*. |
+| P25 | Hidden files default | CopyTrust on default settings, both modes: Settings ▸ Hidden Files. Copy a folder holding `.hidden_note.txt`. | *Skip hidden files* is off in both modes and the dot-file arrives. A Mac with a saved setting keeps it. |
+| P26 | Drop Verify defaults | Drop Verify on default settings: Settings ▸ Exclusions. | Only the System group is checked; Receipts & Manifests, Media Files and Camera Card are unchecked. Verify a folder that holds a ShotPut `.mhl`: it is in the inventory. |
+| P27 | Drop Verify second run | Verify a delivery twice with defaults, then again with the Receipts & Manifests rows ticked. | The second default run lists Drop Verify's own `Receipts` files and `.mhl`; with the rows ticked it does not. (This is the accepted consequence of the new defaults.) |
 
 ## Ship Decision
 

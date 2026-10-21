@@ -1,6 +1,6 @@
 # Folder Copy Compare User Guide
 
-Current version: **v3.0.1 (Build 53 beta)**. CopyTrust is at 3.0.1 build 59 and Drop Verify at 3.0.1 build 52. Folder Copy Compare's one change since 2.8.2 is dropping folders on the Dock icon.
+Current version: **v3.0.1 (Build 60 beta)**, released together with CopyTrust and Drop Verify, which carry the same build. Changes since 2.8.2: dropping folders on the Dock icon, and (build 60) Favourites with a quiet recheck and history.
 Version history is in the release notes.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
@@ -60,13 +60,19 @@ Use Compare when you want a complete answer. Use Subfolder Check when you want a
 4. Click **Compare All**.
 5. Review the merged results table showing status across all three locations.
 
-### Saving and loading profiles
+### Favourites: saving, rechecking and history
 
-1. Set up a comparison (with or without a reference folder) and run it.
-2. Click the **Save as Profile** button (bookmark with plus icon) next to the mode picker.
-3. Give it a name and save.
-4. To reload later: open the profile drawer (bookmark toggle), click **Load** on the saved profile.
-5. To watch for drift: click the **eye icon** on any profile. You'll receive a macOS notification when files change.
+Saved comparisons are called **Favourites** (they were Saved Profiles, with a bookmark icon; existing ones carry over unchanged).
+
+1. Set up a comparison (with or without a reference folder).
+2. Click the **save** button next to the mode picker (**Add to Favourites**), name it and save.
+3. Open the list with the **star** button next to it. A red dot on the star means a favourite has drifted.
+4. **Recheck** (the circular arrow on a row) scans both folders quietly, with the pair's own Quick or Full mode, and records what it found: *Identical*, or a count of what is different or only on one side. It does not open the pair, and it can be cancelled. **Recheck All** does every favourite in turn.
+5. Click **History** on a row to see the last 25 checks for that pair: date, mode and result. History holds counts only, no file names or paths. **Clear history** empties it for that pair.
+6. **Load** opens the pair in the main window, as before, for the full table and for a reference (three-way) folder. A quiet recheck compares source and target only.
+7. To watch for drift: click the **eye icon** on a favourite. You'll receive a macOS notification when files change. A recheck that runs clears the drift flag; one that could not run (a folder not mounted) says why and leaves it.
+
+A date-only difference (same size, different modification date, usual in Quick mode between file systems) is shown but does not make a pair count as different.
 
 ## Scan Modes
 
