@@ -56,8 +56,8 @@ automated tests at production media or an irreplaceable camera card.
 
 | ID | Check | Procedure | Expected evidence |
 |---|---|---|---|
-| A1 | Card defaults | Select Card mode and open Settings. | Inline verification, Card naming, Card exclusion profile, contact sheet and configured Card post-copy actions are shown. |
-| A2 | Folder defaults | Select Folder mode and open Settings. | Folder profile remains independent; Quick is the default unless deliberately changed. |
+| A1 | Card defaults | Select Card mode and open Settings. | Inline verification, Card naming, contact sheet and configured Card post-copy actions are shown. Settings ▸ Exclusions has **no row checked** (build 56). |
+| A2 | Folder defaults | Select Folder mode and open Settings. | Folder profile remains independent; Quick is the default unless deliberately changed. Settings ▸ Exclusions has **only the System group checked**; Receipts & Manifests, Proxies and Camera Card are unchecked (build 56). |
 | A3 | Mode isolation | Change one Card-only setting, switch to Folder, then return. | Folder is unchanged and Card retains the change. |
 | A4 | Confirmation enabled | Start a prepared fixture session. | Confirmation names Card/Folder, verification, sorting, contact-sheet split, enabled artifacts, and a dedicated Proxy line. |
 | A5 | Proxy off clarity | Disable proxy media and start. | Confirmation and log say `Proxy: Off` / `proxy=off`; absence is explicit. |
@@ -331,6 +331,34 @@ switched on. Nothing sent may contain a card, project, drive or folder name or a
 | O10 | Two stations | Two CopyTrust Macs, same hub. | Separate cards. Same name on both: a short ID suffix appears on the wallboard. Forget Station removes a retired one. |
 | O11 | Content check | Capture the traffic or read the hub's status JSON. | Numbers and fixed words only. No names, paths, volume names, URL secret or observed network address. |
 
+## P. Builds 55 to 58 (field test 20 Oct 2026)
+
+Use a Mac with default settings (or **Preset ▸ Unload ▸ Reset Settings to Defaults**) unless a row says otherwise. Builds 55 to 57
+were never published separately, so test them as one: build 58 carries all of them.
+
+| ID | Check | Procedure | Expected evidence |
+|---|---|---|---|
+| P1 | Clean Quick copy is green | Two cards, verification **Quick**, to one destination, to completion. | Completed This Run shows a green thumbs-up and **copied & verified** on both; no orange triangle. Review Summary says Clean and MHL Files says *no MHL*. Each card's trust status reads **Ready to eject**. |
+| P2 | Inline and Full still write an MHL | Repeat P1 with **Inline**, then **Full**. | An MHL is written and listed; both cards stay green. |
+| P3 | A real problem still turns amber | Make a card need a look (verification fails, or delete the MHL after an Inline copy and reopen the summary, or use fewer verified copies than the minimum). | Orange triangle and **copied — check before ejecting**, with the first reason in small grey text beneath (and *+N more* when there are several). Not green. |
+| P4 | Card exclusions all off | Settings ▸ Exclusions in **Card** mode on default settings. | No row is checked in any group, including System and *Final Cut Relink Aliases*. |
+| P5 | Folder exclusions: System only | Same in **Folder** mode. | Only the System group is checked. Receipts & Manifests, Proxies, Camera Card and *Final Cut Relink Aliases* are unchecked. |
+| P6 | A proxy folder is copied | Folder mode: copy a folder holding `Final Cut Proxy Media/<date>/clip.mov`, `CopyTrust_Proxies/clip.mov` and a `.DS_Store`. | Both proxy folders arrive with their files. The `.DS_Store` does not (System is on in Folder mode). The log line `performCopy exclusions … active=[…]` names no proxy folder. |
+| P7 | Card mode copies everything | Card mode: the same tree. | Everything arrives, `.DS_Store` included. |
+| P8 | A loaded preset brings its exclusions | Load a preset saved before build 56 (or one with rows ticked). Open Settings ▸ Exclusions. | The rows it was saved with are checked. Untick them, **Update … from Current Settings**, reload: they stay unchecked. |
+| P9 | Unload, keep settings | Load a preset, then **Preset ▸ Unload ▸ Unload and Keep Current Settings**. | Toolbar reads *Preset*; Settings ▸ Enforced Naming says Off; verification, exclusions, proxies and notifications are as they were. Destinations already staged stay. |
+| P10 | Unload, reset | Load a preset with non-default settings, then **Unload and Reset Settings to Defaults**. | Both modes return to the defaults (P4 and P5 hold). The preset file is still in the presets folder. The operator name and P5 server are unchanged. |
+| P11 | Unload survives a relaunch | After P9 or P10, quit and reopen. | The preset does not come back: no name in the toolbar, no enforced naming, no destination check, no mount requests for its volumes. |
+| P12 | Moving the file is not enough | Load a preset, move its `.json` out of the presets folder, relaunch. | Its naming rules are still in force (this is why Unload exists). Unload now clears them. |
+| P13 | No Unload under a policy | On a Mac with a managed or enforced policy. | **Unload** is not in the menu. |
+| P14 | Build a Preset: walk through | **Preset ▸ Build a Preset…**; step through every page in both Card and Folder (the *Settings for* switch), then read the summary. | Nine pages (eight without staged destinations); each reads back correctly on the last page; Back keeps what was set. |
+| P15 | The builder starts clean | Load a preset that has exclusions and a naming template, **Unload (keep)**, then open the builder with *Start from this Mac's current settings* **off**. | The draft shows the factory defaults: no exclusions on in Card, System only in Folder, default naming. Nothing on this Mac changed before Save. |
+| P16 | Start from this Mac | Turn the switch **on**. | The draft copies what Settings shows now. No naming convention, P5 server or destinations are carried. |
+| P17 | Save loads it | **Save Preset**. | The preset is in *My Presets*, is loaded (name in the toolbar, no • until something changes), and Settings matches the summary. Enforced Naming says Off. |
+| P18 | Duplicate name refused | Open the builder again and type the same name. | A warning appears and **Next** and **Save Preset** are disabled. |
+| P19 | Destinations toggle | With two destinations staged, open the builder. | A *Destinations* page offers to include them; leaving it off saves a settings-only preset; turning it on and reloading stages them again. |
+| P20 | Enforced builder unchanged | **Build an Enforced Naming Preset…** | Opens the same wizard as before and builds an enforced preset. |
+
 ## Ship Decision
 
 Do not call the workflow ready if:
@@ -343,6 +371,9 @@ Do not call the workflow ready if:
   an unattended queue (section L);
 - a remote notification or a live status update carries a name or a path (sections N and O);
 - a station is reported Finished while a card is unstarted, stopped or unnamed (section O);
+- a clean copy is shown amber, or a card that needs a look is shown green (section P1 to P3);
+- a default copy leaves out a proxy, receipt or manifest folder without the operator having ticked it (section P4 to P7);
+- an unloaded preset comes back after a relaunch (section P11);
 - a CSV value is credited to the wrong tool, or a date is shown without its clock (section M);
 - P5 accepts a Quick/copy-only job, a source-deleting plan, or an incomplete hash;
 - P5 job/metadata cannot be confirmed in its own web GUI;

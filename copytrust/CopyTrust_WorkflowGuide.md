@@ -79,6 +79,7 @@ The **Preset** menu beside the mode picker saves your Card **and** Folder settin
 
 | Action | Effect |
 |--------|--------|
+| Build a Preset… | Steps through an ordinary preset with no naming convention: how a copy is checked, reports, proxies, what is left out, folder names, notifications and, if you want, the staged destinations. Starts from the defaults |
 | Build an Enforced Naming Preset… | Opens the wizard: the naming convention, what each destination is for, the P5 server, and the current copy settings |
 | Edit "…"… | Reopens the wizard on the loaded preset and saves over it. Your own presets only |
 | Destination Sets | The saved destination sets, kept here rather than in the toolbar |
@@ -87,6 +88,7 @@ The **Preset** menu beside the mode picker saves your Card **and** Folder settin
 | Save Report… | The naming decisions in RTF, CSV or Markdown — or all three plus the preset `.json`, into one folder |
 | Save Current Settings as Preset… | Captures both mode profiles plus shared settings (confirm-before-copy, external codecs, ExifTool, codec extension lists, receipt export, notifications) |
 | Load / Reload | Restores all of the above and stages the destinations; a dot (•) on the menu label means settings have drifted since loading |
+| Unload "…"… | Lets go of the loaded preset (its name, naming rules and destination check). Keep the current settings or reset them to the defaults. The file is kept. Not shown under a managed policy |
 | Update … from Current Settings | Re-captures in place, keeping the preset's name and identity |
 | Rename… / Delete | Your own presets only |
 | Duplicate as My Preset… | Makes an editable copy of a read-only shared preset |

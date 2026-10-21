@@ -349,8 +349,9 @@ are the history:
 proxy receipt from the field is found, the facility's proxies go in a separate `Proxies <date>`
 folder inside the proxy folder. Where the preset sets a pooled proxy path, field proxies sit in the
 project beside the delivered folder and are not part of what is staged, so the facility simply makes
-its own. The field's `Final Cut Relink Aliases` folder is left out of the copy by default, because
-its aliases point at the drive, and the facility writes its own.
+its own. The field's `Final Cut Relink Aliases` folder is copied like any other folder (from build 56 no
+exclusion starts on). Its aliases point at the drive they were made on, so tick the *Final Cut
+Relink Aliases* row in Settings ▸ Exclusions if the facility writes its own and does not want them.
 
 *Confirm:* the folder root will hold **two** `.mhl` files. Third-party tools that read every `.mhl`
 in a folder will see both, and the older one lists the same files. If that is a problem for a
