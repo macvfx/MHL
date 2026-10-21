@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-10-19
-Release status: **3.0.1 build 58**, the current beta. Drop Verify is at 3.0.1 build 52 and Folder Copy Compare at
+Release status: **3.0.1 build 59**, the current beta. Drop Verify is at 3.0.1 build 52 and Folder Copy Compare at
 3.0.1 build 53. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card

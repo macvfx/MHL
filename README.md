@@ -3,10 +3,12 @@
 Five macOS apps and a CLI tool for media integrity and project preparation — create, copy,
 verify, and prove it.
 
-**Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 58,
+**Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 59,
 Drop Verify 3.0.1 build 52, Folder Copy Compare 3.0.1 build 53, Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
 Earlier releases are hidden; their notes are in the release notes below.
-**Beta:** **CopyTrust 3.0.1 Build 58** — **Preset ▸ Build a Preset…** steps through an ordinary preset (no naming convention), **Preset ▸ Unload** lets go of a loaded preset, almost nothing is excluded by default (Folder mode keeps only system metadata), and a clean copy is no longer marked "check before ejecting". Release notes: [RELEASE-NOTES-3.0.1-b58.md](RELEASE-NOTES-3.0.1-b58.md).
+**Beta:** **CopyTrust 3.0.1 Build 59** — the in-app Help is corrected: it now says that Card mode starts with no exclusion on and Folder mode with only system metadata, and describes Build a Preset and Unload. No behaviour change. Release notes: [RELEASE-NOTES-3.0.1-b59.md](RELEASE-NOTES-3.0.1-b59.md).
+
+Earlier: **CopyTrust 3.0.1 Build 58** — **Preset ▸ Build a Preset…** steps through an ordinary preset (no naming convention), **Preset ▸ Unload** lets go of a loaded preset, almost nothing is excluded by default (Folder mode keeps only system metadata), and a clean copy is no longer marked "check before ejecting". Release notes: [RELEASE-NOTES-3.0.1-b58.md](RELEASE-NOTES-3.0.1-b58.md).
 
 Earlier: **CopyTrust 3.0.1 Build 54** — no Eject beside a volume that is copying, and a quiet spell during a copy is no longer shown as an orange warning. Release notes: [RELEASE-NOTES-3.0.1-b54.md](RELEASE-NOTES-3.0.1-b54.md).
 

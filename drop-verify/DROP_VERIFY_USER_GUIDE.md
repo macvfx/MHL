@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v3.0.1 (Build 52 beta)**. CopyTrust is at 3.0.1 build 58 and Folder Copy Compare at 3.0.1 build 53. Version history is in the release notes.
+Current app version: **v3.0.1 (Build 52 beta)**. CopyTrust is at 3.0.1 build 59 and Folder Copy Compare at 3.0.1 build 53. Version history is in the release notes.
 
 ## External Codec Setup
 
