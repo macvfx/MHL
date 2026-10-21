@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-22
-Applies to: CopyTrust 3.0.1 build 60. Sections A to K were written for 2.7 and re-checked since; a failure
+Applies to: CopyTrust 3.0.2 build 63. Sections A to K were written for 2.7 and re-checked since; a failure
 in them is a regression in something long settled.
 Sections L to N were added 14 Oct 2026 for the 2.9.8 field-test work; section O (the Monitor Hub and live
 progress) was added 17 Oct 2026 for 3.0.
@@ -365,6 +365,28 @@ were never published separately, so test them as one: build 58 onward carries al
 | P25 | Hidden files default | CopyTrust on default settings, both modes: Settings ▸ Hidden Files. Copy a folder holding `.hidden_note.txt`. | *Skip hidden files* is off in both modes and the dot-file arrives. A Mac with a saved setting keeps it. |
 | P26 | Drop Verify defaults | Drop Verify on default settings: Settings ▸ Exclusions. | Only the System group is checked; Receipts & Manifests, Media Files and Camera Card are unchecked. Verify a folder that holds a ShotPut `.mhl`: it is in the inventory. |
 | P27 | Drop Verify second run | Verify a delivery twice with defaults, then again with the Receipts & Manifests rows ticked. | The second default run lists Drop Verify's own `Receipts` files and `.mhl`; with the rows ticked it does not. (This is the accepted consequence of the new defaults.) |
+| P28 | Power in the log | On a laptop, start CopyTrust plugged in, then unplug it, then plug it in. Read the session log. | `power state source=ac …` at launch, `power changed from[source=ac …] to[source=battery …]` on unplugging (with `timeToEmpty` once macOS has one), and `power changed` again on plugging in. |
+| P29 | Chip and banner | On battery, stage a card and a destination. | The bottom bar shows a battery chip with the charge and macOS's time left (grey). The banner above the destinations does **not** appear unless the queue is tight or will not fit (orange or red). Plugged in: a plug chip with the percentage, no banner. A desktop Mac: neither. Clicking the chip opens the detail. |
+| P30 | Estimate against the queue | On battery at about 40% with a queue that needs longer than the charge, start the copy. | The banner turns orange or red with the needed time and the usable time, and the log has `power atCopyStart … advice[…]` and one `power WARNING`. |
+| P31 | Heartbeat | Leave a copy running for over five minutes. | A `power heartbeat` line every five minutes with `remaining=` and `runETA=`. |
+| P32 | Held at 80% | On a laptop held at 80% on AC (Optimized Battery Charging), copy for a while. | No banner and no warning: not charging at 80% on AC is normal. |
+| P33 | Drain on AC | Run a long copy on a small adapter that cannot keep up. | After the charge falls 3 points, a note: *Plugged in, but the battery is draining*, and a `power WARNING (heartbeat)` line. |
+| P34 | Connection chips | Stage a card (reader) and two drives on different ports. | Each row shows its chip (`USB 10 Gbps · SSD`, `USB 5 Gbps`, …); hovering shows the device name and port path. A network share shows `Network`; an internal volume `Internal`. |
+| P35 | Slow-port warning | Plug a drive into a USB 2.0 port or behind a USB 2 hub, and stage it. | The chip turns orange (`USB 2.0 · 480 Mbps`) with a line: about 40 MB/s, try a different port or cable (or a faster hub). A card reader says *card reader*. Start is not blocked. The log has `link WARNING`. |
+| P36 | Same drive, two ports | Copy to the same drive in two different ports (one fast, one slow), twice each. | `device_speed_history.json` has the connection on each sample, and the two ports show different `portPath` values. |
+| P37 | Log lines | Stage volumes and read the session log. | One `link source=… / destination=… bus=… link=… port=… hubs=…` line per volume, with no paths. A drive that is unplugged and replugged is read again. |
+| P38 | Older history | Open a build with a speed history file written before this build. | It loads with no error; older samples simply have no connection. |
+| P39 | Chip colours | On battery, change the queue size or the charge so the estimate moves from fits, to little to spare, to will not fit. | The chip goes grey (`41% · 2h05m`), orange (`41% · needs 1h40m`), then red (`8% · plug in`); the banner appears only for orange and red. |
+| P40 | Chip detail | Click the chip. | A popover with the source, charge, macOS's time estimate, adapter, and the queue estimate; it never blocks anything. |
+| P41 | Relay order suggestion | In series, two drives with earlier copies on record (or on ports of clearly different speed), the slower one first. | Under the chain preview: *"SSD averaged 410 MB/s and NAS 88 MB/s. Put SSD first so the card is free sooner"* with **Move to Stop 1**. For ports without a record the line says *faster connection (about 900 MB/s) than … (about 400 MB/s)*. |
+| P42 | Apply it | Click **Move to Stop 1**. | The drive becomes Stop 1, the chain preview updates, the suggestion disappears, and the log has `relayOrder decision=moved stop=… from=2 to=1`. |
+| P43 | No guessing | In series with a drive that has neither a record nor a USB link (a network share, or a new drive). | No suggestion about that drive. With Simultaneously selected, or during a copy, no suggestion at all. |
+| P44 | Cancel asks first | Start a copy and press **Cancel Copy** (progress sheet, main window, and queue manager). | Each asks *Stop this copy?* with **Stop Copy** and **Keep Copying**; the message says what is kept for the verification level. Keep Copying changes nothing. |
+| P45 | Resume at Quick | Verification **Quick**, copy a card of many files to a drive, **Stop Copy** part way, start the same card again and accept the resume. | The files finished before the stop are reused (the receipt and log count them as reconciled) and only the rest are copied. It does not start from the first file. |
+| P46 | A cut-short file is recopied | After P45's stop, delete one finished file on the drive, and cut another short (truncate it), then resume. | Both are copied again and match the source; the others are reused. |
+| P47 | A touched file is recopied | After a stop at Quick, change the modification date of one finished file on the drive (touch it), then resume. | That file is copied again. |
+| P48 | Inline is unchanged | The same at **Inline**. | Verified files are reused, unverified ones are copied and verified; nothing is reused on size and date alone. |
+| P49 | A verified file that went missing | Inline copy, stop, delete a file the first run verified, resume. | The deleted file is copied again and is not counted as already done. |
 
 ## Ship Decision
 

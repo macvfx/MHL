@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v3.0.1 (Build 60 beta)**. Drop Verify is released together with CopyTrust and Folder Copy Compare, which carry the same build. Build 60 changes its exclusion defaults (see Exclusions). Version history is in the release notes.
+Current app version: **v3.0.2 (Build 63 beta)**. Drop Verify is released together with CopyTrust and Folder Copy Compare, which carry the same build. Build 60 changes its exclusion defaults (see Exclusions). Version history is in the release notes.
 
 ## External Codec Setup
 

@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-10-19
-Release status: **3.0.1 build 60**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
+Release status: **3.0.2 build 63**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
 carry the same version and build. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
@@ -188,6 +188,12 @@ How to do it:
 
 CopyTrust builds the queued chain and starts it as a single action, so **a relay chain always
 shows the pre-copy review**. There is no separate queue-then-start step.
+
+**Suggested order.** In series, CopyTrust looks at how fast each drive has been in earlier copies, or failing that how fast its connection can
+be, and when a later stop is clearly faster than Stop 1 it says so under the chain: *"SSD averaged 410 MB/s and NAS 88 MB/s. Put SSD first so
+the card is free sooner."* **Move to Stop 1** applies it. It says nothing about a drive it knows nothing about (a new drive, a network share),
+and nothing while copying or in Simultaneously mode. The card is free once Stop 1 is verified, which is the point of putting the fast drive
+there.
 
 Speed ordering tip:
 - Copy to your **fastest destination first** (SSD before NAS). This frees the camera card sooner and lets the slower NAS leg run from a local verified copy, not from the card itself.
@@ -1592,6 +1598,49 @@ the first reason is written beneath it (with *+N more* if there are several): ve
 verified copies than the minimum, an MHL missing after Inline or Full verification, a report that could not be
 written, or a card not yet archived to P5. At **Quick** verification no MHL is written, and that is not a
 warning. Session Health in the Review Summary agrees with the card; both are green for a clean copy.
+
+### Stopping a copy and resuming it
+
+**Cancel Copy** asks first (*Stop this copy?*), because stopping is not losing: files already copied stay on the destinations and the file being
+written right now is removed. To pick it up, start the same card again to the same destinations; CopyTrust offers to resume.
+
+What a resume reuses depends on the verification level. At **Quick**, a file the first run finished is kept when the destination still holds it at
+the same size and modification time, which is what Quick checks; a half-written, touched or changed file is copied again. At **Inline** and
+**Full**, the files the first run verified are kept, provided they are still on the destination at the recorded size; the rest are copied and
+verified. The receipt counts reused files with the reconciled ones.
+
+If CopyTrust itself stops (a crash, a force quit, the Mac powering off), there is no record of that run to resume from; the next run copies the card
+again, replacing any half-written file.
+
+### Connections and slow ports
+
+Each source and destination row shows how that volume is connected as a small chip: `USB 10 Gbps · SSD`, `USB 5 Gbps`, `USB 2.0 · 480 Mbps`,
+`Network` or `Internal`. Hover for the device name, the port (`port 2.1 (behind 1 hub)`) and the most the link can allow.
+
+A drive or card reader on a USB 2 link, which is about 40 MB/s whatever the drive can do, is shown in orange with a line saying what to try: a
+different port or cable, or a port on the Mac itself instead of a hub. It never blocks the copy. A 5 Gbps link is not flagged, because many
+drives are 5 Gbps drives.
+
+The connection is written to the session log (`link source=… bus=usb link=10Gbps port=2.1 hubs=1`) and saved with each speed in the device speed
+history, so it is possible to see afterwards whether a drive was slower in one port than another. It is not part of the receipt.
+
+### Power: laptops on battery
+
+On a laptop, CopyTrust reads where the power comes from and says so in the session log: `power state`, `power changed` when it is plugged
+in or unplugged (and as the charge falls), `power atCopyStart`, and a `power heartbeat` every five minutes during a copy.
+
+**The chip.** A small chip at the right of the bottom bar shows the power state, only on a Mac with a battery. Plugged in it shows a plug and the
+charge (`80%`, or `60% · charging`). On battery it shows the charge and macOS's own time left (`41% · 2h05m`). It goes orange when the queue needs
+nearly all of the battery (`41% · needs 1h40m`) and red when it will not last (`8% · plug in`). Hover for the sentence, or click it for the
+detail. A Mac held at 80% while plugged in (macOS's Optimized Battery Charging) is normal and is not flagged.
+
+**The banner.** Only when something needs doing, a banner appears above the destinations: orange when there is little to spare, red when the battery
+will probably not last (plug in), or when the charge is falling while plugged in, which means the adapter is too small for the load.
+
+**How the estimate works.** It compares the battery's own time estimate, minus a 10% reserve, with the time the queued copies still need. Once
+copying, the need is the run's own time left. Before a copy starts it is a rough figure from the speeds of earlier copies to the same drives, and a
+rough estimate is never shown worse than orange. At 10% or less it always says to plug in. Nothing here stops or blocks a copy. Closing the lid on
+battery will still put a Mac to sleep; keep the lid open, or use AC power with an external display.
 
 ### Volumes and ejecting
 
