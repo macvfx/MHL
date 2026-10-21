@@ -3,8 +3,7 @@
 Five macOS apps and a CLI tool for media integrity and project preparation — create, copy,
 verify, and prove it.
 
-**Available:** only the latest release of each tool is listed: CopyTrust 3.0.1 build 59,
-Drop Verify 3.0.1 build 52, Folder Copy Compare 3.0.1 build 53, Project Folder Creator 0.7.0 and mhl-tool 2.7.7.
+**Download:** [the latest release](https://github.com/macvfx/MHL/releases/latest) carries three apps: CopyTrust 3.0.1 build 59, Drop Verify 3.0.1 build 52 and Folder Copy Compare 3.0.1 build 53, each as its own `.dmg` with its own `.sha256.txt`. Project Folder Creator 0.7.0 and mhl-tool 2.9.8 are separate releases on the [releases page](https://github.com/macvfx/MHL/releases).
 Earlier releases are hidden; their notes are in the release notes below.
 **Beta:** **CopyTrust 3.0.1 Build 59** — the in-app Help is corrected: it now says that Card mode starts with no exclusion on and Folder mode with only system metadata, and describes Build a Preset and Unload. No behaviour change. Release notes: [RELEASE-NOTES-3.0.1-b59.md](RELEASE-NOTES-3.0.1-b59.md).
 
