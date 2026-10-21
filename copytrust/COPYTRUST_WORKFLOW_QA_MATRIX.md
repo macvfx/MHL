@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-22
-Applies to: CopyTrust 3.0.2 build 63. Sections A to K were written for 2.7 and re-checked since; a failure
+Applies to: CopyTrust 3.0.2 build 64. Sections A to K were written for 2.7 and re-checked since; a failure
 in them is a regression in something long settled.
 Sections L to N were added 14 Oct 2026 for the 2.9.8 field-test work; section O (the Monitor Hub and live
 progress) was added 17 Oct 2026 for 3.0.
@@ -387,6 +387,7 @@ were never published separately, so test them as one: build 58 onward carries al
 | P47 | A touched file is recopied | After a stop at Quick, change the modification date of one finished file on the drive (touch it), then resume. | That file is copied again. |
 | P48 | Inline is unchanged | The same at **Inline**. | Verified files are reused, unverified ones are copied and verified; nothing is reused on size and date alone. |
 | P49 | A verified file that went missing | Inline copy, stop, delete a file the first run verified, resume. | The deleted file is copied again and is not counted as already done. |
+| P50 | New Folder in the destination panel only | In Volumes click Dest on a drive, then Source on a drive. | The Dest panel has a New Folder button and a folder made with it can be added; the Source panel has none. |
 
 ## Ship Decision
 
