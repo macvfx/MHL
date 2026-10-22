@@ -1,7 +1,7 @@
 # CopyTrust Workflow Guide
 
 Date: 2026-10-17
-Release status: **3.0.2 build 64**, the current beta. What changed in each release is in the release notes.
+Release status: **3.0.2 build 66**, the current beta. What changed in each release is in the release notes.
 Sections that name a version (for example *2.7.8.1*) say when a behaviour began.
 This is the workflow-strategy companion to the
 [full CopyTrust User Guide](CopyTrust_UserGuide.md) and the

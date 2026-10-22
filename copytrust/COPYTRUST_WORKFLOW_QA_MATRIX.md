@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-22
-Applies to: CopyTrust 3.0.2 build 64. Sections A to K were written for 2.7 and re-checked since; a failure
+Applies to: CopyTrust 3.0.2 build 66. Sections A to K were written for 2.7 and re-checked since; a failure
 in them is a regression in something long settled.
 Sections L to N were added 14 Oct 2026 for the 2.9.8 field-test work; section O (the Monitor Hub and live
 progress) was added 17 Oct 2026 for 3.0.
@@ -388,6 +388,15 @@ were never published separately, so test them as one: build 58 onward carries al
 | P48 | Inline is unchanged | The same at **Inline**. | Verified files are reused, unverified ones are copied and verified; nothing is reused on size and date alone. |
 | P49 | A verified file that went missing | Inline copy, stop, delete a file the first run verified, resume. | The deleted file is copied again and is not counted as already done. |
 | P50 | New Folder in the destination panel only | In Volumes click Dest on a drive, then Source on a drive. | The Dest panel has a New Folder button and a folder made with it can be added; the Source panel has none. |
+| P51 | Session Summary with many sources and destinations | Finish a copy with six or more sources and destinations, then resize the Session Summary. | The title and the buttons stay visible; Destinations, Sources, Session Health and MHL Files scroll together. |
+| P52 | A volume that missed the probe recovers | With the Volumes list open, make a drive slow to answer (for example wake a sleeping disk), or watch one that said Not responding. | The label clears within about 20 seconds without unplugging or changing sources. |
+| P53 | Volume card right-click and Eject position | Right-click a drive in Volumes (tile and list); look at where Eject sits next to Source and Dest. | The menu offers Show in Finder, Get Info (path, capacity, connection) and Eject or Disconnect; Eject is at the far right with a gap after Dest. |
+| P54 | Volume kind filters | In Volumes click Card, then Drive, then Network, then the same label again; mount a card while Drive is chosen. | Only that kind shows, All appears while a filter is on, and clicking the chosen label or All restores the list; the card that just mounted stays visible; a not-responding volume is never hidden. |
+| P55 | Get Info layout | Right-click a USB drive in Volumes and choose Get Info. | Facts are grouped under Volume, Space and Connection with labels in a column; USB port says direct or behind a hub. |
+| P56 | A card added after the run finished | Copy a card, and while its artifacts are still running add another card for the same drives. | The new card joins the run and copies by auto-advance; it is not queued as a separate batch. |
+| P57 | Copy progress screen with Files closed | During a copy, close the Files list under the progress. | No large blank band below the drop strip; opening Files grows the panel again. |
+| P58 | Turn off exclusions from the warning | Start a copy with Camera Card exclusions on; choose Turn Off Exclusions and Copy. | The copy starts; Settings shows the Camera Card exclusions off and other groups unchanged. |
+| P59 | Start blocked explains itself | Create a blocking condition (a missing roll number under a preset that requires one, or a destination that is not writable); look at the orange chip and click Why?. | The reason is beside the chip, the popup gives the full explanation and the way forward, and the Start tooltip says the same. |
 
 ## Ship Decision
 

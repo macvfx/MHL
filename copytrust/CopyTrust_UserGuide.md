@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-10-19
-Release status: **3.0.2 build 64**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
+Release status: **3.0.2 build 66**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
 carry the same version and build. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
@@ -718,6 +718,21 @@ On first launch, macOS will prompt you to allow notifications from CopyTrust. If
 
 Prior to v2.4.4, macOS would report "permission denied" errors when a volume mount point disappeared, which was misleading. In v2.4.4 and later, CopyTrust detects the real cause — volume unavailability — and reports it accurately. If you see this on an older version, check whether the destination drive or NAS is still connected.
 
+### Start is blocked, and I do not know why
+
+When Start is greyed out for a reason CopyTrust can name, an orange **Start blocked** chip appears in the button
+row with the reason beside it (3.0.2 build 66). Click **Why?** for the full explanation and the way forward;
+hovering the chip or the Start button shows the same text. The usual reasons and what to do:
+
+- **A card has no project, unit or roll number** under a preset that requires one: choose one, enter one, or
+  mark it Unknown.
+- **Two cards would copy into the same folder**: change a card's alias or the prefix.
+- **A destination already contains the folder**: the chip says whether it is this card (resume, or it is
+  already copied) or another; change the roll number or choose another folder.
+- **A destination cannot be used** (not mounted, or not writable): the chip names it. Mount it, fix its
+  permissions, or remove it from the destinations.
+- **Nothing to copy to**: no staged destination is mounted. Mount one, or add a destination that is here.
+
 ### Where to see the Session Health verdict
 
 After every copy, CopyTrust classifies the results into a plain-language **Session Health** report:
@@ -919,7 +934,7 @@ Both Settings → Card Copy → Exclusions and Settings → Folder Copy → Excl
 
 Defaults as of **3.0.1 build 56**: **Card mode starts with no row on. Folder mode starts with only the System group on** (`.DS_Store`, `Thumbs.db`, `.Spotlight-V100` and the rest, which are the Mac's and Windows' own metadata). Receipts & Manifests, Proxies, Camera Card and `Final Cut Relink Aliases` start **unchecked** in both modes, so a copy carries everything but that metadata unless you choose to leave something out. This was changed at an operator's decision: an exclusion omits files without a message, and the earlier defaults had skipped proxy folders a facility wanted. Before build 56, `Final Cut Relink Aliases` started on in both modes and System started on in Card mode too.
 - `Final Cut Relink Aliases` holds Finder aliases to proxies on the drive they were made on, so a copy to another volume carries links to a drive that is no longer there. Tick it if you do not want them; nothing in it is lost.
-- Camera Card patterns that you enable are named in a mandatory pre-run warning.
+- Camera Card patterns that you enable are named in a mandatory pre-run warning. From 3.0.2 build 66 the warning has three answers beside Cancel: **Start Copy** (carry on with the exclusions), **Edit Exclusions…** (opens Settings and does not start; press Start again when they are set) and **Turn Off Exclusions and Copy**, which switches the Camera Card exclusions off, saves that, and starts the copy. Only the Camera Card group is changed. The log records which was chosen.
 - **Upgrading keeps your saved checkbox states, and so does loading an operator preset**: a preset applies the exclusions it was saved with. A preset saved before build 56 may switch rows on. To clear them, load the preset, untick the rows in Settings, and save the preset again, or use **Preset ▸ Unload** with **Reset Settings to Defaults** and build the preset again with **Preset ▸ Build a Preset…**.
 
 **Two manifest rows, and they mean opposite things.** *Any MHL manifest — including one another tool wrote* skips every `.mhl`. *MHL manifests written by CopyTrust, Drop Verify or mhl-tool* skips only ours, matched on the filename this suite writes. Use the second if you want a re-copy to leave a stale CopyTrust manifest behind while still carrying the manifest ShotPut, Hedge, OffShoot or the camera wrote — that one is often the only record of what a source held.
@@ -1662,6 +1677,23 @@ Completed cards also offer **Eject** for any whole volume (auto-eject stays for 
   auto-ejected.
 - **Eject All** in the Volumes header offers every volume that is safe to eject in one answer and lists
   what it left mounted and why. Nothing in use is touched, and network volumes are not included.
+
+**Filtering the strip (3.0.2 build 66).** The **Card**, **Drive** and **Network** labels at the top of the
+strip are buttons. Click one to show only that kind; **All** appears beside them while a filter is on, and
+clicking the chosen label again brings the whole list back. A volume that is **Not responding**, or that has
+just mounted, is always shown whatever the filter, so a card put in while *Drive* is chosen does not seem not
+to have arrived. The filter is not remembered between launches.
+
+**Right-click a volume** (in the tiles and in the list) for **Show in Finder**, **Get Info** and **Eject**
+(**Disconnect** for a network share; not offered while the volume is busy). Get Info groups what is known
+under **Volume** (location, kind, read and write or read-only), **Space** (capacity, free, used) and
+**Connection** (USB speed or Thunderbolt, the device, and the USB port, direct or behind a hub).
+
+On a tile, **Eject** sits at the far right, clear of **Source** and **Dest**, so a click aimed at Dest cannot
+eject the drive. The **Dest** button's Finder panel has **New Folder**, for making the destination folder on
+the spot; **Source** has none, because a source already exists. A volume that misses the 3-second probe is
+asked again every 4 seconds, up to four more times, so **Not responding** on a healthy drive clears by
+itself; each give-up is a `volume NOT RESPONDING` line in the session log.
 
 ### Skip measuring
 
@@ -2450,6 +2482,14 @@ The menu bar progress lets operators monitor copies without keeping the main Cop
 ## Queue Manager — Staging During Active Copy
 
 When a copy starts, the UI transforms from the source/destination setup panels into a compact **Copy Queue** manager. This provides a clear visual mode shift and makes it obvious that the app is in a running-copy state.
+
+### A card added after the run's copies have finished
+
+When every copy in the run has finished and only artifacts (proxies, a P5 archive) are still going, a card added
+for the same drives joins the run and is started by auto-advance (3.0.2 build 66). Artifacts never hold the next
+copy; before build 66 such a card was parked as a separate queued batch that nothing started. A card for
+*different* drives is still queued as its own batch. While Files is closed, the copy progress panel takes only
+the height it needs instead of reserving most of the window.
 
 ### Queue Manager layout
 
