@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-22
-Applies to: CopyTrust 3.0.2 build 66. Sections A to K were written for 2.7 and re-checked since; a failure
+Applies to: CopyTrust 3.0.2 build 67. Sections A to K were written for 2.7 and re-checked since; a failure
 in them is a regression in something long settled.
 Sections L to N were added 14 Oct 2026 for the 2.9.8 field-test work; section O (the Monitor Hub and live
 progress) was added 17 Oct 2026 for 3.0.
@@ -397,6 +397,7 @@ were never published separately, so test them as one: build 58 onward carries al
 | P57 | Copy progress screen with Files closed | During a copy, close the Files list under the progress. | No large blank band below the drop strip; opening Files grows the panel again. |
 | P58 | Turn off exclusions from the warning | Start a copy with Camera Card exclusions on; choose Turn Off Exclusions and Copy. | The copy starts; Settings shows the Camera Card exclusions off and other groups unchanged. |
 | P59 | Start blocked explains itself | Create a blocking condition (a missing roll number under a preset that requires one, or a destination that is not writable); look at the orange chip and click Why?. | The reason is beside the chip, the popup gives the full explanation and the way forward, and the Start tooltip says the same. |
+| P60 | Declare Off Site lives in the Preset menu | Load a preset that names drives with all of them mounted. Look under the window, then open the Preset menu; choose Declare Off Site… and pick a drive. | No permanent "Working away from the facility?" line under the window; Declare Off Site… is in the Preset menu; after declaring, the Working off site strip shows with End Off Site, and the menu item is gone. |
 
 ## Ship Decision
 

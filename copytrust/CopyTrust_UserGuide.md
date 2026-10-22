@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
 Date: 2026-10-19
-Release status: **3.0.2 build 66**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
+Release status: **3.0.2 build 67**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
 carry the same version and build. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
@@ -1728,6 +1728,7 @@ Next to *Working off site*:
   existing folder is never touched. Project folders (and the year or client folder above them) only,
   empty. The preset must allow project creation. **Template…** on a row opens that project in Project
   Folder Creator, with its number and name filled in.
+- **Declaring off site when nothing is missing** (the drives are reachable, over a VPN say, but you are copying to a drive you carry) is **Preset ▸ Declare Off Site…**, offered whenever a preset that names drives or a project list is loaded. Before 3.0.2 build 67 it was a permanent line under the window.
 - In Folder mode there is no off-site banner: off site means the facility's storage cannot be reached
   for a card ingest, which does not apply to a plain folder-to-folder copy.
 
