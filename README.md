@@ -3,9 +3,11 @@
 Five macOS apps and a CLI tool for media integrity and project preparation — create, copy,
 verify, and prove it.
 
-**Download:** [the latest release](https://github.com/macvfx/MHL/releases/latest) carries three apps at one build, 3.0.2 build 67: CopyTrust, Drop Verify and Folder Copy Compare. Each is its own `.dmg` with its own `.sha256.txt`, and one more `.dmg` holds all three. Project Folder Creator 0.7.0 and mhl-tool 2.9.8 are separate releases on the [releases page](https://github.com/macvfx/MHL/releases).
+**Download:** [the latest release](https://github.com/macvfx/MHL/releases/latest) carries three apps at one build, 3.0.3 build 70: CopyTrust, Drop Verify and Folder Copy Compare. Each is its own `.dmg` with its own `.sha256.txt`, and one more `.dmg` holds all three. Project Folder Creator 0.7.0 and mhl-tool 2.9.8 are separate releases on the [releases page](https://github.com/macvfx/MHL/releases).
 Earlier releases are hidden; their notes are in the release notes below.
-**Beta:** **3.0.2 Build 67 — CopyTrust, Drop Verify and Folder Copy Compare, released together.** In CopyTrust, **Declare Off Site…** moves into the **Preset** menu: the "Working away from the facility?" line no longer sits under the window on every card when the preset's drives are mounted. It includes everything in build 66.
+**Beta:** **3.0.3 Build 70 — CopyTrust, Drop Verify and Folder Copy Compare, released together.** In CopyTrust, Eject no longer fails with a bare "OSStatus error -36" when a disk image's volume had already unmounted on its own; Eject now shows a spinner immediately and an ejected volume drops out of the list on its own instead of lingering; Show in Finder on a volume that is already gone no longer opens something unrelated. Folder Copy Compare carries the build 68 Favourites rework. The version moves to 3.0.3 so a Mac already on 3.0.2 sees this as an update. Release notes: [RELEASE-NOTES-3.0.3-b70.md](RELEASE-NOTES-3.0.3-b70.md).
+
+Earlier: **3.0.2 Build 67 — CopyTrust, Drop Verify and Folder Copy Compare, released together.** In CopyTrust, **Declare Off Site…** moves into the **Preset** menu: the "Working away from the facility?" line no longer sits under the window on every card when the preset's drives are mounted. It includes everything in build 66.
 
 Earlier: **3.0.2 Build 66 — CopyTrust, Drop Verify and Folder Copy Compare, released together.** In CopyTrust the **Card, Drive and Network** labels above Volumes are now filters, right-clicking a volume offers **Get Info** (grouped under Volume, Space and Connection) and Eject sits away from Dest, a card added after a run's copies have finished joins the run instead of waiting, the copy progress screen no longer leaves a blank band, the Camera Card exclusions warning can **turn them off and copy**, and a blocked Start says **why**, with a **Why?** popup. The Session Summary keeps its title and buttons in view, a volume that says Not responding is asked again until it clears, and the Dest panel has New Folder (build 65). It includes everything in build 64.
 
@@ -21,7 +23,7 @@ Earlier: **CopyTrust 3.0.1 Build 58** — **Preset ▸ Build a Preset…** steps
 
 Earlier: **CopyTrust 3.0.1 Build 54** — no Eject beside a volume that is copying, and a quiet spell during a copy is no longer shown as an orange warning. Release notes: [RELEASE-NOTES-3.0.1-b54.md](RELEASE-NOTES-3.0.1-b54.md).
 
-> **3.0.2 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
+> **3.0.3 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
 > and it comes with no guarantees.
 

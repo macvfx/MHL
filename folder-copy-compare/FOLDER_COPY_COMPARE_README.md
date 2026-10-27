@@ -2,7 +2,7 @@
 
 The original tool that started it all.
 
-Current version: **v3.0.2 (Build 67 beta)**, released together with CopyTrust and Drop Verify. Build 60 adds Favourites with recheck and history; drop folders on the Dock icon to load them into the two sides.
+Current version: **v3.0.3 (Build 70 beta)**, released together with CopyTrust and Drop Verify. Build 60 adds Favourites with recheck and history; drop folders on the Dock icon to load them into the two sides.
 Version history is in [RELEASE_NOTES.md](../RELEASE_NOTES.md).
 
 **Folder Copy Compare** began as a simple idea: after copying a folder, prove that the copy worked. Drop a source folder, drop a target folder, and get a clear answer — do they match?
@@ -34,7 +34,7 @@ If the copy was made by something else and you just want a quick sanity check �
 
 - Dual folder drop zones (source + target) — selections preserved when switching modes
 - **Reference folder compare** — an optional third folder compares the same content across three locations at once; the results table shows per-file status across all of them (all identical, present but different, missing in one, only in one, two-match-one-differs)
-- **Favourites with recheck, history and watch** — save a comparison and reload its folders and settings in one action; **Recheck** scans a favourite's two folders quietly and records the result, with the last 25 checks per pair kept as counts (no paths); an optional watch (1 minute to 1 hour) monitors for filesystem drift and posts a notification with a badge on the row
+- **Favourites with recheck, history and watch** — save a comparison (the star opens a Current comparison card with the folders on screen and their result) and reload its folders and settings in one action; **Recheck** scans a favourite's two folders quietly and records the result, with the last 25 checks per pair kept as counts (no paths); an optional watch (1 minute to 1 hour) monitors for filesystem drift and posts a notification with a badge on the row
 - **Two-phase scan progress** — files are counted first (`Discovering files… N found`), then scanned against that known total (`Scanning/Hashing X% — N of M files`) rather than an approximate count
 - **Quick Scan** — name, size, and date comparison (fast, no hashing)
 - **Full Scan** — xxHash64 (~9.6 GB/s) or SHA-256 content hashing

@@ -1,6 +1,6 @@
 # Folder Copy Compare User Guide
 
-Current version: **v3.0.2 (Build 67 beta)**, released together with CopyTrust and Drop Verify, which carry the same build. Changes since 2.8.2: dropping folders on the Dock icon, and (build 60) Favourites with a quiet recheck and history.
+Current version: **v3.0.3 (Build 70 beta)**, released together with CopyTrust and Drop Verify, which carry the same build. Changes since 2.8.2: dropping folders on the Dock icon, and (build 60) Favourites with a quiet recheck and history.
 Version history is in the release notes.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*
@@ -65,14 +65,20 @@ Use Compare when you want a complete answer. Use Subfolder Check when you want a
 Saved comparisons are called **Favourites** (they were Saved Profiles, with a bookmark icon; existing ones carry over unchanged).
 
 1. Set up a comparison (with or without a reference folder).
-2. Click the **save** button next to the mode picker (**Add to Favourites**), name it and save.
-3. Open the list with the **star** button next to it. A red dot on the star means a favourite has drifted.
+2. Click the **star** button next to the mode picker. With folders loaded, the drawer opens with a **Current comparison** card at the top showing the Source, Target and Reference on screen (in Subfolder Check, that mode's pair), a name already filled in, and **Add to Favourites**. If a comparison has finished, its result is saved with the favourite, so the new row does not say *Not checked yet*. If those folders are already a favourite, the card says so. (The **save** button beside the mode picker still adds the comparison, in Compare mode.) A red dot on the star means a favourite has drifted.
+3. The list is below the card. Each row shows **Source**, **Target** and **Reference** on lines of their own (the folder and the one above it; hover for the full path), then the result and when it was found, so nothing is cut short in the narrower drawer (3.0.2 build 68).
 4. **Recheck** (the circular arrow on a row) scans both folders quietly, with the pair's own Quick or Full mode, and records what it found: *Identical*, or a count of what is different or only on one side. It does not open the pair, and it can be cancelled. **Recheck All** does every favourite in turn.
 5. Click **History** on a row to see the last 25 checks for that pair: date, mode and result. History holds counts only, no file names or paths. **Clear history** empties it for that pair.
 6. **Load** opens the pair in the main window, as before, for the full table and for a reference (three-way) folder. A quiet recheck compares source and target only.
 7. To watch for drift: click the **eye icon** on a favourite. You'll receive a macOS notification when files change. A recheck that runs clears the drift flag; one that could not run (a folder not mounted) says why and leaves it.
 
 A date-only difference (same size, different modification date, usual in Quick mode between file systems) is shown but does not make a pair count as different.
+
+### Switching between Compare and Subfolder Check, and the window size
+
+Switching between **Compare** and **Subfolder Check** keeps what each mode already found when the two folders are the same, so going to Subfolder Check and back does not throw away a finished comparison (before 3.0.2 build 68 both were cleared on every switch). A mode's results are cleared only when the folders it is about to show are different. Changing the scan mode still clears them. Subfolder Check needs its own scan the first time, because it reads one level deep.
+
+The title is one line and the drop zones are more compact, so the mode picker, the panels, the buttons and the results fit together. The smallest window is 760 by 700 points. Where the row of buttons (Reset, Cancel Scan, Rescan Source, Rescan Target, Refresh Comparison, Compare Folders) does not fit, the secondary ones become icons with tooltips and **Compare Folders** keeps its label.
 
 ## Scan Modes
 
