@@ -25,7 +25,7 @@ Earlier: **CopyTrust 3.0.1 Build 58** — **Preset ▸ Build a Preset…** steps
 
 Earlier: **CopyTrust 3.0.1 Build 54** — no Eject beside a volume that is copying, and a quiet spell during a copy is no longer shown as an orange warning. Release notes: [RELEASE-NOTES-3.0.1-b54.md](RELEASE-NOTES-3.0.1-b54.md).
 
-> **3.0.3 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
+> **3.0.4 is a beta.** Test it on media you can afford to lose, and keep a separate, verified
 > backup made by something else — Archiware P5 or equivalent. This is free software from GitHub
 > and it comes with no guarantees.
 
