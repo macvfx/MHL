@@ -314,6 +314,24 @@ Expected result:
 - destinations default to the same ones the running copy uses
 - completed items older than 24 hours auto-prune on app launch; use "Clear Done" for immediate cleanup
 
+### Freeing a card reader without ending the run
+
+When a source reaches **Completed This Run / Completed Sources**, read its trust verdict. If it is
+**copied & verified / Ready to eject** and has the required verified-copy count, use **Eject** on
+that completed source. An active card does not offer the same unqualified action, and a failed eject
+must leave the card visible rather than showing false success. Auto-eject can do this for a clean
+source card when enabled.
+
+After the card ejects, put the next card in the freed reader. Add it with **[+ Add]**, the running
+copy's drop strip, or **Source** on its Volumes tile. Under enforced naming, answer the naming sheet
+and read its landing preview before it joins the run. A card for the same destinations joins the
+current run and auto-advances; proxies, reports or P5 still active for an earlier card do not hold
+its copy. A card for different destinations stays as a separate queued batch.
+
+This turnover does not erase the earlier card's row, verdict, receipt or copy-map evidence. Queue
+**Clear Done** removes completed queue rows from the display; it is not the trust decision that
+makes a physical source card safe to remove.
+
 ### After cancelling a copy with queued batches
 
 If you cancel a copy and queued batches remain, the action bar simplifies to:

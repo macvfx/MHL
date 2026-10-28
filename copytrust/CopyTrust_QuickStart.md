@@ -1,7 +1,7 @@
 # CopyTrust Quick Start
 
-Date: 2026-10-17
-Current testing release: `3.0 (Build 50 BETA)` — see [Release Notes](../RELEASE_NOTES.md)
+Date: 2026-10-27
+Current testing release: `3.0.3 (Build 70 BETA)` — see [Release Notes](../RELEASE_NOTES.md)
 
 With two or more destinations, one **Copy** switch chooses `Simultaneously` or
 `In series`, and one button — always labelled **Start** — runs it. That is the
@@ -46,6 +46,19 @@ Expected result:
 - copy, selected verification, receipts, and logs finish before completion; Full/Inline also write a hash-backed MHL, while Quick does not
 - PDF, CSV, HTML tree, and optional proxy artifacts can continue afterward in
   the background
+
+### Several cards and one set of readers
+
+Stage and name several cards before Start when they share the same destinations. CopyTrust copies
+the sources one after another; `Simultaneously` describes the destinations for the active card, not
+the cards. With auto-advance on, the next named card starts after the current card's
+copy-and-verification gate.
+
+To reuse a reader, wait for a completed card to say **copied & verified / Ready to eject**, use
+**Eject** on that completed source, and remove it only after macOS confirms the eject. Insert the
+next card and add it with **+ Add**, the running copy's drop strip, or **Source** on its Volumes
+tile. For the same destinations it joins the run. Proxies, reports or P5 still active for the
+earlier card do not hold its copy.
 
 ### Optional proxy media beta
 

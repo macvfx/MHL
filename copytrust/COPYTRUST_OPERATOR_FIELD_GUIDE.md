@@ -5,7 +5,7 @@ trustworthy on set or in the office. For the full walkthrough see
 [CopyTrust_UserGuide.md](CopyTrust_UserGuide.md); for relay strategy see
 [CopyTrust_WorkflowGuide.md](CopyTrust_WorkflowGuide.md).
 
-**3.0 build 50 is a BETA** — test on media you can afford to lose, and keep a separate verified backup made by other software such as Archiware P5. Version history is
+**3.0.3 build 70 is a BETA** — test on media you can afford to lose, and keep a separate verified backup made by other software such as Archiware P5. Version history is
 in [RELEASE_NOTES.md](../RELEASE_NOTES.md).
 
 > **Check the confirmation before a copy starts.** It shows the active mode
@@ -48,6 +48,7 @@ existence and size verification without hashes.
 | Remote notifications | Optional push (Pushover) or JSON webhook when a run finishes, a copy fails or a drive needs you; counts only, never names or paths |
 | Live progress (3.0) | Optional: numbers and fixed words only, sent every few seconds to a CopyTrust Monitor on your network so someone away from the Mac can see what is running, when it should finish and whether anyone is needed |
 | Safe-to-eject + auto-eject | Eject is gated on the selected copy/verification workflow completing; Full/Inline also require their MHL |
+| Card-reader turnover | Eject a trusted completed card, insert and name the replacement, and keep the same run moving while earlier proxies, reports or P5 continue |
 
 ---
 
@@ -84,6 +85,8 @@ Before relying on a new build or a new machine:
 
 - Copy one small card to two destinations (one APFS, one exFAT) with **Full** verification.
 - Confirm all the receipt files above appear on **both** destinations (exFAT included).
+- Eject the trusted completed card, reuse its reader for another card, and confirm the replacement
+  joins the same run and starts without waiting for earlier proxy, report or P5 work.
 - Cancel a copy mid-run, then **Resume** — verified files are reused, not recopied.
 - Run a relay chain (`card → SSD → NAS`): add the destinations in order, set the `Copy`
   switch to `In series`, press `Start`, confirm the pre-copy review appears, and confirm

@@ -2492,6 +2492,24 @@ copy; before build 66 such a card was parked as a separate queued batch that not
 *different* drives is still queued as its own batch. While Files is closed, the copy progress panel takes only
 the height it needs instead of reserving most of the window.
 
+### Reusing a card reader in the same run
+
+The completed source remains in **Completed This Run / Completed Sources** after its copy. Read the
+verdict first: **copied & verified / Ready to eject** means its required trust work and minimum-copy
+policy passed; an amber verdict names what still needs review. Use **Eject** on the completed source,
+or enable **Auto-eject completed source cards** for clean card sources. CopyTrust does not offer the
+same unqualified eject while a source is active, and a failed eject leaves the source visible.
+
+Once macOS reports that the card ejected, remove it, insert the next card in the freed reader, and
+add it with the queue's **+ Add** button, the drop strip beneath the running row, or **Source** on the
+card's Volumes tile. Enforced naming opens for the new card before it can start. For the same drives
+it joins the current run and auto-advances even while the prior card's proxies, reports or P5 job are
+still active. For different drives it is a separate queued batch.
+
+The earlier card's completed row, verdict, receipt and copy-map evidence stay in the session after
+the physical card is removed. **Clear Done** clears completed queue rows from the display; it does
+not decide whether a card is safe to eject.
+
 ### Queue Manager layout
 
 The queue manager replaces the two side-by-side panels with a single full-width panel showing:
