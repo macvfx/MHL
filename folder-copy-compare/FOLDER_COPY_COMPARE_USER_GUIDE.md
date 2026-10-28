@@ -1,6 +1,6 @@
 # Folder Copy Compare User Guide
 
-Current version: **v3.0.3 (Build 70 beta)**, released together with CopyTrust and Drop Verify, which carry the same build. Changes since 2.8.2: dropping folders on the Dock icon, and (build 60) Favourites with a quiet recheck and history.
+Current version: **v3.0.4 (Build 75 beta)**, released together with CopyTrust and Drop Verify, which carry the same build. Changes since 2.8.2: dropping folders on the Dock icon, and (build 60) Favourites with a quiet recheck and history.
 Version history is in the release notes.
 
 This guide covers the standalone **Folder Copy Compare** app — the original tool in the suite and the simplest way to answer: *did the copy work?*

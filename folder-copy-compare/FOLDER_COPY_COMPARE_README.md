@@ -2,7 +2,7 @@
 
 The original tool that started it all.
 
-Current version: **v3.0.3 (Build 70 beta)**, released together with CopyTrust and Drop Verify. Build 60 adds Favourites with recheck and history; drop folders on the Dock icon to load them into the two sides.
+Current version: **v3.0.4 (Build 75 beta)**, released together with CopyTrust and Drop Verify. Build 60 adds Favourites with recheck and history; drop folders on the Dock icon to load them into the two sides.
 Version history is in [RELEASE_NOTES.md](../RELEASE_NOTES.md).
 
 **Folder Copy Compare** began as a simple idea: after copying a folder, prove that the copy worked. Drop a source folder, drop a target folder, and get a clear answer — do they match?
