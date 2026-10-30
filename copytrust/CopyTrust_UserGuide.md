@@ -742,6 +742,10 @@ After every copy, CopyTrust classifies the results into a plain-language **Sessi
 - **Receipt JSON** — per-destination `healthReport` object plus `transientFiles` and per-mismatch `classification`.
 - **Session log** — one `healthReport` line per destination with status and counts.
 
+### Receipt now records the source's size before copy, and the copy mode
+
+New in 3.0.5. The plain-text and JSON receipts now record what the source measured before the copy started — file count and total size — next to what was actually copied, so a shortfall is visible without checking the session log. The plain-text receipt shows a `Scanned` line directly above `Copied` for each source, in the same files-then-size order so the two compare at a glance; the header also names the copy mode the job ran in (`Mode    : Card` or `Mode    : Folder`). The JSON receipt carries the same numbers as `scannedSourceFiles` / `scannedSourceBytes`, plus a top-level `copyMode` key.
+
 ### Session finished with warnings — "N transient files skipped"
 
 New in v2.5.0. When copying live editing projects (especially Final Cut Pro libraries), some files routinely vanish between the scan and the copy. These are recorded as **transient skips** instead of errors, and the session ends as `completed_with_warnings` rather than `completed_with_errors`. Every skipped file is listed in the session manifest (`transientFiles`), so the archive record stays complete — review the list to confirm nothing you care about was skipped.
