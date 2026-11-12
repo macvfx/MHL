@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-10-28
-Release status: **3.0.4 build 75**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
+Date: 2026-11-12
+Release status: **3.0.6 build 80**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
 carry the same version and build. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
@@ -1891,6 +1891,25 @@ Configure each mode independently:
 - **Settings > Test** — built-in test harness to validate settings for either mode (see [Test Harness](#test-harness) below)
 
 Shared settings (not per-mode): operator name, external codecs, notifications, appearance, destination sets, receipt export.
+
+### External session evidence
+
+When **Settings > Post-Copy > Mirror complete session evidence to folder** is enabled, CopyTrust creates
+`Receipts/YEAR-MM-DD/Session_<ID>/` when copying begins. Its immutable session plan and initial CSV/JSON copy map
+record the configured sources, destinations, destination roles, P5 choices and pending source-to-destination pairs.
+The selected folder is frozen for that session, so changing a preset or the live toggle does not redirect evidence
+already promised for an active run.
+
+Logs, receipts, manifests, provenance, MHLs, P5 evidence and generated reports are mirrored as work progresses;
+**End Session** adds the final map and aggregate summary. A source card added to the active run appends a
+`sourceAdded` event to `CopyTrust_Session_Events_<ID>.jsonl/.csv` and an immediate pending
+`CopyMap_SourceAdded_*` snapshot without changing the original plan. A P5 request proves that an archive was
+prepared or submitted; only a successful terminal result observed by CopyTrust creates a separate
+`COPYTRUST_P5_ARCHIVE_COMPLETION_*.json/.txt` record.
+
+The app menu provides **Export Logs…** for an exact copy and **Export Sanitized Logs…** for a shareable copy that
+preserves timestamps and states while removing paths and common identity-bearing values. Review any sanitized
+export before sharing it. Original logs are never changed.
 
 ### Per-queue-item snapshots
 
