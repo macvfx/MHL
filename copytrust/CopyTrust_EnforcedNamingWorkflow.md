@@ -1,7 +1,7 @@
 # Daily Workflow — With Enforced Naming
 
 **For:** an operator ingesting cards at a facility whose naming convention CopyTrust applies.
-**Version:** current for 3.0.6 build 80 (first written for 2.7.7)
+**Version:** current for 3.0.6 build 81 (first written for 2.7.7)
 
 This is the running order for a shift. It is not a reference — when you need to know *why*, the
 detail is in the [CopyTrust User Guide](CopyTrust_UserGuide.md#enforced-naming-preset-activated)

@@ -1,7 +1,7 @@
 # CopyTrust User Guide
 
-Date: 2026-11-12
-Release status: **3.0.6 build 80**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
+Date: 2026-10-28
+Release status: **3.0.6 build 81**, the current beta. CopyTrust, Drop Verify and Folder Copy Compare are released together and
 carry the same version and build. What changed in each release is in the release notes and the CHANGELOG.
 
 **Shooting away from the facility?** `CopyTrust_OffSite_Workflow.md` is the running order for a card
@@ -741,10 +741,6 @@ After every copy, CopyTrust classifies the results into a plain-language **Sessi
 - **Receipt TXT** — a `Health:` verdict block per destination; every `MISMATCH:` line is annotated with its classification; transient skips are listed as `TRANSIENT:` lines.
 - **Receipt JSON** — per-destination `healthReport` object plus `transientFiles` and per-mismatch `classification`.
 - **Session log** — one `healthReport` line per destination with status and counts.
-
-### Receipt now records the source's size before copy, and the copy mode
-
-New in 3.0.5. The plain-text and JSON receipts now record what the source measured before the copy started — file count and total size — next to what was actually copied, so a shortfall is visible without checking the session log. The plain-text receipt shows a `Scanned` line directly above `Copied` for each source, in the same files-then-size order so the two compare at a glance; the header also names the copy mode the job ran in (`Mode    : Card` or `Mode    : Folder`). The JSON receipt carries the same numbers as `scannedSourceFiles` / `scannedSourceBytes`, plus a top-level `copyMode` key.
 
 ### Session finished with warnings — "N transient files skipped"
 
@@ -1894,22 +1890,27 @@ Shared settings (not per-mode): operator name, external codecs, notifications, a
 
 ### External session evidence
 
-When **Settings > Post-Copy > Mirror complete session evidence to folder** is enabled, CopyTrust creates
-`Receipts/YEAR-MM-DD/Session_<ID>/` when copying begins. Its immutable session plan and initial CSV/JSON copy map
-record the configured sources, destinations, destination roles, P5 choices and pending source-to-destination pairs.
-The selected folder is frozen for that session, so changing a preset or the live toggle does not redirect evidence
-already promised for an active run.
+When **Settings > Post-Copy > Mirror complete session evidence to folder** is enabled, CopyTrust freezes that
+choice and folder when the session's first copy starts. Later preset or settings changes do not redirect or disable
+the active session's evidence.
 
-Logs, receipts, manifests, provenance, MHLs, P5 evidence and generated reports are mirrored as work progresses;
-**End Session** adds the final map and aggregate summary. A source card added to the active run appends a
-`sourceAdded` event to `CopyTrust_Session_Events_<ID>.jsonl/.csv` and an immediate pending
-`CopyMap_SourceAdded_*` snapshot without changing the original plan. A P5 request proves that an archive was
-prepared or submitted; only a successful terminal result observed by CopyTrust creates a separate
-`COPYTRUST_P5_ARCHIVE_COMPLETION_*.json/.txt` record.
+The selected folder receives `Receipts/YEAR-MM-DD/Session_<ID>/`. Before file copying begins, CopyTrust writes an
+immutable JSON/CSV session plan and `CopyMap_Initial.json/.csv`. The plan records every configured source and
+destination, destination role, P5 selection, verification mode, app build and the pending initial state. During the
+run, `CopyMap_Latest` and timestamped progress maps are updated, and completed copies mirror their logs, receipts,
+manifests, provenance, MHLs and generated artifacts. P5 request and confirmed-completion evidence are mirrored when
+their state changes. **End Session** adds `CopyMap_Final` and the aggregate summary; it is no longer the first or only
+external write.
 
-The app menu provides **Export Logs…** for an exact copy and **Export Sanitized Logs…** for a shareable copy that
-preserves timestamps and states while removing paths and common identity-bearing values. Review any sanitized
-export before sharing it. Original logs are never changed.
+If another source card joins the active run, CopyTrust does not rewrite the original setup. It immediately appends
+a `sourceAdded` record to `CopyTrust_Session_Events_<ID>.jsonl/.csv`, refreshes the external session log, and writes
+a `CopyMap_SourceAdded_*` snapshot showing that card as pending against the session's destinations. Later additions
+append more rows/events to the same journal. Progress and final maps then update those pending cells with the copy
+outcome.
+
+The app menu provides **Export Logs…** for an exact session-log copy and **Export Sanitized Logs…** for a new copy
+with paths, quoted values and identity-bearing fields removed. Sanitized logs preserve timestamps, stages, states,
+counts and chronology. Always review a sanitized export before sharing it; the originals remain untouched.
 
 ### Per-queue-item snapshots
 

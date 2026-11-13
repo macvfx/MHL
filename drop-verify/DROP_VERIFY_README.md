@@ -1,6 +1,6 @@
 # Drop Verify
 
-Current app version: **v3.0.6 (Build 80 beta)**. Drop Verify is released together with CopyTrust and Folder Copy Compare, which carry the same build. Build 60 changes its exclusion defaults (below). Version history is in the release notes.
+Current app version: **v3.0.6 (Build 81 beta)**. Drop Verify is released together with CopyTrust and Folder Copy Compare, which carry the same build. Build 60 changes its exclusion defaults (below). Version history is in the release notes.
 
 `Drop Verify` is a lightweight macOS app target for one-folder trust reporting and directory summaries.
 
@@ -102,7 +102,7 @@ Artifact filenames follow the pattern `dropverify_<type>_<folderName>_<date-time
 
 **Split large contact sheets:** a folder over the configured limit (Off, or every 250 / 500 / 1,000 files) is written as numbered part PDFs (`…_part1of3.pdf`), each with a "Part x of y — files a–b" header line. Same thumbnails, EXIF, header and footer — only how many PDFs carry them. The extra export folder receives every part.
 
-It can also mirror generated artifacts to a separate export folder if enabled in Settings.
+It can also mirror a run's evidence — artifacts, session manifest and session log — to a separate export folder if enabled in Settings. The destination is fixed when the run starts, and a cancelled or failed run still leaves its log there (3.0.6 build 81).
 
 **Read-only media:** If the dropped folder is on read-only media (e.g. a locked SD card, encrypted external drive, or write-protected volume), Drop Verify detects this automatically and prompts you to choose an export folder. If an export folder is already configured, artifacts are written there without prompting.
 

@@ -7,7 +7,7 @@ This guide combines current UI screenshots with workflow-topology charts
 for direct copying, fan-out, relay chains, post-copy actions, P5 archive,
 offline handoff, restore, hash re-verification, the pre-copy workflow
 review with durable plan/log evidence, and proxy correctness.
-Use the [2.7 Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md) for the
+Use the [Workflow QA Matrix](COPYTRUST_WORKFLOW_QA_MATRIX.md) for the
 matching proof checks and evidence requirements.
 
 For the complete control reference and operating detail, see the
@@ -68,14 +68,18 @@ source/step, verification, sorting, artifacts, proxy choice, and P5 choice.
 flowchart LR
     S["Source and queued intent"] --> R["Pre-copy workflow review<br/>topology + destination cards"]
     R --> Q["Queued relay legs<br/>sequence + dependencies"]
-    Q --> P["Immutable workflow plan JSON"]
-    Q --> L["Structured session logs<br/>active item + plan link"]
-    P --> E["Plan exported with each leg's receipts"]
+    Q --> P["Immutable session/workflow plan<br/>+ initial copy map"]
+    Q --> L["Structured session log<br/>+ additive sourceAdded events"]
+    P --> E["Progress and final external evidence"]
     L --> E
 ```
 
 The plan is password-free and written when a relay is queued. A later chain
 gets a new sequence identity even when it uses the same paths.
+
+For an active session, a source added after copying begins appends a
+`sourceAdded` event and pending copy-map snapshot. It does not rewrite the
+initial session plan, so the original setup and later amendment remain distinct.
 
 Every delivered original is probed before proxy encoding. Display
 rotation drives scaled dimensions, reported color fields drive encoder

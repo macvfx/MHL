@@ -1,7 +1,7 @@
 # CopyTrust 2.7 Workflow QA Matrix
 
 Date: 2026-08-22
-Applies to: CopyTrust 3.0.6 build 80. Sections A to K were written for 2.7 and re-checked since; a failure
+Applies to: CopyTrust 3.0.6 build 81. Sections A to K were written for 2.7 and re-checked since; a failure
 in them is a regression in something long settled.
 Sections L to N were added 14 Oct 2026 for the 2.9.8 field-test work; section O (the Monitor Hub and live
 progress) was added 17 Oct 2026 for 3.0.
@@ -237,22 +237,24 @@ Use expendable fixtures and a non-deleting archive plan.
 | P10 | Multi-destination selection | Copy to two expendable destinations and check **Archive to P5** beside one. Then check the other destination. | The P5 checkbox is single-select; ordinary enabled artifacts reach both, proxies follow each destination's **Create proxies** checkbox, and only the currently checked P5 destination is submitted. |
 | P11 | Queue overlap | Run two queued copies while the first P5 job is deliberately slow. | The second copy starts after the first trust gate; first-job P5 progress stays on its own row and does not overwrite live copy status. |
 | P12 | Relay-chain P5 pre-check | Build a two-stop relay chain and select **Archive to P5** only on the second stop, then start the first leg. | Confirmation names the selected relay destination and does not warn that no P5 destination is selected. |
-| P13 | Request is not completion | Create a deferred request without submission, then complete a separate disposable test job. | The deferred run has only `COPYTRUST_P5_ARCHIVE_REQUEST_*`; only the observed terminal-success run adds `COPYTRUST_P5_ARCHIVE_COMPLETION_*.json/.txt` with its job ID and result. |
-
-Known tested baseline (private fixture identifiers anonymized): P5 8.0.4
-archived a CopyCore Inline-verified PNG, text sidecar, and MHL to a non-deleting
-test index; readback returned both complete hashes, `64x36` image dimensions,
-and the expected CopyTrust fields.
+| P13 | P5 request is not completion | Create a deferred request without submission, then complete a separate test job. | The deferred run has only `COPYTRUST_P5_ARCHIVE_REQUEST_*`; only the terminal-success run adds `COPYTRUST_P5_ARCHIVE_COMPLETION_*.json/.txt` with its job ID and result. |
 
 ## I.1 External Evidence and Privacy Export (3.0.6)
 
 | ID | Check | Procedure | Expected evidence |
 |---|---|---|---|
-| X1 | Evidence begins before copying | Enable the external mirror, stage two destinations and start a disposable source. Pause immediately. | `Receipts/YEAR-MM-DD/Session_<ID>/` already contains the immutable plan and `CopyMap_Initial.csv`; both destinations are present and pending. |
+| X1 | Evidence begins before copying | Enable the external mirror, stage two destinations and start a disposable source. Pause immediately. | `Receipts/YEAR-MM-DD/Session_<ID>/` already contains the session plan and `CopyMap_Initial.csv`; both destinations are present and pending. |
 | X2 | Export setting is frozen | Start X1, then change presets or turn the live export toggle off before ending the session. | The active session continues writing to its original dated folder and receives its final summary. |
 | X3 | Progressive evidence | Finish two sources without ending the session. | Each source's log, receipt, manifest/provenance/MHL evidence and timestamped copy-map update are already external. |
-| X4 | Added source is additive | Add two cards for the same destinations after the first copy starts. | Each card immediately appends one ordered `sourceAdded` event and a pending `CopyMap_SourceAdded_*` snapshot; the initial plan remains unchanged. |
-| X5 | Exact and sanitized export | Export exact logs, then sanitized logs containing fictional private-looking paths, hosts, email and IP values. | Exact logs are complete. Sanitized copies preserve chronology and state but remove those values; originals remain byte-for-byte unchanged. |
+| X4 | Final evidence | End the session. | `CopyMap_Final`, `CopyMap_Latest`, aggregate JSON/TXT and full `session_<ID>.log` exist; the immutable initial plan remains unchanged. |
+| X5 | Exact log export | Choose **Export Logs…**. | A dated session folder contains every `.log` from that session plus a privacy warning. |
+| X6 | Sanitized log export | Use fictional private-looking paths, hosts, filenames, email and IP values, then choose **Export Sanitized Logs…**. | Chronology and state keywords remain; those private values are absent; original logs are byte-for-byte unchanged. |
+| X7 | Source card added to active run | Start one card, then add two more cards for the same destinations before ending the session. | Each addition immediately appends one ordered `sourceAdded` event to the JSONL/CSV journal, refreshes the external session log, and creates a `CopyMap_SourceAdded_*` snapshot with the new card pending. The initial plan is unchanged; progress/final maps later show each outcome. |
+
+Known tested baseline (private fixture identifiers anonymized): P5 8.0.4
+archived a CopyCore Inline-verified PNG, text sidecar, and MHL to a non-deleting
+test index; readback returned both complete hashes, `64x36` image dimensions,
+and the expected CopyTrust fields.
 
 ## K. Source Manifest (2.7.8)
 

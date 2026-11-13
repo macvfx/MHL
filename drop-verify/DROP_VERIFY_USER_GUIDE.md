@@ -1,6 +1,6 @@
 # Drop Verify User Guide
 
-Current app version: **v3.0.6 (Build 80 beta)**. Drop Verify is released together with CopyTrust and Folder Copy Compare, which carry the same build. Build 60 changes its exclusion defaults (see Exclusions). Version history is in the release notes.
+Current app version: **v3.0.6 (Build 81 beta)**. Drop Verify is released together with CopyTrust and Folder Copy Compare, which carry the same build. Build 60 changes its exclusion defaults (see Exclusions). Version history is in the release notes.
 
 ## External Codec Setup
 
@@ -255,7 +255,19 @@ When enabled, Drop Verify writes selected outputs into the dropped folder under:
 - `Receipts/`
 
 ### Extra export folder
-When enabled, the app also copies generated artifacts to a separate export folder you choose in Settings.
+When enabled, the app also copies a run's evidence to a separate export folder you choose in Settings. Each run gets its own folder:
+
+- `Receipts/{folderName}_{yyyy-MM-dd-HHmmss}/` — the timestamp is when the run started
+
+It holds the MHL, contact sheet, metadata CSV, HTML tree, proxy receipts, the session manifest and the session log (`session_{ID}.log`). Proxies themselves are not copied.
+
+From 3.0.6 build 81:
+
+- **Where a run exports is fixed when the run starts.** Turning the export off, or choosing another folder, while a run is in progress applies to the next run, not the one under way.
+- **The folder is created before hashing starts**, with the session log in it, and the log is refreshed when the run ends.
+- **A cancelled or failed run still exports** its session log, and the partial manifest when a hashing run was cancelled.
+- **Read-only media** writes the session manifest into the same run folder as the artifacts.
+- **Retry and Rebuild** export into the folder the run itself used.
 
 ### Session manifest
 When MHL/hash output is enabled, Drop Verify writes a session manifest:
